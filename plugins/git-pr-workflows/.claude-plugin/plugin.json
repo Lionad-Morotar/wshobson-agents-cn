@@ -1,0 +1,10 @@
+{
+  "name": "git-pr-workflows",
+  "version": "1.3.0",
+  "description": "Git 工作流自动化、拉取请求增强和团队入职流程",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com"
+  },
+  "license": "MIT"
+}

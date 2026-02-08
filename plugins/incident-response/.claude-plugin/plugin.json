@@ -1,0 +1,10 @@
+{
+  "name": "incident-response",
+  "version": "1.3.0",
+  "description": "生产事件管理、分类工作流和自动化事件解决",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com"
+  },
+  "license": "MIT"
+}

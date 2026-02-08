@@ -1,0 +1,10 @@
+{
+  "name": "dotnet-contribution",
+  "version": "1.0.0",
+  "description": "全面的 .NET 后端开发，包括 C#、ASP.NET Core、Entity Framework Core 和 Dapper，用于生产级应用程序",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com"
+  },
+  "license": "MIT"
+}

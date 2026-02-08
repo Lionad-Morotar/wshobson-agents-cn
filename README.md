@@ -4,40 +4,40 @@
 
 [![Run in Smithery](https://smithery.ai/badge/skills/wshobson)](https://smithery.ai/skills?ns=wshobson&utm_source=github&utm_medium=badge)
 
-> **🎯 代理技能已启用** — 129 个专业技能通过渐进式披露扩展了 Claude 在各插件中的能力
+> **🎯 已启用 Agent 技能** — 146 个专业技能通过渐进式展示跨插件扩展 Claude 的能力
 
-一个综合的生产就绪系统，结合了 **108 个专业 AI 代理**、**15 个多代理工作流编排器**、**129 个代理技能** 和 **72 个开发工具**，组织成 **72 个专注的、单一用途的插件**，用于 [Claude Code](https://docs.claude.com/en/docs/claude-code/overview)。
+一个综合的生产就绪系统，结合了 **112 个专业 AI agent**、**16 个多 agent 工作流编排器**、**146 个 agent 技能** 和 **79 个开发工具**，组织成 **73 个专注的单目的插件**，专为 [Claude Code](https://docs.claude.com/en/docs/claude-code/overview) 设计。
 
 ## 概述
 
-这个统一的仓库提供了现代软件开发中智能自动化和多代理编排所需的一切：
+这个统一仓库提供了现代软件开发中智能自动化和多 agent 编排所需的一切：
 
-- **72 个专注的插件** - 细粒度的、单一用途的插件，针对最小 token 使用和可组合性进行了优化
-- **108 个专业代理** - 在架构、语言、基础设施、质量、数据/AI、文档、业务运营和 SEO 方面拥有深厚知识的领域专家
-- **129 个代理技能** - 模块化知识包，通过渐进式披露提供专业专业知识
-- **15 个工作流编排器** - 多代理协调系统，用于全栈开发、安全加固、ML 流程和事件响应等复杂操作
-- **72 个开发工具** - 优化的实用程序，包括项目脚手架、安全扫描、测试自动化和基础设施设置
+- **73 个专注插件** - 细粒度、单目的插件，针对最小 token 使用量和可组合性进行优化
+- **112 个专业 Agent** - 在架构、语言、基础设施、质量、数据/AI、文档、业务运营和 SEO 方面拥有深厚知识的领域专家
+- **146 个 Agent 技能** - 模块化知识包，通过渐进式展示提供专业技能
+- **16 个工作流编排器** - 多 agent 协调系统，用于全栈开发、安全加固、ML 管道和事件响应等复杂操作
+- **79 个开发工具** - 优化的实用工具，包括项目脚手架、安全扫描、测试自动化和基础设施设置
 
-### 主要特性
+### 核心特性
 
-- **细粒度插件架构**：72 个专注的插件，针对最小 token 使用进行了优化
-- **全面的工具**：72 个开发工具，包括测试生成、脚手架和安全扫描
-- **100% 代理覆盖**：所有插件都包括专业代理
-- **代理技能**：129 个专业技能，遵循渐进式披露和 token 效率原则
-- **清晰的组织**：23 个类别，每个类别 1-6 个插件，易于发现
-- **高效设计**：平均每个插件 3.4 个组件（遵循 Anthropic 的 2-8 模式）
+- **细粒度插件架构**：73 个专注插件，针对最小 token 使用量进行优化
+- **综合工具链**：79 个开发工具，包括测试生成、脚手架和安全扫描
+- **100% Agent 覆盖**：所有插件都包含专业 agent
+- **Agent 技能**：146 个专业技能，遵循渐进式展示和 token 效率原则
+- **清晰组织**：23 个分类，每个包含 1-6 个插件，便于发现
+- **高效设计**：每个插件平均 3.4 个组件（遵循 Anthropic 的 2-8 模式）
 
 ### 工作原理
 
-每个插件都完全独立，拥有自己的代理、命令和技能：
+每个插件都是完全隔离的，拥有自己的 agent、命令和技能：
 
-- **只安装你需要的内容** - 每个插件只加载其特定的代理、命令和技能
-- **最小 token 使用** - 不会将不必要的资源加载到上下文中
-- **混合搭配** - 组合多个插件用于复杂的工作流
-- **清晰的边界** - 每个插件都有单一的、专注的目的
-- **渐进式披露** - 技能仅在激活时加载知识
+- **仅安装所需内容** - 每个插件仅加载其特定的 agent、命令和技能
+- **最小 token 使用量** - 不会将不必要的资源加载到上下文中
+- **灵活组合** - 组合多个插件以完成复杂工作流
+- **清晰边界** - 每个插件都有单一、专注的目的
+- **渐进式展示** - 技能仅在激活时加载知识
 
-**示例**：安装 `python-development` 会加载 3 个 Python 代理、1 个脚手架工具，并提供 16 个技能（约 1000 个 token），而不是整个市场。
+**示例**：安装 `python-development` 会加载 3 个 Python agent、1 个脚手架工具，并使 16 个技能可用（约 1000 tokens），而不是整个市场。
 
 ## 快速开始
 
@@ -49,11 +49,11 @@
 /plugin marketplace add wshobson/agents
 ```
 
-这使得所有 72 个插件都可以安装，但**不会将任何代理或工具加载到您的上下文中**。
+这使得所有 73 个插件可用于安装，但**不会**将任何 agent 或工具加载到您的上下文中。
 
 ### 步骤 2：安装插件
 
-浏览可用的插件：
+浏览可用插件：
 
 ```bash
 /plugin
@@ -63,37 +63,37 @@
 
 ```bash
 # 核心开发插件
-/plugin install python-development          # Python 带 16 个专业技能
-/plugin install javascript-typescript       # JS/TS 带 4 个专业技能
-/plugin install backend-development         # 后端 API 带 3 个架构技能
+/plugin install python-development          # Python 及 16 个专业技能
+/plugin install javascript-typescript       # JS/TS 及 4 个专业技能
+/plugin install backend-development         # 后端 API 及 3 个架构技能
 
-# 基础设施和运维
-/plugin install kubernetes-operations       # K8s 带 4 个部署技能
-/plugin install cloud-infrastructure        # AWS/Azure/GCP 带 4 个云技能
+# 基础设施与运维
+/plugin install kubernetes-operations       # K8s 及 4 个部署技能
+/plugin install cloud-infrastructure        # AWS/Azure/GCP 及 4 个云技能
 
-# 安全和质量
-/plugin install security-scanning           # SAST 带安全技能
+# 安全与质量
+/plugin install security-scanning           # SAST 及安全技能
 /plugin install code-review-ai             # AI 驱动的代码审查
 
 # 全栈编排
-/plugin install full-stack-orchestration   # 多代理工作流
+/plugin install full-stack-orchestration   # 多 agent 工作流
 ```
 
-每个安装的插件只将**其特定的代理、命令和技能**加载到 Claude 的上下文中。
+每个安装的插件仅将其**特定的 agent、命令和技能**加载到 Claude 的上下文中。
 
-### 插件 vs 代理
+### 插件 vs Agent
 
-您安装**插件**，它捆绑了代理：
+您安装**插件**，插件捆绑了 agent：
 
-| 插件                  | 代理                                            |
-| ----------------------- | ------------------------------------------------- |
-| `comprehensive-review`  | architect-review, code-reviewer, security-auditor |
-| `javascript-typescript` | javascript-pro, typescript-pro                    |
-| `python-development`    | python-pro, django-pro, fastapi-pro               |
-| `blockchain-web3`       | blockchain-developer                              |
+| 插件                    | Agent                                                |
+| ----------------------- | ---------------------------------------------------- |
+| `comprehensive-review`  | architect-review, code-reviewer, security-auditor     |
+| `javascript-typescript` | javascript-pro, typescript-pro                       |
+| `python-development`    | python-pro, django-pro, fastapi-pro                  |
+| `blockchain-web3`       | blockchain-developer                                 |
 
 ```bash
-# ❌ 错误 - 不能直接安装代理
+# ❌ 错误 - 无法直接安装 agent
 /plugin install typescript-pro
 
 # ✅ 正确 - 安装插件
@@ -102,9 +102,9 @@
 
 ### 故障排除
 
-**"Plugin not found"** → 使用插件名称，而不是代理名称。添加 `@claude-code-workflows` 后缀。
+**"Plugin not found"** → 使用插件名称，而不是 agent 名称。添加 `@claude-code-workflows` 后缀。
 
-**插件未加载** → 清除缓存并重新安装：
+**插件无法加载** → 清除缓存并重新安装：
 
 ```bash
 rm -rf ~/.claude/plugins/cache/claude-code-workflows && rm ~/.claude/plugins/installed_plugins.json
@@ -114,102 +114,139 @@ rm -rf ~/.claude/plugins/cache/claude-code-workflows && rm ~/.claude/plugins/ins
 
 ### 核心指南
 
-- **[插件参考](docs/plugins.md)** - 所有 72 个插件的完整目录
-- **[代理参考](docs/agents.md)** - 按类别组织的所有 108 个代理
-- **[代理技能](docs/agent-skills.md)** - 129 个具有渐进式披露的专业技能
+- **[插件参考](docs/plugins.md)** - 所有 73 个插件的完整目录
+- **[Agent 参考](docs/agents.md)** - 按分类组织的所有 112 个 agent
+- **[Agent 技能](docs/agent-skills.md)** - 146 个专业技能，支持渐进式展示
 - **[使用指南](docs/usage.md)** - 命令、工作流和最佳实践
 - **[架构](docs/architecture.md)** - 设计原则和模式
 
 ### 快速链接
 
-- [安装](#quick-start) - 2 步入门
+- [安装](#quick-start) - 2 步快速开始
 - [核心插件](docs/plugins.md#quick-start---essential-plugins) - 立即提高生产力的顶级插件
-- [命令参考](docs/usage.md#command-reference-by-category) - 按类别组织的所有斜杠命令
-- [多代理工作流](docs/usage.md#multi-agent-workflow-examples) - 预配置的编排示例
+- [命令参考](docs/usage.md#command-reference-by-category) - 按分类组织的所有斜杠命令
+- [多 Agent 工作流](docs/usage.md#multi-agent-workflow-examples) - 预配置的编排示例
 - [模型配置](docs/agents.md#model-configuration) - Haiku/Sonnet 混合编排
 
-## 新增功能
+## 新增内容
 
-### 代理技能（跨 20 个插件的 140 个技能）
+### Agent Teams 插件（新增）
 
-遵循 Anthropic 渐进式披露架构的专业知识包：
+使用 Claude Code 实验性的 Agent Teams 功能编排多 agent 团队进行并行工作流：
+
+```bash
+/plugin install agent-teams@claude-code-workflows
+```
+
+- **7 个团队预设** — `review`、`debug`、`feature`、`fullstack`、`research`、`security`、`migration`
+- **并行代码审查** — `/team-review src/ --reviewers security,performance,architecture`
+- **假设驱动调试** — `/team-debug "API 返回 500" --hypotheses 3`
+- **并行功能开发** — `/team-feature "添加 OAuth2 认证" --plan-first`
+- **研究团队** — 跨代码库和网络源的并行调查
+- **安全审计** — 4 个审查者覆盖 OWASP、认证、依赖和密钥
+- **迁移支持** — 协调迁移，具有并行流和正确性验证
+
+包含 4 个专业 agent、7 个命令和 6 个技能及参考文档。
+
+[→ 查看 agent-teams 文档](plugins/agent-teams/README.md)
+
+### Conductor 插件 — 上下文驱动开发
+
+将 Claude Code 转变为项目管理工具，具有结构化的**上下文 → 规范与计划 → 实现**工作流：
+
+```bash
+/plugin install conductor@claude-code-workflows
+```
+
+- **交互式设置** — `/conductor:setup` 创建产品愿景、技术栈、工作流规则和风格指南
+- **基于轨道的开发** — `/conductor:new-track` 生成规范和分阶段实现计划
+- **TDD 工作流** — `/conductor:implement` 使用验证检查点执行任务
+- **语义回滚** — `/conductor:revert` 按逻辑单元（轨道、阶段或任务）撤销工作
+- **状态持久化** — 使用持久项目上下文跨会话恢复设置
+- **3 个技能** — 上下文驱动开发、轨道管理、工作流模式
+
+[→ 查看 Conductor 文档](plugins/conductor/README.md)
+
+### Agent 技能（21 个插件中的 146 个技能）
+
+遵循 Anthropic 渐进式展示架构的专业知识包：
 
 **语言开发：**
 
 - **Python**（5 个技能）：异步模式、测试、打包、性能、UV 包管理器
 - **JavaScript/TypeScript**（4 个技能）：高级类型、Node.js 模式、测试、现代 ES6+
 
-**基础设施和 DevOps：**
+**基础设施与 DevOps：**
 
-- **Kubernetes**（4 个技能）：清单、Helm 图表、GitOps、安全策略
+- **Kubernetes**（4 个技能）：清单、Helm chart、GitOps、安全策略
 - **云基础设施**（4 个技能）：Terraform、多云、混合网络、成本优化
 - **CI/CD**（4 个技能）：管道设计、GitHub Actions、GitLab CI、密钥管理
 
-**开发和架构：**
+**开发与架构：**
 
 - **后端**（3 个技能）：API 设计、架构模式、微服务
 - **LLM 应用**（8 个技能）：LangGraph、提示工程、RAG、评估、嵌入、相似性搜索、向量调优、混合搜索
 
-**区块链和 Web3**（4 个技能）：DeFi 协议、NFT 标准、Solidity 安全、Web3 测试
+**区块链与 Web3**（4 个技能）：DeFi 协议、NFT 标准、Solidity 安全、Web3 测试
 
 **项目管理：**
 
 - **Conductor**（3 个技能）：上下文驱动开发、轨道管理、工作流模式
 
-**以及更多**：框架迁移、可观察性、支付处理、ML 运营、安全扫描
+**以及更多**：框架迁移、可观测性、支付处理、ML 运维、安全扫描
 
-[→ 查看完整的技能文档](docs/agent-skills.md)
+[→ 查看完整技能文档](docs/agent-skills.md)
 
 ### 三层模型策略
 
-为最佳性能和成本进行的战略模型分配：
+为最佳性能和成本的战略性模型分配：
 
-| 层级       | 模型    | 代理 | 用例                                                                                        |
-| ---------- | -------- | ------ | ----------------------------------------------------------------------------------------------- |
-| **第 1 层** | Opus 4.5 | 42     | 关键架构、安全、所有代码审查、生产编码（语言专家、框架） |
-| **第 2 层** | 继承  | 42     | 复杂任务 - 用户选择模型（AI/ML、后端、前端/移动、专业化）               |
-| **第 3 层** | Sonnet   | 51     | 智能支持（文档、测试、调试、网络、API 文档、DX、遗留、支付）   |
-| **第 4 层** | Haiku    | 18     | 快速运营任务（SEO、部署、简单文档、销售、内容、搜索）                   |
+| 层级     | 模型      | Agent 数量 | 使用场景                                                                                                  |
+| -------- | --------- | ---------- | --------------------------------------------------------------------------------------------------------- |
+| **第 1 层** | Opus 4.5  | 42         | 关键架构、安全、所有代码审查、生产编码（语言专家、框架）                                                       |
+| **第 2 层** | Inherit   | 42         | 复杂任务 - 用户选择模型（AI/ML、后端、前端/移动、专业）                                                      |
+| **第 3 层** | Sonnet    | 51         | 智能支持（文档、测试、调试、网络、API 文档、DX、遗留、支付）                                                  |
+| **第 4 层** | Haiku     | 18         | 快速运维任务（SEO、部署、简单文档、销售、内容、搜索）                                                         |
 
-**为什么关键代理使用 Opus 4.5？**
+**为什么关键 Agent 使用 Opus 4.5？**
 
-- SWE-bench 上 80.9% 的分数（业界领先）
+- SWE-bench 上 80.9% 的得分（业界领先）
 - 复杂任务减少 65% 的 token
 - 最适合架构决策和安全审计
 
 **第 2 层灵活性（`inherit`）：**
-标记为 `inherit` 的代理使用您会话的默认模型，让您平衡成本和性能：
+标记为 `inherit` 的 agent 使用您会话的默认模型，让您平衡成本和能力：
 
-- 通过 `claude --model opus` 或 `claude --model sonnet` 启动会话时设置
+- 通过 `claude --model opus` 或 `claude --model sonnet` 在启动会话时设置
 - 如果未指定默认值，则回退到 Sonnet 4.5
-- 非常适合希望控制成本的前端/移动开发者
-- AI/ML 工程师可以为复杂的模型工作选择 Opus
+- 非常适合希望成本控制的前端/移动开发者
+- AI/ML 工程师可以为复杂模型工作选择 Opus
 
 **成本考虑：**
 
 - **Opus 4.5**：每百万输入/输出 token $5/$25 - 关键工作的 premium
 - **Sonnet 4.5**：每百万 token $3/$15 - 平衡的性能/成本
-- **Haiku 4.5**：每百万 token $1/$5 - 快速、经济高效的运营
-- Opus 在复杂任务上减少 65% 的 token 通常可以抵消更高的费率
-- 使用 `inherit` 层来控制大批量使用情况的成本
+- **Haiku 4.5**：每百万 token $1/$5 - 快速、具有成本效益的运维
+- Opus 在复杂任务上减少 65% 的 token 通常会抵消更高的费率
+- 使用 `inherit` 层来控制大批量使用场景的成本
 
-编排模式组合模型以提高效率：
+编排模式结合模型以提高效率：
 
 ```
 Opus (架构) → Sonnet (开发) → Haiku (部署)
 ```
 
-[→ 查看模型配置详细信息](docs/agents.md#model-configuration)
+[→ 查看模型配置详情](docs/agents.md#model-configuration)
 
-## 流行的用例
+## 常见用例
 
 ### 全栈功能开发
 
 ```bash
-/full-stack-orchestration:full-stack-feature "使用 OAuth2 的用户身份验证"
+/full-stack-orchestration:full-stack-feature "使用 OAuth2 的用户认证"
 ```
 
-协调 7+ 个代理：backend-architect → database-architect → frontend-developer → test-automator → security-auditor → deployment-engineer → observability-engineer
+协调 7+ 个 agent：backend-architect → database-architect → frontend-developer → test-automator → security-auditor → deployment-engineer → observability-engineer
 
 [→ 查看所有工作流示例](docs/usage.md#multi-agent-workflow-examples)
 
@@ -219,7 +256,7 @@ Opus (架构) → Sonnet (开发) → Haiku (部署)
 /security-scanning:security-hardening --level comprehensive
 ```
 
-多代理安全评估，包括 SAST、依赖扫描和代码审查。
+多 agent 安全评估，包括 SAST、依赖扫描和代码审查。
 
 ### 使用现代工具的 Python 开发
 
@@ -227,7 +264,7 @@ Opus (架构) → Sonnet (开发) → Haiku (部署)
 /python-development:python-scaffold fastapi-microservice
 ```
 
-创建具有异步模式的生产就绪 FastAPI 项目，激活技能：
+创建生产就绪的 FastAPI 项目，具有异步模式，激活技能：
 
 - `async-python-patterns` - AsyncIO 和并发
 - `python-testing-patterns` - pytest 和 fixtures
@@ -237,26 +274,26 @@ Opus (架构) → Sonnet (开发) → Haiku (部署)
 
 ```bash
 # 自动激活 k8s 技能
-"使用 Helm 图表和 GitOps 创建生产 Kubernetes 部署"
+"创建带有 Helm chart 和 GitOps 的生产 Kubernetes 部署"
 ```
 
-使用 kubernetes-architect 代理和 4 个专业技能生成生产级配置。
+使用 kubernetes-architect agent 和 4 个专业技能来生成生产级配置。
 
-[→ 查看完整的使用指南](docs/usage.md)
+[→ 查看完整使用指南](docs/usage.md)
 
-## 插件类别
+## 插件分类
 
-**23 个类别，72 个插件：**
+**24 个分类，73 个插件：**
 
 - 🎨 **开发**（4）- 调试、后端、前端、多平台
 - 📚 **文档**（3）- 代码文档、API 规范、图表、C4 架构
-- 🔄 **工作流**（4）- git、全栈、TDD、**Conductor**（上下文驱动开发）
+- 🔄 **工作流**（5）- git、全栈、TDD、**Conductor**（上下文驱动开发）、**Agent Teams**（多 agent 编排）
 - ✅ **测试**（2）- 单元测试、TDD 工作流
 - 🔍 **质量**（3）- 代码审查、综合审查、性能
-- 🤖 **AI 和 ML**（4）- LLM 应用、代理编排、上下文、MLOps
+- 🤖 **AI 与 ML**（4）- LLM 应用、agent 编排、上下文、MLOps
 - 📊 **数据**（2）- 数据工程、数据验证
 - 🗄️ **数据库**（2）- 数据库设计、迁移
-- 🚨 **运维**（4）- 事件响应、诊断、分布式调试、可观察性
+- 🚨 **运维**（4）- 事件响应、诊断、分布式调试、可观测性
 - ⚡ **性能**（2）- 应用性能、数据库/云优化
 - ☁️ **基础设施**（5）- 部署、验证、Kubernetes、云、CI/CD
 - 🔒 **安全**（4）- 扫描、合规、后端/API、前端/移动
@@ -269,22 +306,22 @@ Opus (架构) → Sonnet (开发) → Haiku (部署)
 - 💼 **业务**（3）- 分析、HR/法律、客户/销售
 - 以及更多...
 
-[→ 查看完整的插件目录](docs/plugins.md)
+[→ 查看完整插件目录](docs/plugins.md)
 
 ## 架构亮点
 
 ### 细粒度设计
 
-- **单一职责** - 每个插件做好一件事
-- **最小 token 使用** - 平均每个插件 3.4 个组件
-- **可组合** - 混合搭配用于复杂的工作流
-- **100% 覆盖** - 所有 108 个代理都可跨插件访问
+- **单一职责** - 每个插件只做一件事并做好
+- **最小 token 使用量** - 每个插件平均 3.4 个组件
+- **可组合** - 灵活组合以完成复杂工作流
+- **100% 覆盖** - 所有 112 个 agent 都可通过插件访问
 
-### 渐进式披露（技能）
+### 渐进式展示（技能）
 
-token 效率的三层架构：
+三层架构以提高 token 效率：
 
-1. **元数据** - 名称和激活标准（始终加载）
+1. **元数据** - 名称和激活条件（始终加载）
 2. **指令** - 核心指导（激活时加载）
 3. **资源** - 示例和模板（按需加载）
 
@@ -293,7 +330,7 @@ token 效率的三层架构：
 ```
 claude-agents/
 ├── .claude-plugin/
-│   └── marketplace.json          # 72 个插件
+│   └── marketplace.json          # 73 个插件
 ├── plugins/
 │   ├── python-development/
 │   │   ├── agents/               # 3 个 Python 专家
@@ -304,26 +341,26 @@ claude-agents/
 │   │   ├── commands/             # 部署工具
 │   │   └── skills/               # 4 个 K8s 技能
 │   └── ... (65 个更多插件)
-├── docs/                          # 全面的文档
-└── README.md                      # 此文件
+├── docs/                          # 综合文档
+└── README.md                      # 本文件
 ```
 
-[→ 查看架构详细信息](docs/architecture.md)
+[→ 查看架构详情](docs/architecture.md)
 
 ## 贡献
 
-要添加新的代理、技能或命令：
+要添加新的 agent、技能或命令：
 
 1. 在 `plugins/` 中识别或创建适当的插件目录
 2. 在适当的子目录中创建 `.md` 文件：
-   - `agents/` - 用于专业代理
+   - `agents/` - 用于专业 agent
    - `commands/` - 用于工具和工作流
    - `skills/` - 用于模块化知识包
 3. 遵循命名约定（小写、连字符分隔）
-4. 编写清晰的激活标准和全面的内容
+4. 编写清晰的激活条件和全面的内容
 5. 更新 `.claude-plugin/marketplace.json` 中的插件定义
 
-有关详细指南，请参阅[架构文档](docs/architecture.md)。
+详细指南请参阅[架构文档](docs/architecture.md)。
 
 ## 资源
 
@@ -331,21 +368,21 @@ claude-agents/
 
 - [Claude Code 文档](https://docs.claude.com/en/docs/claude-code/overview)
 - [插件指南](https://docs.claude.com/en/docs/claude-code/plugins)
-- [子代理指南](https://docs.claude.com/en/docs/claude-code/sub-agents)
-- [代理技能指南](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
+- [子 Agent 指南](https://docs.claude.com/en/docs/claude-code/sub-agents)
+- [Agent 技能指南](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
 - [斜杠命令参考](https://docs.claude.com/en/docs/claude-code/slash-commands)
 
-### 此仓库
+### 本仓库
 
 - [插件参考](docs/plugins.md)
-- [代理参考](docs/agents.md)
-- [代理技能指南](docs/agent-skills.md)
+- [Agent 参考](docs/agents.md)
+- [Agent 技能指南](docs/agent-skills.md)
 - [使用指南](docs/usage.md)
 - [架构](docs/architecture.md)
 
 ## 许可证
 
-MIT 许可证 - 有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
+MIT 许可证 - 详情请参阅 [LICENSE](LICENSE) 文件。
 
 ## Star 历史
 

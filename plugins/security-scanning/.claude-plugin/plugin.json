@@ -1,0 +1,10 @@
+{
+  "name": "security-scanning",
+  "version": "1.3.0",
+  "description": "SAST 分析、依赖漏洞扫描、OWASP Top 10 合规性、容器安全扫描和自动化安全加固",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com"
+  },
+  "license": "MIT"
+}

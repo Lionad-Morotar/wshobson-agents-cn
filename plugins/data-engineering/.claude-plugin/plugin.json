@@ -1,0 +1,10 @@
+{
+  "name": "data-engineering",
+  "version": "1.3.0",
+  "description": "ETL 流水线构建、数据仓库设计、批处理工作流和数据驱动的功能开发",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com"
+  },
+  "license": "MIT"
+}

@@ -161,24 +161,24 @@ describe("依赖兼容性", () => {
 ### 识别破坏性变更
 
 ```bash
-# 使用变更日志解析器
-npx changelog-parser react 16.0.0 17.0.0
-
-# 或手动检查
-curl https://raw.githubusercontent.com/facebook/react/main/CHANGELOG.md
+# 直接检查变更日志
+curl https://raw.githubusercontent.com/facebook/react/master/CHANGELOG.md
 ```
 
 ### 使用 Codemod 自动修复
 
 ```bash
-# React 升级 codemods
-npx react-codeshift <transform> <path>
+# 使用 transform URL 运行 jscodeshift
+npx jscodeshift -t <transform-url> <path>
 
-# 示例：更新生命周期方法
-npx react-codeshift \
-  --parser tsx \
-  --transform react-codeshift/transforms/rename-unsafe-lifecycles.js \
-  src/
+# 示例：重命名不安全的生命周期方法
+npx jscodeshift -t https://raw.githubusercontent.com/reactjs/react-codemod/master/transforms/rename-unsafe-lifecycles.js src/
+
+# 对于 TypeScript 文件
+npx jscodeshift -t https://raw.githubusercontent.com/reactjs/react-codemod/master/transforms/rename-unsafe-lifecycles.js --parser=tsx src/
+
+# 预演以预览更改
+npx jscodeshift -t https://raw.githubusercontent.com/reactjs/react-codemod/master/transforms/rename-unsafe-lifecycles.js --dry src/
 ```
 
 ### 自定义迁移脚本

@@ -1,8 +1,10 @@
 {
   "name": "llm-application-dev",
-  "description": "LLM application development with LangGraph, RAG systems, vector search, and AI agent architectures for Claude 4.5 and GPT-5.2",
+  "description": "使用 LangGraph、RAG 系统、向量搜索和 AI 代理架构进行 LLM 应用程序开发，支持 Claude 4.5 和 GPT-5.2",
+  "version": "1.0.0",
   "author": {
     "name": "Seth Hobson",
     "email": "seth@major7apps.com"
-  }
+  },
+  "license": "MIT"
 }

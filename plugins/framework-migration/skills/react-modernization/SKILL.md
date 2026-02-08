@@ -327,24 +327,11 @@ function ProfileTimeline() {
 ### 运行 React Codemods
 
 ```bash
-# 安装 jscodeshift
-npm install -g jscodeshift
+# 重命名不安全生命周期方法
+npx jscodeshift -t https://raw.githubusercontent.com/reactjs/react-codemod/master/transforms/rename-unsafe-lifecycles.js src/
 
-# React 16.9 codemod（重命名不安全生命周期方法）
-npx react-codeshift <transform> <path>
-
-# 示例：重命名 UNSAFE_ 方法
-npx react-codeshift --parser=tsx \
-  --transform=react-codeshift/transforms/rename-unsafe-lifecycles.js \
-  src/
-
-# 更新到新的 JSX 转换（React 17+）
-npx react-codeshift --parser=tsx \
-  --transform=react-codeshift/transforms/new-jsx-transform.js \
-  src/
-
-# 类到 Hooks（第三方）
-npx codemod react/hooks/convert-class-to-function src/
+# 更新 React 导入（React 17+）
+npx jscodeshift -t https://raw.githubusercontent.com/reactjs/react-codemod/master/transforms/update-react-imports.js src/
 ```
 
 ### 自定义 Codemod 示例

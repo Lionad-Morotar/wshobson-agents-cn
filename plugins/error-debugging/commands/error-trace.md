@@ -486,7 +486,7 @@ class StructuredLogger {
             filename: 'logs/combined.log',
             maxsize: 5242880,
             maxFiles: 5
-        });
+        }));
 
         // 生产环境的 Elasticsearch 传输
         if (config.elasticsearch) {

@@ -1,0 +1,10 @@
+{
+  "name": "agent-teams",
+  "version": "1.0.2",
+  "description": "使用 Claude Code 的 Agent Teams 功能编排多智能体团队,进行并行代码审查、假设驱动调试和协调功能开发",
+  "author": {
+    "name": "Seth Hobson",
+    "email": "seth@major7apps.com"
+  },
+  "license": "MIT"
+}

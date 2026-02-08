@@ -1,8 +1,10 @@
 {
   "name": "startup-business-analyst",
-  "description": "Comprehensive startup business analysis with market sizing (TAM/SAM/SOM), financial modeling, team planning, and strategic research",
+  "description": "全面的初创企业业务分析，包括市场规模分析（TAM/SAM/SOM）、财务建模、团队规划和战略研究",
+  "version": "1.0.0",
   "author": {
     "name": "Seth Hobson",
     "email": "seth@major7apps.com"
-  }
+  },
+  "license": "MIT"
 }

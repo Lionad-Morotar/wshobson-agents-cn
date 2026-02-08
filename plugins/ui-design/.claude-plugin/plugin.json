@@ -1,8 +1,10 @@
 {
   "name": "ui-design",
-  "description": "Comprehensive UI/UX design plugin for mobile (iOS, Android, React Native) and web applications with design systems, accessibility, and modern patterns",
+  "description": "全面的 UI/UX 设计插件，支持移动端（iOS、Android、React Native）和 Web 应用程序，包含设计系统、可访问性和现代模式",
+  "version": "1.0.0",
   "author": {
     "name": "Seth Hobson",
     "email": "seth@major7apps.com"
-  }
+  },
+  "license": "MIT"
 }
