@@ -1,96 +1,95 @@
-# Architecture & Design Principles
+# 架构和设计原则
 
-This marketplace follows industry best practices with a focus on granularity, composability, and minimal token usage.
+此市场遵循行业最佳实践，重点关注细粒度、可组合性和最小 token 使用。
 
-## Core Philosophy
+## 核心理念
 
-### Single Responsibility Principle
+### 单一职责原则
 
-- Each plugin does **one thing well** (Unix philosophy)
-- Clear, focused purposes (describable in 5-10 words)
-- Average plugin size: **3.4 components** (follows Anthropic's 2-8 pattern)
-- **Zero bloated plugins** - all plugins focused and purposeful
+- 每个插件都做好**一件事**（Unix 哲学）
+- 清晰、专注的目的（可用 5-10 个词描述）
+- 平均插件大小：**3.4 个组件**（遵循 Anthropic 的 2-8 模式）
+- **零臃肿插件** - 所有插件都专注且有意义
 
-### Composability Over Bundling
+### 可组合性优于捆绑
 
-- Mix and match plugins based on needs
-- Workflow orchestrators compose focused plugins
-- No forced feature bundling
-- Clear boundaries between plugins
+- 根据需求混合和匹配插件
+- 工作流编排器组合专注的插件
+- 没有强制功能捆绑
+- 插件之间有清晰的边界
 
-### Context Efficiency
+### 上下文效率
 
-- Smaller tools = faster processing
-- Better fit in LLM context windows
-- More accurate, focused responses
-- Install only what you need
+- 更小的工具 = 更快的处理
+- 更好地适应 LLM 上下文窗口
+- 更准确、专注的响应
+- 只安装您需要的内容
 
-### Maintainability
+### 可维护性
 
-- Single-purpose = easier updates
-- Clear boundaries = isolated changes
-- Less duplication = simpler maintenance
-- Isolated dependencies
+- 单一用途 = 更容易更新
+- 清晰的边界 = 隔离的更改
+- 更少的重复 = 更简单的维护
+- 隔离的依赖
 
-## Granular Plugin Architecture
+## 细粒度插件架构
 
-### Plugin Distribution
+### 插件分布
 
-- **67 focused plugins** optimized for specific use cases
-- **23 clear categories** with 1-6 plugins each for easy discovery
-- Organized by domain:
-  - **Development**: 4 plugins (debugging, backend, frontend, multi-platform)
-  - **Security**: 4 plugins (scanning, compliance, backend-api, frontend-mobile)
-  - **Operations**: 4 plugins (incident, diagnostics, distributed, observability)
-  - **Languages**: 7 plugins (Python, JS/TS, systems, JVM, scripting, functional, embedded)
-  - **Infrastructure**: 5 plugins (deployment, validation, K8s, cloud, CI/CD)
-  - And 18 more specialized categories
+- **67 个专注的插件**，针对特定用例进行了优化
+- **23 个清晰的类别**，每个类别 1-6 个插件，易于发现
+- 按领域组织：
+  - **开发**：4 个插件（调试、后端、前端、多平台）
+  - **安全**：4 个插件（扫描、合规、后端 API、前端/移动）
+  - **运维**：4 个插件（事件、诊断、分布式、可观察性）
+  - **语言**：7 个插件（Python、JS/TS、系统、JVM、脚本、函数式、嵌入式）
+  - **基础设施**：5 个插件（部署、验证、K8s、云、CI/CD）
+  - 以及 18 个更多专业类别
 
-### Component Breakdown
+### 组件细分
 
-**99 Specialized Agents**
+**99 个专业代理**
 
-- Domain experts with deep knowledge
-- Organized across architecture, languages, infrastructure, quality, data/AI, documentation, business, and SEO
-- Model-optimized with three-tier strategy (Opus, Sonnet, Haiku) for performance and cost
+- 在架构、语言、基础设施、质量、数据/AI、文档、业务和 SEO 方面拥有深厚知识的领域专家
+- 使用三层策略（Opus、Sonnet、Haiku）进行模型优化，以提高性能和降低成本
 
-**15 Workflow Orchestrators**
+**15 个工作流编排器**
 
-- Multi-agent coordination systems
-- Complex operations like full-stack development, security hardening, ML pipelines, incident response
-- Pre-configured agent workflows
+- 多代理协调系统
+- 复杂操作，如全栈开发、安全加固、ML 流程、事件响应
+- 预配置的代理工作流
 
-**71 Development Tools**
+**71 个开发工具**
 
-- Optimized utilities including:
-  - Project scaffolding (Python, TypeScript, Rust)
-  - Security scanning (SAST, dependency audit, XSS)
-  - Test generation (pytest, Jest)
-  - Component scaffolding (React, React Native)
-  - Infrastructure setup (Terraform, Kubernetes)
+- 优化的实用程序，包括：
+  - 项目脚手架（Python、TypeScript、Rust）
+  - 安全扫描（SAST、依赖审计、XSS）
+  - 测试生成（pytest、Jest）
+  - 组件脚手架（React、React Native）
+  - 基础设施设置（Terraform、Kubernetes）
 
-**107 Agent Skills**
+**107 个代理技能**
 
-- Modular knowledge packages
-- Progressive disclosure architecture
-- Domain-specific expertise across 18 plugins
-- Spec-compliant (Anthropic Agent Skills Specification)
+- 模块化知识包
+- 渐进式披露架构
+- 跨 18 个插件的领域特定专业知识
+- 符合规范（Anthropic 代理技能规范）
 
-## Repository Structure
+## 仓库结构
 
 ```
 claude-agents/
 ├── .claude-plugin/
-│   └── marketplace.json          # Marketplace catalog (67 plugins)
-├── plugins/                       # Isolated plugin directories
+│   └── marketplace.json          # 市场目录（67 个插件）
+├── plugins/                       # 隔离的插件目录
 │   ├── python-development/
-│   │   ├── agents/               # Python language agents
+│   │   ├── agents/               # Python 语言代理
 │   │   │   ├── python-pro.md
 │   │   │   ├── django-pro.md
 │   │   │   └── fastapi-pro.md
-│   │   ├── commands/             # Python tooling
+│   │   ├── commands/             # Python 工具
 │   │   │   └── python-scaffold.md
-│   │   └── skills/               # Python skills (5 total)
+│   │   └── skills/               # Python 技能（共 5 个）
 │   │       ├── async-python-patterns/
 │   │       ├── python-testing-patterns/
 │   │       ├── python-packaging/
@@ -103,7 +102,7 @@ claude-agents/
 │   │   │   └── tdd-orchestrator.md
 │   │   ├── commands/
 │   │   │   └── feature-development.md
-│   │   └── skills/               # Backend skills (3 total)
+│   │   └── skills/               # 后端技能（共 3 个）
 │   │       ├── api-design-principles/
 │   │       ├── architecture-patterns/
 │   │       └── microservices-patterns/
@@ -114,223 +113,223 @@ claude-agents/
 │   │   │   ├── security-hardening.md
 │   │   │   ├── security-sast.md
 │   │   │   └── security-dependencies.md
-│   │   └── skills/               # Security skills (1 total)
+│   │   └── skills/               # 安全技能（共 1 个）
 │   │       └── sast-configuration/
 │   ├── c4-architecture/
-│   │   ├── agents/               # C4 architecture agents
+│   │   ├── agents/               # C4 架构代理
 │   │   │   ├── c4-code.md
 │   │   │   ├── c4-component.md
 │   │   │   ├── c4-container.md
 │   │   │   └── c4-context.md
 │   │   └── commands/
 │   │       └── c4-architecture.md
-│   └── ... (62 more isolated plugins)
-├── docs/                          # Documentation
-│   ├── agent-skills.md           # Agent Skills guide
-│   ├── agents.md                 # Agent reference
-│   ├── plugins.md                # Plugin catalog
-│   ├── usage.md                  # Usage guide
-│   └── architecture.md           # This file
-└── README.md                      # Quick start
+│   └── ... (62 个更多隔离插件)
+├── docs/                          # 文档
+│   ├── agent-skills.md           # 代理技能指南
+│   ├── agents.md                 # 代理参考
+│   ├── plugins.md                # 插件目录
+│   ├── usage.md                  # 使用指南
+│   └── architecture.md           # 此文件
+└── README.md                      # 快速开始
 ```
 
-## Plugin Structure
+## 插件结构
 
-Each plugin contains:
+每个插件包含：
 
-- **agents/** - Specialized agents for that domain (optional)
-- **commands/** - Tools and workflows specific to that plugin (optional)
-- **skills/** - Modular knowledge packages with progressive disclosure (optional)
+- **agents/** - 该领域的专业代理（可选）
+- **commands/** - 该插件特有的工具和工作流（可选）
+- **skills/** - 具有渐进式披露的模块化知识包（可选）
 
-### Minimum Requirements
+### 最低要求
 
-- At least one agent OR one command
-- Clear, focused purpose
-- Proper frontmatter in all files
-- Entry in marketplace.json
+- 至少一个代理或一个命令
+- 清晰、专注的目的
+- 所有文件中的正确前置元数据
+- marketplace.json 中的条目
 
-### Example Plugin
+### 示例插件
 
 ```
 plugins/kubernetes-operations/
 ├── agents/
-│   └── kubernetes-architect.md   # K8s architecture and design
+│   └── kubernetes-architect.md   # K8s 架构和设计
 ├── commands/
-│   └── k8s-deploy.md            # Deployment automation
+│   └── k8s-deploy.md            # 部署自动化
 └── skills/
-    ├── k8s-manifest-generator/   # Manifest creation skill
-    ├── helm-chart-scaffolding/   # Helm chart skill
-    ├── gitops-workflow/          # GitOps automation skill
-    └── k8s-security-policies/    # Security policy skill
+    ├── k8s-manifest-generator/   # 清单创建技能
+    ├── helm-chart-scaffolding/   # Helm 图表技能
+    ├── gitops-workflow/          # GitOps 自动化技能
+    └── k8s-security-policies/    # 安全策略技能
 ```
 
-## Agent Skills Architecture
+## 代理技能架构
 
-### Progressive Disclosure
+### 渐进式披露
 
-Skills use a three-tier architecture for token efficiency:
+技能使用三层架构来实现 token 效率：
 
-1. **Metadata** (Frontmatter): Name and activation criteria (always loaded)
-2. **Instructions**: Core guidance and patterns (loaded when activated)
-3. **Resources**: Examples and templates (loaded on demand)
+1. **元数据**（前置元数据）：名称和激活标准（始终加载）
+2. **指令**：核心指导和模式（激活时加载）
+3. **资源**：示例和模板（按需加载）
 
-### Specification Compliance
+### 规范合规性
 
-All skills follow the [Agent Skills Specification](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md):
+所有技能都遵循[代理技能规范](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md)：
 
 ```yaml
 ---
-name: skill-name # Required: hyphen-case
-description: What the skill does. Use when [trigger]. # Required: < 1024 chars
+name: skill-name # 必需：连字符大小写
+description: 技能的作用。在[触发器]时使用。# 必需：< 1024 个字符
 ---
-# Skill content with progressive disclosure
+# 具有渐进式披露的技能内容
 ```
 
-### Benefits
+### 优势
 
-- **Token Efficiency**: Load only relevant knowledge when needed
-- **Specialized Expertise**: Deep domain knowledge without bloat
-- **Clear Activation**: Explicit triggers prevent unwanted invocation
-- **Composability**: Mix and match skills across workflows
-- **Maintainability**: Isolated updates don't affect other skills
+- **Token 效率**：仅在需要时加载相关知识
+- **专业知识**：深厚的领域知识，无臃肿
+- **清晰激活**：显式触发器防止意外调用
+- **可组合性**：跨工作流混合和匹配技能
+- **可维护性**：隔离的更新不影响其他技能
 
-See [Agent Skills](./agent-skills.md) for complete details on the 107 skills.
+有关 107 个技能的完整详细信息，请参阅[代理技能](./agent-skills.md)。
 
-## Model Configuration Strategy
+## 模型配置策略
 
-### Two-Tier Architecture
+### 两层架构
 
-The system uses Claude Opus and Sonnet models strategically:
+系统战略性地使用 Claude Opus 和 Sonnet 模型：
 
-| Model  | Count     | Use Case                                     |
+| 模型  | 数量     | 用例                                     |
 | ------ | --------- | -------------------------------------------- |
-| Opus   | 42 agents | Critical architecture, security, code review |
-| Sonnet | 39 agents | Complex tasks, support with intelligence     |
-| Haiku  | 18 agents | Fast operational tasks                       |
+| Opus   | 42 个代理 | 关键架构、安全、代码审查 |
+| Sonnet | 39 个代理 | 复杂任务、智能支持     |
+| Haiku  | 18 个代理 | 快速运营任务                       |
 
-### Selection Criteria
+### 选择标准
 
-**Haiku - Fast Execution & Deterministic Tasks**
+**Haiku - 快速执行和确定性任务**
 
-- Generating code from well-defined specifications
-- Creating tests following established patterns
-- Writing documentation with clear templates
-- Executing infrastructure operations
-- Performing database query optimization
-- Handling customer support responses
-- Processing SEO optimization tasks
-- Managing deployment pipelines
+- 根据明确定义的规范生成代码
+- 按照既定模式创建测试
+- 使用清晰的模板编写文档
+- 执行基础设施操作
+- 执行数据库查询优化
+- 处理客户支持响应
+- 处理 SEO 优化任务
+- 管理部署管道
 
-**Sonnet - Complex Reasoning & Architecture**
+**Sonnet - 复杂推理和架构**
 
-- Designing system architecture
-- Making technology selection decisions
-- Performing security audits
-- Reviewing code for architectural patterns
-- Creating complex AI/ML pipelines
-- Providing language-specific expertise
-- Orchestrating multi-agent workflows
-- Handling business-critical legal/HR matters
+- 设计系统架构
+- 做出技术选择决策
+- 执行安全审计
+- 审查架构模式的代码
+- 创建复杂的 AI/ML 流程
+- 提供特定语言的专业知识
+- 编排多代理工作流
+- 处理业务关键的法律/HR 事务
 
-### Hybrid Orchestration
+### 混合编排
 
-Combine models for optimal performance and cost:
+组合模型以实现最佳性能和成本：
 
 ```
-Planning Phase (Sonnet) → Execution Phase (Haiku) → Review Phase (Sonnet)
+规划阶段 (Sonnet) → 执行阶段 (Haiku) → 审查阶段 (Sonnet)
 
-Example:
-backend-architect (Sonnet) designs API
+示例：
+backend-architect (Sonnet) 设计 API
   ↓
-Generate endpoints (Haiku) implements spec
+Generate endpoints (Haiku) 实现规范
   ↓
-test-automator (Haiku) creates tests
+test-automator (Haiku) 创建测试
   ↓
-code-reviewer (Sonnet) validates architecture
+code-reviewer (Sonnet) 验证架构
 ```
 
-## Performance & Quality
+## 性能和质量
 
-### Optimized Token Usage
+### 优化的 Token 使用
 
-- **Isolated plugins** load only what you need
-- **Granular architecture** reduces unnecessary context
-- **Progressive disclosure** (skills) loads knowledge on demand
-- **Clear boundaries** prevent context pollution
+- **隔离的插件**只加载您需要的内容
+- **细粒度架构**减少不必要的上下文
+- **渐进式披露**（技能）按需加载知识
+- **清晰的边界**防止上下文污染
 
-### Component Coverage
+### 组件覆盖
 
-- **100% agent coverage** - all plugins include at least one agent
-- **100% component availability** - all 99 agents accessible across plugins
-- **Efficient distribution** - 3.4 components per plugin average
+- **100% 代理覆盖** - 所有插件至少包含一个代理
+- **100% 组件可用性** - 所有 99 个代理都可跨插件访问
+- **高效分布** - 平均每个插件 3.4 个组件
 
-### Discoverability
+### 可发现性
 
-- **Clear plugin names** convey purpose immediately
-- **Logical categorization** with 23 well-defined categories
-- **Searchable documentation** with cross-references
-- **Easy to find** the right tool for the job
+- **清晰的插件名称**立即传达目的
+- **逻辑分类**，包含 23 个明确定义的类别
+- **可搜索的文档**，带有交叉引用
+- **易于找到**适合工作的正确工具
 
-## Design Patterns
+## 设计模式
 
-### Pattern 1: Single-Purpose Plugin
+### 模式 1：单一目的插件
 
-Each plugin focuses on one domain:
+每个插件专注于一个领域：
 
 ```
 python-development/
-├── agents/           # Python language experts
-├── commands/         # Python project scaffolding
-└── skills/           # Python-specific knowledge
+├── agents/           # Python 语言专家
+├── commands/         # Python 项目脚手架
+└── skills/           # Python 特定知识
 ```
 
-**Benefits:**
+**优势：**
 
-- Clear responsibility
-- Easy to maintain
-- Minimal token usage
-- Composable with other plugins
+- 清晰的职责
+- 易于维护
+- 最小 token 使用
+- 可与其他插件组合
 
-### Pattern 2: Workflow Orchestration
+### 模式 2：工作流编排
 
-Orchestrator plugins coordinate multiple agents:
+编排器插件协调多个代理：
 
 ```
 full-stack-orchestration/
 └── commands/
-    └── full-stack-feature.md    # Coordinates 7+ agents
+    └── full-stack-feature.md    # 协调 7+ 个代理
 ```
 
-**Orchestration:**
+**编排：**
 
-1. backend-architect (design API)
-2. database-architect (design schema)
-3. frontend-developer (build UI)
-4. test-automator (create tests)
-5. security-auditor (security review)
-6. deployment-engineer (CI/CD)
-7. observability-engineer (monitoring)
+1. backend-architect（设计 API）
+2. database-architect（设计架构）
+3. frontend-developer（构建 UI）
+4. test-automator（创建测试）
+5. security-auditor（安全审查）
+6. deployment-engineer（CI/CD）
+7. observability-engineer（监控）
 
-### Pattern 3: Agent + Skill Integration
+### 模式 3：代理 + 技能集成
 
-Agents provide reasoning, skills provide knowledge:
+代理提供推理，技能提供知识：
 
 ```
-User: "Build FastAPI project with async patterns"
+用户："构建具有异步模式的 FastAPI 项目"
   ↓
-fastapi-pro agent (orchestrates)
+fastapi-pro 代理（编排）
   ↓
-fastapi-templates skill (provides patterns)
+fastapi-templates 技能（提供模式）
   ↓
-python-scaffold command (generates project)
+python-scaffold 命令（生成项目）
 ```
 
-### Pattern 4: Multi-Plugin Composition
+### 模式 4：多插件组合
 
-Complex workflows use multiple plugins:
+复杂工作流使用多个插件：
 
 ```
-Feature Development Workflow:
+功能开发工作流：
 1. backend-development:feature-development
 2. security-scanning:security-hardening
 3. unit-testing:test-generate
@@ -339,57 +338,57 @@ Feature Development Workflow:
 6. observability-monitoring:monitor-setup
 ```
 
-## Versioning & Updates
+## 版本控制和更新
 
-### Marketplace Updates
+### 市场更新
 
-- Marketplace catalog in `.claude-plugin/marketplace.json`
-- Semantic versioning for plugins
-- Backward compatibility maintained
-- Clear migration guides for breaking changes
+- `.claude-plugin/marketplace.json` 中的市场目录
+- 插件的语义版本控制
+- 维护向后兼容性
+- 针对重大更改的清晰迁移指南
 
-### Plugin Updates
+### 插件更新
 
-- Individual plugin updates don't affect others
-- Skills can be updated independently
-- Agents can be added/removed without breaking workflows
-- Commands maintain stable interfaces
+- 单个插件更新不影响其他插件
+- 技能可以独立更新
+- 代理可以添加/删除而不会破坏工作流
+- 命令保持稳定的接口
 
-## Contributing Guidelines
+## 贡献指南
 
-### Adding a Plugin
+### 添加插件
 
-1. Create plugin directory: `plugins/{plugin-name}/`
-2. Add agents and/or commands
-3. Optionally add skills
-4. Update marketplace.json
-5. Document in appropriate category
+1. 创建插件目录：`plugins/{plugin-name}/`
+2. 添加代理和/或命令
+3. 可选地添加技能
+4. 更新 marketplace.json
+5. 在适当的类别中记录
 
-### Adding an Agent
+### 添加代理
 
-1. Create `plugins/{plugin-name}/agents/{agent-name}.md`
-2. Add frontmatter (name, description, model)
-3. Write comprehensive system prompt
-4. Update plugin definition
+1. 创建 `plugins/{plugin-name}/agents/{agent-name}.md`
+2. 添加前置元数据（名称、描述、模型）
+3. 编写全面的系统提示
+4. 更新插件定义
 
-### Adding a Skill
+### 添加技能
 
-1. Create `plugins/{plugin-name}/skills/{skill-name}/SKILL.md`
-2. Add YAML frontmatter (name, description with "Use when")
-3. Write skill content with progressive disclosure
-4. Add to plugin's skills array in marketplace.json
+1. 创建 `plugins/{plugin-name}/skills/{skill-name}/SKILL.md`
+2. 添加 YAML 前置元数据（名称、带有"Use when"的描述）
+3. 编写具有渐进式披露的技能内容
+4. 添加到 marketplace.json 中插件的技能数组
 
-### Quality Standards
+### 质量标准
 
-- **Clear naming** - Hyphen-case, descriptive
-- **Focused scope** - Single responsibility
-- **Complete documentation** - What, when, how
-- **Tested functionality** - Verify before committing
-- **Spec compliance** - Follow Anthropic guidelines
+- **清晰的命名** - 连字符大小写，描述性
+- **专注的范围** - 单一职责
+- **完整的文档** - 内容、时间、方式
+- **经过测试的功能** - 提交前验证
+- **规范合规** - 遵循 Anthropic 指南
 
-## See Also
+## 另请参阅
 
-- [Agent Skills](./agent-skills.md) - Modular knowledge packages
-- [Agent Reference](./agents.md) - Complete agent catalog
-- [Plugin Reference](./plugins.md) - All 67 plugins
-- [Usage Guide](./usage.md) - Commands and workflows
+- [代理技能](./agent-skills.md) - 模块化知识包
+- [代理参考](./agents.md) - 完整的代理目录
+- [插件参考](./plugins.md) - 所有 67 个插件
+- [使用指南](./usage.md) - 命令和工作流

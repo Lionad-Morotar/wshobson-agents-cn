@@ -1,12 +1,12 @@
-# Unit Testing Temporal Workflows and Activities
+# Temporal 工作流和活动单元测试
 
-Focused guide for testing individual workflows and activities in isolation using WorkflowEnvironment and ActivityEnvironment.
+使用 WorkflowEnvironment 和 ActivityEnvironment 单独测试工作流和活动的专注指南。
 
-## WorkflowEnvironment with Time-Skipping
+## 使用时间跳过的 WorkflowEnvironment
 
-**Purpose**: Test workflows in isolation with instant time progression (month-long workflows → seconds)
+**目的**：单独测试工作流，时间瞬间推进（月度工作流 → 秒级）
 
-### Basic Setup Pattern
+### 基本设置模式
 
 ```python
 import pytest
@@ -15,14 +15,14 @@ from temporalio.worker import Worker
 
 @pytest.fixture
 async def workflow_env():
-    """Reusable time-skipping test environment"""
+    """可重用的时间跳过测试环境"""
     env = await WorkflowEnvironment.start_time_skipping()
     yield env
     await env.shutdown()
 
 @pytest.mark.asyncio
 async def test_workflow_execution(workflow_env):
-    """Test workflow with time-skipping"""
+    """使用时间跳过测试工作流"""
     async with Worker(
         workflow_env.client,
         task_queue="test-queue",
@@ -38,26 +38,26 @@ async def test_workflow_execution(workflow_env):
         assert result == "expected-output"
 ```
 
-**Key Benefits**:
+**关键优势**：
 
-- `workflow.sleep(timedelta(days=30))` completes instantly
-- Fast feedback loop (milliseconds vs hours)
-- Deterministic test execution
+- `workflow.sleep(timedelta(days=30))` 瞬间完成
+- 快速反馈循环（毫秒级而非小时级）
+- 确定性测试执行
 
-### Time-Skipping Examples
+### 时间跳过示例
 
-**Sleep Advancement**:
+**睡眠推进**：
 
 ```python
 @pytest.mark.asyncio
 async def test_workflow_with_delays(workflow_env):
-    """Workflow sleeps are instant in time-skipping mode"""
+    """在时间跳过模式下工作流睡眠是瞬间的"""
 
     @workflow.defn
     class DelayedWorkflow:
         @workflow.run
         async def run(self) -> str:
-            await workflow.sleep(timedelta(hours=24))  # Instant in tests
+            await workflow.sleep(timedelta(hours=24))  # 测试中瞬间
             return "completed"
 
     async with Worker(
@@ -73,12 +73,12 @@ async def test_workflow_with_delays(workflow_env):
         assert result == "completed"
 ```
 
-**Manual Time Control**:
+**手动时间控制**：
 
 ```python
 @pytest.mark.asyncio
 async def test_workflow_manual_time(workflow_env):
-    """Manually advance time for precise control"""
+    """手动推进时间以实现精确控制"""
 
     handle = await workflow_env.client.start_workflow(
         TimeBasedWorkflow.run,
@@ -86,27 +86,27 @@ async def test_workflow_manual_time(workflow_env):
         task_queue="test",
     )
 
-    # Advance time by specific amount
+    # 推进特定时间量
     await workflow_env.sleep(timedelta(hours=1))
 
-    # Verify intermediate state via query
+    # 通过查询验证中间状态
     state = await handle.query(TimeBasedWorkflow.get_state)
     assert state == "processing"
 
-    # Advance to completion
+    # 推进到完成
     await workflow_env.sleep(timedelta(hours=23))
     result = await handle.result()
     assert result == "completed"
 ```
 
-### Testing Workflow Logic
+### 测试工作流逻辑
 
-**Decision Testing**:
+**决策测试**：
 
 ```python
 @pytest.mark.asyncio
 async def test_workflow_branching(workflow_env):
-    """Test different execution paths"""
+    """测试不同的执行路径"""
 
     @workflow.defn
     class ConditionalWorkflow:
@@ -121,7 +121,7 @@ async def test_workflow_branching(workflow_env):
         task_queue="test",
         workflows=[ConditionalWorkflow],
     ):
-        # Test true path
+        # 测试 true 路径
         result_a = await workflow_env.client.execute_workflow(
             ConditionalWorkflow.run,
             True,
@@ -130,7 +130,7 @@ async def test_workflow_branching(workflow_env):
         )
         assert result_a == "path-a"
 
-        # Test false path
+        # 测试 false 路径
         result_b = await workflow_env.client.execute_workflow(
             ConditionalWorkflow.run,
             False,
@@ -140,17 +140,17 @@ async def test_workflow_branching(workflow_env):
         assert result_b == "path-b"
 ```
 
-## ActivityEnvironment Testing
+## ActivityEnvironment 测试
 
-**Purpose**: Test activities in isolation without workflows or Temporal server
+**目的**：单独测试活动，无需工作流或 Temporal 服务器
 
-### Basic Activity Test
+### 基本活动测试
 
 ```python
 from temporalio.testing import ActivityEnvironment
 
 async def test_activity_basic():
-    """Test activity without workflow context"""
+    """在没有工作流上下文的情况下测试活动"""
 
     @activity.defn
     async def process_data(input: str) -> str:
@@ -161,18 +161,18 @@ async def test_activity_basic():
     assert result == "TEST"
 ```
 
-### Testing Activity Context
+### 测试活动上下文
 
-**Heartbeat Testing**:
+**心跳测试**：
 
 ```python
 async def test_activity_heartbeat():
-    """Verify heartbeat calls"""
+    """验证心跳调用"""
 
     @activity.defn
     async def long_running_activity(total_items: int) -> int:
         for i in range(total_items):
-            activity.heartbeat(i)  # Report progress
+            activity.heartbeat(i)  # 报告进度
             await asyncio.sleep(0.1)
         return total_items
 
@@ -181,11 +181,11 @@ async def test_activity_heartbeat():
     assert result == 10
 ```
 
-**Cancellation Testing**:
+**取消测试**：
 
 ```python
 async def test_activity_cancellation():
-    """Test activity cancellation handling"""
+    """测试活动取消处理"""
 
     @activity.defn
     async def cancellable_activity() -> str:
@@ -202,35 +202,35 @@ async def test_activity_cancellation():
     assert result == "cancelled"
 ```
 
-### Testing Error Handling
+### 测试错误处理
 
-**Exception Propagation**:
+**异常传播**：
 
 ```python
 async def test_activity_error():
-    """Test activity error handling"""
+    """测试活动错误处理"""
 
     @activity.defn
     async def failing_activity(should_fail: bool) -> str:
         if should_fail:
-            raise ApplicationError("Validation failed", non_retryable=True)
+            raise ApplicationError("验证失败", non_retryable=True)
         return "success"
 
     env = ActivityEnvironment()
 
-    # Test success path
+    # 测试成功路径
     result = await env.run(failing_activity, False)
     assert result == "success"
 
-    # Test error path
+    # 测试错误路径
     with pytest.raises(ApplicationError) as exc_info:
         await env.run(failing_activity, True)
-    assert "Validation failed" in str(exc_info.value)
+    assert "验证失败" in str(exc_info.value)
 ```
 
-## Pytest Integration Patterns
+## Pytest 集成模式
 
-### Shared Fixtures
+### 共享 Fixture
 
 ```python
 # conftest.py
@@ -239,18 +239,18 @@ from temporalio.testing import WorkflowEnvironment
 
 @pytest.fixture(scope="module")
 async def workflow_env():
-    """Module-scoped environment (reused across tests)"""
+    """模块范围环境（跨测试重用）"""
     env = await WorkflowEnvironment.start_time_skipping()
     yield env
     await env.shutdown()
 
 @pytest.fixture
 def activity_env():
-    """Function-scoped environment (fresh per test)"""
+    """函数范围环境（每个测试全新）"""
     return ActivityEnvironment()
 ```
 
-### Parameterized Tests
+### 参数化测试
 
 ```python
 @pytest.mark.parametrize("input,expected", [
@@ -259,29 +259,29 @@ def activity_env():
     ("123", "123"),
 ])
 async def test_activity_parameterized(activity_env, input, expected):
-    """Test multiple input scenarios"""
+    """测试多个输入场景"""
     result = await activity_env.run(process_data, input)
     assert result == expected
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Fast Execution**: Use time-skipping for all workflow tests
-2. **Isolation**: Test workflows and activities separately
-3. **Shared Fixtures**: Reuse WorkflowEnvironment across related tests
-4. **Coverage Target**: ≥80% for workflow logic
-5. **Mock Activities**: Use ActivityEnvironment for activity-specific logic
-6. **Determinism**: Ensure test results are consistent across runs
-7. **Error Cases**: Test both success and failure scenarios
+1. **快速执行**：所有工作流测试使用时间跳过
+2. **隔离**：分别测试工作流和活动
+3. **共享 Fixture**：在相关测试中重用 WorkflowEnvironment
+4. **覆盖率目标**：工作流逻辑 ≥80%
+5. **模拟活动**：使用 ActivityEnvironment 测试活动特定逻辑
+6. **确定性**：确保测试结果在运行之间一致
+7. **错误案例**：测试成功和失败场景
 
-## Common Patterns
+## 常见模式
 
-**Testing Retry Logic**:
+**测试重试逻辑**：
 
 ```python
 @pytest.mark.asyncio
 async def test_workflow_with_retries(workflow_env):
-    """Test activity retry behavior"""
+    """测试活动重试行为"""
 
     call_count = 0
 
@@ -290,7 +290,7 @@ async def test_workflow_with_retries(workflow_env):
         nonlocal call_count
         call_count += 1
         if call_count < 3:
-            raise Exception("Transient error")
+            raise Exception("瞬态错误")
         return "success"
 
     @workflow.defn
@@ -318,11 +318,11 @@ async def test_workflow_with_retries(workflow_env):
             task_queue="test",
         )
         assert result == "success"
-        assert call_count == 3  # Verify retry attempts
+        assert call_count == 3  # 验证重试尝试
 ```
 
-## Additional Resources
+## 其他资源
 
-- Python SDK Testing: docs.temporal.io/develop/python/testing-suite
-- pytest Documentation: docs.pytest.org
-- Temporal Samples: github.com/temporalio/samples-python
+- Python SDK 测试：docs.temporal.io/develop/python/testing-suite
+- pytest 文档：docs.pytest.org
+- Temporal 示例：github.com/temporalio/samples-python

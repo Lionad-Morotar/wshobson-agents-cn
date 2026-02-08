@@ -1,102 +1,102 @@
-# Product Vision
+# 产品愿景
 
-## Product Overview
+## 产品概览
 
-**Name:** {{PRODUCT_NAME}}
+**名称：** {{PRODUCT_NAME}}
 
-**Tagline:** {{ONE_LINE_DESCRIPTION}}
+**标语：** {{ONE_LINE_DESCRIPTION}}
 
-**Description:**
+**描述：**
 {{DETAILED_DESCRIPTION}}
 
-## Problem Statement
+## 问题陈述
 
-### The Problem
+### 问题
 
 {{PROBLEM_DESCRIPTION}}
 
-### Current Solutions
+### 当前解决方案
 
 {{EXISTING_SOLUTIONS}}
 
-### Why They Fall Short
+### 为什么它们不足
 
 {{SOLUTION_GAPS}}
 
-## Target Users
+## 目标用户
 
-### Primary Users
+### 主要用户
 
 {{PRIMARY_USER_PERSONA}}
 
-- **Who:** {{USER_DESCRIPTION}}
-- **Goals:** {{USER_GOALS}}
-- **Pain Points:** {{USER_PAIN_POINTS}}
-- **Technical Proficiency:** {{TECHNICAL_LEVEL}}
+- **谁：** {{USER_DESCRIPTION}}
+- **目标：** {{USER_GOALS}}
+- **痛点：** {{USER_PAIN_POINTS}}
+- **技术熟练度：** {{TECHNICAL_LEVEL}}
 
-### Secondary Users
+### 次要用户
 
 {{SECONDARY_USER_PERSONA}}
 
-- **Who:** {{USER_DESCRIPTION}}
-- **Goals:** {{USER_GOALS}}
-- **Relationship to Primary:** {{RELATIONSHIP}}
+- **谁：** {{USER_DESCRIPTION}}
+- **目标：** {{USER_GOALS}}
+- **与主要用户的关系：** {{RELATIONSHIP}}
 
-## Core Value Proposition
+## 核心价值主张
 
-### Key Benefits
+### 关键好处
 
 1. {{BENEFIT_1}}
 2. {{BENEFIT_2}}
 3. {{BENEFIT_3}}
 
-### Differentiators
+### 差异化因素
 
 - {{DIFFERENTIATOR_1}}
 - {{DIFFERENTIATOR_2}}
 
-### Value Statement
+### 价值声明
 
 > {{VALUE_STATEMENT}}
 
-## Success Metrics
+## 成功指标
 
-### Key Performance Indicators
+### 关键绩效指标
 
-| Metric       | Target       | Measurement Method |
+| 指标       | 目标       | 测量方法 |
 | ------------ | ------------ | ------------------ |
 | {{METRIC_1}} | {{TARGET_1}} | {{METHOD_1}}       |
 | {{METRIC_2}} | {{TARGET_2}} | {{METHOD_2}}       |
 | {{METRIC_3}} | {{TARGET_3}} | {{METHOD_3}}       |
 
-### North Star Metric
+### 北极星指标
 
 {{NORTH_STAR_METRIC}}
 
-### Leading Indicators
+### 领先指标
 
 - {{LEADING_INDICATOR_1}}
 - {{LEADING_INDICATOR_2}}
 
-### Lagging Indicators
+### 滞后指标
 
 - {{LAGGING_INDICATOR_1}}
 - {{LAGGING_INDICATOR_2}}
 
-## Out of Scope
+## 超出范围
 
-### Explicitly Not Included
+### 明确不包括
 
 - {{OUT_OF_SCOPE_1}}
 - {{OUT_OF_SCOPE_2}}
 - {{OUT_OF_SCOPE_3}}
 
-### Future Considerations
+### 未来考虑
 
 - {{FUTURE_CONSIDERATION_1}}
 - {{FUTURE_CONSIDERATION_2}}
 
-### Non-Goals
+### 非目标
 
 - {{NON_GOAL_1}}
 - {{NON_GOAL_2}}

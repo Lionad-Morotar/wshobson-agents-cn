@@ -1,48 +1,48 @@
 ---
 name: projection-patterns
-description: Build read models and projections from event streams. Use when implementing CQRS read sides, building materialized views, or optimizing query performance in event-sourced systems.
+description: 从事件流构建读模型和投影。在实现 CQRS 读侧、构建物化视图或优化事件溯源系统中的查询性能时使用。
 ---
 
-# Projection Patterns
+# 投影模式
 
-Comprehensive guide to building projections and read models for event-sourced systems.
+为事件溯源系统构建投影和读模型的综合指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building CQRS read models
-- Creating materialized views from events
-- Optimizing query performance
-- Implementing real-time dashboards
-- Building search indexes from events
-- Aggregating data across streams
+- 构建 CQRS 读模型
+- 从事件创建物化视图
+- 优化查询性能
+- 实现实时仪表板
+- 从事件构建搜索索引
+- 跨流聚合数据
 
-## Core Concepts
+## 核心概念
 
-### 1. Projection Architecture
+### 1. 投影架构
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ Event Store │────►│ Projector   │────►│ Read Model  │
-│             │     │             │     │ (Database)  │
+│ 事件存储    │────►│ 投影器      │────►│ 读模型      │
+│             │     │             │     │ (数据库)    │
 │ ┌─────────┐ │     │ ┌─────────┐ │     │ ┌─────────┐ │
-│ │ Events  │ │     │ │ Handler │ │     │ │ Tables  │ │
-│ └─────────┘ │     │ │ Logic   │ │     │ │ Views   │ │
-│             │     │ └─────────┘ │     │ │ Cache   │ │
+│ │ 事件    │ │     │ │ 处理器  │ │     │ │ 表      │ │
+│ └─────────┘ │     │ │ 逻辑    │ │     │ │ 视图    │ │
+│             │     │ └─────────┘ │     │ │ 缓存    │ │
 └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-### 2. Projection Types
+### 2. 投影类型
 
-| Type           | Description                 | Use Case               |
-| -------------- | --------------------------- | ---------------------- |
-| **Live**       | Real-time from subscription | Current state queries  |
-| **Catchup**    | Process historical events   | Rebuilding read models |
-| **Persistent** | Stores checkpoint           | Resume after restart   |
-| **Inline**     | Same transaction as write   | Strong consistency     |
+| 类型           | 描述                 | 用例                   |
+| -------------- | -------------------- | ---------------------- |
+| **实时**       | 从订阅实时处理       | 当前状态查询           |
+| **追赶**       | 处理历史事件         | 重建读模型             |
+| **持久化**     | 存储检查点           | 重启后恢复             |
+| **内联**       | 与写入在同一事务     | 强一致性               |
 
-## Templates
+## 模板
 
-### Template 1: Basic Projector
+### 模板 1：基本投影器
 
 ```python
 from abc import ABC, abstractmethod
@@ -60,27 +60,27 @@ class Event:
 
 
 class Projection(ABC):
-    """Base class for projections."""
+    """投影基类。"""
 
     @property
     @abstractmethod
     def name(self) -> str:
-        """Unique projection name for checkpointing."""
+        """用于检查点的唯一投影名称。"""
         pass
 
     @abstractmethod
     def handles(self) -> List[str]:
-        """List of event types this projection handles."""
+        """此投影处理的事件类型列表。"""
         pass
 
     @abstractmethod
     async def apply(self, event: Event) -> None:
-        """Apply event to the read model."""
+        """将事件应用到读模型。"""
         pass
 
 
 class Projector:
-    """Runs projections from event store."""
+    """从事件存储运行投影。"""
 
     def __init__(self, event_store, checkpoint_store):
         self.event_store = event_store
@@ -91,7 +91,7 @@ class Projector:
         self.projections.append(projection)
 
     async def run(self, batch_size: int = 100):
-        """Run all projections continuously."""
+        """连续运行所有投影。"""
         while True:
             for projection in self.projections:
                 await self._run_projection(projection, batch_size)
@@ -113,17 +113,17 @@ class Projector:
             )
 
     async def rebuild(self, projection: Projection):
-        """Rebuild a projection from scratch."""
+        """从头重建投影。"""
         await self.checkpoint_store.delete(projection.name)
-        # Optionally clear read model tables
+        # 可选地清除读模型表
         await self._run_projection(projection, batch_size=1000)
 ```
 
-### Template 2: Order Summary Projection
+### 模板 2：订单摘要投影
 
 ```python
 class OrderSummaryProjection(Projection):
-    """Projects order events to a summary read model."""
+    """将订单事件投影到摘要读模型。"""
 
     def __init__(self, db_pool: asyncpg.Pool):
         self.pool = db_pool
@@ -245,13 +245,13 @@ class OrderSummaryProjection(Projection):
             )
 ```
 
-### Template 3: Elasticsearch Search Projection
+### 模板 3：Elasticsearch 搜索投影
 
 ```python
 from elasticsearch import AsyncElasticsearch
 
 class ProductSearchProjection(Projection):
-    """Projects product events to Elasticsearch for full-text search."""
+    """将产品事件投影到 Elasticsearch 进行全文搜索。"""
 
     def __init__(self, es_client: AsyncElasticsearch):
         self.es = es_client
@@ -314,11 +314,11 @@ class ProductSearchProjection(Projection):
             )
 ```
 
-### Template 4: Aggregating Projection
+### 模板 4：聚合投影
 
 ```python
 class DailySalesProjection(Projection):
-    """Aggregates sales data by day for reporting."""
+    """按天聚合销售数据用于报告。"""
 
     def __init__(self, db_pool: asyncpg.Pool):
         self.pool = db_pool
@@ -371,11 +371,11 @@ class DailySalesProjection(Projection):
             )
 ```
 
-### Template 5: Multi-Table Projection
+### 模板 5：多表投影
 
 ```python
 class CustomerActivityProjection(Projection):
-    """Projects customer activity across multiple tables."""
+    """跨多个表投影客户活动。"""
 
     def __init__(self, db_pool: asyncpg.Pool):
         self.pool = db_pool
@@ -396,7 +396,7 @@ class CustomerActivityProjection(Projection):
         async with self.pool.acquire() as conn:
             async with conn.transaction():
                 if event.event_type == "CustomerCreated":
-                    # Insert into customers table
+                    # 插入到客户表
                     await conn.execute(
                         """
                         INSERT INTO customers (customer_id, email, name, tier, created_at)
@@ -407,7 +407,7 @@ class CustomerActivityProjection(Projection):
                         event.data['name'],
                         event.data['created_at']
                     )
-                    # Initialize activity summary
+                    # 初始化活动摘要
                     await conn.execute(
                         """
                         INSERT INTO customer_activity_summary
@@ -418,7 +418,7 @@ class CustomerActivityProjection(Projection):
                     )
 
                 elif event.event_type == "OrderCompleted":
-                    # Update activity summary
+                    # 更新活动摘要
                     await conn.execute(
                         """
                         UPDATE customer_activity_summary SET
@@ -431,7 +431,7 @@ class CustomerActivityProjection(Projection):
                         event.data['total_amount'],
                         event.data['completed_at']
                     )
-                    # Insert into order history
+                    # 插入到订单历史
                     await conn.execute(
                         """
                         INSERT INTO customer_order_history
@@ -467,24 +467,24 @@ class CustomerActivityProjection(Projection):
                     )
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Make projections idempotent** - Safe to replay
-- **Use transactions** - For multi-table updates
-- **Store checkpoints** - Resume after failures
-- **Monitor lag** - Alert on projection delays
-- **Plan for rebuilds** - Design for reconstruction
+- **使投影幂等** - 可以安全地重放
+- **使用事务** - 用于多表更新
+- **存储检查点** - 故障后恢复
+- **监控延迟** - 投影延迟时报警
+- **规划重建** - 为重建而设计
 
-### Don'ts
+### 不应该做
 
-- **Don't couple projections** - Each is independent
-- **Don't skip error handling** - Log and alert on failures
-- **Don't ignore ordering** - Events must be processed in order
-- **Don't over-normalize** - Denormalize for query patterns
+- **不要耦合投影** - 每个都是独立的
+- **不要跳过错误处理** - 失败时记录日志和报警
+- **不要忽略顺序** - 事件必须按顺序处理
+- **不要过度规范化** - 为查询模式反规范化
 
-## Resources
+## 资源
 
-- [CQRS Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
-- [Projection Building Blocks](https://zimarev.com/blog/event-sourcing/projections/)
+- [CQRS 模式](https://docs.microsoft.com/en-us/azure/architecture/patterns/cqrs)
+- [投影构建块](https://zimarev.com/blog/event-sourcing/projections/)

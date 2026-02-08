@@ -1,252 +1,252 @@
-# Machine Learning Pipeline - Multi-Agent MLOps Orchestration
+# 机器学习管道 - 多代理 MLOps 编排
 
-Design and implement a complete ML pipeline for: $ARGUMENTS
+为以下需求设计和实现完整的 ML 管道：$ARGUMENTS
 
-## Thinking
+## 思考
 
-This workflow orchestrates multiple specialized agents to build a production-ready ML pipeline following modern MLOps best practices. The approach emphasizes:
+此工作流编排多个专业代理以构建遵循现代 MLOps 最佳实践的生产就绪 ML 管道。该方法强调：
 
-- **Phase-based coordination**: Each phase builds upon previous outputs, with clear handoffs between agents
-- **Modern tooling integration**: MLflow/W&B for experiments, Feast/Tecton for features, KServe/Seldon for serving
-- **Production-first mindset**: Every component designed for scale, monitoring, and reliability
-- **Reproducibility**: Version control for data, models, and infrastructure
-- **Continuous improvement**: Automated retraining, A/B testing, and drift detection
+- **基于阶段的协调**：每个阶段都基于之前的输出构建，在代理之间有清晰的交接
+- **现代工具集成**：用于实验的 MLflow/W&B、用于特征的 Feast/Tecton、用于服务的 KServe/Seldon
+- **生产优先思维**：每个组件都为规模、监控和可靠性而设计
+- **可重现性**：数据、模型和基础设施的版本控制
+- **持续改进**：自动重新训练、A/B 测试和漂移检测
 
-The multi-agent approach ensures each aspect is handled by domain experts:
+多代理方法确保每个方面都由领域专家处理：
 
-- Data engineers handle ingestion and quality
-- Data scientists design features and experiments
-- ML engineers implement training pipelines
-- MLOps engineers handle production deployment
-- Observability engineers ensure monitoring
+- 数据工程师处理摄入和质量
+- 数据科学家设计特征和实验
+- ML 工程师实现训练管道
+- MLOps 工程师处理生产部署
+- 可观测性工程师确保监控
 
-## Phase 1: Data & Requirements Analysis
+## 阶段 1：数据和需求分析
 
 <Task>
 subagent_type: data-engineer
 prompt: |
-  Analyze and design data pipeline for ML system with requirements: $ARGUMENTS
+  为 ML 系统分析和设计数据管道，需求：$ARGUMENTS
 
-Deliverables:
+交付物：
 
-1. Data source audit and ingestion strategy:
-   - Source systems and connection patterns
-   - Schema validation using Pydantic/Great Expectations
-   - Data versioning with DVC or lakeFS
-   - Incremental loading and CDC strategies
+1. 数据源审计和摄入策略：
+   - 源系统和连接模式
+   - 使用 Pydantic/Great Expectations 进行架构验证
+   - 使用 DVC 或 lakeFS 进行数据版本控制
+   - 增量加载和 CDC 策略
 
-2. Data quality framework:
-   - Profiling and statistics generation
-   - Anomaly detection rules
-   - Data lineage tracking
-   - Quality gates and SLAs
+2. 数据质量框架：
+   - 剖析和统计生成
+   - 异常检测规则
+   - 数据血缘跟踪
+   - 质量关卡和 SLA
 
-3. Storage architecture:
-   - Raw/processed/feature layers
-   - Partitioning strategy
-   - Retention policies
-   - Cost optimization
+3. 存储架构：
+   - 原始/处理/特征层
+   - 分区策略
+   - 保留策略
+   - 成本优化
 
-Provide implementation code for critical components and integration patterns.
+提供关键组件的集成模式和实现代码。
 </Task>
 
 <Task>
 subagent_type: data-scientist
 prompt: |
-  Design feature engineering and model requirements for: $ARGUMENTS
-  Using data architecture from: {phase1.data-engineer.output}
+  为以下需求设计特征工程和模型需求：$ARGUMENTS
+  使用数据架构：{phase1.data-engineer.output}
 
-Deliverables:
+交付物：
 
-1. Feature engineering pipeline:
-   - Transformation specifications
-   - Feature store schema (Feast/Tecton)
-   - Statistical validation rules
-   - Handling strategies for missing data/outliers
+1. 特征工程管道：
+   - 转换规范
+   - 特征存储架构 (Feast/Tecton)
+   - 统计验证规则
+   - 缺失数据/异常值的处理策略
 
-2. Model requirements:
-   - Algorithm selection rationale
-   - Performance metrics and baselines
-   - Training data requirements
-   - Evaluation criteria and thresholds
+2. 模型需求：
+   - 算法选择理由
+   - 性能指标和基线
+   - 训练数据需求
+   - 评估标准和阈值
 
-3. Experiment design:
-   - Hypothesis and success metrics
-   - A/B testing methodology
-   - Sample size calculations
-   - Bias detection approach
+3. 实验设计：
+   - 假设和成功指标
+   - A/B 测试方法
+   - 样本量计算
+   - 偏见检测方法
 
-Include feature transformation code and statistical validation logic.
+包含特征转换代码和统计验证逻辑。
 </Task>
 
-## Phase 2: Model Development & Training
+## 阶段 2：模型开发和训练
 
 <Task>
 subagent_type: ml-engineer
 prompt: |
-  Implement training pipeline based on requirements: {phase1.data-scientist.output}
-  Using data pipeline: {phase1.data-engineer.output}
+  基于需求实现训练管道：{phase1.data-scientist.output}
+  使用数据管道：{phase1.data-engineer.output}
 
-Build comprehensive training system:
+构建全面的训练系统：
 
-1. Training pipeline implementation:
-   - Modular training code with clear interfaces
-   - Hyperparameter optimization (Optuna/Ray Tune)
-   - Distributed training support (Horovod/PyTorch DDP)
-   - Cross-validation and ensemble strategies
+1. 训练管道实现：
+   - 具有清晰接口的模块化训练代码
+   - 超参数优化 (Optuna/Ray Tune)
+   - 分布式训练支持 (Horovod/PyTorch DDP)
+   - 交叉验证和集成策略
 
-2. Experiment tracking setup:
-   - MLflow/Weights & Biases integration
-   - Metric logging and visualization
-   - Artifact management (models, plots, data samples)
-   - Experiment comparison and analysis tools
+2. 实验跟踪设置：
+   - MLflow/Weights & Biases 集成
+   - 指标记录和可视化
+   - 工件管理（模型、图表、数据样本）
+   - 实验比较和分析工具
 
-3. Model registry integration:
-   - Version control and tagging strategy
-   - Model metadata and lineage
-   - Promotion workflows (dev -> staging -> prod)
-   - Rollback procedures
+3. 模型注册表集成：
+   - 版本控制和标记策略
+   - 模型元数据和血缘
+   - 推广工作流（dev -> staging -> prod）
+   - 回滚程序
 
-Provide complete training code with configuration management.
+提供具有配置管理的完整训练代码。
 </Task>
 
 <Task>
 subagent_type: python-pro
 prompt: |
-  Optimize and productionize ML code from: {phase2.ml-engineer.output}
+  优化并生产化来自以下代码的 ML 代码：{phase2.ml-engineer.output}
 
-Focus areas:
+重点领域：
 
-1. Code quality and structure:
-   - Refactor for production standards
-   - Add comprehensive error handling
-   - Implement proper logging with structured formats
-   - Create reusable components and utilities
+1. 代码质量和结构：
+   - 为生产标准重构
+   - 添加全面的错误处理
+   - 使用结构化格式实现适当的日志记录
+   - 创建可重用的组件和实用程序
 
-2. Performance optimization:
-   - Profile and optimize bottlenecks
-   - Implement caching strategies
-   - Optimize data loading and preprocessing
-   - Memory management for large-scale training
+2. 性能优化：
+   - 分析和优化瓶颈
+   - 实现缓存策略
+   - 优化数据加载和预处理
+   - 大规模训练的内存管理
 
-3. Testing framework:
-   - Unit tests for data transformations
-   - Integration tests for pipeline components
-   - Model quality tests (invariance, directional)
-   - Performance regression tests
+3. 测试框架：
+   - 数据转换的单元测试
+   - 管道组件的集成测试
+   - 模型质量测试（不变性、方向性）
+   - 性能回归测试
 
-Deliver production-ready, maintainable code with full test coverage.
+交付生产就绪、可维护的代码，具有完整的测试覆盖。
 </Task>
 
-## Phase 3: Production Deployment & Serving
+## 阶段 3：生产部署和服务
 
 <Task>
 subagent_type: mlops-engineer
 prompt: |
-  Design production deployment for models from: {phase2.ml-engineer.output}
-  With optimized code from: {phase2.python-pro.output}
+  为模型设计生产部署：{phase2.ml-engineer.output}
+  使用优化代码：{phase2.python-pro.output}
 
-Implementation requirements:
+实现需求：
 
-1. Model serving infrastructure:
-   - REST/gRPC APIs with FastAPI/TorchServe
-   - Batch prediction pipelines (Airflow/Kubeflow)
-   - Stream processing (Kafka/Kinesis integration)
-   - Model serving platforms (KServe/Seldon Core)
+1. 模型服务基础设施：
+   - 使用 FastAPI/TorchServe 的 REST/gRPC API
+   - 批量预测管道 (Airflow/Kubeflow)
+   - 流处理 (Kafka/Kinesis 集成)
+   - 模型服务平台 (KServe/Seldon Core)
 
-2. Deployment strategies:
-   - Blue-green deployments for zero downtime
-   - Canary releases with traffic splitting
-   - Shadow deployments for validation
-   - A/B testing infrastructure
+2. 部署策略：
+   - 用于零停机的蓝绿部署
+   - 带流量分割的金丝雀发布
+   - 用于验证的影子部署
+   - A/B 测试基础设施
 
-3. CI/CD pipeline:
-   - GitHub Actions/GitLab CI workflows
-   - Automated testing gates
-   - Model validation before deployment
-   - ArgoCD for GitOps deployment
+3. CI/CD 管道：
+   - GitHub Actions/GitLab CI 工作流
+   - 自动测试关卡
+   - 部署前的模型验证
+   - 用于 GitOps 部署的 ArgoCD
 
-4. Infrastructure as Code:
-   - Terraform modules for cloud resources
-   - Helm charts for Kubernetes deployments
-   - Docker multi-stage builds for optimization
-   - Secret management with Vault/Secrets Manager
+4. 基础设施即代码：
+   - 用于云资源的 Terraform 模块
+   - 用于 Kubernetes 部署的 Helm charts
+   - 用于优化的 Docker 多阶段构建
+   - 使用 Vault/Secrets Manager 的密钥管理
 
-Provide complete deployment configuration and automation scripts.
+提供完整的部署配置和自动化脚本。
 </Task>
 
 <Task>
 subagent_type: kubernetes-architect
 prompt: |
-  Design Kubernetes infrastructure for ML workloads from: {phase3.mlops-engineer.output}
+  为 ML 工作负载设计 Kubernetes 基础设施：{phase3.mlops-engineer.output}
 
-Kubernetes-specific requirements:
+Kubernetes 特定需求：
 
-1. Workload orchestration:
-   - Training job scheduling with Kubeflow
-   - GPU resource allocation and sharing
-   - Spot/preemptible instance integration
-   - Priority classes and resource quotas
+1. 工作负载编排：
+   - 使用 Kubeflow 的训练作业调度
+   - GPU 资源分配和共享
+   - Spot/可抢占实例集成
+   - 优先级类别和资源配额
 
-2. Serving infrastructure:
-   - HPA/VPA for autoscaling
-   - KEDA for event-driven scaling
-   - Istio service mesh for traffic management
-   - Model caching and warm-up strategies
+2. 服务基础设施：
+   - 用于自动扩展的 HPA/VPA
+   - 用于事件驱动扩展的 KEDA
+   - 用于流量管理的 Istio 服务网格
+   - 模型缓存和热身策略
 
-3. Storage and data access:
-   - PVC strategies for training data
-   - Model artifact storage with CSI drivers
-   - Distributed storage for feature stores
-   - Cache layers for inference optimization
+3. 存储和数据访问：
+   - 训练数据的 PVC 策略
+   - 使用 CSI 驱动器的模型工件存储
+   - 特征存储的分布式存储
+   - 用于推理优化的缓存层
 
-Provide Kubernetes manifests and Helm charts for entire ML platform.
+为整个 ML 平台提供 Kubernetes 清单和 Helm charts。
 </Task>
 
-## Phase 4: Monitoring & Continuous Improvement
+## 阶段 4：监控和持续改进
 
 <Task>
 subagent_type: observability-engineer
 prompt: |
-  Implement comprehensive monitoring for ML system deployed in: {phase3.mlops-engineer.output}
-  Using Kubernetes infrastructure: {phase3.kubernetes-architect.output}
+  为部署在以下位置的 ML 系统实现全面监控：{phase3.mlops-engineer.output}
+  使用 Kubernetes 基础设施：{phase3.kubernetes-architect.output}
 
-Monitoring framework:
+监控框架：
 
-1. Model performance monitoring:
-   - Prediction accuracy tracking
-   - Latency and throughput metrics
-   - Feature importance shifts
-   - Business KPI correlation
+1. 模型性能监控：
+   - 预测准确度跟踪
+   - 延迟和吞吐量指标
+   - 特征重要性变化
+   - 业务 KPI 相关性
 
-2. Data and model drift detection:
-   - Statistical drift detection (KS test, PSI)
-   - Concept drift monitoring
-   - Feature distribution tracking
-   - Automated drift alerts and reports
+2. 数据和模型漂移检测：
+   - 统计漂移检测 (KS 检验、PSI)
+   - 概念漂移监控
+   - 特征分布跟踪
+   - 自动漂移警报和报告
 
-3. System observability:
-   - Prometheus metrics for all components
-   - Grafana dashboards for visualization
-   - Distributed tracing with Jaeger/Zipkin
-   - Log aggregation with ELK/Loki
+3. 系统可观测性：
+   - 所有组件的 Prometheus 指标
+   - 用于可视化的 Grafana 仪表板
+   - 使用 Jaeger/Zipkin 的分布式跟踪
+   - 使用 ELK/Loki 的日志聚合
 
-4. Alerting and automation:
-   - PagerDuty/Opsgenie integration
-   - Automated retraining triggers
-   - Performance degradation workflows
-   - Incident response runbooks
+4. 警报和自动化：
+   - PagerDuty/Opsgenie 集成
+   - 自动重新训练触发器
+   - 性能下降工作流
+   - 事件响应手册
 
-5. Cost tracking:
-   - Resource utilization metrics
-   - Cost allocation by model/experiment
-   - Optimization recommendations
-   - Budget alerts and controls
+5. 成本跟踪：
+   - 资源利用率指标
+   - 按模型/实验的成本分配
+   - 优化建议
+   - 预算警报和控制
 
-Deliver monitoring configuration, dashboards, and alert rules.
+交付监控配置、仪表板和警报规则。
 </Task>
 
-## Configuration Options
+## 配置选项
 
 - **experiment_tracking**: mlflow | wandb | neptune | clearml
 - **feature_store**: feast | tecton | databricks | custom
@@ -256,46 +256,46 @@ Deliver monitoring configuration, dashboards, and alert rules.
 - **deployment_mode**: realtime | batch | streaming | hybrid
 - **monitoring_stack**: prometheus | datadog | newrelic | custom
 
-## Success Criteria
+## 成功标准
 
-1. **Data Pipeline Success**:
-   - < 0.1% data quality issues in production
-   - Automated data validation passing 99.9% of time
-   - Complete data lineage tracking
-   - Sub-second feature serving latency
+1. **数据管道成功**：
+   - 生产中数据质量问题 < 0.1%
+   - 自动数据验证 99.9% 时间通过
+   - 完整的数据血缘跟踪
+   - 亚秒级特征服务延迟
 
-2. **Model Performance**:
-   - Meeting or exceeding baseline metrics
-   - < 5% performance degradation before retraining
-   - Successful A/B tests with statistical significance
-   - No undetected model drift > 24 hours
+2. **模型性能**：
+   - 达到或超过基线指标
+   - 重新训练前性能下降 < 5%
+   - 具有统计意义的成功 A/B 测试
+   - 未检测到的模型漂移不超过 24 小时
 
-3. **Operational Excellence**:
-   - 99.9% uptime for model serving
-   - < 200ms p99 inference latency
-   - Automated rollback within 5 minutes
-   - Complete observability with < 1 minute alert time
+3. **运营卓越**：
+   - 模型服务 99.9% 正常运行时间
+   - p99 推理延迟 < 200ms
+   - 5 分钟内自动回滚
+   - 完整可观测性，警报时间 < 1 分钟
 
-4. **Development Velocity**:
-   - < 1 hour from commit to production
-   - Parallel experiment execution
-   - Reproducible training runs
-   - Self-service model deployment
+4. **开发速度**：
+   - 从提交到生产 < 1 小时
+   - 并行实验执行
+   - 可重现的训练运行
+   - 自助模型部署
 
-5. **Cost Efficiency**:
-   - < 20% infrastructure waste
-   - Optimized resource allocation
-   - Automatic scaling based on load
-   - Spot instance utilization > 60%
+5. **成本效率**：
+   - 基础设施浪费 < 20%
+   - 优化的资源分配
+   - 基于负载的自动扩展
+   - Spot 实例利用率 > 60%
 
-## Final Deliverables
+## 最终交付物
 
-Upon completion, the orchestrated pipeline will provide:
+完成后，编排的管道将提供：
 
-- End-to-end ML pipeline with full automation
-- Comprehensive documentation and runbooks
-- Production-ready infrastructure as code
-- Complete monitoring and alerting system
-- CI/CD pipelines for continuous improvement
-- Cost optimization and scaling strategies
-- Disaster recovery and rollback procedures
+- 具有全面自动化的端到端 ML 管道
+- 全面的文档和操作手册
+- 生产就绪的基础设施即代码
+- 完整的监控和警报系统
+- 用于持续改进的 CI/CD 管道
+- 成本优化和扩展策略
+- 灾难恢复和回滚程序

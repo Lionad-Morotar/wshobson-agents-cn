@@ -1,6 +1,6 @@
 """
-Production-ready REST API template using FastAPI.
-Includes pagination, filtering, error handling, and best practices.
+使用 FastAPI 的生产就绪 REST API 模板。
+包括分页、过滤、错误处理和最佳实践。
 """
 
 from fastapi import FastAPI, HTTPException, Query, Path, Depends, status
@@ -13,28 +13,28 @@ from datetime import datetime
 from enum import Enum
 
 app = FastAPI(
-    title="API Template",
+    title="API 模板",
     version="1.0.0",
     docs_url="/api/docs"
 )
 
-# Security Middleware
-# Trusted Host: Prevents HTTP Host Header attacks
+# 安全中间件
+# 可信主机：防止 HTTP Host 标头攻击
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"] # TODO: Configure this in production, e.g. ["api.example.com"]
+    allowed_hosts=["*"] # TODO: 在生产环境中配置此项，例如 ["api.example.com"]
 )
 
-# CORS: Configures Cross-Origin Resource Sharing
+# CORS：配置跨域资源共享
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # TODO: Update this with specific origins in production
-    allow_credentials=False, # TODO: Set to True if you need cookies/auth headers, but restrict origins
+    allow_origins=["*"], # TODO: 在生产环境中更新为特定来源
+    allow_credentials=False, # TODO: 如果需要 cookie/身份验证标头，设置为 True，但需限制来源
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Models
+# 模型
 class UserStatus(str, Enum):
     ACTIVE = "active"
     INACTIVE = "inactive"
@@ -60,7 +60,7 @@ class User(UserBase):
 
     model_config = ConfigDict(from_attributes=True)
 
-# Pagination
+# 分页
 class PaginationParams(BaseModel):
     page: int = Field(1, ge=1)
     page_size: int = Field(20, ge=1, le=100)
@@ -72,7 +72,7 @@ class PaginatedResponse(BaseModel):
     page_size: int
     pages: int
 
-# Error handling
+# 错误处理
 class ErrorDetail(BaseModel):
     field: Optional[str] = None
     message: str
@@ -89,27 +89,27 @@ async def http_exception_handler(request, exc):
         status_code=exc.status_code,
         content=ErrorResponse(
             error=exc.__class__.__name__,
-            message=exc.detail if isinstance(exc.detail, str) else exc.detail.get("message", "Error"),
+            message=exc.detail if isinstance(exc.detail, str) else exc.detail.get("message", "错误"),
             details=exc.detail.get("details") if isinstance(exc.detail, dict) else None
         ).model_dump()
     )
 
-# Endpoints
-@app.get("/api/users", response_model=PaginatedResponse, tags=["Users"])
+# 端点
+@app.get("/api/users", response_model=PaginatedResponse, tags=["用户"])
 async def list_users(
     page: int = Query(1, ge=1),
     page_size: int = Query(20, ge=1, le=100),
     status: Optional[UserStatus] = Query(None),
     search: Optional[str] = Query(None)
 ):
-    """List users with pagination and filtering."""
-    # Mock implementation
+    """列出用户，支持分页和过滤。"""
+    # 模拟实现
     total = 100
     items = [
         User(
             id=str(i),
             email=f"user{i}@example.com",
-            name=f"User {i}",
+            name=f"用户 {i}",
             status=UserStatus.ACTIVE,
             created_at=datetime.now(),
             updated_at=datetime.now()
@@ -125,10 +125,10 @@ async def list_users(
         pages=(total + page_size - 1) // page_size
     )
 
-@app.post("/api/users", response_model=User, status_code=status.HTTP_201_CREATED, tags=["Users"])
+@app.post("/api/users", response_model=User, status_code=status.HTTP_201_CREATED, tags=["用户"])
 async def create_user(user: UserCreate):
-    """Create a new user."""
-    # Mock implementation
+    """创建新用户。"""
+    # 模拟实现
     return User(
         id="123",
         email=user.email,
@@ -138,32 +138,32 @@ async def create_user(user: UserCreate):
         updated_at=datetime.now()
     )
 
-@app.get("/api/users/{user_id}", response_model=User, tags=["Users"])
-async def get_user(user_id: str = Path(..., description="User ID")):
-    """Get user by ID."""
-    # Mock: Check if exists
+@app.get("/api/users/{user_id}", response_model=User, tags=["用户"])
+async def get_user(user_id: str = Path(..., description="用户 ID")):
+    """按 ID 获取用户。"""
+    # 模拟：检查是否存在
     if user_id == "999":
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"message": "User not found", "details": {"id": user_id}}
+            detail={"message": "用户未找到", "details": {"id": user_id}}
         )
 
     return User(
         id=user_id,
         email="user@example.com",
-        name="User Name",
+        name="用户名称",
         status=UserStatus.ACTIVE,
         created_at=datetime.now(),
         updated_at=datetime.now()
     )
 
-@app.patch("/api/users/{user_id}", response_model=User, tags=["Users"])
+@app.patch("/api/users/{user_id}", response_model=User, tags=["用户"])
 async def update_user(user_id: str, update: UserUpdate):
-    """Partially update user."""
-    # Validate user exists
+    """部分更新用户。"""
+    # 验证用户存在
     existing = await get_user(user_id)
 
-    # Apply updates
+    # 应用更新
     update_data = update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(existing, field, value)
@@ -171,10 +171,10 @@ async def update_user(user_id: str, update: UserUpdate):
     existing.updated_at = datetime.now()
     return existing
 
-@app.delete("/api/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Users"])
+@app.delete("/api/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["用户"])
 async def delete_user(user_id: str):
-    """Delete user."""
-    await get_user(user_id)  # Verify exists
+    """删除用户。"""
+    await get_user(user_id)  # 验证存在
     return None
 
 if __name__ == "__main__":

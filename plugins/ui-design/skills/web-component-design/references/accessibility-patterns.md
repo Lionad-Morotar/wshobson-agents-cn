@@ -1,8 +1,8 @@
-# Accessibility Patterns Reference
+# 无障碍模式参考
 
-## ARIA Patterns for Common Components
+## 常见组件的 ARIA 模式
 
-### Modal Dialog
+### 模态对话框
 
 ```tsx
 import { useEffect, useRef, type ReactNode } from "react";
@@ -53,14 +53,14 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center"
       aria-hidden={!isOpen}
     >
-      {/* Backdrop */}
+      {/* 背景遮罩 */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
         aria-hidden="true"
       />
 
-      {/* Dialog */}
+      {/* 对话框 */}
       <div
         ref={dialogRef}
         role="dialog"
@@ -74,7 +74,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
         </h2>
         <button
           onClick={onClose}
-          aria-label="Close dialog"
+          aria-label="关闭对话框"
           className="absolute right-4 top-4 p-1"
         >
           <XIcon aria-hidden="true" />
@@ -105,7 +105,7 @@ function trapFocus(e: KeyboardEvent, container: HTMLElement | null) {
 }
 ```
 
-### Dropdown Menu
+### 下拉菜单
 
 ```tsx
 import { useState, useRef, useEffect, type ReactNode } from "react";
@@ -244,7 +244,7 @@ function focusLastItem(menu: HTMLElement | null) {
 }
 ```
 
-### Combobox / Autocomplete
+### 组合框 / 自动完成
 
 ```tsx
 import {
@@ -381,7 +381,7 @@ export function Combobox({
 
       {isOpen && filteredOptions.length === 0 && (
         <div className="absolute z-10 mt-1 w-full rounded-md bg-white px-3 py-2 shadow-lg">
-          No results found
+          未找到结果
         </div>
       )}
     </div>
@@ -389,7 +389,7 @@ export function Combobox({
 }
 ```
 
-### Form Validation
+### 表单验证
 
 ```tsx
 import { useId, type FormEvent } from "react";
@@ -440,18 +440,18 @@ export function FormField({
   );
 }
 
-// Usage
+// 使用示例
 function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Validation logic...
+    // 验证逻辑...
   };
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      <FormField label="Email" error={errors.email} required>
+      <FormField label="邮箱" error={errors.email} required>
         {(props) => (
           <input
             {...props}
@@ -468,14 +468,14 @@ function ContactForm() {
         type="submit"
         className="mt-4 px-4 py-2 bg-blue-600 text-white rounded"
       >
-        Submit
+        提交
       </button>
     </form>
   );
 }
 ```
 
-## Skip Links
+## 跳转链接
 
 ```tsx
 export function SkipLinks() {
@@ -485,20 +485,20 @@ export function SkipLinks() {
         href="#main-content"
         className="absolute left-4 top-4 z-50 rounded bg-blue-600 px-4 py-2 text-white focus:outline-none focus:ring-2"
       >
-        Skip to main content
+        跳转到主要内容
       </a>
       <a
         href="#main-navigation"
         className="absolute left-4 top-16 z-50 rounded bg-blue-600 px-4 py-2 text-white focus:outline-none focus:ring-2"
       >
-        Skip to navigation
+        跳转到导航
       </a>
     </div>
   );
 }
 ```
 
-## Live Regions
+## 实时区域
 
 ```tsx
 import { useState, useEffect } from "react";
@@ -515,7 +515,7 @@ export function LiveAnnouncer({
   const [announcement, setAnnouncement] = useState("");
 
   useEffect(() => {
-    // Clear first, then set - ensures screen readers pick up the change
+    // 先清空再设置 - 确保屏幕阅读器能检测到变化
     setAnnouncement("");
     const timer = setTimeout(() => setAnnouncement(message), 100);
     return () => clearTimeout(timer);
@@ -533,7 +533,7 @@ export function LiveAnnouncer({
   );
 }
 
-// Usage in a search component
+// 在搜索组件中使用
 function SearchResults({
   results,
   loading,
@@ -542,22 +542,22 @@ function SearchResults({
   loading: boolean;
 }) {
   const message = loading
-    ? "Loading results..."
-    : `${results.length} results found`;
+    ? "正在加载结果..."
+    : `找到 ${results.length} 个结果`;
 
   return (
     <>
       <LiveAnnouncer message={message} />
-      <ul>{/* results */}</ul>
+      <ul>{/* 结果 */}</ul>
     </>
   );
 }
 ```
 
-## Focus Management Utilities
+## 焦点管理工具
 
 ```tsx
-// useFocusReturn - restore focus after closing
+// useFocusReturn - 关闭后恢复焦点
 function useFocusReturn() {
   const previousElement = useRef<Element | null>(null);
 
@@ -572,7 +572,7 @@ function useFocusReturn() {
   return { saveFocus, restoreFocus };
 }
 
-// useFocusTrap - keep focus within container
+// useFocusTrap - 将焦点保持在容器内
 function useFocusTrap(containerRef: RefObject<HTMLElement>, isActive: boolean) {
   useEffect(() => {
     if (!isActive || !containerRef.current) return;
@@ -604,10 +604,10 @@ function useFocusTrap(containerRef: RefObject<HTMLElement>, isActive: boolean) {
 }
 ```
 
-## Color Contrast Utilities
+## 颜色对比度工具
 
 ```tsx
-// Check if colors meet WCAG requirements
+// 检查颜色是否符合 WCAG 要求
 function getContrastRatio(fg: string, bg: string): number {
   const getLuminance = (hex: string): number => {
     const rgb = parseInt(hex.slice(1), 16);

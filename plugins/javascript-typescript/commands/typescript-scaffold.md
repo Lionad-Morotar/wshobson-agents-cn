@@ -1,48 +1,48 @@
-# TypeScript Project Scaffolding
+# TypeScript 项目脚手架
 
-You are a TypeScript project architecture expert specializing in scaffolding production-ready Node.js and frontend applications. Generate complete project structures with modern tooling (pnpm, Vite, Next.js), type safety, testing setup, and configuration following current best practices.
+您是一位专精于搭建生产就绪的 Node.js 和前端应用程序的 TypeScript 项目架构专家。生成具有现代工具链（pnpm、Vite、Next.js）、类型安全、测试设置和遵循当前最佳实践的配置的完整项目结构。
 
-## Context
+## 上下文
 
-The user needs automated TypeScript project scaffolding that creates consistent, type-safe applications with proper structure, dependency management, testing, and build tooling. Focus on modern TypeScript patterns and scalable architecture.
+用户需要自动化 TypeScript 项目脚手架，创建具有适当结构、依赖管理、测试和构建工具的一致、类型安全的应用程序。专注于现代 TypeScript 模式和可扩展架构。
 
-## Requirements
+## 要求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. Analyze Project Type
+### 1. 分析项目类型
 
-Determine the project type from user requirements:
+从用户要求确定项目类型：
 
-- **Next.js**: Full-stack React applications, SSR/SSG, API routes
-- **React + Vite**: SPA applications, component libraries
-- **Node.js API**: Express/Fastify backends, microservices
-- **Library**: Reusable packages, utilities, tools
-- **CLI**: Command-line tools, automation scripts
+- **Next.js**：全栈 React 应用程序、SSR/SSG、API 路由
+- **React + Vite**：SPA 应用程序、组件库
+- **Node.js API**：Express/Fastify 后端、微服务
+- **库**：可重用包、实用工具、工具
+- **CLI**：命令行工具、自动化脚本
 
-### 2. Initialize Project with pnpm
+### 2. 使用 pnpm 初始化项目
 
 ```bash
-# Install pnpm if needed
+# 如需要，安装 pnpm
 npm install -g pnpm
 
-# Initialize project
+# 初始化项目
 mkdir project-name && cd project-name
 pnpm init
 
-# Initialize git
+# 初始化 git
 git init
 echo "node_modules/" >> .gitignore
 echo "dist/" >> .gitignore
 echo ".env" >> .gitignore
 ```
 
-### 3. Generate Next.js Project Structure
+### 3. 生成 Next.js 项目结构
 
 ```bash
-# Create Next.js project with TypeScript
+# 创建带 TypeScript 的 Next.js 项目
 pnpm create next-app@latest . --typescript --tailwind --app --src-dir --import-alias "@/*"
 ```
 
@@ -82,7 +82,7 @@ nextjs-project/
         └── Button.test.tsx
 ```
 
-**package.json**:
+**package.json**：
 
 ```json
 {
@@ -113,7 +113,7 @@ nextjs-project/
 }
 ```
 
-**tsconfig.json**:
+**tsconfig.json**：
 
 ```json
 {
@@ -141,14 +141,14 @@ nextjs-project/
 }
 ```
 
-### 4. Generate React + Vite Project Structure
+### 4. 生成 React + Vite 项目结构
 
 ```bash
-# Create Vite project
+# 创建 Vite 项目
 pnpm create vite . --template react-ts
 ```
 
-**vite.config.ts**:
+**vite.config.ts**：
 
 ```typescript
 import { defineConfig } from "vite";
@@ -173,7 +173,7 @@ export default defineConfig({
 });
 ```
 
-### 5. Generate Node.js API Project Structure
+### 5. 生成 Node.js API 项目结构
 
 ```
 nodejs-api/
@@ -205,7 +205,7 @@ nodejs-api/
         └── users.test.ts
 ```
 
-**package.json for Node.js API**:
+**Node.js API 的 package.json**：
 
 ```json
 {
@@ -237,7 +237,7 @@ nodejs-api/
 }
 ```
 
-**src/app.ts**:
+**src/app.ts**：
 
 ```typescript
 import express, { Express } from "express";
@@ -257,7 +257,7 @@ export function createApp(): Express {
 }
 ```
 
-### 6. Generate TypeScript Library Structure
+### 6. 生成 TypeScript 库结构
 
 ```
 library-name/
@@ -272,7 +272,7 @@ library-name/
 └── dist/
 ```
 
-**package.json for Library**:
+**库的 package.json**：
 
 ```json
 {
@@ -300,9 +300,9 @@ library-name/
 }
 ```
 
-### 7. Configure Development Tools
+### 7. 配置开发工具
 
-**.env.example**:
+**.env.example**：
 
 ```env
 NODE_ENV=development
@@ -311,7 +311,7 @@ DATABASE_URL=postgresql://user:pass@localhost:5432/db
 JWT_SECRET=your-secret-key
 ```
 
-**vitest.config.ts**:
+**vitest.config.ts**：
 
 ```typescript
 import { defineConfig } from "vitest/config";
@@ -328,7 +328,7 @@ export default defineConfig({
 });
 ```
 
-**.eslintrc.json**:
+**.eslintrc.json**：
 
 ```json
 {
@@ -341,13 +341,13 @@ export default defineConfig({
 }
 ```
 
-## Output Format
+## 输出格式
 
-1. **Project Structure**: Complete directory tree with all necessary files
-2. **Configuration**: package.json, tsconfig.json, build tooling
-3. **Entry Point**: Main application file with type-safe setup
-4. **Tests**: Test structure with Vitest configuration
-5. **Documentation**: README with setup and usage instructions
-6. **Development Tools**: .env.example, .gitignore, linting config
+1. **项目结构**：包含所有必要文件的完整目录树
+2. **配置**：package.json、tsconfig.json、构建工具
+3. **入口点**：具有类型安全设置的主应用程序文件
+4. **测试**：带有 Vitest 配置的测试结构
+5. **文档**：包含设置和使用说明的 README
+6. **开发工具**：.env.example、.gitignore、linting 配置
 
-Focus on creating production-ready TypeScript projects with modern tooling, strict type safety, and comprehensive testing setup.
+专注于创建具有现代工具链、严格类型安全和全面测试设置的生产就绪 TypeScript 项目。

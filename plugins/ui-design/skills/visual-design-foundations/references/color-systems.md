@@ -1,21 +1,21 @@
-# Color Systems Reference
+# 色彩系统参考
 
-## Color Palette Generation
+## 调色板生成
 
-### Perceptually Uniform Scales
+### 感知均匀比例
 
-Using OKLCH for perceptually uniform color scales:
+使用 OKLCH 实现感知均匀的色彩比例：
 
 ```css
-/* OKLCH: Lightness, Chroma, Hue */
+/* OKLCH：亮度、色度、色相 */
 :root {
-  /* Generate a blue scale with consistent perceived lightness steps */
+  /* 生成具有一致感知亮度步进的蓝色比例 */
   --blue-50: oklch(97% 0.02 250);
   --blue-100: oklch(93% 0.04 250);
   --blue-200: oklch(86% 0.08 250);
   --blue-300: oklch(75% 0.12 250);
   --blue-400: oklch(65% 0.16 250);
-  --blue-500: oklch(55% 0.2 250); /* Primary */
+  --blue-500: oklch(55% 0.2 250); /* 主色 */
   --blue-600: oklch(48% 0.18 250);
   --blue-700: oklch(40% 0.16 250);
   --blue-800: oklch(32% 0.12 250);
@@ -24,7 +24,7 @@ Using OKLCH for perceptually uniform color scales:
 }
 ```
 
-### Programmatic Scale Generation
+### 程序化比例生成
 
 ```tsx
 function generateColorScale(
@@ -53,19 +53,19 @@ function generateColorScale(
   );
 }
 
-// Generate semantic colors
-const brand = generateColorScale(220); // Blue
-const success = generateColorScale(142); // Green
-const warning = generateColorScale(38); // Amber
-const error = generateColorScale(0); // Red
+// 生成语义化色彩
+const brand = generateColorScale(220); // 蓝色
+const success = generateColorScale(142); // 绿色
+const warning = generateColorScale(38); // 琥珀色
+const error = generateColorScale(0); // 红色
 ```
 
-## Semantic Color Tokens
+## 语义化色彩令牌
 
-### Two-Tier Token System
+### 双层令牌系统
 
 ```css
-/* Tier 1: Primitive colors (raw values) */
+/* 第 1 层：原始色彩（原始值） */
 :root {
   --primitive-blue-500: #3b82f6;
   --primitive-blue-600: #2563eb;
@@ -75,32 +75,32 @@ const error = generateColorScale(0); // Red
   --primitive-gray-900: #111827;
 }
 
-/* Tier 2: Semantic tokens (purpose-based) */
+/* 第 2 层：语义化令牌（基于用途） */
 :root {
-  /* Background */
+  /* 背景 */
   --color-bg-primary: var(--primitive-gray-50);
   --color-bg-secondary: white;
   --color-bg-tertiary: var(--primitive-gray-100);
   --color-bg-inverse: var(--primitive-gray-900);
 
-  /* Text */
+  /* 文本 */
   --color-text-primary: var(--primitive-gray-900);
   --color-text-secondary: var(--primitive-gray-600);
   --color-text-tertiary: var(--primitive-gray-400);
   --color-text-inverse: white;
   --color-text-link: var(--primitive-blue-600);
 
-  /* Border */
+  /* 边框 */
   --color-border-default: var(--primitive-gray-200);
   --color-border-strong: var(--primitive-gray-300);
   --color-border-focus: var(--primitive-blue-500);
 
-  /* Interactive */
+  /* 交互 */
   --color-interactive-primary: var(--primitive-blue-600);
   --color-interactive-primary-hover: var(--primitive-blue-700);
   --color-interactive-primary-active: var(--primitive-blue-800);
 
-  /* Status */
+  /* 状态 */
   --color-status-success: var(--primitive-green-500);
   --color-status-warning: var(--primitive-amber-500);
   --color-status-error: var(--primitive-red-500);
@@ -108,37 +108,37 @@ const error = generateColorScale(0); // Red
 }
 ```
 
-### Component Tokens
+### 组件令牌
 
 ```css
-/* Tier 3: Component-specific tokens */
+/* 第 3 层：组件特定令牌 */
 :root {
-  /* Button */
+  /* 按钮 */
   --button-bg: var(--color-interactive-primary);
   --button-bg-hover: var(--color-interactive-primary-hover);
   --button-text: white;
   --button-border-radius: 0.375rem;
 
-  /* Input */
+  /* 输入框 */
   --input-bg: var(--color-bg-secondary);
   --input-border: var(--color-border-default);
   --input-border-focus: var(--color-border-focus);
   --input-text: var(--color-text-primary);
   --input-placeholder: var(--color-text-tertiary);
 
-  /* Card */
+  /* 卡片 */
   --card-bg: var(--color-bg-secondary);
   --card-border: var(--color-border-default);
   --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 ```
 
-## Dark Mode Implementation
+## 深色模式实现
 
-### CSS Custom Properties Approach
+### CSS 自定义属性方法
 
 ```css
-/* Light theme (default) */
+/* 浅色主题（默认） */
 :root {
   --color-bg-primary: #ffffff;
   --color-bg-secondary: #f9fafb;
@@ -148,7 +148,7 @@ const error = generateColorScale(0); // Red
   --color-border-default: #e5e7eb;
 }
 
-/* Dark theme */
+/* 深色主题 */
 [data-theme="dark"] {
   --color-bg-primary: #111827;
   --color-bg-secondary: #1f2937;
@@ -158,16 +158,16 @@ const error = generateColorScale(0); // Red
   --color-border-default: #374151;
 }
 
-/* System preference */
+/* 系统偏好 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --color-bg-primary: #111827;
-    /* ... dark theme values */
+    /* ... 深色主题值 */
   }
 }
 ```
 
-### React Theme Context
+### React 主题上下文
 
 ```tsx
 import { createContext, useContext, useEffect, useState } from "react";
@@ -230,9 +230,9 @@ export function useTheme() {
 }
 ```
 
-## Contrast and Accessibility
+## 对比度和无障碍
 
-### WCAG Contrast Checker
+### WCAG 对比度检查器
 
 ```tsx
 function hexToRgb(hex: string): [number, number, number] {
@@ -282,24 +282,24 @@ function meetsWCAG(
   return ratio >= requirements[size][level];
 }
 
-// Usage
-meetsWCAG("#ffffff", "#3b82f6"); // true (4.5:1 for AA normal)
-meetsWCAG("#ffffff", "#60a5fa"); // false (below 4.5:1)
+// 使用示例
+meetsWCAG("#ffffff", "#3b82f6"); // true (AA 标准文本 4.5:1)
+meetsWCAG("#ffffff", "#60a5fa"); // false (低于 4.5:1)
 ```
 
-### Accessible Color Pairs
+### 无障碍色彩配对
 
 ```tsx
-// Generate accessible text color for any background
+// 为任意背景生成无障碍文本颜色
 function getAccessibleTextColor(backgroundColor: string): string {
   const [r, g, b] = hexToRgb(backgroundColor);
   const luminance = getLuminance(r, g, b);
 
-  // Use white text on dark backgrounds, black on light
+  // 深色背景使用白色文本，浅色背景使用黑色
   return luminance > 0.179 ? "#111827" : "#ffffff";
 }
 
-// Find the nearest accessible shade
+// 查找最近的无障碍色阶
 function findAccessibleShade(
   textColor: string,
   backgroundScale: string[],
@@ -314,9 +314,9 @@ function findAccessibleShade(
 }
 ```
 
-## Color Harmony
+## 色彩和谐
 
-### Harmony Functions
+### 和谐函数
 
 ```tsx
 type HarmonyType =
@@ -340,7 +340,7 @@ function generateHarmony(baseHue: number, type: HarmonyType): number[] {
   }
 }
 
-// Generate palette from harmony
+// 从和谐生成调色板
 function generateHarmoniousPalette(
   baseHue: number,
   type: HarmonyType,
@@ -354,13 +354,13 @@ function generateHarmoniousPalette(
 }
 ```
 
-## Color Blindness Considerations
+## 色盲考虑
 
 ```tsx
-// Simulate color blindness
+// 模拟色盲
 type ColorBlindnessType = "protanopia" | "deuteranopia" | "tritanopia";
 
-// Matrix transforms for common types
+// 常见类型的矩阵变换
 const colorBlindnessMatrices: Record<ColorBlindnessType, number[][]> = {
   protanopia: [
     [0.567, 0.433, 0],
@@ -379,34 +379,34 @@ const colorBlindnessMatrices: Record<ColorBlindnessType, number[][]> = {
   ],
 };
 
-// Best practices for color-blind accessibility:
-// 1. Do not rely solely on color to convey information
-// 2. Use patterns or icons alongside color
-// 3. Ensure sufficient contrast between colors
-// 4. Test with color blindness simulators
-// 5. Use blue-orange instead of red-green for contrast
+// 色盲无障碍最佳实践：
+// 1. 不要仅依赖颜色来传达信息
+// 2. 在颜色旁使用图案或图标
+// 3. 确保颜色之间有足够的对比度
+// 4. 使用色盲模拟器进行测试
+// 5. 使用蓝橙对比而非红绿对比
 ```
 
-## CSS Color Functions
+## CSS 色彩函数
 
 ```css
-/* Modern CSS color functions */
+/* 现代 CSS 色彩函数 */
 .modern-colors {
-  /* Relative color syntax */
+  /* 相对色彩语法 */
   --lighter: hsl(from var(--base-color) h s calc(l + 20%));
   --darker: hsl(from var(--base-color) h s calc(l - 20%));
 
-  /* Color mixing */
+  /* 色彩混合 */
   --mixed: color-mix(in srgb, var(--color-1), var(--color-2) 30%);
 
-  /* Transparency */
+  /* 透明度 */
   --semi-transparent: rgb(from var(--base-color) r g b / 50%);
 
-  /* OKLCH for perceptual uniformity */
+  /* OKLCH 用于感知均匀性 */
   --vibrant-blue: oklch(60% 0.2 250);
 }
 
-/* Alpha variations */
+/* Alpha 变化 */
 .alpha-scale {
   --color-10: rgb(59 130 246 / 0.1);
   --color-20: rgb(59 130 246 / 0.2);

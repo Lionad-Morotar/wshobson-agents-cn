@@ -1,49 +1,49 @@
 ---
 name: angular-migration
-description: Migrate from AngularJS to Angular using hybrid mode, incremental component rewriting, and dependency injection updates. Use when upgrading AngularJS applications, planning framework migrations, or modernizing legacy Angular code.
+description: 使用混合模式、增量组件重写和依赖注入更新从 AngularJS 迁移到 Angular。用于升级 AngularJS 应用、规划框架迁移或现代化遗留 Angular 代码时使用。
 ---
 
-# Angular Migration
+# Angular 迁移
 
-Master AngularJS to Angular migration, including hybrid apps, component conversion, dependency injection changes, and routing migration.
+精通 AngularJS 到 Angular 的迁移，包括混合应用、组件转换、依赖注入变更和路由迁移。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Migrating AngularJS (1.x) applications to Angular (2+)
-- Running hybrid AngularJS/Angular applications
-- Converting directives to components
-- Modernizing dependency injection
-- Migrating routing systems
-- Updating to latest Angular versions
-- Implementing Angular best practices
+- 将 AngularJS (1.x) 应用迁移到 Angular (2+)
+- 运行混合 AngularJS/Angular 应用
+- 将指令转换为组件
+- 现代化依赖注入
+- 迁移路由系统
+- 更新到最新 Angular 版本
+- 实施 Angular 最佳实践
 
-## Migration Strategies
+## 迁移策略
 
-### 1. Big Bang (Complete Rewrite)
+### 1. 大爆炸（完全重写）
 
-- Rewrite entire app in Angular
-- Parallel development
-- Switch over at once
-- **Best for:** Small apps, green field projects
+- 在 Angular 中重写整个应用
+- 并行开发
+- 一次性切换
+- **最适合：** 小型应用、绿地项目
 
-### 2. Incremental (Hybrid Approach)
+### 2. 增量（混合方法）
 
-- Run AngularJS and Angular side-by-side
-- Migrate feature by feature
-- ngUpgrade for interop
-- **Best for:** Large apps, continuous delivery
+- AngularJS 和 Angular 并行运行
+- 逐功能迁移
+- 使用 ngUpgrade 进行互操作
+- **最适合：** 大型应用、持续交付
 
-### 3. Vertical Slice
+### 3. 垂直切片
 
-- Migrate one feature completely
-- New features in Angular, maintain old in AngularJS
-- Gradually replace
-- **Best for:** Medium apps, distinct features
+- 完整迁移一个功能
+- 新功能使用 Angular，旧功能保持 AngularJS
+- 逐步替换
+- **最适合：** 中型应用、独立功能
 
-## Hybrid App Setup
+## 混合应用设置
 
 ```typescript
-// main.ts - Bootstrap hybrid app
+// main.ts - 引导混合应用
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { UpgradeModule } from "@angular/upgrade/static";
 import { AppModule } from "./app/app.module";
@@ -52,7 +52,7 @@ platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .then((platformRef) => {
     const upgrade = platformRef.injector.get(UpgradeModule);
-    // Bootstrap AngularJS
+    // 引导 AngularJS
     upgrade.bootstrap(document.body, ["myAngularJSApp"], { strictDi: true });
   });
 ```
@@ -70,17 +70,17 @@ export class AppModule {
   constructor(private upgrade: UpgradeModule) {}
 
   ngDoBootstrap() {
-    // Bootstrapped manually in main.ts
+    // 在 main.ts 中手动引导
   }
 }
 ```
 
-## Component Migration
+## 组件迁移
 
-### AngularJS Controller → Angular Component
+### AngularJS Controller → Angular 组件
 
 ```javascript
-// Before: AngularJS controller
+// 之前：AngularJS controller
 angular
   .module("myApp")
   .controller("UserController", function ($scope, UserService) {
@@ -99,7 +99,7 @@ angular
 ```
 
 ```typescript
-// After: Angular component
+// 之后：Angular 组件
 import { Component, OnInit } from "@angular/core";
 import { UserService } from "./user.service";
 
@@ -108,7 +108,7 @@ import { UserService } from "./user.service";
   template: `
     <div>
       <h2>{{ user.name }}</h2>
-      <button (click)="saveUser()">Save</button>
+      <button (click)="saveUser()">保存</button>
     </div>
   `,
 })
@@ -133,10 +133,10 @@ export class UserComponent implements OnInit {
 }
 ```
 
-### AngularJS Directive → Angular Component
+### AngularJS 指令 → Angular 组件
 
 ```javascript
-// Before: AngularJS directive
+// 之前：AngularJS 指令
 angular.module("myApp").directive("userCard", function () {
   return {
     restrict: "E",
@@ -147,7 +147,7 @@ angular.module("myApp").directive("userCard", function () {
     template: `
       <div class="card">
         <h3>{{ user.name }}</h3>
-        <button ng-click="onDelete()">Delete</button>
+        <button ng-click="onDelete()">删除</button>
       </div>
     `,
   };
@@ -155,7 +155,7 @@ angular.module("myApp").directive("userCard", function () {
 ```
 
 ```typescript
-// After: Angular component
+// 之后：Angular 组件
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 
 @Component({
@@ -163,7 +163,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
   template: `
     <div class="card">
       <h3>{{ user.name }}</h3>
-      <button (click)="delete.emit()">Delete</button>
+      <button (click)="delete.emit()">删除</button>
     </div>
   `,
 })
@@ -172,13 +172,13 @@ export class UserCardComponent {
   @Output() delete = new EventEmitter<void>();
 }
 
-// Usage: <app-user-card [user]="user" (delete)="handleDelete()"></app-user-card>
+// 用法：<app-user-card [user]="user" (delete)="handleDelete()"></app-user-card>
 ```
 
-## Service Migration
+## 服务迁移
 
 ```javascript
-// Before: AngularJS service
+// 之前：AngularJS 服务
 angular.module("myApp").factory("UserService", function ($http) {
   return {
     getUser: function (id) {
@@ -192,7 +192,7 @@ angular.module("myApp").factory("UserService", function ($http) {
 ```
 
 ```typescript
-// After: Angular service
+// 之后：Angular 服务
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
@@ -213,45 +213,45 @@ export class UserService {
 }
 ```
 
-## Dependency Injection Changes
+## 依赖注入变更
 
-### Downgrading Angular → AngularJS
+### 降级 Angular → AngularJS
 
 ```typescript
-// Angular service
+// Angular 服务
 import { Injectable } from "@angular/core";
 
 @Injectable({ providedIn: "root" })
 export class NewService {
   getData() {
-    return "data from Angular";
+    return "来自 Angular 的数据";
   }
 }
 
-// Make available to AngularJS
+// 使其对 AngularJS 可用
 import { downgradeInjectable } from "@angular/upgrade/static";
 
 angular.module("myApp").factory("newService", downgradeInjectable(NewService));
 
-// Use in AngularJS
+// 在 AngularJS 中使用
 angular.module("myApp").controller("OldController", function (newService) {
   console.log(newService.getData());
 });
 ```
 
-### Upgrading AngularJS → Angular
+### 升级 AngularJS → Angular
 
 ```typescript
-// AngularJS service
+// AngularJS 服务
 angular.module('myApp').factory('oldService', function() {
   return {
     getData: function() {
-      return 'data from AngularJS';
+      return '来自 AngularJS 的数据';
     }
   };
 });
 
-// Make available to Angular
+// 使其对 Angular 可用
 import { InjectionToken } from '@angular/core';
 
 export const OLD_SERVICE = new InjectionToken<any>('oldService');
@@ -266,7 +266,7 @@ export const OLD_SERVICE = new InjectionToken<any>('oldService');
   ]
 })
 
-// Use in Angular
+// 在 Angular 中使用
 @Component({...})
 export class NewComponent {
   constructor(@Inject(OLD_SERVICE) private oldService: any) {
@@ -275,10 +275,10 @@ export class NewComponent {
 }
 ```
 
-## Routing Migration
+## 路由迁移
 
 ```javascript
-// Before: AngularJS routing
+// 之前：AngularJS 路由
 angular.module("myApp").config(function ($routeProvider) {
   $routeProvider
     .when("/users", {
@@ -291,7 +291,7 @@ angular.module("myApp").config(function ($routeProvider) {
 ```
 
 ```typescript
-// After: Angular routing
+// 之后：Angular 路由
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
@@ -307,30 +307,30 @@ const routes: Routes = [
 export class AppRoutingModule {}
 ```
 
-## Forms Migration
+## 表单迁移
 
 ```html
-<!-- Before: AngularJS -->
+<!-- 之前：AngularJS -->
 <form name="userForm" ng-submit="saveUser()">
   <input type="text" ng-model="user.name" required />
   <input type="email" ng-model="user.email" required />
-  <button ng-disabled="userForm.$invalid">Save</button>
+  <button ng-disabled="userForm.$invalid">保存</button>
 </form>
 ```
 
 ```typescript
-// After: Angular (Template-driven)
+// 之后：Angular（模板驱动）
 @Component({
   template: `
     <form #userForm="ngForm" (ngSubmit)="saveUser()">
       <input type="text" [(ngModel)]="user.name" name="name" required>
       <input type="email" [(ngModel)]="user.email" name="email" required>
-      <button [disabled]="userForm.invalid">Save</button>
+      <button [disabled]="userForm.invalid">保存</button>
     </form>
   `
 })
 
-// Or Reactive Forms (preferred)
+// 或响应式表单（首选）
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -338,7 +338,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
     <form [formGroup]="userForm" (ngSubmit)="saveUser()">
       <input formControlName="name">
       <input formControlName="email">
-      <button [disabled]="userForm.invalid">Save</button>
+      <button [disabled]="userForm.invalid">保存</button>
     </form>
   `
 })
@@ -358,58 +358,58 @@ export class UserFormComponent {
 }
 ```
 
-## Migration Timeline
+## 迁移时间表
 
 ```
-Phase 1: Setup (1-2 weeks)
-- Install Angular CLI
-- Set up hybrid app
-- Configure build tools
-- Set up testing
+阶段 1：设置（1-2 周）
+- 安装 Angular CLI
+- 设置混合应用
+- 配置构建工具
+- 设置测试
 
-Phase 2: Infrastructure (2-4 weeks)
-- Migrate services
-- Migrate utilities
-- Set up routing
-- Migrate shared components
+阶段 2：基础设施（2-4 周）
+- 迁移服务
+- 迁移工具
+- 设置路由
+- 迁移共享组件
 
-Phase 3: Feature Migration (varies)
-- Migrate feature by feature
-- Test thoroughly
-- Deploy incrementally
+阶段 3：功能迁移（不定）
+- 逐功能迁移
+- 彻底测试
+- 增量部署
 
-Phase 4: Cleanup (1-2 weeks)
-- Remove AngularJS code
-- Remove ngUpgrade
-- Optimize bundle
-- Final testing
+阶段 4：清理（1-2 周）
+- 删除 AngularJS 代码
+- 删除 ngUpgrade
+- 优化打包
+- 最终测试
 ```
 
-## Resources
+## 资源
 
-- **references/hybrid-mode.md**: Hybrid app patterns
-- **references/component-migration.md**: Component conversion guide
-- **references/dependency-injection.md**: DI migration strategies
-- **references/routing.md**: Routing migration
-- **assets/hybrid-bootstrap.ts**: Hybrid app template
-- **assets/migration-timeline.md**: Project planning
-- **scripts/analyze-angular-app.sh**: App analysis script
+- **references/hybrid-mode.md**：混合应用模式
+- **references/component-migration.md**：组件转换指南
+- **references/dependency-injection.md**：DI 迁移策略
+- **references/routing.md**：路由迁移
+- **assets/hybrid-bootstrap.ts**：混合应用模板
+- **assets/migration-timeline.md**：项目规划
+- **scripts/analyze-angular-app.sh**：应用分析脚本
 
-## Best Practices
+## 最佳实践
 
-1. **Start with Services**: Migrate services first (easier)
-2. **Incremental Approach**: Feature-by-feature migration
-3. **Test Continuously**: Test at every step
-4. **Use TypeScript**: Migrate to TypeScript early
-5. **Follow Style Guide**: Angular style guide from day 1
-6. **Optimize Later**: Get it working, then optimize
-7. **Document**: Keep migration notes
+1. **从服务开始**：首先迁移服务（更容易）
+2. **增量方法**：逐功能迁移
+3. **持续测试**：每一步都测试
+4. **使用 TypeScript**：尽早迁移到 TypeScript
+5. **遵循风格指南**：从第一天开始遵循 Angular 风格指南
+6. **稍后优化**：先让它工作，然后优化
+7. **文档**：保留迁移笔记
 
-## Common Pitfalls
+## 常见陷阱
 
-- Not setting up hybrid app correctly
-- Migrating UI before logic
-- Ignoring change detection differences
-- Not handling scope properly
-- Mixing patterns (AngularJS + Angular)
-- Inadequate testing
+- 未正确设置混合应用
+- 在逻辑之前迁移 UI
+- 忽略变更检测差异
+- 未正确处理作用域
+- 混合模式（AngularJS + Angular）
+- 测试不足

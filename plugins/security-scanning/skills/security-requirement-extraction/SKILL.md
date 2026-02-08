@@ -1,52 +1,52 @@
 ---
 name: security-requirement-extraction
-description: Derive security requirements from threat models and business context. Use when translating threats into actionable requirements, creating security user stories, or building security test cases.
+description: 从威胁模型和业务上下文中提取安全需求。当将威胁转化为可执行需求、创建安全用户故事或构建安全测试用例时使用。
 ---
 
-# Security Requirement Extraction
+# 安全需求提取
 
-Transform threat analysis into actionable security requirements.
+将威胁分析转化为可执行的安全需求。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Converting threat models to requirements
-- Writing security user stories
-- Creating security test cases
-- Building security acceptance criteria
-- Compliance requirement mapping
-- Security architecture documentation
+- 将威胁模型转化为需求
+- 编写安全用户故事
+- 创建安全测试用例
+- 构建安全验收标准
+- 合规需求映射
+- 安全架构文档
 
-## Core Concepts
+## 核心概念
 
-### 1. Requirement Categories
+### 1. 需求类别
 
 ```
-Business Requirements → Security Requirements → Technical Controls
+业务需求 → 安全需求 → 技术控制
          ↓                       ↓                      ↓
-  "Protect customer    "Encrypt PII at rest"   "AES-256 encryption
-   data"                                        with KMS key rotation"
+  "保护客户      "静态加密 PII"              "使用 AES-256 加密
+   数据"                                           并采用 KMS 密钥轮换"
 ```
 
-### 2. Security Requirement Types
+### 2. 安全需求类型
 
-| Type               | Focus                   | Example                               |
+| 类型               | 关注点                   | 示例                               |
 | ------------------ | ----------------------- | ------------------------------------- |
-| **Functional**     | What system must do     | "System must authenticate users"      |
-| **Non-functional** | How system must perform | "Authentication must complete in <2s" |
-| **Constraint**     | Limitations imposed     | "Must use approved crypto libraries"  |
+| **功能性**     | 系统必须做什么     | "系统必须对用户进行身份验证"      |
+| **非功能性** | 系统必须如何执行 | "身份验证必须在 <2 秒内完成" |
+| **约束**     | 施加的限制     | "必须使用批准的加密库"  |
 
-### 3. Requirement Attributes
+### 3. 需求属性
 
-| Attribute        | Description                 |
+| 属性        | 描述                 |
 | ---------------- | --------------------------- |
-| **Traceability** | Links to threats/compliance |
-| **Testability**  | Can be verified             |
-| **Priority**     | Business importance         |
-| **Risk Level**   | Impact if not met           |
+| **可追溯性** | 链接到威胁/合规 |
+| **可测试性**  | 可被验证             |
+| **优先级**     | 业务重要性         |
+| **风险等级**   | 未满足时的影响           |
 
-## Templates
+## 模板
 
-### Template 1: Security Requirement Model
+### 模板 1：安全需求模型
 
 ```python
 from dataclasses import dataclass, field
@@ -109,34 +109,34 @@ class SecurityRequirement:
     created_date: datetime = field(default_factory=datetime.now)
 
     def to_user_story(self) -> str:
-        """Convert to user story format."""
+        """转换为用户故事格式。"""
         return f"""
 **{self.id}: {self.title}**
 
-As a security-conscious system,
-I need to {self.description.lower()},
-So that {self.rationale.lower()}.
+作为一个安全意识强的系统,
+我需要 {self.description.lower()},
+以便 {self.rationale.lower()}.
 
-**Acceptance Criteria:**
+**验收标准:**
 {chr(10).join(f'- [ ] {ac}' for ac in self.acceptance_criteria)}
 
-**Priority:** {self.priority.name}
-**Domain:** {self.domain.value}
-**Threat References:** {', '.join(self.threat_refs)}
+**优先级:** {self.priority.name}
+**领域:** {self.domain.value}
+**威胁引用:** {', '.join(self.threat_refs)}
 """
 
     def to_test_spec(self) -> str:
-        """Convert to test specification."""
+        """转换为测试规范。"""
         return f"""
-## Test Specification: {self.id}
+## 测试规范: {self.id}
 
-### Requirement
+### 需求
 {self.description}
 
-### Test Cases
+### 测试用例
 {chr(10).join(f'{i+1}. {tc}' for i, tc in enumerate(self.test_cases))}
 
-### Acceptance Criteria Verification
+### 验收标准验证
 {chr(10).join(f'- {ac}' for ac in self.acceptance_criteria)}
 """
 
@@ -163,9 +163,9 @@ class RequirementSet:
         return [r for r in self.requirements if r.priority == Priority.CRITICAL]
 
     def export_markdown(self) -> str:
-        """Export all requirements as markdown."""
-        lines = [f"# Security Requirements: {self.name}\n"]
-        lines.append(f"Version: {self.version}\n")
+        """将所有需求导出为 markdown。"""
+        lines = [f"# 安全需求: {self.name}\n"]
+        lines.append(f"版本: {self.version}\n")
 
         for domain in SecurityDomain:
             domain_reqs = self.get_by_domain(domain)
@@ -177,7 +177,7 @@ class RequirementSet:
         return "\n".join(lines)
 
     def traceability_matrix(self) -> Dict[str, List[str]]:
-        """Generate threat-to-requirement traceability."""
+        """生成威胁到需求的可追溯性。"""
         matrix = {}
         for req in self.requirements:
             for threat_id in req.threat_refs:
@@ -187,7 +187,7 @@ class RequirementSet:
         return matrix
 ```
 
-### Template 2: Threat-to-Requirement Extractor
+### 模板 2：威胁到需求提取器
 
 ```python
 from dataclasses import dataclass
@@ -196,7 +196,7 @@ from typing import List, Dict, Tuple
 @dataclass
 class ThreatInput:
     id: str
-    category: str  # STRIDE category
+    category: str  # STRIDE 类别
     title: str
     description: str
     target: str
@@ -205,74 +205,74 @@ class ThreatInput:
 
 
 class RequirementExtractor:
-    """Extract security requirements from threats."""
+    """从威胁中提取安全需求。"""
 
-    # Mapping of STRIDE categories to security domains and requirement patterns
+    # STRIDE 类别到安全域和需求模式的映射
     STRIDE_MAPPINGS = {
         "SPOOFING": {
             "domains": [SecurityDomain.AUTHENTICATION, SecurityDomain.SESSION_MANAGEMENT],
             "patterns": [
-                ("Implement strong authentication for {target}",
-                 "Ensure {target} authenticates all users before granting access"),
-                ("Validate identity tokens for {target}",
-                 "All authentication tokens must be cryptographically verified"),
-                ("Implement session management for {target}",
-                 "Sessions must be securely managed with proper expiration"),
+                ("为 {target} 实施强身份验证",
+                 "确保 {target} 在授予访问权限之前对所有用户进行身份验证"),
+                ("验证 {target} 的身份令牌",
+                 "所有身份验证令牌必须经过加密验证"),
+                ("为 {target} 实施会话管理",
+                 "必须安全地管理会话并设置适当的过期时间"),
             ]
         },
         "TAMPERING": {
             "domains": [SecurityDomain.INPUT_VALIDATION, SecurityDomain.DATA_PROTECTION],
             "patterns": [
-                ("Validate all input to {target}",
-                 "All input must be validated against expected formats"),
-                ("Implement integrity checks for {target}",
-                 "Data integrity must be verified using cryptographic signatures"),
-                ("Protect {target} from modification",
-                 "Implement controls to prevent unauthorized data modification"),
+                ("验证对 {target} 的所有输入",
+                 "所有输入必须根据预期格式进行验证"),
+                ("为 {target} 实施完整性检查",
+                 "必须使用加密签名验证数据完整性"),
+                ("保护 {target} 免受修改",
+                 "实施控制以防止未经授权的数据修改"),
             ]
         },
         "REPUDIATION": {
             "domains": [SecurityDomain.AUDIT_LOGGING],
             "patterns": [
-                ("Log all security events for {target}",
-                 "Security-relevant events must be logged for audit purposes"),
-                ("Implement non-repudiation for {target}",
-                 "Critical actions must have cryptographic proof of origin"),
-                ("Protect audit logs for {target}",
-                 "Audit logs must be tamper-evident and protected"),
+                ("记录 {target} 的所有安全事件",
+                 "必须记录与安全相关的事件以用于审计目的"),
+                ("为 {target} 实施不可抵赖性",
+                 "关键操作必须具有来源的加密证明"),
+                ("保护 {target} 的审计日志",
+                 "审计日志必须具有防篡改特性并受到保护"),
             ]
         },
         "INFORMATION_DISCLOSURE": {
             "domains": [SecurityDomain.DATA_PROTECTION, SecurityDomain.CRYPTOGRAPHY],
             "patterns": [
-                ("Encrypt sensitive data in {target}",
-                 "Sensitive data must be encrypted at rest and in transit"),
-                ("Implement access controls for {target}",
-                 "Data access must be restricted based on need-to-know"),
-                ("Prevent information leakage from {target}",
-                 "Error messages and logs must not expose sensitive information"),
+                ("加密 {target} 中的敏感数据",
+                 "敏感数据必须在静态和传输过程中加密"),
+                ("为 {target} 实施访问控制",
+                 "必须根据知情原则限制数据访问"),
+                ("防止 {target} 的信息泄露",
+                 "错误消息和日志不得暴露敏感信息"),
             ]
         },
         "DENIAL_OF_SERVICE": {
             "domains": [SecurityDomain.AVAILABILITY, SecurityDomain.INPUT_VALIDATION],
             "patterns": [
-                ("Implement rate limiting for {target}",
-                 "Requests must be rate-limited to prevent resource exhaustion"),
-                ("Ensure availability of {target}",
-                 "System must remain available under high load conditions"),
-                ("Implement resource quotas for {target}",
-                 "Resource consumption must be bounded and monitored"),
+                ("为 {target} 实施速率限制",
+                 "必须对请求进行速率限制以防止资源耗尽"),
+                ("确保 {target} 的可用性",
+                 "系统在高负载条件下必须保持可用"),
+                ("为 {target} 实施资源配额",
+                 "资源消耗必须受到限制和监控"),
             ]
         },
         "ELEVATION_OF_PRIVILEGE": {
             "domains": [SecurityDomain.AUTHORIZATION],
             "patterns": [
-                ("Enforce authorization for {target}",
-                 "All actions must be authorized based on user permissions"),
-                ("Implement least privilege for {target}",
-                 "Users must only have minimum necessary permissions"),
-                ("Validate permissions for {target}",
-                 "Permission checks must be performed server-side"),
+                ("为 {target} 强制授权",
+                 "所有操作必须根据用户权限进行授权"),
+                ("为 {target} 实施最小权限",
+                 "用户必须仅具有最小的必要权限"),
+                ("验证 {target} 的权限",
+                 "权限检查必须在服务端执行"),
             ]
         },
     }
@@ -282,9 +282,9 @@ class RequirementExtractor:
         threats: List[ThreatInput],
         project_name: str
     ) -> RequirementSet:
-        """Extract security requirements from threats."""
+        """从威胁中提取安全需求。"""
         req_set = RequirementSet(
-            name=f"{project_name} Security Requirements",
+            name=f"{project_name} 安全需求",
             version="1.0"
         )
 
@@ -302,7 +302,7 @@ class RequirementExtractor:
         threat: ThreatInput,
         start_id: int
     ) -> List[SecurityRequirement]:
-        """Convert a single threat to requirements."""
+        """将单个威胁转化为需求。"""
         requirements = []
         mapping = self.STRIDE_MAPPINGS.get(threat.category, {})
         domains = mapping.get("domains", [])
@@ -318,7 +318,7 @@ class RequirementExtractor:
                 req_type=RequirementType.FUNCTIONAL,
                 domain=domains[i % len(domains)] if domains else SecurityDomain.DATA_PROTECTION,
                 priority=priority,
-                rationale=f"Mitigates threat: {threat.title}",
+                rationale=f"缓解威胁: {threat.title}",
                 threat_refs=[threat.id],
                 acceptance_criteria=self._generate_acceptance_criteria(
                     threat.category, threat.target
@@ -332,7 +332,7 @@ class RequirementExtractor:
         return requirements
 
     def _calculate_priority(self, impact: str, likelihood: str) -> Priority:
-        """Calculate requirement priority from threat attributes."""
+        """从威胁属性计算需求优先级。"""
         score_map = {"LOW": 1, "MEDIUM": 2, "HIGH": 3, "CRITICAL": 4}
         impact_score = score_map.get(impact.upper(), 2)
         likelihood_score = score_map.get(likelihood.upper(), 2)
@@ -352,37 +352,37 @@ class RequirementExtractor:
         category: str,
         target: str
     ) -> List[str]:
-        """Generate acceptance criteria for requirement."""
+        """为需求生成验收标准。"""
         criteria_templates = {
             "SPOOFING": [
-                f"Users must authenticate before accessing {target}",
-                "Authentication failures are logged and monitored",
-                "Multi-factor authentication is available for sensitive operations",
+                f"用户必须在访问 {target} 之前进行身份验证",
+                "身份验证失败被记录和监控",
+                "敏感操作可使用多因素身份验证",
             ],
             "TAMPERING": [
-                f"All input to {target} is validated",
-                "Data integrity is verified before processing",
-                "Modification attempts trigger alerts",
+                f"对 {target} 的所有输入都经过验证",
+                "在处理之前验证数据完整性",
+                "修改尝试触发警报",
             ],
             "REPUDIATION": [
-                f"All actions on {target} are logged with user identity",
-                "Logs cannot be modified by regular users",
-                "Log retention meets compliance requirements",
+                f"对 {target} 的所有操作都记录了用户身份",
+                "日志不能被普通用户修改",
+                "日志保留满足合规要求",
             ],
             "INFORMATION_DISCLOSURE": [
-                f"Sensitive data in {target} is encrypted",
-                "Access to sensitive data is logged",
-                "Error messages do not reveal sensitive information",
+                f"{target} 中的敏感数据已加密",
+                "对敏感数据的访问被记录",
+                "错误消息不泄露敏感信息",
             ],
             "DENIAL_OF_SERVICE": [
-                f"Rate limiting is enforced on {target}",
-                "System degrades gracefully under load",
-                "Resource exhaustion triggers alerts",
+                f"对 {target} 实施了速率限制",
+                "系统在负载下优雅降级",
+                "资源耗尽触发警报",
             ],
             "ELEVATION_OF_PRIVILEGE": [
-                f"Authorization is checked for all {target} operations",
-                "Users cannot access resources beyond their permissions",
-                "Privilege changes are logged and monitored",
+                f"为所有 {target} 操作检查授权",
+                "用户无法访问超出其权限的资源",
+                "权限变更被记录和监控",
             ],
         }
         return criteria_templates.get(category, [])
@@ -392,49 +392,49 @@ class RequirementExtractor:
         category: str,
         target: str
     ) -> List[str]:
-        """Generate test cases for requirement."""
+        """为需求生成测试用例。"""
         test_templates = {
             "SPOOFING": [
-                f"Test: Unauthenticated access to {target} is denied",
-                "Test: Invalid credentials are rejected",
-                "Test: Session tokens cannot be forged",
+                f"测试: 对 {target} 的未授权访问被拒绝",
+                "测试: 无效凭证被拒绝",
+                "测试: 会话令牌无法被伪造",
             ],
             "TAMPERING": [
-                f"Test: Invalid input to {target} is rejected",
-                "Test: Tampered data is detected and rejected",
-                "Test: SQL injection attempts are blocked",
+                f"测试: 对 {target} 的无效输入被拒绝",
+                "测试: 被篡改的数据被检测到并拒绝",
+                "测试: SQL 注入尝试被阻止",
             ],
             "REPUDIATION": [
-                "Test: Security events are logged",
-                "Test: Logs include sufficient detail for forensics",
-                "Test: Log integrity is protected",
+                "测试: 安全事件被记录",
+                "测试: 日志包含足够的取证细节",
+                "测试: 日志完整性受到保护",
             ],
             "INFORMATION_DISCLOSURE": [
-                f"Test: {target} data is encrypted in transit",
-                f"Test: {target} data is encrypted at rest",
-                "Test: Error messages are sanitized",
+                f"测试: {target} 数据在传输过程中加密",
+                f"测试: {target} 数据在静态时加密",
+                "测试: 错误消息经过清理",
             ],
             "DENIAL_OF_SERVICE": [
-                f"Test: Rate limiting on {target} works correctly",
-                "Test: System handles burst traffic gracefully",
-                "Test: Resource limits are enforced",
+                f"测试: 对 {target} 的速率限制正常工作",
+                "测试: 系统优雅地处理突发流量",
+                "测试: 资源限制被强制执行",
             ],
             "ELEVATION_OF_PRIVILEGE": [
-                f"Test: Unauthorized access to {target} is denied",
-                "Test: Privilege escalation attempts are blocked",
-                "Test: IDOR vulnerabilities are not present",
+                f"测试: 对 {target} 的未授权访问被拒绝",
+                "测试: 权限提升尝试被阻止",
+                "测试: 不存在 IDOR 漏洞",
             ],
         }
         return test_templates.get(category, [])
 ```
 
-### Template 3: Compliance Mapping
+### 模板 3：合规映射
 
 ```python
 from typing import Dict, List, Set
 
 class ComplianceMapper:
-    """Map security requirements to compliance frameworks."""
+    """将安全需求映射到合规框架。"""
 
     FRAMEWORK_CONTROLS = {
         ComplianceFramework.PCI_DSS: {
@@ -472,7 +472,7 @@ class ComplianceMapper:
         requirement: SecurityRequirement,
         frameworks: List[ComplianceFramework]
     ) -> Dict[str, List[str]]:
-        """Map a requirement to compliance controls."""
+        """将需求映射到合规控制。"""
         mapping = {}
         for framework in frameworks:
             controls = self.FRAMEWORK_CONTROLS.get(framework, {})
@@ -487,7 +487,7 @@ class ComplianceMapper:
         framework: ComplianceFramework,
         control_id: str
     ) -> List[SecurityRequirement]:
-        """Find requirements that satisfy a compliance control."""
+        """查找满足合规控制的需求。"""
         matching = []
         framework_controls = self.FRAMEWORK_CONTROLS.get(framework, {})
 
@@ -502,7 +502,7 @@ class ComplianceMapper:
         requirement_set: RequirementSet,
         frameworks: List[ComplianceFramework]
     ) -> Dict[str, Dict[str, List[str]]]:
-        """Generate compliance traceability matrix."""
+        """生成合规可追溯性矩阵。"""
         matrix = {}
 
         for framework in frameworks:
@@ -524,7 +524,7 @@ class ComplianceMapper:
         requirement_set: RequirementSet,
         framework: ComplianceFramework
     ) -> Dict[str, List[str]]:
-        """Identify compliance gaps."""
+        """识别合规差距。"""
         gaps = {"missing_controls": [], "weak_coverage": []}
         framework_controls = self.FRAMEWORK_CONTROLS.get(framework, {})
 
@@ -542,137 +542,137 @@ class ComplianceMapper:
         return gaps
 ```
 
-### Template 4: Security User Story Generator
+### 模板 4：安全用户故事生成器
 
 ```python
 class SecurityUserStoryGenerator:
-    """Generate security-focused user stories."""
+    """生成专注于安全的用户故事。"""
 
     STORY_TEMPLATES = {
         SecurityDomain.AUTHENTICATION: {
-            "as_a": "security-conscious user",
-            "so_that": "my identity is protected from impersonation",
+            "as_a": "安全意识强的用户",
+            "so_that": "我的身份受到保护,免受冒充",
         },
         SecurityDomain.AUTHORIZATION: {
-            "as_a": "system administrator",
-            "so_that": "users can only access resources appropriate to their role",
+            "as_a": "系统管理员",
+            "so_that": "用户只能访问适合其角色的资源",
         },
         SecurityDomain.DATA_PROTECTION: {
-            "as_a": "data owner",
-            "so_that": "my sensitive information remains confidential",
+            "as_a": "数据所有者",
+            "so_that": "我的敏感信息保持机密",
         },
         SecurityDomain.AUDIT_LOGGING: {
-            "as_a": "security analyst",
-            "so_that": "I can investigate security incidents",
+            "as_a": "安全分析师",
+            "so_that": "我可以调查安全事件",
         },
         SecurityDomain.INPUT_VALIDATION: {
-            "as_a": "application developer",
-            "so_that": "the system is protected from malicious input",
+            "as_a": "应用程序开发人员",
+            "so_that": "系统受到保护,免受恶意输入",
         },
     }
 
     def generate_story(self, requirement: SecurityRequirement) -> str:
-        """Generate a user story from requirement."""
+        """从需求生成用户故事。"""
         template = self.STORY_TEMPLATES.get(
             requirement.domain,
-            {"as_a": "user", "so_that": "the system is secure"}
+            {"as_a": "用户", "so_that": "系统是安全的"}
         )
 
         story = f"""
 ## {requirement.id}: {requirement.title}
 
-**User Story:**
-As a {template['as_a']},
-I want the system to {requirement.description.lower()},
-So that {template['so_that']}.
+**用户故事:**
+作为一个 {template['as_a']},
+我希望系统 {requirement.description.lower()},
+以便 {template['so_that']}.
 
-**Priority:** {requirement.priority.name}
-**Type:** {requirement.req_type.value}
-**Domain:** {requirement.domain.value}
+**优先级:** {requirement.priority.name}
+**类型:** {requirement.req_type.value}
+**领域:** {requirement.domain.value}
 
-**Acceptance Criteria:**
+**验收标准:**
 {self._format_acceptance_criteria(requirement.acceptance_criteria)}
 
-**Definition of Done:**
-- [ ] Implementation complete
-- [ ] Security tests pass
-- [ ] Code review complete
-- [ ] Security review approved
-- [ ] Documentation updated
+**完成定义:**
+- [ ] 实施完成
+- [ ] 安全测试通过
+- [ ] 代码审查完成
+- [ ] 安全审查已批准
+- [ ] 文档已更新
 
-**Security Test Cases:**
+**安全测试用例:**
 {self._format_test_cases(requirement.test_cases)}
 
-**Traceability:**
-- Threats: {', '.join(requirement.threat_refs) or 'N/A'}
-- Compliance: {', '.join(requirement.compliance_refs) or 'N/A'}
+**可追溯性:**
+- 威胁: {', '.join(requirement.threat_refs) or 'N/A'}
+- 合规: {', '.join(requirement.compliance_refs) or 'N/A'}
 """
         return story
 
     def _format_acceptance_criteria(self, criteria: List[str]) -> str:
-        return "\n".join(f"- [ ] {c}" for c in criteria) if criteria else "- [ ] TBD"
+        return "\n".join(f"- [ ] {c}" for c in criteria) if criteria else "- [ ] 待定"
 
     def _format_test_cases(self, tests: List[str]) -> str:
-        return "\n".join(f"- {t}" for t in tests) if tests else "- TBD"
+        return "\n".join(f"- {t}" for t in tests) if tests else "- 待定"
 
     def generate_epic(
         self,
         requirement_set: RequirementSet,
         domain: SecurityDomain
     ) -> str:
-        """Generate an epic for a security domain."""
+        """为安全域生成史诗。"""
         reqs = requirement_set.get_by_domain(domain)
 
         epic = f"""
-# Security Epic: {domain.value.replace('_', ' ').title()}
+# 安全史诗: {domain.value.replace('_', ' ').title()}
 
-## Overview
-This epic covers all security requirements related to {domain.value.replace('_', ' ')}.
+## 概述
+此史诗涵盖与 {domain.value.replace('_', ' ')} 相关的所有安全需求。
 
-## Business Value
-- Protect against {domain.value.replace('_', ' ')} related threats
-- Meet compliance requirements
-- Reduce security risk
+## 业务价值
+- 防御与 {domain.value.replace('_', ' ')} 相关的威胁
+- 满足合规要求
+- 降低安全风险
 
-## Stories in this Epic
+## 此史诗中的故事
 {chr(10).join(f'- [{r.id}] {r.title}' for r in reqs)}
 
-## Acceptance Criteria
-- All stories complete
-- Security tests passing
-- Security review approved
-- Compliance requirements met
+## 验收标准
+- 所有故事完成
+- 安全测试通过
+- 安全审查已批准
+- 满足合规要求
 
-## Risk if Not Implemented
-- Vulnerability to {domain.value.replace('_', ' ')} attacks
-- Compliance violations
-- Potential data breach
+## 未实施的风险
+- 易受 {domain.value.replace('_', ' ')} 攻击
+- 合规违规
+- 潜在的数据泄露
 
-## Dependencies
-{chr(10).join(f'- {d}' for r in reqs for d in r.dependencies) or '- None identified'}
+## 依赖关系
+{chr(10).join(f'- {d}' for r in reqs for d in r.dependencies) or '- 无已识别的依赖关系'}
 """
         return epic
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Trace to threats** - Every requirement should map to threats
-- **Be specific** - Vague requirements can't be tested
-- **Include acceptance criteria** - Define "done"
-- **Consider compliance** - Map to frameworks early
-- **Review regularly** - Requirements evolve with threats
+- **追溯威胁** - 每个需求都应映射到威胁
+- **具体明确** - 模糊的需求无法测试
+- **包含验收标准** - 定义"完成"
+- **考虑合规** - 尽早映射到框架
+- **定期审查** - 需求随威胁演变
 
-### Don'ts
+### 不应该做
 
-- **Don't be generic** - "Be secure" is not a requirement
-- **Don't skip rationale** - Explain why it matters
-- **Don't ignore priorities** - Not all requirements are equal
-- **Don't forget testability** - If you can't test it, you can't verify it
-- **Don't work in isolation** - Involve stakeholders
+- **不要泛泛而谈** - "要安全"不是需求
+- **不要跳过基本原理** - 解释为什么重要
+- **不要忽略优先级** - 并非所有需求都相同
+- **不要忘记可测试性** - 如果你无法测试它,就无法验证它
+- **不要孤立工作** - 让利益相关者参与
 
-## Resources
+## 资源
 
 - [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)
 - [NIST SP 800-53](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)

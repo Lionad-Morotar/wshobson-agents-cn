@@ -1,41 +1,41 @@
 ---
 name: tailwind-design-system
-description: Build scalable design systems with Tailwind CSS, design tokens, component libraries, and responsive patterns. Use when creating component libraries, implementing design systems, or standardizing UI patterns.
+description: 使用 Tailwind CSS、设计令牌、组件库和响应式模式构建可扩展的设计系统。在创建组件库、实现设计系统或标准化 UI 模式时使用。
 ---
 
-# Tailwind Design System
+# Tailwind 设计系统
 
-Build production-ready design systems with Tailwind CSS, including design tokens, component variants, responsive patterns, and accessibility.
+使用 Tailwind CSS 构建生产就绪的设计系统，包括设计令牌、组件变体、响应式模式和可访问性。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Creating a component library with Tailwind
-- Implementing design tokens and theming
-- Building responsive and accessible components
-- Standardizing UI patterns across a codebase
-- Migrating to or extending Tailwind CSS
-- Setting up dark mode and color schemes
+- 使用 Tailwind 创建组件库
+- 实现设计令牌和主题
+- 构建响应式和可访问的组件
+- 在代码库中标准化 UI 模式
+- 迁移到或扩展 Tailwind CSS
+- 设置深色模式和配色方案
 
-## Core Concepts
+## 核心概念
 
-### 1. Design Token Hierarchy
+### 1. 设计令牌层次结构
 
 ```
-Brand Tokens (abstract)
-    └── Semantic Tokens (purpose)
-        └── Component Tokens (specific)
+品牌令牌（抽象）
+    └── 语义令牌（用途）
+        └── 组件令牌（特定）
 
-Example:
+示例：
     blue-500 → primary → button-bg
 ```
 
-### 2. Component Architecture
+### 2. 组件架构
 
 ```
-Base styles → Variants → Sizes → States → Overrides
+基础样式 → 变体 → 尺寸 → 状态 → 覆盖
 ```
 
-## Quick Start
+## 快速开始
 
 ```typescript
 // tailwind.config.ts
@@ -47,7 +47,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Semantic color tokens
+        // 语义颜色令牌
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -130,9 +130,9 @@ export default config;
 }
 ```
 
-## Patterns
+## 模式
 
-### Pattern 1: CVA (Class Variance Authority) Components
+### 模式 1：CVA（Class Variance Authority）组件
 
 ```typescript
 // components/ui/button.tsx
@@ -141,7 +141,7 @@ import { forwardRef } from 'react'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  // Base styles
+  // 基础样式
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
@@ -189,13 +189,13 @@ Button.displayName = 'Button'
 
 export { Button, buttonVariants }
 
-// Usage
-<Button variant="destructive" size="lg">Delete</Button>
-<Button variant="outline">Cancel</Button>
-<Button asChild><Link href="/home">Home</Link></Button>
+// 使用
+<Button variant="destructive" size="lg">删除</Button>
+<Button variant="outline">取消</Button>
+<Button asChild><Link href="/home">首页</Link></Button>
 ```
 
-### Pattern 2: Compound Components
+### 模式 2：组合组件
 
 ```typescript
 // components/ui/card.tsx
@@ -269,22 +269,22 @@ CardFooter.displayName = 'CardFooter'
 
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 
-// Usage
+// 使用
 <Card>
   <CardHeader>
-    <CardTitle>Account</CardTitle>
-    <CardDescription>Manage your account settings</CardDescription>
+    <CardTitle>账户</CardTitle>
+    <CardDescription>管理您的账户设置</CardDescription>
   </CardHeader>
   <CardContent>
     <form>...</form>
   </CardContent>
   <CardFooter>
-    <Button>Save</Button>
+    <Button>保存</Button>
   </CardFooter>
 </Card>
 ```
 
-### Pattern 3: Form Components
+### 模式 3：表单组件
 
 ```typescript
 // components/ui/input.tsx
@@ -340,14 +340,14 @@ const Label = forwardRef<HTMLLabelElement, React.LabelHTMLAttributes<HTMLLabelEl
 )
 Label.displayName = 'Label'
 
-// Usage with React Hook Form
+// 与 React Hook Form 一起使用
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
 const schema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
+  email: z.string().email('无效的电子邮件地址'),
+  password: z.string().min(8, '密码必须至少 8 个字符'),
 })
 
 function LoginForm() {
@@ -358,7 +358,7 @@ function LoginForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">电子邮件</Label>
         <Input
           id="email"
           type="email"
@@ -367,7 +367,7 @@ function LoginForm() {
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="password">Password</Label>
+        <Label htmlFor="password">密码</Label>
         <Input
           id="password"
           type="password"
@@ -375,13 +375,13 @@ function LoginForm() {
           error={errors.password?.message}
         />
       </div>
-      <Button type="submit" className="w-full">Sign In</Button>
+      <Button type="submit" className="w-full">登录</Button>
     </form>
   )
 }
 ```
 
-### Pattern 4: Responsive Grid System
+### 模式 4：响应式网格系统
 
 ```typescript
 // components/ui/grid.tsx
@@ -422,7 +422,7 @@ export function Grid({ className, cols, gap, ...props }: GridProps) {
   )
 }
 
-// Container component
+// 容器组件
 const containerVariants = cva('mx-auto w-full px-4 sm:px-6 lg:px-8', {
   variants: {
     size: {
@@ -449,7 +449,7 @@ export function Container({ className, size, ...props }: ContainerProps) {
   )
 }
 
-// Usage
+// 使用
 <Container>
   <Grid cols={4} gap="lg">
     {products.map((product) => (
@@ -459,10 +459,10 @@ export function Container({ className, size, ...props }: ContainerProps) {
 </Container>
 ```
 
-### Pattern 5: Animation Utilities
+### 模式 5：动画工具
 
 ```typescript
-// lib/animations.ts - Tailwind CSS Animate utilities
+// lib/animations.ts - Tailwind CSS Animate 工具
 import { cn } from './utils'
 
 export const fadeIn = 'animate-in fade-in duration-300'
@@ -474,7 +474,7 @@ export const slideInFromRight = 'animate-in slide-in-from-right duration-300'
 export const zoomIn = 'animate-in zoom-in-95 duration-300'
 export const zoomOut = 'animate-out zoom-out-95 duration-300'
 
-// Compound animations
+// 复合动画
 export const modalEnter = cn(fadeIn, zoomIn, 'duration-200')
 export const modalExit = cn(fadeOut, zoomOut, 'duration-200')
 export const dropdownEnter = cn(fadeIn, slideInFromTop, 'duration-150')
@@ -525,7 +525,7 @@ const DialogContent = forwardRef<
 ))
 ```
 
-### Pattern 6: Dark Mode Implementation
+### 模式 6：深色模式实现
 
 ```typescript
 // providers/ThemeProvider.tsx
@@ -596,7 +596,7 @@ export function ThemeProvider({
 
 export const useTheme = () => {
   const context = useContext(ThemeContext)
-  if (!context) throw new Error('useTheme must be used within ThemeProvider')
+  if (!context) throw new Error('useTheme 必须在 ThemeProvider 中使用')
   return context
 }
 
@@ -615,13 +615,13 @@ export function ThemeToggle() {
     >
       <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
+      <span className="sr-only">切换主题</span>
     </Button>
   )
 }
 ```
 
-## Utility Functions
+## 工具函数
 
 ```typescript
 // lib/utils.ts
@@ -632,37 +632,37 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Focus ring utility
+// Focus ring 工具
 export const focusRing = cn(
   "focus-visible:outline-none focus-visible:ring-2",
   "focus-visible:ring-ring focus-visible:ring-offset-2",
 );
 
-// Disabled utility
+// 禁用状态工具
 export const disabled = "disabled:pointer-events-none disabled:opacity-50";
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做的
 
-- **Use CSS variables** - Enable runtime theming
-- **Compose with CVA** - Type-safe variants
-- **Use semantic colors** - `primary` not `blue-500`
-- **Forward refs** - Enable composition
-- **Add accessibility** - ARIA attributes, focus states
+- **使用 CSS 变量** - 启用运行时主题
+- **使用 CVA 组合** - 类型安全的变体
+- **使用语义颜色** - `primary` 而非 `blue-500`
+- **转发 refs** - 启用组合
+- **添加可访问性** - ARIA 属性、焦点状态
 
-### Don'ts
+### 不应该做的
 
-- **Don't use arbitrary values** - Extend theme instead
-- **Don't nest @apply** - Hurts readability
-- **Don't skip focus states** - Keyboard users need them
-- **Don't hardcode colors** - Use semantic tokens
-- **Don't forget dark mode** - Test both themes
+- **不要使用任意值** - 改为扩展主题
+- **不要嵌套 @apply** - 损害可读性
+- **不要跳过焦点状态** - 键盘用户需要它们
+- **不要硬编码颜色** - 使用语义令牌
+- **不要忘记深色模式** - 测试两个主题
 
-## Resources
+## 资源
 
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [CVA Documentation](https://cva.style/docs)
+- [Tailwind CSS 文档](https://tailwindcss.com/docs)
+- [CVA 文档](https://cva.style/docs)
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Radix Primitives](https://www.radix-ui.com/primitives)

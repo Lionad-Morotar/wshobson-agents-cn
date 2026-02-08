@@ -1,210 +1,210 @@
 ---
 name: stride-analysis-patterns
-description: Apply STRIDE methodology to systematically identify threats. Use when analyzing system security, conducting threat modeling sessions, or creating security documentation.
+description: 应用 STRIDE 方法论系统性地识别威胁。在分析系统安全、进行威胁建模会议或创建安全文档时使用。
 ---
 
-# STRIDE Analysis Patterns
+# STRIDE 分析模式
 
-Systematic threat identification using the STRIDE methodology.
+使用 STRIDE 方法论进行系统性威胁识别。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Starting new threat modeling sessions
-- Analyzing existing system architecture
-- Reviewing security design decisions
-- Creating threat documentation
-- Training teams on threat identification
-- Compliance and audit preparation
+- 启动新的威胁建模会议
+- 分析现有系统架构
+- 审查安全设计决策
+- 创建威胁文档
+- 培训团队进行威胁识别
+- 合规性和审计准备
 
-## Core Concepts
+## 核心概念
 
-### 1. STRIDE Categories
+### 1. STRIDE 分类
 
 ```
-S - Spoofing       → Authentication threats
-T - Tampering      → Integrity threats
-R - Repudiation    → Non-repudiation threats
-I - Information    → Confidentiality threats
+S - Spoofing       → 认证威胁（伪装）
+T - Tampering      → 完整性威胁（篡改）
+R - Repudiation    → 不可否认性威胁（否认）
+I - Information    → 机密性威胁（信息泄露）
     Disclosure
-D - Denial of      → Availability threats
+D - Denial of      → 可用性威胁（拒绝服务）
     Service
-E - Elevation of   → Authorization threats
+E - Elevation of   → 授权威胁（权限提升）
     Privilege
 ```
 
-### 2. Threat Analysis Matrix
+### 2. 威胁分析矩阵
 
-| Category            | Question                                  | Control Family |
-| ------------------- | ----------------------------------------- | -------------- |
-| **Spoofing**        | Can attacker pretend to be someone else?  | Authentication |
-| **Tampering**       | Can attacker modify data in transit/rest? | Integrity      |
-| **Repudiation**     | Can attacker deny actions?                | Logging/Audit  |
-| **Info Disclosure** | Can attacker access unauthorized data?    | Encryption     |
-| **DoS**             | Can attacker disrupt availability?        | Rate limiting  |
-| **Elevation**       | Can attacker gain higher privileges?      | Authorization  |
+| 类别                | 问题                             | 控制族         |
+| ------------------- | -------------------------------- | -------------- |
+| **伪装**            | 攻击者能否冒充他人？             | 身份认证       |
+| **篡改**            | 攻击者能否修改传输中/静止的数据？ | 完整性         |
+| **否认**            | 攻击者能否否认其行为？           | 日志/审计      |
+| **信息泄露**        | 攻击者能否访问未授权数据？       | 加密           |
+| **拒绝服务**        | 攻击者能否破坏可用性？           | 速率限制       |
+| **权限提升**        | 攻击者能否获得更高权限？         | 授权           |
 
-## Templates
+## 模板
 
-### Template 1: STRIDE Threat Model Document
+### 模板 1: STRIDE 威胁模型文档
 
 ```markdown
-# Threat Model: [System Name]
+# 威胁模型: [系统名称]
 
-## 1. System Overview
+## 1. 系统概述
 
-### 1.1 Description
+### 1.1 描述
 
-[Brief description of the system and its purpose]
+[系统及其用途的简要描述]
 
-### 1.2 Data Flow Diagram
+### 1.2 数据流图
 ```
 
-[User] --> [Web App] --> [API Gateway] --> [Backend Services]
+[用户] --> [Web 应用] --> [API 网关] --> [后端服务]
 |
 v
-[Database]
+[数据库]
 
 ```
 
-### 1.3 Trust Boundaries
-- **External Boundary**: Internet to DMZ
-- **Internal Boundary**: DMZ to Internal Network
-- **Data Boundary**: Application to Database
+### 1.3 信任边界
+- **外部边界**: 互联网到 DMZ
+- **内部边界**: DMZ 到内部网络
+- **数据边界**: 应用程序到数据库
 
-## 2. Assets
+## 2. 资产
 
-| Asset | Sensitivity | Description |
+| 资产 | 敏感度 | 描述 |
 |-------|-------------|-------------|
-| User Credentials | High | Authentication tokens, passwords |
-| Personal Data | High | PII, financial information |
-| Session Data | Medium | Active user sessions |
-| Application Logs | Medium | System activity records |
-| Configuration | High | System settings, secrets |
+| 用户凭据 | 高 | 认证令牌、密码 |
+| 个人数据 | 高 | 个人身份信息、财务信息 |
+| 会话数据 | 中 | 活跃用户会话 |
+| 应用日志 | 中 | 系统活动记录 |
+| 配置信息 | 高 | 系统设置、密钥 |
 
-## 3. STRIDE Analysis
+## 3. STRIDE 分析
 
-### 3.1 Spoofing Threats
+### 3.1 伪装威胁
 
-| ID | Threat | Target | Impact | Likelihood |
+| ID | 威胁 | 目标 | 影响 | 可能性 |
 |----|--------|--------|--------|------------|
-| S1 | Session hijacking | User sessions | High | Medium |
-| S2 | Token forgery | JWT tokens | High | Low |
-| S3 | Credential stuffing | Login endpoint | High | High |
+| S1 | 会话劫持 | 用户会话 | 高 | 中 |
+| S2 | 令牌伪造 | JWT 令牌 | 高 | 低 |
+| S3 | 凭据填充攻击 | 登录端点 | 高 | 高 |
 
-**Mitigations:**
-- [ ] Implement MFA
-- [ ] Use secure session management
-- [ ] Implement account lockout policies
+**缓解措施:**
+- [ ] 实施多因素认证
+- [ ] 使用安全的会话管理
+- [ ] 实施账户锁定策略
 
-### 3.2 Tampering Threats
+### 3.2 篡改威胁
 
-| ID | Threat | Target | Impact | Likelihood |
+| ID | 威胁 | 目标 | 影响 | 可能性 |
 |----|--------|--------|--------|------------|
-| T1 | SQL injection | Database queries | Critical | Medium |
-| T2 | Parameter manipulation | API requests | High | High |
-| T3 | File upload abuse | File storage | High | Medium |
+| T1 | SQL 注入 | 数据库查询 | 严重 | 中 |
+| T2 | 参数篡改 | API 请求 | 高 | 高 |
+| T3 | 文件上传滥用 | 文件存储 | 高 | 中 |
 
-**Mitigations:**
-- [ ] Input validation on all endpoints
-- [ ] Parameterized queries
-- [ ] File type validation
+**缓解措施:**
+- [ ] 在所有端点实施输入验证
+- [ ] 使用参数化查询
+- [ ] 文件类型验证
 
-### 3.3 Repudiation Threats
+### 3.3 否认威胁
 
-| ID | Threat | Target | Impact | Likelihood |
+| ID | 威胁 | 目标 | 影响 | 可能性 |
 |----|--------|--------|--------|------------|
-| R1 | Transaction denial | Financial ops | High | Medium |
-| R2 | Access log tampering | Audit logs | Medium | Low |
-| R3 | Action attribution | User actions | Medium | Medium |
+| R1 | 交易否认 | 金融操作 | 高 | 中 |
+| R2 | 访问日志篡改 | 审计日志 | 中 | 低 |
+| R3 | 行为归因 | 用户操作 | 中 | 中 |
 
-**Mitigations:**
-- [ ] Comprehensive audit logging
-- [ ] Log integrity protection
-- [ ] Digital signatures for critical actions
+**缓解措施:**
+- [ ] 实施全面的审计日志
+- [ ] 保护日志完整性
+- [ ] 对关键操作使用数字签名
 
-### 3.4 Information Disclosure Threats
+### 3.4 信息泄露威胁
 
-| ID | Threat | Target | Impact | Likelihood |
+| ID | 威胁 | 目标 | 影响 | 可能性 |
 |----|--------|--------|--------|------------|
-| I1 | Data breach | User PII | Critical | Medium |
-| I2 | Error message leakage | System info | Low | High |
-| I3 | Insecure transmission | Network traffic | High | Medium |
+| I1 | 数据泄露 | 用户个人身份信息 | 严重 | 中 |
+| I2 | 错误消息泄露 | 系统信息 | 低 | 高 |
+| I3 | 不安全传输 | 网络流量 | 高 | 中 |
 
-**Mitigations:**
-- [ ] Encryption at rest and in transit
-- [ ] Sanitize error messages
-- [ ] Implement TLS 1.3
+**缓解措施:**
+- [ ] 静态和传输数据加密
+- [ ] 清理错误消息
+- [ ] 实施 TLS 1.3
 
-### 3.5 Denial of Service Threats
+### 3.5 拒绝服务威胁
 
-| ID | Threat | Target | Impact | Likelihood |
+| ID | 威胁 | 目标 | 影响 | 可能性 |
 |----|--------|--------|--------|------------|
-| D1 | Resource exhaustion | API servers | High | High |
-| D2 | Database overload | Database | Critical | Medium |
-| D3 | Bandwidth saturation | Network | High | Medium |
+| D1 | 资源耗尽 | API 服务器 | 高 | 高 |
+| D2 | 数据库过载 | 数据库 | 严重 | 中 |
+| D3 | 带宽饱和 | 网络 | 高 | 中 |
 
-**Mitigations:**
-- [ ] Rate limiting
-- [ ] Auto-scaling
-- [ ] DDoS protection
+**缓解措施:**
+- [ ] 速率限制
+- [ ] 自动扩缩容
+- [ ] DDoS 防护
 
-### 3.6 Elevation of Privilege Threats
+### 3.6 权限提升威胁
 
-| ID | Threat | Target | Impact | Likelihood |
+| ID | 威胁 | 目标 | 影响 | 可能性 |
 |----|--------|--------|--------|------------|
-| E1 | IDOR vulnerabilities | User resources | High | High |
-| E2 | Role manipulation | Admin access | Critical | Low |
-| E3 | JWT claim tampering | Authorization | High | Medium |
+| E1 | IDOR 漏洞 | 用户资源 | 高 | 高 |
+| E2 | 角色篡改 | 管理员访问 | 严重 | 低 |
+| E3 | JWT 声明篡改 | 授权 | 高 | 中 |
 
-**Mitigations:**
-- [ ] Proper authorization checks
-- [ ] Principle of least privilege
-- [ ] Server-side role validation
+**缓解措施:**
+- [ ] 实施适当的授权检查
+- [ ] 遵循最小权限原则
+- [ ] 服务端角色验证
 
-## 4. Risk Assessment
+## 4. 风险评估
 
-### 4.1 Risk Matrix
+### 4.1 风险矩阵
 
 ```
 
-              IMPACT
-         Low  Med  High Crit
-    Low   1    2    3    4
+              影响
+         低  中  高 严重
+    低   1    2    3    4
 
-L Med 2 4 6 8
-I High 3 6 9 12
-K Crit 4 8 12 16
+可 中 2 4 6 8
+能 高 3 6 9 12
+性 严重 4 8 12 16
 
 ```
 
-### 4.2 Prioritized Risks
+### 4.2 优先级风险
 
-| Rank | Threat | Risk Score | Priority |
+| 排名 | 威胁 | 风险评分 | 优先级 |
 |------|--------|------------|----------|
-| 1 | SQL Injection (T1) | 12 | Critical |
-| 2 | IDOR (E1) | 9 | High |
-| 3 | Credential Stuffing (S3) | 9 | High |
-| 4 | Data Breach (I1) | 8 | High |
+| 1 | SQL 注入 (T1) | 12 | 严重 |
+| 2 | IDOR (E1) | 9 | 高 |
+| 3 | 凭据填充攻击 (S3) | 9 | 高 |
+| 4 | 数据泄露 (I1) | 8 | 高 |
 
-## 5. Recommendations
+## 5. 建议
 
-### Immediate Actions
-1. Implement input validation framework
-2. Add rate limiting to authentication endpoints
-3. Enable comprehensive audit logging
+### 立即行动
+1. 实施输入验证框架
+2. 为认证端点添加速率限制
+3. 启用全面的审计日志
 
-### Short-term (30 days)
-1. Deploy WAF with OWASP ruleset
-2. Implement MFA for sensitive operations
-3. Encrypt all PII at rest
+### 短期 (30 天)
+1. 部署具有 OWASP 规则集的 WAF
+2. 为敏感操作实施多因素认证
+3. 加密所有静态个人身份信息
 
-### Long-term (90 days)
-1. Security awareness training
-2. Penetration testing
-3. Bug bounty program
+### 长期 (90 天)
+1. 安全意识培训
+2. 渗透测试
+3. 漏洞赏金计划
 ```
 
-### Template 2: STRIDE Analysis Code
+### 模板 2: STRIDE 分析代码
 
 ```python
 from dataclasses import dataclass, field
@@ -298,7 +298,7 @@ class ThreatModel:
         return [t for t in self.threats if t.risk_level in ("Critical", "High")]
 
     def generate_report(self) -> Dict:
-        """Generate threat model report."""
+        """生成威胁模型报告。"""
         return {
             "summary": {
                 "name": self.name,
@@ -324,49 +324,49 @@ class ThreatModel:
 
 
 class StrideAnalyzer:
-    """Automated STRIDE analysis helper."""
+    """自动化 STRIDE 分析助手。"""
 
     STRIDE_QUESTIONS = {
         StrideCategory.SPOOFING: [
-            "Can an attacker impersonate a legitimate user?",
-            "Are authentication tokens properly validated?",
-            "Can session identifiers be predicted or stolen?",
-            "Is multi-factor authentication available?",
+            "攻击者能否冒充合法用户？",
+            "认证令牌是否经过正确验证？",
+            "会话标识符是否可以被预测或窃取？",
+            "是否提供多因素认证？",
         ],
         StrideCategory.TAMPERING: [
-            "Can data be modified in transit?",
-            "Can data be modified at rest?",
-            "Are input validation controls sufficient?",
-            "Can an attacker manipulate application logic?",
+            "传输中的数据能否被修改？",
+            "静态数据能否被修改？",
+            "输入验证控制是否充分？",
+            "攻击者能否操纵应用程序逻辑？",
         ],
         StrideCategory.REPUDIATION: [
-            "Are all security-relevant actions logged?",
-            "Can logs be tampered with?",
-            "Is there sufficient attribution for actions?",
-            "Are timestamps reliable and synchronized?",
+            "所有安全相关操作是否都记录在日志中？",
+            "日志能否被篡改？",
+            "是否对操作进行了充分的归因？",
+            "时间戳是否可靠且已同步？",
         ],
         StrideCategory.INFORMATION_DISCLOSURE: [
-            "Is sensitive data encrypted at rest?",
-            "Is sensitive data encrypted in transit?",
-            "Can error messages reveal sensitive information?",
-            "Are access controls properly enforced?",
+            "敏感数据在静态时是否加密？",
+            "敏感数据在传输时是否加密？",
+            "错误消息是否会泄露敏感信息？",
+            "访问控制是否正确执行？",
         ],
         StrideCategory.DENIAL_OF_SERVICE: [
-            "Are rate limits implemented?",
-            "Can resources be exhausted by malicious input?",
-            "Is there protection against amplification attacks?",
-            "Are there single points of failure?",
+            "是否实施了速率限制？",
+            "资源是否可能被恶意输入耗尽？",
+            "是否有针对放大攻击的保护？",
+            "是否存在单点故障？",
         ],
         StrideCategory.ELEVATION_OF_PRIVILEGE: [
-            "Are authorization checks performed consistently?",
-            "Can users access other users' resources?",
-            "Can privilege escalation occur through parameter manipulation?",
-            "Is the principle of least privilege followed?",
+            "是否始终执行授权检查？",
+            "用户能否访问其他用户的资源？",
+            "是否可能通过参数篡改提升权限？",
+            "是否遵循最小权限原则？",
         ],
     }
 
     def generate_questionnaire(self, component: str) -> List[Dict]:
-        """Generate STRIDE questionnaire for a component."""
+        """为组件生成 STRIDE 问卷。"""
         questionnaire = []
         for category, questions in self.STRIDE_QUESTIONS.items():
             for q in questions:
@@ -380,55 +380,55 @@ class StrideAnalyzer:
         return questionnaire
 
     def suggest_mitigations(self, category: StrideCategory) -> List[str]:
-        """Suggest common mitigations for a STRIDE category."""
+        """为 STRIDE 类别建议常见缓解措施。"""
         mitigations = {
             StrideCategory.SPOOFING: [
-                "Implement multi-factor authentication",
-                "Use secure session management",
-                "Implement account lockout policies",
-                "Use cryptographically secure tokens",
-                "Validate authentication at every request",
+                "实施多因素认证",
+                "使用安全的会话管理",
+                "实施账户锁定策略",
+                "使用加密安全的令牌",
+                "在每次请求时验证身份认证",
             ],
             StrideCategory.TAMPERING: [
-                "Implement input validation",
-                "Use parameterized queries",
-                "Apply integrity checks (HMAC, signatures)",
-                "Implement Content Security Policy",
-                "Use immutable infrastructure",
+                "实施输入验证",
+                "使用参数化查询",
+                "应用完整性检查（HMAC、签名）",
+                "实施内容安全策略",
+                "使用不可变基础设施",
             ],
             StrideCategory.REPUDIATION: [
-                "Enable comprehensive audit logging",
-                "Protect log integrity",
-                "Implement digital signatures",
-                "Use centralized, tamper-evident logging",
-                "Maintain accurate timestamps",
+                "启用全面的审计日志",
+                "保护日志完整性",
+                "实施数字签名",
+                "使用集中式、防篡改日志",
+                "维护准确的时间戳",
             ],
             StrideCategory.INFORMATION_DISCLOSURE: [
-                "Encrypt data at rest and in transit",
-                "Implement proper access controls",
-                "Sanitize error messages",
-                "Use secure defaults",
-                "Implement data classification",
+                "静态和传输数据加密",
+                "实施适当的访问控制",
+                "清理错误消息",
+                "使用安全默认值",
+                "实施数据分类",
             ],
             StrideCategory.DENIAL_OF_SERVICE: [
-                "Implement rate limiting",
-                "Use auto-scaling",
-                "Deploy DDoS protection",
-                "Implement circuit breakers",
-                "Set resource quotas",
+                "实施速率限制",
+                "使用自动扩缩容",
+                "部署 DDoS 防护",
+                "实施断路器",
+                "设置资源配额",
             ],
             StrideCategory.ELEVATION_OF_PRIVILEGE: [
-                "Implement proper authorization",
-                "Follow principle of least privilege",
-                "Validate permissions server-side",
-                "Use role-based access control",
-                "Implement security boundaries",
+                "实施适当的授权",
+                "遵循最小权限原则",
+                "服务端验证权限",
+                "使用基于角色的访问控制",
+                "实施安全边界",
             ],
         }
         return mitigations.get(category, [])
 ```
 
-### Template 3: Data Flow Diagram Analysis
+### 模板 3: 数据流图分析
 
 ```python
 from dataclasses import dataclass
@@ -447,7 +447,7 @@ class DFDElement:
     id: str
     name: str
     type: ElementType
-    trust_level: int  # 0 = untrusted, higher = more trusted
+    trust_level: int  # 0 = 不受信任，越高越受信任
     description: str = ""
 
 
@@ -463,7 +463,7 @@ class DataFlow:
 
 
 class DFDAnalyzer:
-    """Analyze Data Flow Diagrams for STRIDE threats."""
+    """分析数据流图中的 STRIDE 威胁。"""
 
     def __init__(self):
         self.elements: Dict[str, DFDElement] = {}
@@ -476,7 +476,7 @@ class DFDAnalyzer:
         self.flows.append(flow)
 
     def find_trust_boundary_crossings(self) -> List[Tuple[DataFlow, int]]:
-        """Find data flows that cross trust boundaries."""
+        """查找跨越信任边界的数据流。"""
         crossings = []
         for flow in self.flows:
             source = self.elements.get(flow.source)
@@ -487,7 +487,7 @@ class DFDAnalyzer:
         return sorted(crossings, key=lambda x: x[1], reverse=True)
 
     def identify_threats_per_element(self) -> Dict[str, List[StrideCategory]]:
-        """Map applicable STRIDE categories to element types."""
+        """将适用的 STRIDE 类别映射到元素类型。"""
         threat_mapping = {
             ElementType.EXTERNAL_ENTITY: [
                 StrideCategory.SPOOFING,
@@ -520,7 +520,7 @@ class DFDAnalyzer:
         return result
 
     def analyze_unencrypted_flows(self) -> List[DataFlow]:
-        """Find unencrypted data flows crossing trust boundaries."""
+        """查找跨越信任边界的未加密数据流。"""
         risky_flows = []
         for flow in self.flows:
             if not flow.encrypted:
@@ -531,7 +531,7 @@ class DFDAnalyzer:
         return risky_flows
 
     def generate_threat_enumeration(self) -> List[Dict]:
-        """Generate comprehensive threat enumeration."""
+        """生成全面的威胁枚举。"""
         threats = []
         element_threats = self.identify_threats_per_element()
 
@@ -543,14 +543,14 @@ class DFDAnalyzer:
                     "element_name": elem.name,
                     "element_type": elem.type.value,
                     "stride_category": category.name,
-                    "description": f"{category.name} threat against {elem.name}",
+                    "description": f"{category.name} 威胁针对 {elem.name}",
                     "trust_level": elem.trust_level
                 })
 
         return threats
 ```
 
-### Template 4: STRIDE per Interaction
+### 模板 4: 每次交互的 STRIDE 分析
 
 ```python
 from typing import List, Dict, Optional
@@ -558,7 +558,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Interaction:
-    """Represents an interaction between two components."""
+    """表示两个组件之间的交互。"""
     id: str
     source: str
     target: str
@@ -568,30 +568,30 @@ class Interaction:
 
 
 class StridePerInteraction:
-    """Apply STRIDE to each interaction in the system."""
+    """对系统中的每次交互应用 STRIDE。"""
 
     INTERACTION_THREATS = {
-        # Source type -> Target type -> Applicable threats
+        # 源类型 -> 目标类型 -> 适用威胁
         ("external", "process"): {
-            "S": "External entity spoofing identity to process",
-            "T": "Tampering with data sent to process",
-            "R": "External entity denying sending data",
-            "I": "Data exposure during transmission",
-            "D": "Flooding process with requests",
-            "E": "Exploiting process to gain privileges",
+            "S": "外部实体向进程伪装身份",
+            "T": "篡改发送到进程的数据",
+            "R": "外部实体否认发送数据",
+            "I": "传输期间的数据暴露",
+            "D": "用请求淹没进程",
+            "E": "利用进程获取权限",
         },
         ("process", "datastore"): {
-            "T": "Process tampering with stored data",
-            "R": "Process denying data modifications",
-            "I": "Unauthorized data access by process",
-            "D": "Process exhausting storage resources",
+            "T": "进程篡改存储的数据",
+            "R": "进程否认数据修改",
+            "I": "进程未经授权访问数据",
+            "D": "进程耗尽存储资源",
         },
         ("process", "process"): {
-            "S": "Process spoofing another process",
-            "T": "Tampering with inter-process data",
-            "I": "Data leakage between processes",
-            "D": "One process overwhelming another",
-            "E": "Process gaining elevated access",
+            "S": "进程伪装另一个进程",
+            "T": "篡改进程间数据",
+            "I": "进程间数据泄露",
+            "D": "一个进程压倒另一个进程",
+            "E": "进程获得提升的访问权限",
         },
     }
 
@@ -601,7 +601,7 @@ class StridePerInteraction:
         source_type: str,
         target_type: str
     ) -> List[Dict]:
-        """Analyze a single interaction for STRIDE threats."""
+        """分析单个交互的 STRIDE 威胁。"""
         threats = []
         key = (source_type, target_type)
 
@@ -624,7 +624,7 @@ class StridePerInteraction:
         interactions: List[Interaction],
         element_types: Dict[str, str]
     ) -> List[Dict]:
-        """Generate complete threat matrix for all interactions."""
+        """为所有交互生成完整的威胁矩阵。"""
         all_threats = []
 
         for interaction in interactions:
@@ -639,26 +639,26 @@ class StridePerInteraction:
         return all_threats
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应做事项
 
-- **Involve stakeholders** - Security, dev, and ops perspectives
-- **Be systematic** - Cover all STRIDE categories
-- **Prioritize realistically** - Focus on high-impact threats
-- **Update regularly** - Threat models are living documents
-- **Use visual aids** - DFDs help communication
+- **让利益相关者参与** - 安全、开发和运维的视角
+- **系统化** - 涵盖所有 STRIDE 类别
+- **现实地确定优先级** - 专注于高影响威胁
+- **定期更新** - 威胁模型是动态文档
+- **使用可视化辅助工具** - 数据流图有助于沟通
 
-### Don'ts
+### 不应做事项
 
-- **Don't skip categories** - Each reveals different threats
-- **Don't assume security** - Question every component
-- **Don't work in isolation** - Collaborative modeling is better
-- **Don't ignore low-probability** - High-impact threats matter
-- **Don't stop at identification** - Follow through with mitigations
+- **不要跳过类别** - 每个类别都会揭示不同的威胁
+- **不要假设安全** - 质疑每个组件
+- **不要孤立工作** - 协作建模更好
+- **不要忽视低概率威胁** - 高影响威胁很重要
+- **不要仅停留在识别阶段** - 继续实施缓解措施
 
-## Resources
+## 资源
 
-- [Microsoft STRIDE Documentation](https://docs.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats)
-- [OWASP Threat Modeling](https://owasp.org/www-community/Threat_Modeling)
-- [Threat Modeling: Designing for Security](https://www.wiley.com/en-us/Threat+Modeling%3A+Designing+for+Security-p-9781118809990)
+- [Microsoft STRIDE 文档](https://docs.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats)
+- [OWASP 威胁建模](https://owasp.org/www-community/Threat_Modeling)
+- [威胁建模：安全设计](https://www.wiley.com/en-us/Threat+Modeling%3A+Designing+for+Security-p-9781118809990)

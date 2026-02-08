@@ -1,117 +1,117 @@
 ---
 name: changelog-automation
-description: Automate changelog generation from commits, PRs, and releases following Keep a Changelog format. Use when setting up release workflows, generating release notes, or standardizing commit conventions.
+description: 遵循 Keep a Changelog 格式自动从提交、PR 和发布生成变更日志。用于设置发布工作流、生成发布说明或标准化提交约定。
 ---
 
-# Changelog Automation
+# 变更日志自动化
 
-Patterns and tools for automating changelog generation, release notes, and version management following industry standards.
+用于遵循行业标准自动生成变更日志、发布说明和版本管理的模式和工具。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Setting up automated changelog generation
-- Implementing Conventional Commits
-- Creating release note workflows
-- Standardizing commit message formats
-- Generating GitHub/GitLab release notes
-- Managing semantic versioning
+- 设置自动化变更日志生成
+- 实施约定式提交
+- 创建发布说明工作流
+- 标准化提交消息格式
+- 生成 GitHub/GitLab 发布说明
+- 管理语义版本控制
 
-## Core Concepts
+## 核心概念
 
-### 1. Keep a Changelog Format
+### 1. Keep a Changelog 格式
 
 ```markdown
 # Changelog
 
-All notable changes to this project will be documented in this file.
+本项目的所有重要更改都将记录在此文件中。
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+格式基于 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)，
+并且本项目遵循 [语义版本控制](https://semver.org/spec/v2.0.0.html)。
 
-## [Unreleased]
+## [未发布]
 
-### Added
+### 新增
 
-- New feature X
+- 新功能 X
 
 ## [1.2.0] - 2024-01-15
 
-### Added
+### 新增
 
-- User profile avatars
-- Dark mode support
+- 用户配置文件头像
+- 深色模式支持
 
-### Changed
+### 更改
 
-- Improved loading performance by 40%
+- 加载性能提高 40%
 
-### Deprecated
+### 已弃用
 
-- Old authentication API (use v2)
+- 旧的身份验证 API（使用 v2）
 
-### Removed
+### 已移除
 
-- Legacy payment gateway
+- 旧的支付网关
 
-### Fixed
+### 修复
 
-- Login timeout issue (#123)
+- 登录超时问题 (#123)
 
-### Security
+### 安全
 
-- Updated dependencies for CVE-2024-1234
+- 为 CVE-2024-1234 更新依赖项
 
-[Unreleased]: https://github.com/user/repo/compare/v1.2.0...HEAD
+[未发布]: https://github.com/user/repo/compare/v1.2.0...HEAD
 [1.2.0]: https://github.com/user/repo/compare/v1.1.0...v1.2.0
 ```
 
-### 2. Conventional Commits
+### 2. 约定式提交
 
 ```
-<type>[optional scope]: <description>
+<type>[可选范围]: <description>
 
-[optional body]
+[可选 body]
 
-[optional footer(s)]
+[可选 footer(s)]
 ```
 
 | Type       | Description      | Changelog Section  |
 | ---------- | ---------------- | ------------------ |
-| `feat`     | New feature      | Added              |
-| `fix`      | Bug fix          | Fixed              |
-| `docs`     | Documentation    | (usually excluded) |
-| `style`    | Formatting       | (usually excluded) |
-| `refactor` | Code restructure | Changed            |
-| `perf`     | Performance      | Changed            |
-| `test`     | Tests            | (usually excluded) |
-| `chore`    | Maintenance      | (usually excluded) |
-| `ci`       | CI changes       | (usually excluded) |
-| `build`    | Build system     | (usually excluded) |
-| `revert`   | Revert commit    | Removed            |
+| `feat`     | 新功能           | 新增               |
+| `fix`      | Bug 修复         | 修复               |
+| `docs`     | 文档             | （通常排除）       |
+| `style`    | 格式化           | （通常排除）       |
+| `refactor` | 代码重构         | 更改               |
+| `perf`     | 性能             | 更改               |
+| `test`     | 测试             | （通常排除）       |
+| `chore`    | 维护             | （通常排除）       |
+| `ci`       | CI 更改          | （通常排除）       |
+| `build`    | 构建系统         | （通常排除）       |
+| `revert`   | 回滚提交         | 已移除             |
 
-### 3. Semantic Versioning
+### 3. 语义版本控制
 
 ```
 MAJOR.MINOR.PATCH
 
-MAJOR: Breaking changes (feat! or BREAKING CHANGE)
-MINOR: New features (feat)
-PATCH: Bug fixes (fix)
+MAJOR：重大更改（feat! 或 BREAKING CHANGE）
+MINOR：新功能（feat）
+PATCH：Bug 修复（fix）
 ```
 
-## Implementation
+## 实现
 
-### Method 1: Conventional Changelog (Node.js)
+### 方法 1：Conventional Changelog（Node.js）
 
 ```bash
-# Install tools
+# 安装工具
 npm install -D @commitlint/cli @commitlint/config-conventional
 npm install -D husky
 npm install -D standard-version
-# or
+# 或
 npm install -D semantic-release
 
-# Setup commitlint
+# 设置 commitlint
 cat > commitlint.config.js << 'EOF'
 module.exports = {
   extends: ['@commitlint/config-conventional'],
@@ -139,12 +139,12 @@ module.exports = {
 };
 EOF
 
-# Setup husky
+# 设置 husky
 npx husky init
 echo "npx --no -- commitlint --edit \$1" > .husky/commit-msg
 ```
 
-### Method 2: standard-version Configuration
+### 方法 2：standard-version 配置
 
 ```javascript
 // .versionrc.js
@@ -190,7 +190,7 @@ module.exports = {
 }
 ```
 
-### Method 3: semantic-release (Full Automation)
+### 方法 3：semantic-release（完全自动化）
 
 ```javascript
 // release.config.js
@@ -233,7 +233,7 @@ module.exports = {
 };
 ```
 
-### Method 4: GitHub Actions Workflow
+### 方法 4：GitHub Actions 工作流
 
 ```yaml
 # .github/workflows/release.yml
@@ -274,18 +274,18 @@ jobs:
 
       - run: npm ci
 
-      - name: Configure Git
+      - name: 配置 Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Run semantic-release
+      - name: 运行 semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release
 
-  # Alternative: manual release with standard-version
+  # 替代方案：使用 standard-version 的手动发布
   manual-release:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
@@ -300,18 +300,18 @@ jobs:
 
       - run: npm ci
 
-      - name: Configure Git
+      - name: 配置 Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Bump version and generate changelog
+      - name: 更新版本并生成变更日志
         run: npx standard-version --release-as ${{ inputs.release_type }}
 
-      - name: Push changes
+      - name: 推送更改
         run: git push --follow-tags origin main
 
-      - name: Create GitHub Release
+      - name: 创建 GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.version.outputs.tag }}
@@ -319,7 +319,7 @@ jobs:
           generate_release_notes: true
 ```
 
-### Method 5: git-cliff (Rust-based, Fast)
+### 方法 5：git-cliff（基于 Rust，快速）
 
 ```toml
 # cliff.toml
@@ -327,14 +327,14 @@ jobs:
 header = """
 # Changelog
 
-All notable changes to this project will be documented in this file.
+本项目的所有重要更改都将记录在此文件中。
 
 """
 body = """
 {% if version %}\
     ## [{{ version | trim_start_matches(pat="v") }}] - {{ timestamp | date(format="%Y-%m-%d") }}
 {% else %}\
-    ## [Unreleased]
+    ## [未发布]
 {% endif %}\
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | upper_first }}
@@ -387,17 +387,17 @@ repo = "repo"
 ```
 
 ```bash
-# Generate changelog
+# 生成变更日志
 git cliff -o CHANGELOG.md
 
-# Generate for specific range
+# 为特定范围生成
 git cliff v1.0.0..v2.0.0 -o RELEASE_NOTES.md
 
-# Preview without writing
+# 预览而不写入
 git cliff --unreleased --dry-run
 ```
 
-### Method 6: Python (commitizen)
+### 方法 6：Python（commitizen）
 
 ```toml
 # pyproject.toml
@@ -422,22 +422,22 @@ bump_map = {"feat" = "MINOR", "fix" = "PATCH", "perf" = "PATCH", "refactor" = "P
 ```
 
 ```bash
-# Install
+# 安装
 pip install commitizen
 
-# Create commit interactively
+# 交互式创建提交
 cz commit
 
-# Bump version and update changelog
+# 更新版本并更新变更日志
 cz bump --changelog
 
-# Check commits
+# 检查提交
 cz check --rev-range HEAD~5..HEAD
 ```
 
-## Release Notes Templates
+## 发布说明模板
 
-### GitHub Release Template
+### GitHub Release 模板
 
 ```markdown
 ## What's Changed
@@ -480,41 +480,39 @@ cz check --rev-range HEAD~5..HEAD
 **Full Changelog**: https://github.com/owner/repo/compare/v{{ .Previous }}...v{{ .Current }}
 ```
 
-### Internal Release Notes
+### 内部发布说明
 
 ```markdown
 # Release v2.1.0 - January 15, 2024
 
-## Summary
+## 摘要
 
-This release introduces dark mode support and improves checkout performance
-by 40%. It also includes important security updates.
+此版本引入了深色模式支持，并将结账性能提高了 40%。它还包括重要的安全更新。
 
-## Highlights
+## 亮点
 
-### 🌙 Dark Mode
+### 🌙 深色模式
 
-Users can now switch to dark mode from settings. The preference is
-automatically saved and synced across devices.
+用户现在可以从设置切换到深色模式。该偏好设置会自动保存并在设备间同步。
 
-### ⚡ Performance
+### ⚡ 性能
 
-- Checkout flow is 40% faster
-- Reduced bundle size by 15%
+- 结账流程快 40%
+- 包大小减少 15%
 
-## Breaking Changes
+## 重大更改
 
-None in this release.
+此版本中没有。
 
-## Upgrade Guide
+## 升级指南
 
-No special steps required. Standard deployment process applies.
+不需要特殊步骤。应用标准部署流程。
 
-## Known Issues
+## 已知问题
 
-- Dark mode may flicker on initial load (fix scheduled for v2.1.1)
+- 深色模式在初始加载时可能会闪烁（修复计划在 v2.1.1 中）
 
-## Dependencies Updated
+## 依赖项更新
 
 | Package | From    | To      | Reason                   |
 | ------- | ------- | ------- | ------------------------ |
@@ -522,56 +520,56 @@ No special steps required. Standard deployment process applies.
 | lodash  | 4.17.20 | 4.17.21 | Security patch           |
 ```
 
-## Commit Message Examples
+## 提交消息示例
 
 ```bash
-# Feature with scope
-feat(auth): add OAuth2 support for Google login
+# 带范围的功能
+feat(auth): 为 Google 登录添加 OAuth2 支持
 
-# Bug fix with issue reference
-fix(checkout): resolve race condition in payment processing
+# 带问题引用的 Bug 修复
+fix(checkout): 解决支付处理中的竞争条件
 
 Closes #123
 
-# Breaking change
-feat(api)!: change user endpoint response format
+# 重大更改
+feat(api)!: 更改用户端点响应格式
 
-BREAKING CHANGE: The user endpoint now returns `userId` instead of `id`.
-Migration guide: Update all API consumers to use the new field name.
+BREAKING CHANGE: 用户端点现在返回 `userId` 而不是 `id`。
+迁移指南：更新所有 API 使用者以使用新的字段名称。
 
-# Multiple paragraphs
-fix(database): handle connection timeouts gracefully
+# 多段式
+fix(database): 优雅地处理连接超时
 
-Previously, connection timeouts would cause the entire request to fail
-without retry. This change implements exponential backoff with up to
-3 retries before failing.
+以前，连接超时会导致整个请求在重试之前失败
+此更改实现了指数退避，最多
+在失败前重试 3 次。
 
-The timeout threshold has been increased from 5s to 10s based on p99
-latency analysis.
+超时阈值已从 5s 增加到 10s，基于 p99
+延迟分析。
 
 Fixes #456
 Reviewed-by: @alice
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做的
 
-- **Follow Conventional Commits** - Enables automation
-- **Write clear messages** - Future you will thank you
-- **Reference issues** - Link commits to tickets
-- **Use scopes consistently** - Define team conventions
-- **Automate releases** - Reduce manual errors
+- **遵循约定式提交** - 启用自动化
+- **编写清晰的消息** - 未来的你会感谢你
+- **引用问题** - 将提交链接到票据
+- **一致使用范围** - 定义团队约定
+- **自动化发布** - 减少人为错误
 
-### Don'ts
+### 不应该做的
 
-- **Don't mix changes** - One logical change per commit
-- **Don't skip validation** - Use commitlint
-- **Don't manual edit** - Generated changelogs only
-- **Don't forget breaking changes** - Mark with `!` or footer
-- **Don't ignore CI** - Validate commits in pipeline
+- **不要混合更改** - 每次提交一个逻辑更改
+- **不要跳过验证** - 使用 commitlint
+- **不要手动编辑** - 仅生成的变更日志
+- **不要忘记重大更改** - 使用 `!` 或页脚标记
+- **不要忽略 CI** - 在管道中验证提交
 
-## Resources
+## 资源
 
 - [Keep a Changelog](https://keepachangelog.com/)
 - [Conventional Commits](https://www.conventionalcommits.org/)

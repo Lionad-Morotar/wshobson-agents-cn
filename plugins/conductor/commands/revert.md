@@ -1,353 +1,353 @@
 ---
-description: "Git-aware undo by logical work unit (track, phase, or task)"
+description: "按逻辑工作单元（track、阶段或任务）进行感知 git 的撤销操作"
 argument-hint: "[track-id | track-id:phase | track-id:task]"
 ---
 
-# Revert Track
+# 撤销 Track
 
-Revert changes by logical work unit with full git awareness. Supports reverting entire tracks, specific phases, or individual tasks.
+按逻辑工作单元撤销更改，具备完整的 git 感知能力。支持撤销整个 track、特定阶段或单个任务。
 
-## Pre-flight Checks
+## 飞行前检查
 
-1. Verify Conductor is initialized:
-   - Check `conductor/tracks.md` exists
-   - If missing: Display error and suggest running `/conductor:setup` first
+1. 验证 Conductor 已初始化：
+   - 检查 `conductor/tracks.md` 是否存在
+   - 如果缺失：显示错误并建议先运行 `/conductor:setup`
 
-2. Verify git repository:
-   - Run `git status` to confirm git repo
-   - Check for uncommitted changes
-   - If uncommitted changes exist:
+2. 验证 git 仓库：
+   - 运行 `git status` 确认 git 仓库
+   - 检查是否有未提交的更改
+   - 如果存在未提交的更改：
 
      ```
-     WARNING: Uncommitted changes detected
+     警告：检测到未提交的更改
 
-     Files with changes:
-     {list of files}
+     有更改的文件：
+     {文件列表}
 
-     Options:
-     1. Stash changes and continue
-     2. Commit changes first
-     3. Cancel revert
+     选项：
+     1. 暂存更改并继续
+     2. 先提交更改
+     3. 取消撤销
      ```
 
-3. Verify git is clean enough to revert:
-   - No merge in progress
-   - No rebase in progress
-   - If issues found: Halt and explain resolution steps
+3. 验证 git 状态足以进行撤销：
+   - 没有正在进行的合并
+   - 没有正在进行的变基
+   - 如果发现问题：停止并解释解决步骤
 
-## Target Selection
+## 目标选择
 
-### If argument provided:
+### 如果提供了参数：
 
-Parse the argument format:
+解析参数格式：
 
-**Full track:** `{trackId}`
+**完整 track：** `{trackId}`
 
-- Example: `auth_20250115`
-- Reverts all commits for the entire track
+- 示例：`auth_20250115`
+- 撤销整个 track 的所有提交
 
-**Specific phase:** `{trackId}:phase{N}`
+**特定阶段：** `{trackId}:phase{N}`
 
-- Example: `auth_20250115:phase2`
-- Reverts commits for phase N and all subsequent phases
+- 示例：`auth_20250115:phase2`
+- 撤销阶段 N 及所有后续阶段的提交
 
-**Specific task:** `{trackId}:task{X.Y}`
+**特定任务：** `{trackId}:task{X.Y}`
 
-- Example: `auth_20250115:task2.3`
-- Reverts commits for task X.Y only
+- 示例：`auth_20250115:task2.3`
+- 仅撤销任务 X.Y 的提交
 
-### If no argument:
+### 如果没有参数：
 
-Display guided selection menu:
+显示引导选择菜单：
 
 ```
-What would you like to revert?
+您想要撤销什么？
 
-Currently In Progress:
-1. [~] Task 2.3 in dashboard_20250112 (most recent)
+正在进行中：
+1. [~] dashboard_20250112 中的任务 2.3（最近）
 
-Recently Completed:
-2. [x] Task 2.2 in dashboard_20250112 (1 hour ago)
-3. [x] Phase 1 in dashboard_20250112 (3 hours ago)
-4. [x] Full track: auth_20250115 (yesterday)
+最近完成：
+2. [x] dashboard_20250112 中的任务 2.2（1 小时前）
+3. [x] dashboard_20250112 中的阶段 1（3 小时前）
+4. [x] 完整 track：auth_20250115（昨天）
 
-Options:
-5. Enter specific reference (track:phase or track:task)
-6. Cancel
+选项：
+5. 输入具体引用（track:phase 或 track:task）
+6. 取消
 
-Select option:
+选择选项：
 ```
 
-## Commit Discovery
+## 提交发现
 
-### For Task Revert
+### 任务撤销
 
-1. Search git log for task-specific commits:
+1. 搜索 git 日志中特定任务的提交：
 
    ```bash
    git log --oneline --grep="{trackId}" --grep="Task {X.Y}" --all-match
    ```
 
-2. Also find the plan.md update commit:
+2. 同时查找 plan.md 更新提交：
 
    ```bash
    git log --oneline --grep="mark task {X.Y} complete" --grep="{trackId}" --all-match
    ```
 
-3. Collect all matching commit SHAs
+3. 收集所有匹配的提交 SHA
 
-### For Phase Revert
+### 阶段撤销
 
-1. Determine task range for the phase by reading plan.md
-2. Search for all task commits in that phase:
+1. 通过读取 plan.md 确定阶段的任务范围
+2. 搜索该阶段中的所有任务提交：
 
    ```bash
    git log --oneline --grep="{trackId}" | grep -E "Task {N}\.[0-9]"
    ```
 
-3. Find phase verification commit if exists
-4. Find all plan.md update commits for phase tasks
-5. Collect all matching commit SHAs in chronological order
+3. 查找阶段验证提交（如果存在）
+4. 查找阶段任务的所有 plan.md 更新提交
+5. 按时间顺序收集所有匹配的提交 SHA
 
-### For Full Track Revert
+### 完整 Track 撤销
 
-1. Find ALL commits mentioning the track:
+1. 查找提及该 track 的所有提交：
 
    ```bash
    git log --oneline --grep="{trackId}"
    ```
 
-2. Find track creation commits:
+2. 查找 track 创建提交：
 
    ```bash
    git log --oneline -- "conductor/tracks/{trackId}/"
    ```
 
-3. Collect all matching commit SHAs in chronological order
+3. 按时间顺序收集所有匹配的提交 SHA
 
-## Execution Plan Display
+## 执行计划显示
 
-Before any revert operations, display full plan:
+在任何撤销操作之前，显示完整计划：
 
 ```
 ================================================================================
-                           REVERT EXECUTION PLAN
+                           撤销执行计划
 ================================================================================
 
-Target: {description of what's being reverted}
+目标：{要撤销内容的描述}
 
-Commits to revert (in reverse chronological order):
+要撤销的提交（按逆时间顺序）：
   1. abc1234 - feat: add chart rendering (dashboard_20250112)
   2. def5678 - chore: mark task 2.3 complete (dashboard_20250112)
   3. ghi9012 - feat: add data hooks (dashboard_20250112)
   4. jkl3456 - chore: mark task 2.2 complete (dashboard_20250112)
 
-Files that will be affected:
-  - src/components/Dashboard.tsx (modified)
-  - src/hooks/useData.ts (will be deleted - was created in these commits)
-  - conductor/tracks/dashboard_20250112/plan.md (modified)
+将受影响的文件：
+  - src/components/Dashboard.tsx（已修改）
+  - src/hooks/useData.ts（将被删除 - 在这些提交中创建）
+  - conductor/tracks/dashboard_20250112/plan.md（已修改）
 
-Plan updates:
-  - Task 2.2: [x] -> [ ]
-  - Task 2.3: [~] -> [ ]
-
-================================================================================
-                              !! WARNING !!
-================================================================================
-
-This operation will:
-- Create {N} revert commits
-- Modify {M} files
-- Reset {P} tasks to pending status
-
-This CANNOT be easily undone without manual intervention.
+计划更新：
+  - 任务 2.2：[x] -> [ ]
+  - 任务 2.3：[~] -> [ ]
 
 ================================================================================
+                              !! 警告 !!
+================================================================================
 
-Type 'YES' to proceed, or anything else to cancel:
+此操作将：
+- 创建 {N} 个撤销提交
+- 修改 {M} 个文件
+- 将 {P} 个任务重置为待处理状态
+
+此操作无法轻易撤销，需要手动干预。
+
+================================================================================
+
+输入 'YES' 继续，或输入其他任何内容取消：
 ```
 
-**CRITICAL: Require explicit 'YES' confirmation. Do not proceed on 'y', 'yes', or enter.**
+**关键：必须显式输入 'YES' 确认。不要在 'y'、'yes' 或回车时继续。**
 
-## Revert Execution
+## 撤销执行
 
-Execute reverts in reverse chronological order (newest first):
+按逆时间顺序执行撤销（从最新的开始）：
 
 ```
-Executing revert plan...
+执行撤销计划...
 
-[1/4] Reverting abc1234...
+[1/4] 撤销 abc1234...
       git revert --no-edit abc1234
-      ✓ Success
+      ✓ 成功
 
-[2/4] Reverting def5678...
+[2/4] 撤销 def5678...
       git revert --no-edit def5678
-      ✓ Success
+      ✓ 成功
 
-[3/4] Reverting ghi9012...
+[3/4] 撤销 ghi9012...
       git revert --no-edit ghi9012
-      ✓ Success
+      ✓ 成功
 
-[4/4] Reverting jkl3456...
+[4/4] 撤销 jkl3456...
       git revert --no-edit jkl3456
-      ✓ Success
+      ✓ 成功
 ```
 
-### On Merge Conflict
+### 发生合并冲突时
 
-If any revert produces a merge conflict:
+如果任何撤销产生合并冲突：
 
 ```
 ================================================================================
-                           MERGE CONFLICT DETECTED
+                           检测到合并冲突
 ================================================================================
 
-Conflict occurred while reverting: {sha} - {message}
+撤销时发生冲突：{sha} - {message}
 
-Conflicted files:
+冲突文件：
   - src/components/Dashboard.tsx
 
-Options:
-1. Show conflict details
-2. Abort revert sequence (keeps completed reverts)
-3. Open manual resolution guide
+选项：
+1. 显示冲突详情
+2. 中止撤销序列（保留已完成的撤销）
+3. 打开手动解决指南
 
-IMPORTANT: Reverts 1-{N} have been completed. You may need to manually
-resolve this conflict before continuing or fully undo the revert sequence.
+重要：已撤销 1-{N} 个提交。在继续之前或完全撤销撤销序列之前，
+您可能需要手动解决此冲突。
 
-Select option:
+选择选项：
 ```
 
-**HALT immediately on any conflict. Do not attempt automatic resolution.**
+**在任何冲突时立即停止。不要尝试自动解决。**
 
-## Plan.md Updates
+## Plan.md 更新
 
-After successful git reverts, update plan.md:
+成功撤销 git 后，更新 plan.md：
 
-1. Read current plan.md
-2. For each reverted task, change marker:
+1. 读取当前 plan.md
+2. 对于每个已撤销的任务，更改标记：
    - `[x]` -> `[ ]`
    - `[~]` -> `[ ]`
-3. Write updated plan.md
-4. Update metadata.json:
-   - Decrement `tasks.completed`
-   - Update `status` if needed
-   - Update `updated` timestamp
+3. 写入更新的 plan.md
+4. 更新 metadata.json：
+   - 减少 `tasks.completed`
+   - 如需要则更新 `status`
+   - 更新 `updated` 时间戳
 
-**Do NOT commit plan.md changes** - they are part of the revert operation
+**不要提交 plan.md 更改** - 它们是撤销操作的一部分
 
-## Track Status Updates
+## Track 状态更新
 
-### If reverting entire track:
+### 如果撤销整个 track：
 
-- In tracks.md: Change `[x]` or `[~]` to `[ ]`
-- Consider offering to delete the track directory entirely
+- 在 tracks.md 中：将 `[x]` 或 `[~]` 更改为 `[ ]`
+- 考虑提供完全删除 track 目录的选项
 
-### If reverting to incomplete state:
+### 如果撤销到未完成状态：
 
-- In tracks.md: Ensure marked as `[~]` if partially complete, `[ ]` if fully reverted
+- 在 tracks.md 中：如果部分完成则标记为 `[~]`，如果完全撤销则标记为 `[ ]`
 
-## Verification
+## 验证
 
-After revert completion:
+撤销完成后：
 
 ```
 ================================================================================
-                           REVERT COMPLETE
+                           撤销完成
 ================================================================================
 
-Summary:
-  - Reverted {N} commits
-  - Reset {P} tasks to pending
-  - {M} files affected
+摘要：
+  - 已撤销 {N} 个提交
+  - 将 {P} 个任务重置为待处理
+  - {M} 个文件受影响
 
-Git log now shows:
-  {recent commit history}
+Git 日志现在显示：
+  {最近的提交历史}
 
-Plan.md status:
-  - Task 2.2: [ ] Pending
-  - Task 2.3: [ ] Pending
-
-================================================================================
-
-Verify the revert was successful:
-  1. Run tests: {test command}
-  2. Check application: {relevant check}
-
-If issues are found, you may need to:
-  - Fix conflicts manually
-  - Re-implement the reverted tasks
-  - Use 'git revert HEAD~{N}..HEAD' to undo the reverts
+Plan.md 状态：
+  - 任务 2.2：[ ] 待处理
+  - 任务 2.3：[ ] 待处理
 
 ================================================================================
+
+验证撤销是否成功：
+  1. 运行测试：{测试命令}
+  2. 检查应用程序：{相关检查}
+
+如果发现问题，您可能需要：
+  - 手动解决冲突
+  - 重新实现已撤销的任务
+  - 使用 'git revert HEAD~{N}..HEAD' 撤销这些撤销操作
+
+================================================================================
 ```
 
-## Safety Rules
+## 安全规则
 
-1. **NEVER use `git reset --hard`** - Only use `git revert`
-2. **NEVER use `git push --force`** - Only safe push operations
-3. **NEVER auto-resolve conflicts** - Always halt for human intervention
-4. **ALWAYS show full plan** - User must see exactly what will happen
-5. **REQUIRE explicit 'YES'** - Not 'y', not enter, only 'YES'
-6. **HALT on ANY error** - Do not attempt to continue past failures
-7. **PRESERVE history** - Revert commits are preferred over history rewriting
+1. **永远不要使用 `git reset --hard`** - 只使用 `git revert`
+2. **永远不要使用 `git push --force`** - 只使用安全的推送操作
+3. **永远不要自动解决冲突** - 始终停止以等待人工干预
+4. **始终显示完整计划** - 用户必须准确看到将要发生什么
+5. **要求显式输入 'YES'** - 不是 'y'，不是回车，只有 'YES'
+6. **在任何错误时停止** - 不要尝试在失败后继续
+7. **保留历史** - 撤销提交优先于历史重写
 
-## Edge Cases
+## 边缘情况
 
-### Track Never Committed
-
-```
-No commits found for track: {trackId}
-
-The track exists but has no associated commits. This may mean:
-- Implementation never started
-- Commits used different format
-
-Options:
-1. Delete track directory only
-2. Cancel
-```
-
-### Commits Already Reverted
+### Track 从未提交
 
 ```
-Some commits appear to already be reverted:
-  - abc1234 was reverted by xyz9876
+未找到 track 的提交：{trackId}
 
-Options:
-1. Skip already-reverted commits
-2. Cancel and investigate
+Track 存在但没有关联的提交。这可能意味着：
+- 实施从未开始
+- 提交使用了不同的格式
+
+选项：
+1. 仅删除 track 目录
+2. 取消
 ```
 
-### Remote Already Pushed
+### 提交已撤销
 
 ```
-WARNING: Some commits have been pushed to remote
+某些提交似乎已被撤销：
+  - abc1234 已被 xyz9876 撤销
 
-Commits on remote:
+选项：
+1. 跳过已撤销的提交
+2. 取消并调查
+```
+
+### 已推送到远程
+
+```
+警告：某些提交已推送到远程
+
+远程上的提交：
   - abc1234 (origin/main)
-  - def5678 (origin/main)
+  - def5676 (origin/main)
 
-Reverting will create new revert commits that you'll need to push.
-This is the safe approach (no force push required).
+撤销将创建新的撤销提交，您需要推送这些提交。
+这是安全的方法（不需要强制推送）。
 
-Continue with revert? (YES/no):
+继续撤销？(YES/no)：
 ```
 
-## Undo the Revert
+## 撤销撤销操作
 
-If user needs to undo the revert itself:
+如果用户需要撤销撤销操作本身：
 
 ```
-To undo this revert operation:
+要撤销此撤销操作：
 
   git revert HEAD~{N}..HEAD
 
-This will create new commits that restore the reverted changes.
+这将创建恢复已撤销更改的新提交。
 
-Alternatively, if not yet pushed:
+或者，如果尚未推送：
   git reset --soft HEAD~{N}
   git checkout -- .
 
-(Use with caution - this discards the revert commits)
+（谨慎使用 - 这将丢弃撤销提交）
 ```

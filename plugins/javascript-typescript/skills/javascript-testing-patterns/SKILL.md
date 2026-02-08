@@ -1,28 +1,28 @@
 ---
 name: javascript-testing-patterns
-description: Implement comprehensive testing strategies using Jest, Vitest, and Testing Library for unit tests, integration tests, and end-to-end testing with mocking, fixtures, and test-driven development. Use when writing JavaScript/TypeScript tests, setting up test infrastructure, or implementing TDD/BDD workflows.
+description: 使用 Jest、Vitest 和 Testing Library 实现全面的测试策略，包括单元测试、集成测试和端到端测试，以及模拟、固件和测试驱动开发。在编写 JavaScript/TypeScript 测试、设置测试基础设施或实施 TDD/BDD 工作流程时使用。
 ---
 
-# JavaScript Testing Patterns
+# JavaScript 测试模式
 
-Comprehensive guide for implementing robust testing strategies in JavaScript/TypeScript applications using modern testing frameworks and best practices.
+使用现代测试框架和最佳实践在 JavaScript/TypeScript 应用程序中实施健壮测试策略的综合指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Setting up test infrastructure for new projects
-- Writing unit tests for functions and classes
-- Creating integration tests for APIs and services
-- Implementing end-to-end tests for user flows
-- Mocking external dependencies and APIs
-- Testing React, Vue, or other frontend components
-- Implementing test-driven development (TDD)
-- Setting up continuous testing in CI/CD pipelines
+- 为新项目设置测试基础设施
+- 为函数和类编写单元测试
+- 为 API 和服务创建集成测试
+- 为用户流程实施端到端测试
+- 模拟外部依赖和 API
+- 测试 React、Vue 或其他前端组件
+- 实施测试驱动开发（TDD）
+- 在 CI/CD 流水线中设置持续测试
 
-## Testing Frameworks
+## 测试框架
 
-### Jest - Full-Featured Testing Framework
+### Jest - 全功能测试框架
 
-**Setup:**
+**设置：**
 
 ```typescript
 // jest.config.ts
@@ -52,9 +52,9 @@ const config: Config = {
 export default config;
 ```
 
-### Vitest - Fast, Vite-Native Testing
+### Vitest - 快速的 Vite 原生测试
 
-**Setup:**
+**设置：**
 
 ```typescript
 // vitest.config.ts
@@ -74,9 +74,9 @@ export default defineConfig({
 });
 ```
 
-## Unit Testing Patterns
+## 单元测试模式
 
-### Pattern 1: Testing Pure Functions
+### 模式 1：测试纯函数
 
 ```typescript
 // utils/calculator.ts
@@ -97,37 +97,37 @@ import { add, divide } from "./calculator";
 
 describe("Calculator", () => {
   describe("add", () => {
-    it("should add two positive numbers", () => {
+    it("应该将两个正数相加", () => {
       expect(add(2, 3)).toBe(5);
     });
 
-    it("should add negative numbers", () => {
+    it("应该处理负数", () => {
       expect(add(-2, -3)).toBe(-5);
     });
 
-    it("should handle zero", () => {
+    it("应该处理零", () => {
       expect(add(0, 5)).toBe(5);
       expect(add(5, 0)).toBe(5);
     });
   });
 
   describe("divide", () => {
-    it("should divide two numbers", () => {
+    it("应该除两个数", () => {
       expect(divide(10, 2)).toBe(5);
     });
 
-    it("should handle decimal results", () => {
+    it("应该处理小数结果", () => {
       expect(divide(5, 2)).toBe(2.5);
     });
 
-    it("should throw error when dividing by zero", () => {
+    it("除以零时应该抛出错误", () => {
       expect(() => divide(10, 0)).toThrow("Division by zero");
     });
   });
 });
 ```
 
-### Pattern 2: Testing Classes
+### 模式 2：测试类
 
 ```typescript
 // services/user.service.ts
@@ -173,7 +173,7 @@ describe("UserService", () => {
   });
 
   describe("create", () => {
-    it("should create a new user", () => {
+    it("应该创建新用户", () => {
       const user = { id: "1", name: "John", email: "john@example.com" };
       const created = service.create(user);
 
@@ -181,7 +181,7 @@ describe("UserService", () => {
       expect(service.findById("1")).toEqual(user);
     });
 
-    it("should throw error if user already exists", () => {
+    it("如果用户已存在应该抛出错误", () => {
       const user = { id: "1", name: "John", email: "john@example.com" };
       service.create(user);
 
@@ -190,7 +190,7 @@ describe("UserService", () => {
   });
 
   describe("update", () => {
-    it("should update existing user", () => {
+    it("应该更新现有用户", () => {
       const user = { id: "1", name: "John", email: "john@example.com" };
       service.create(user);
 
@@ -200,7 +200,7 @@ describe("UserService", () => {
       expect(updated.email).toBe("john@example.com");
     });
 
-    it("should throw error if user not found", () => {
+    it("如果用户未找到应该抛出错误", () => {
       expect(() => service.update("999", { name: "Jane" })).toThrow(
         "User not found",
       );
@@ -209,7 +209,7 @@ describe("UserService", () => {
 });
 ```
 
-### Pattern 3: Testing Async Functions
+### 模式 3：测试异步函数
 
 ```typescript
 // services/api.service.ts
@@ -236,7 +236,7 @@ export class ApiService {
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { ApiService } from "./api.service";
 
-// Mock fetch globally
+// 全局模拟 fetch
 global.fetch = vi.fn();
 
 describe("ApiService", () => {
@@ -248,7 +248,7 @@ describe("ApiService", () => {
   });
 
   describe("fetchUser", () => {
-    it("should fetch user successfully", async () => {
+    it("应该成功获取用户", async () => {
       const mockUser = { id: "1", name: "John", email: "john@example.com" };
 
       (fetch as any).mockResolvedValueOnce({
@@ -262,7 +262,7 @@ describe("ApiService", () => {
       expect(fetch).toHaveBeenCalledWith("https://api.example.com/users/1");
     });
 
-    it("should throw error if user not found", async () => {
+    it("如果用户未找到应该抛出错误", async () => {
       (fetch as any).mockResolvedValueOnce({
         ok: false,
       });
@@ -272,7 +272,7 @@ describe("ApiService", () => {
   });
 
   describe("createUser", () => {
-    it("should create user successfully", async () => {
+    it("应该成功创建用户", async () => {
       const newUser = { name: "John", email: "john@example.com" };
       const createdUser = { id: "1", ...newUser };
 
@@ -296,9 +296,9 @@ describe("ApiService", () => {
 });
 ```
 
-## Mocking Patterns
+## 模拟模式
 
-### Pattern 1: Mocking Modules
+### 模式 1：模拟模块
 
 ```typescript
 // services/email.service.ts
@@ -343,7 +343,7 @@ describe("EmailService", () => {
     service = new EmailService();
   });
 
-  it("should send email successfully", async () => {
+  it("应该成功发送邮件", async () => {
     await service.sendEmail(
       "test@example.com",
       "Test Subject",
@@ -360,7 +360,7 @@ describe("EmailService", () => {
 });
 ```
 
-### Pattern 2: Dependency Injection for Testing
+### 模式 2：依赖注入测试
 
 ```typescript
 // services/user.service.ts
@@ -381,7 +381,7 @@ export class UserService {
   }
 
   async createUser(userData: CreateUserDTO): Promise<User> {
-    // Business logic here
+    // 业务逻辑
     const user = { id: generateId(), ...userData };
     return this.userRepository.create(user);
   }
@@ -404,7 +404,7 @@ describe("UserService", () => {
   });
 
   describe("getUser", () => {
-    it("should return user if found", async () => {
+    it("如果找到应该返回用户", async () => {
       const mockUser = { id: "1", name: "John", email: "john@example.com" };
       vi.mocked(mockRepository.findById).mockResolvedValue(mockUser);
 
@@ -414,7 +414,7 @@ describe("UserService", () => {
       expect(mockRepository.findById).toHaveBeenCalledWith("1");
     });
 
-    it("should throw error if user not found", async () => {
+    it("如果用户未找到应该抛出错误", async () => {
       vi.mocked(mockRepository.findById).mockResolvedValue(null);
 
       await expect(service.getUser("999")).rejects.toThrow("User not found");
@@ -422,7 +422,7 @@ describe("UserService", () => {
   });
 
   describe("createUser", () => {
-    it("should create user successfully", async () => {
+    it("应该成功创建用户", async () => {
       const userData = { name: "John", email: "john@example.com" };
       const createdUser = { id: "1", ...userData };
 
@@ -437,7 +437,7 @@ describe("UserService", () => {
 });
 ```
 
-### Pattern 3: Spying on Functions
+### 模式 3：监视函数
 
 ```typescript
 // utils/logger.ts
@@ -452,7 +452,7 @@ import { logger } from "../utils/logger";
 export class OrderService {
   async processOrder(orderId: string): Promise<void> {
     logger.info(`Processing order ${orderId}`);
-    // Process order logic
+    // 处理订单逻辑
     logger.info(`Order ${orderId} processed successfully`);
   }
 }
@@ -475,7 +475,7 @@ describe("OrderService", () => {
     loggerSpy.mockRestore();
   });
 
-  it("should log order processing", async () => {
+  it("应该记录订单处理", async () => {
     await service.processOrder("123");
 
     expect(loggerSpy).toHaveBeenCalledWith("Processing order 123");
@@ -485,9 +485,9 @@ describe("OrderService", () => {
 });
 ```
 
-## Integration Testing
+## 集成测试
 
-### Pattern 1: API Integration Tests
+### 模式 1：API 集成测试
 
 ```typescript
 // tests/integration/user.api.test.ts
@@ -497,23 +497,23 @@ import { pool } from "../../src/config/database";
 
 describe("User API Integration Tests", () => {
   beforeAll(async () => {
-    // Setup test database
+    // 设置测试数据库
     await pool.query("CREATE TABLE IF NOT EXISTS users (...)");
   });
 
   afterAll(async () => {
-    // Cleanup
+    // 清理
     await pool.query("DROP TABLE IF EXISTS users");
     await pool.end();
   });
 
   beforeEach(async () => {
-    // Clear data before each test
+    // 每个测试前清除数据
     await pool.query("TRUNCATE TABLE users CASCADE");
   });
 
   describe("POST /api/users", () => {
-    it("should create a new user", async () => {
+    it("应该创建新用户", async () => {
       const userData = {
         name: "John Doe",
         email: "john@example.com",
@@ -533,7 +533,7 @@ describe("User API Integration Tests", () => {
       expect(response.body).not.toHaveProperty("password");
     });
 
-    it("should return 400 if email is invalid", async () => {
+    it("如果邮箱无效应该返回 400", async () => {
       const userData = {
         name: "John Doe",
         email: "invalid-email",
@@ -548,7 +548,7 @@ describe("User API Integration Tests", () => {
       expect(response.body).toHaveProperty("error");
     });
 
-    it("should return 409 if email already exists", async () => {
+    it("如果邮箱已存在应该返回 409", async () => {
       const userData = {
         name: "John Doe",
         email: "john@example.com",
@@ -567,7 +567,7 @@ describe("User API Integration Tests", () => {
   });
 
   describe("GET /api/users/:id", () => {
-    it("should get user by id", async () => {
+    it("应该通过 id 获取用户", async () => {
       const createResponse = await request(app).post("/api/users").send({
         name: "John Doe",
         email: "john@example.com",
@@ -587,18 +587,18 @@ describe("User API Integration Tests", () => {
       });
     });
 
-    it("should return 404 if user not found", async () => {
+    it("如果用户未找到应该返回 404", async () => {
       await request(app).get("/api/users/999").expect(404);
     });
   });
 
   describe("Authentication", () => {
-    it("should require authentication for protected routes", async () => {
+    it("应该要求保护路由的身份验证", async () => {
       await request(app).get("/api/users/me").expect(401);
     });
 
-    it("should allow access with valid token", async () => {
-      // Create user and login
+    it("应该允许使用有效令牌访问", async () => {
+      // 创建用户并登录
       await request(app).post("/api/users").send({
         name: "John Doe",
         email: "john@example.com",
@@ -623,7 +623,7 @@ describe("User API Integration Tests", () => {
 });
 ```
 
-### Pattern 2: Database Integration Tests
+### 模式 2：数据库集成测试
 
 ```typescript
 // tests/integration/user.repository.test.ts
@@ -646,7 +646,7 @@ describe("UserRepository Integration Tests", () => {
 
     repository = new UserRepository(pool);
 
-    // Create tables
+    // 创建表
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -667,7 +667,7 @@ describe("UserRepository Integration Tests", () => {
     await pool.query("TRUNCATE TABLE users CASCADE");
   });
 
-  it("should create a user", async () => {
+  it("应该创建用户", async () => {
     const user = await repository.create({
       name: "John Doe",
       email: "john@example.com",
@@ -679,7 +679,7 @@ describe("UserRepository Integration Tests", () => {
     expect(user.email).toBe("john@example.com");
   });
 
-  it("should find user by email", async () => {
+  it("应该通过邮箱查找用户", async () => {
     await repository.create({
       name: "John Doe",
       email: "john@example.com",
@@ -692,16 +692,16 @@ describe("UserRepository Integration Tests", () => {
     expect(user?.name).toBe("John Doe");
   });
 
-  it("should return null if user not found", async () => {
+  it("如果用户未找到应该返回 null", async () => {
     const user = await repository.findByEmail("nonexistent@example.com");
     expect(user).toBeNull();
   });
 });
 ```
 
-## Frontend Testing with Testing Library
+## 使用 Testing Library 进行前端测试
 
-### Pattern 1: React Component Testing
+### 模式 1：React 组件测试
 
 ```typescript
 // components/UserForm.tsx
@@ -747,7 +747,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { UserForm } from './UserForm';
 
 describe('UserForm', () => {
-  it('should render form inputs', () => {
+  it('应该渲染表单输入', () => {
     render(<UserForm onSubmit={vi.fn()} />);
 
     expect(screen.getByPlaceholderText('Name')).toBeInTheDocument();
@@ -755,7 +755,7 @@ describe('UserForm', () => {
     expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
   });
 
-  it('should update input values', () => {
+  it('应该更新输入值', () => {
     render(<UserForm onSubmit={vi.fn()} />);
 
     const nameInput = screen.getByTestId('name-input') as HTMLInputElement;
@@ -768,7 +768,7 @@ describe('UserForm', () => {
     expect(emailInput.value).toBe('john@example.com');
   });
 
-  it('should call onSubmit with form data', () => {
+  it('应该使用表单数据调用 onSubmit', () => {
     const onSubmit = vi.fn();
     render(<UserForm onSubmit={onSubmit} />);
 
@@ -788,7 +788,7 @@ describe('UserForm', () => {
 });
 ```
 
-### Pattern 2: Testing Hooks
+### 模式 2：测试 Hooks
 
 ```typescript
 // hooks/useCounter.ts
@@ -810,17 +810,17 @@ import { describe, it, expect } from "vitest";
 import { useCounter } from "./useCounter";
 
 describe("useCounter", () => {
-  it("should initialize with default value", () => {
+  it("应该使用默认值初始化", () => {
     const { result } = renderHook(() => useCounter());
     expect(result.current.count).toBe(0);
   });
 
-  it("should initialize with custom value", () => {
+  it("应该使用自定义值初始化", () => {
     const { result } = renderHook(() => useCounter(10));
     expect(result.current.count).toBe(10);
   });
 
-  it("should increment count", () => {
+  it("应该增加计数", () => {
     const { result } = renderHook(() => useCounter());
 
     act(() => {
@@ -830,7 +830,7 @@ describe("useCounter", () => {
     expect(result.current.count).toBe(1);
   });
 
-  it("should decrement count", () => {
+  it("应该减少计数", () => {
     const { result } = renderHook(() => useCounter(5));
 
     act(() => {
@@ -840,7 +840,7 @@ describe("useCounter", () => {
     expect(result.current.count).toBe(4);
   });
 
-  it("should reset to initial value", () => {
+  it("应该重置为初始值", () => {
     const { result } = renderHook(() => useCounter(10));
 
     act(() => {
@@ -859,7 +859,7 @@ describe("useCounter", () => {
 });
 ```
 
-## Test Fixtures and Factories
+## 测试固件和工厂
 
 ```typescript
 // tests/fixtures/user.fixture.ts
@@ -879,26 +879,26 @@ export function createUsersFixture(count: number): User[] {
   return Array.from({ length: count }, () => createUserFixture());
 }
 
-// Usage in tests
+// 在测试中使用
 import {
   createUserFixture,
   createUsersFixture,
 } from "../fixtures/user.fixture";
 
 describe("UserService", () => {
-  it("should process user", () => {
+  it("应该处理用户", () => {
     const user = createUserFixture({ name: "John Doe" });
-    // Use user in test
+    // 在测试中使用用户
   });
 
-  it("should handle multiple users", () => {
+  it("应该处理多个用户", () => {
     const users = createUsersFixture(10);
-    // Use users in test
+    // 在测试中使用用户
   });
 });
 ```
 
-## Snapshot Testing
+## 快照测试
 
 ```typescript
 // components/UserCard.test.tsx
@@ -907,7 +907,7 @@ import { describe, it, expect } from 'vitest';
 import { UserCard } from './UserCard';
 
 describe('UserCard', () => {
-  it('should match snapshot', () => {
+  it('应该匹配快照', () => {
     const user = {
       id: '1',
       name: 'John Doe',
@@ -920,14 +920,14 @@ describe('UserCard', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it('should match snapshot with loading state', () => {
+  it('应该匹配加载状态的快照', () => {
     const { container } = render(<UserCard loading />);
     expect(container.firstChild).toMatchSnapshot();
   });
 });
 ```
 
-## Coverage Reports
+## 覆盖率报告
 
 ```typescript
 // package.json
@@ -940,64 +940,64 @@ describe('UserCard', () => {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Follow AAA Pattern**: Arrange, Act, Assert
-2. **One assertion per test**: Or logically related assertions
-3. **Descriptive test names**: Should describe what is being tested
-4. **Use beforeEach/afterEach**: For setup and teardown
-5. **Mock external dependencies**: Keep tests isolated
-6. **Test edge cases**: Not just happy paths
-7. **Avoid implementation details**: Test behavior, not implementation
-8. **Use test factories**: For consistent test data
-9. **Keep tests fast**: Mock slow operations
-10. **Write tests first (TDD)**: When possible
-11. **Maintain test coverage**: Aim for 80%+ coverage
-12. **Use TypeScript**: For type-safe tests
-13. **Test error handling**: Not just success cases
-14. **Use data-testid sparingly**: Prefer semantic queries
-15. **Clean up after tests**: Prevent test pollution
+1. **遵循 AAA 模式**：Arrange（准备）、Act（执行）、Assert（断言）
+2. **每个测试一个断言**：或逻辑相关的断言
+3. **描述性测试名称**：应该描述正在测试的内容
+4. **使用 beforeEach/afterEach**：用于设置和清理
+5. **模拟外部依赖**：保持测试隔离
+6. **测试边缘情况**：不仅是快乐路径
+7. **避免实现细节**：测试行为，而不是实现
+8. **使用测试工厂**：用于一致的测试数据
+9. **保持测试快速**：模拟慢操作
+10. **先编写测试（TDD）**：尽可能
+11. **维护测试覆盖率**：目标 80%+ 覆盖率
+12. **使用 TypeScript**：用于类型安全的测试
+13. **测试错误处理**：不仅是成功情况
+14. **谨慎使用 data-testid**：首选语义查询
+15. **测试后清理**：防止测试污染
 
-## Common Patterns
+## 常见模式
 
-### Test Organization
+### 测试组织
 
 ```typescript
 describe("UserService", () => {
   describe("createUser", () => {
-    it("should create user successfully", () => {});
-    it("should throw error if email exists", () => {});
-    it("should hash password", () => {});
+    it("应该成功创建用户", () => {});
+    it("如果邮箱存在应该抛出错误", () => {});
+    it("应该哈希密码", () => {});
   });
 
   describe("updateUser", () => {
-    it("should update user", () => {});
-    it("should throw error if not found", () => {});
+    it("应该更新用户", () => {});
+    it("如果未找到应该抛出错误", () => {});
   });
 });
 ```
 
-### Testing Promises
+### 测试 Promises
 
 ```typescript
-// Using async/await
-it("should fetch user", async () => {
+// 使用 async/await
+it("应该获取用户", async () => {
   const user = await service.fetchUser("1");
   expect(user).toBeDefined();
 });
 
-// Testing rejections
-it("should throw error", async () => {
+// 测试拒绝
+it("应该抛出错误", async () => {
   await expect(service.fetchUser("invalid")).rejects.toThrow("Not found");
 });
 ```
 
-### Testing Timers
+### 测试定时器
 
 ```typescript
 import { vi } from "vitest";
 
-it("should call function after delay", () => {
+it("应该在延迟后调用函数", () => {
   vi.useFakeTimers();
 
   const callback = vi.fn();
@@ -1013,9 +1013,9 @@ it("should call function after delay", () => {
 });
 ```
 
-## Resources
+## 资源
 
-- **Jest Documentation**: https://jestjs.io/
-- **Vitest Documentation**: https://vitest.dev/
-- **Testing Library**: https://testing-library.com/
-- **Kent C. Dodds Testing Blog**: https://kentcdodds.com/blog/
+- **Jest 文档**：https://jestjs.io/
+- **Vitest 文档**：https://vitest.dev/
+- **Testing Library**：https://testing-library.com/
+- **Kent C. Dodds 测试博客**：https://kentcdodds.com/blog/

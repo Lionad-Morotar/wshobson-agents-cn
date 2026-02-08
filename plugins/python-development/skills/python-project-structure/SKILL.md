@@ -3,38 +3,38 @@ name: python-project-structure
 description: Python project organization, module architecture, and public API design. Use when setting up new projects, organizing modules, defining public interfaces with __all__, or planning directory layouts.
 ---
 
-# Python Project Structure & Module Architecture
+# Python 项目结构与模块架构
 
-Design well-organized Python projects with clear module boundaries, explicit public interfaces, and maintainable directory structures. Good organization makes code discoverable and changes predictable.
+设计组织良好的 Python 项目，具有清晰的模块边界、明确的公共接口和可维护的目录结构。良好的组织使代码可发现，且变更可预测。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Starting a new Python project from scratch
-- Reorganizing an existing codebase for clarity
-- Defining module public APIs with `__all__`
-- Deciding between flat and nested directory structures
-- Determining test file placement strategies
-- Creating reusable library packages
+- 从零开始新的 Python 项目
+- 为清晰性重组现有代码库
+- 使用 `__all__` 定义模块公共 API
+- 决定使用扁平还是嵌套目录结构
+- 确定测试文件放置策略
+- 创建可重用的库包
 
-## Core Concepts
+## 核心概念
 
-### 1. Module Cohesion
+### 1. 模块内聚
 
-Group related code that changes together. A module should have a single, clear purpose.
+将一起变化的相关代码分组。模块应具有单一、明确的目的。
 
-### 2. Explicit Interfaces
+### 2. 显式接口
 
-Define what's public with `__all__`. Everything not listed is an internal implementation detail.
+使用 `__all__` 定义公开内容。未列出的所有内容都是内部实现细节。
 
-### 3. Flat Hierarchies
+### 3. 扁平层次结构
 
-Prefer shallow directory structures. Add depth only for genuine sub-domains.
+优先使用浅层目录结构。仅为真正的子域增加深度。
 
-### 4. Consistent Conventions
+### 4. 一致约定
 
-Apply naming and organization patterns uniformly across the project.
+在整个项目中统一应用命名和组织模式。
 
-## Quick Start
+## 快速开始
 
 ```
 myproject/
@@ -49,29 +49,29 @@ myproject/
 └── README.md
 ```
 
-## Fundamental Patterns
+## 基础模式
 
-### Pattern 1: One Concept Per File
+### 模式 1：单文件单概念
 
-Each file should focus on a single concept or closely related set of functions. Consider splitting when a file:
+每个文件应专注于单个概念或密切相关的一组函数。当文件出现以下情况时考虑拆分：
 
-- Handles multiple unrelated responsibilities
-- Grows beyond 300-500 lines (varies by complexity)
-- Contains classes that change for different reasons
+- 处理多个不相关的职责
+- 增长超过 300-500 行（根据复杂度而异）
+- 包含因不同原因而变化的类
 
 ```python
-# Good: Focused files
-# user_service.py - User business logic
-# user_repository.py - User data access
-# user_models.py - User data structures
+# 推荐：专注的文件
+# user_service.py - 用户业务逻辑
+# user_repository.py - 用户数据访问
+# user_models.py - 用户数据结构
 
-# Avoid: Kitchen sink files
-# user.py - Contains service, repository, models, utilities...
+# 避免：大杂烩文件
+# user.py - 包含服务、仓储、模型、工具...
 ```
 
-### Pattern 2: Explicit Public APIs with `__all__`
+### 模式 2：使用 `__all__` 定义显式公共 API
 
-Define the public interface for every module. Unlisted members are internal implementation details.
+为每个模块定义公共接口。未列出的成员是内部实现细节。
 
 ```python
 # mypackage/services/__init__.py
@@ -86,16 +86,16 @@ __all__ = [
     "ValidationError",
 ]
 
-# Internal helpers remain private by omission
-# from .internal_helpers import _validate_input  # Not exported
+# 内部辅助函数通过省略保持私有
+# from .internal_helpers import _validate_input  # 未导出
 ```
 
-### Pattern 3: Flat Directory Structure
+### 模式 3：扁平目录结构
 
-Prefer minimal nesting. Deep hierarchies make imports verbose and navigation difficult.
+优先使用最小嵌套。深层层次会使导入冗长，导航困难。
 
 ```
-# Preferred: Flat structure
+# 推荐：扁平结构
 project/
 ├── api/
 │   ├── routes.py
@@ -109,17 +109,17 @@ project/
 └── utils/
     └── validation.py
 
-# Avoid: Deep nesting
+# 避免：深层嵌套
 project/core/internal/services/impl/user/
 ```
 
-Add sub-packages only when there's a genuine sub-domain requiring isolation.
+仅在存在需要隔离的真正子域时才添加子包。
 
-### Pattern 4: Test File Organization
+### 模式 4：测试文件组织
 
-Choose one approach and apply it consistently throughout the project.
+选择一种方法并在整个项目中一致应用。
 
-**Option A: Colocated Tests**
+**选项 A：并排测试**
 
 ```
 src/
@@ -129,9 +129,9 @@ src/
 └── test_order_service.py
 ```
 
-Benefits: Tests live next to the code they verify. Easy to see coverage gaps.
+优势：测试位于它们验证的代码旁边。易于查看覆盖缺口。
 
-**Option B: Parallel Test Directory**
+**选项 B：并行测试目录**
 
 ```
 src/
@@ -144,17 +144,17 @@ tests/
 │   └── test_order_service.py
 ```
 
-Benefits: Clean separation between production and test code. Standard for larger projects.
+优势：生产代码和测试代码之间清晰分离。大型项目的标准。
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 5: Package Initialization
+### 模式 5：包初始化
 
-Use `__init__.py` to provide a clean public interface for package consumers.
+使用 `__init__.py` 为包使用者提供干净的公共接口。
 
 ```python
 # mypackage/__init__.py
-"""MyPackage - A library for doing useful things."""
+"""MyPackage - 用于做有用事情的库。"""
 
 from .core import MainClass, HelperClass
 from .exceptions import PackageError, ConfigError
@@ -171,33 +171,33 @@ __all__ = [
 __version__ = "1.0.0"
 ```
 
-Consumers can then import directly from the package:
+然后使用者可以直接从包导入：
 
 ```python
 from mypackage import MainClass, Settings
 ```
 
-### Pattern 6: Layered Architecture
+### 模式 6：分层架构
 
-Organize code by architectural layer for clear separation of concerns.
+按架构层组织代码，以清晰分离关注点。
 
 ```
 myapp/
-├── api/           # HTTP handlers, request/response
+├── api/           # HTTP 处理器、请求/响应
 │   ├── routes/
 │   └── middleware/
-├── services/      # Business logic
-├── repositories/  # Data access
-├── models/        # Domain entities
-├── schemas/       # API schemas (Pydantic)
-└── config/        # Configuration
+├── services/      # 业务逻辑
+├── repositories/  # 数据访问
+├── models/        # 领域实体
+├── schemas/       # API 模式（Pydantic）
+└── config/        # 配置
 ```
 
-Each layer should only depend on layers below it, never above.
+每层应仅依赖于其下方的层，而非上方。
 
-### Pattern 7: Domain-Driven Structure
+### 模式 7：领域驱动结构
 
-For complex applications, organize by business domain rather than technical layer.
+对于复杂应用，按业务域而非技术层组织。
 
 ```
 ecommerce/
@@ -216,37 +216,37 @@ ecommerce/
     └── exceptions.py
 ```
 
-## File and Module Naming
+## 文件和模块命名
 
-### Conventions
+### 约定
 
-- Use `snake_case` for all file and module names: `user_repository.py`
-- Avoid abbreviations that obscure meaning: `user_repository.py` not `usr_repo.py`
-- Match class names to file names: `UserService` in `user_service.py`
+- 所有文件和模块名使用 `snake_case`：`user_repository.py`
+- 避免模糊含义的缩写：`user_repository.py` 而非 `usr_repo.py`
+- 类名与文件名匹配：`user_service.py` 中的 `UserService`
 
-### Import Style
+### 导入风格
 
-Use absolute imports for clarity and reliability:
+使用绝对导入以获得清晰性和可靠性：
 
 ```python
-# Preferred: Absolute imports
+# 推荐：绝对导入
 from myproject.services import UserService
 from myproject.models import User
 
-# Avoid: Relative imports
+# 避免：相对导入
 from ..services import UserService
 from . import models
 ```
 
-Relative imports can break when modules are moved or reorganized.
+相对导入在模块移动或重组时可能中断。
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Keep files focused** - One concept per file, consider splitting at 300-500 lines (varies by complexity)
-2. **Define `__all__` explicitly** - Make public interfaces clear
-3. **Prefer flat structures** - Add depth only for genuine sub-domains
-4. **Use absolute imports** - More reliable and clearer
-5. **Be consistent** - Apply patterns uniformly across the project
-6. **Match names to content** - File names should describe their purpose
-7. **Separate concerns** - Keep layers distinct and dependencies flowing one direction
-8. **Document your structure** - Include a README explaining the organization
+1. **保持文件专注** - 单文件单概念，在 300-500 行时考虑拆分（根据复杂度而异）
+2. **显式定义 `__all__`** - 使公共接口清晰
+3. **优先扁平结构** - 仅为真正的子域增加深度
+4. **使用绝对导入** - 更可靠、更清晰
+5. **保持一致** - 在整个项目中统一应用模式
+6. **名称与内容匹配** - 文件名应描述其用途
+7. **分离关注点** - 保持层分明，依赖单向流动
+8. **记录结构** - 包含解释组织的 README

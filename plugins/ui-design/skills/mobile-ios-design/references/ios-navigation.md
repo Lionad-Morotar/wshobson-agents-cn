@@ -1,8 +1,8 @@
-# iOS Navigation Patterns
+# iOS 导航模式
 
 ## NavigationStack (iOS 16+)
 
-### Basic Navigation
+### 基础导航
 
 ```swift
 struct BasicNavigationView: View {
@@ -11,7 +11,7 @@ struct BasicNavigationView: View {
             List(items) { item in
                 NavigationLink(item.title, value: item)
             }
-            .navigationTitle("Items")
+            .navigationTitle("项目")
             .navigationDestination(for: Item.self) { item in
                 ItemDetailView(item: item)
             }
@@ -20,7 +20,7 @@ struct BasicNavigationView: View {
 }
 ```
 
-### Programmatic Navigation
+### 编程式导航
 
 ```swift
 struct ProgrammaticNavigationView: View {
@@ -29,20 +29,20 @@ struct ProgrammaticNavigationView: View {
     var body: some View {
         NavigationStack(path: $path) {
             VStack(spacing: 20) {
-                Button("Go to Settings") {
+                Button("前往设置") {
                     path.append(Destination.settings)
                 }
 
-                Button("Go to Profile") {
+                Button("前往个人资料") {
                     path.append(Destination.profile)
                 }
 
-                Button("Deep Link to Item 123") {
+                Button("深度链接到项目 123") {
                     path.append(Destination.settings)
                     path.append(Destination.itemDetail(id: 123))
                 }
             }
-            .navigationTitle("Home")
+            .navigationTitle("主页")
             .navigationDestination(for: Destination.self) { destination in
                 switch destination {
                 case .settings:
@@ -64,7 +64,7 @@ struct ProgrammaticNavigationView: View {
 }
 ```
 
-### Navigation State Persistence
+### 导航状态持久化
 
 ```swift
 struct PersistentNavigationView: View {
@@ -104,7 +104,7 @@ struct PersistentNavigationView: View {
 
 ## NavigationSplitView
 
-### Two-Column Layout
+### 双栏布局
 
 ```swift
 struct TwoColumnView: View {
@@ -113,20 +113,20 @@ struct TwoColumnView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            // Sidebar
+            // 侧边栏
             List(categories, selection: $selectedCategory) { category in
                 NavigationLink(value: category) {
                     Label(category.name, systemImage: category.icon)
                 }
             }
-            .navigationTitle("Categories")
+            .navigationTitle("分类")
         } detail: {
-            // Detail
+            // 详情
             if let category = selectedCategory {
                 CategoryDetailView(category: category)
             } else {
                 ContentUnavailableView(
-                    "Select a Category",
+                    "选择一个分类",
                     systemImage: "sidebar.leading"
                 )
             }
@@ -136,7 +136,7 @@ struct TwoColumnView: View {
 }
 ```
 
-### Three-Column Layout
+### 三栏布局
 
 ```swift
 struct ThreeColumnView: View {
@@ -145,15 +145,15 @@ struct ThreeColumnView: View {
 
     var body: some View {
         NavigationSplitView {
-            // Sidebar
+            // 侧边栏
             List(folders, selection: $selectedFolder) { folder in
                 NavigationLink(value: folder) {
                     Label(folder.name, systemImage: "folder")
                 }
             }
-            .navigationTitle("Folders")
+            .navigationTitle("文件夹")
         } content: {
-            // Content column
+            // 内容栏
             if let folder = selectedFolder {
                 List(folder.documents, selection: $selectedDocument) { document in
                     NavigationLink(value: document) {
@@ -162,15 +162,15 @@ struct ThreeColumnView: View {
                 }
                 .navigationTitle(folder.name)
             } else {
-                Text("Select a folder")
+                Text("选择一个文件夹")
             }
         } detail: {
-            // Detail column
+            // 详情栏
             if let document = selectedDocument {
                 DocumentDetailView(document: document)
             } else {
                 ContentUnavailableView(
-                    "Select a Document",
+                    "选择一个文档",
                     systemImage: "doc"
                 )
             }
@@ -179,9 +179,9 @@ struct ThreeColumnView: View {
 }
 ```
 
-## Sheet Navigation
+## Sheet 导航
 
-### Modal Sheets
+### 模态 Sheet
 
 ```swift
 struct SheetNavigationView: View {
@@ -194,26 +194,26 @@ struct SheetNavigationView: View {
             ContentView()
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
-                        Button("Add", systemImage: "plus") {
+                        Button("添加", systemImage: "plus") {
                             showNewItem = true
                         }
                     }
                     ToolbarItem(placement: .topBarLeading) {
-                        Button("Settings", systemImage: "gear") {
+                        Button("设置", systemImage: "gear") {
                             showSettings = true
                         }
                     }
                 }
         }
-        // Boolean-based sheet
+        // 基于布尔值的 sheet
         .sheet(isPresented: $showSettings) {
             SettingsSheet()
         }
-        // Boolean-based fullscreen cover
+        // 基于布尔值的全屏覆盖
         .fullScreenCover(isPresented: $showNewItem) {
             NewItemView()
         }
-        // Item-based sheet
+        // 基于项目的 sheet
         .sheet(item: $editingItem) { item in
             EditItemSheet(item: item)
         }
@@ -221,7 +221,7 @@ struct SheetNavigationView: View {
 }
 ```
 
-### Sheet with Navigation
+### 带导航的 Sheet
 
 ```swift
 struct NavigableSheet: View {
@@ -230,25 +230,25 @@ struct NavigableSheet: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("General") {
-                    NavigationLink("Account") {
+                Section("通用") {
+                    NavigationLink("账户") {
                         AccountSettingsView()
                     }
-                    NavigationLink("Notifications") {
+                    NavigationLink("通知") {
                         NotificationSettingsView()
                     }
                 }
 
-                Section("Advanced") {
-                    NavigationLink("Privacy") {
+                Section("高级") {
+                    NavigationLink("隐私") {
                         PrivacySettingsView()
                     }
                 }
             }
-            .navigationTitle("Settings")
+            .navigationTitle("设置")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") {
+                    Button("完成") {
                         dismiss()
                     }
                 }
@@ -258,43 +258,43 @@ struct NavigableSheet: View {
 }
 ```
 
-### Sheet Customization
+### Sheet 自定义
 
 ```swift
 struct CustomSheetView: View {
     @State private var showSheet = false
 
     var body: some View {
-        Button("Show Sheet") {
+        Button("显示 Sheet") {
             showSheet = true
         }
         .sheet(isPresented: $showSheet) {
             SheetContent()
-                // Available detents
+                // 可用的停靠高度
                 .presentationDetents([
                     .medium,
                     .large,
                     .height(200),
                     .fraction(0.75)
                 ])
-                // Selected detent binding
+                // 选定的停靠高度绑定
                 .presentationDetents([.medium, .large], selection: $selectedDetent)
-                // Drag indicator visibility
+                // 拖动指示器可见性
                 .presentationDragIndicator(.visible)
-                // Corner radius
+                // 圆角半径
                 .presentationCornerRadius(24)
-                // Background interaction
+                // 背景交互
                 .presentationBackgroundInteraction(.enabled(upThrough: .medium))
-                // Prevent interactive dismiss
+                // 禁用交互式关闭
                 .interactiveDismissDisabled(hasUnsavedChanges)
         }
     }
 }
 ```
 
-## Tab Navigation
+## 标签页导航
 
-### Basic TabView
+### 基础 TabView
 
 ```swift
 struct MainTabView: View {
@@ -304,19 +304,19 @@ struct MainTabView: View {
         TabView(selection: $selectedTab) {
             HomeView()
                 .tabItem {
-                    Label("Home", systemImage: "house")
+                    Label("主页", systemImage: "house")
                 }
                 .tag(0)
 
             SearchView()
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+                    Label("搜索", systemImage: "magnifyingglass")
                 }
                 .tag(1)
 
             ProfileView()
                 .tabItem {
-                    Label("Profile", systemImage: "person")
+                    Label("个人资料", systemImage: "person")
                 }
                 .tag(2)
                 .badge(unreadCount)
@@ -325,7 +325,7 @@ struct MainTabView: View {
 }
 ```
 
-### Tab with Custom Badge
+### 带自定义徽标的标签页
 
 ```swift
 struct BadgedTabView: View {
@@ -362,9 +362,9 @@ struct BadgedTabView: View {
 }
 ```
 
-## Deep Linking
+## 深度链接
 
-### URL-Based Navigation
+### 基于 URL 的导航
 
 ```swift
 struct DeepLinkableApp: App {
@@ -406,7 +406,7 @@ class NavigationRouter: ObservableObject {
 }
 ```
 
-### Universal Links
+### 通用链接
 
 ```swift
 struct UniversalLinkHandler: View {
@@ -421,7 +421,7 @@ struct UniversalLinkHandler: View {
     }
 
     private func handleUniversalLink(_ url: URL) {
-        // Parse URL path and navigate accordingly
+        // 解析 URL 路径并相应导航
         let pathComponents = url.pathComponents
 
         if pathComponents.contains("product"),
@@ -433,7 +433,7 @@ struct UniversalLinkHandler: View {
 }
 ```
 
-## Navigation Coordinator Pattern
+## 导航协调器模式
 
 ```swift
 @MainActor
@@ -499,9 +499,9 @@ class NavigationCoordinator: ObservableObject {
 }
 ```
 
-## Navigation Transitions (iOS 18+)
+## 导航过渡 (iOS 18+)
 
-### Custom Navigation Transitions
+### 自定义导航过渡
 
 ```swift
 struct CustomTransitionView: View {
@@ -524,7 +524,7 @@ struct CustomTransitionView: View {
 }
 ```
 
-### Hero Transitions
+### Hero 过渡
 
 ```swift
 struct HeroTransitionView: View {

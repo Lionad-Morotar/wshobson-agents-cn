@@ -3,54 +3,54 @@ name: python-packaging
 description: Create distributable Python packages with proper project structure, setup.py/pyproject.toml, and publishing to PyPI. Use when packaging Python libraries, creating CLI tools, or distributing Python code.
 ---
 
-# Python Packaging
+# Python 打包
 
-Comprehensive guide to creating, structuring, and distributing Python packages using modern packaging tools, pyproject.toml, and publishing to PyPI.
+使用现代打包工具、pyproject.toml 以及发布到 PyPI 的完整 Python 包创建、结构化和分发指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Creating Python libraries for distribution
-- Building command-line tools with entry points
-- Publishing packages to PyPI or private repositories
-- Setting up Python project structure
-- Creating installable packages with dependencies
-- Building wheels and source distributions
-- Versioning and releasing Python packages
-- Creating namespace packages
-- Implementing package metadata and classifiers
+- 创建用于分发的 Python 库
+- 构建带有入口点的命令行工具
+- 发布包到 PyPI 或私有仓库
+- 设置 Python 项目结构
+- 创建带有依赖项的可安装包
+- 构建 wheel 和源代码分发
+- Python 包的版本管理和发布
+- 创建命名空间包
+- 实现包元数据和分类器
 
-## Core Concepts
+## 核心概念
 
-### 1. Package Structure
+### 1. 包结构
 
-- **Source layout**: `src/package_name/` (recommended)
-- **Flat layout**: `package_name/` (simpler but less flexible)
-- **Package metadata**: pyproject.toml, setup.py, or setup.cfg
-- **Distribution formats**: wheel (.whl) and source distribution (.tar.gz)
+- **源码布局**：`src/package_name/`（推荐）
+- **扁平布局**：`package_name/`（更简单但灵活性较低）
+- **包元数据**：pyproject.toml、setup.py 或 setup.cfg
+- **分发格式**：wheel（.whl）和源代码分发（.tar.gz）
 
-### 2. Modern Packaging Standards
+### 2. 现代打包标准
 
-- **PEP 517/518**: Build system requirements
-- **PEP 621**: Metadata in pyproject.toml
-- **PEP 660**: Editable installs
-- **pyproject.toml**: Single source of configuration
+- **PEP 517/518**：构建系统要求
+- **PEP 621**：pyproject.toml 中的元数据
+- **PEP 660**：可编辑安装
+- **pyproject.toml**：单一配置源
 
-### 3. Build Backends
+### 3. 构建后端
 
-- **setuptools**: Traditional, widely used
-- **hatchling**: Modern, opinionated
-- **flit**: Lightweight, for pure Python
-- **poetry**: Dependency management + packaging
+- **setuptools**：传统、广泛使用
+- **hatchling**：现代、观点明确
+- **flit**：轻量级,适用于纯 Python
+- **poetry**：依赖管理 + 打包
 
-### 4. Distribution
+### 4. 分发
 
-- **PyPI**: Python Package Index (public)
-- **TestPyPI**: Testing before production
-- **Private repositories**: JFrog, AWS CodeArtifact, etc.
+- **PyPI**：Python 包索引（公共）
+- **TestPyPI**：生产环境前测试
+- **私有仓库**：JFrog、AWS CodeArtifact 等
 
-## Quick Start
+## 快速开始
 
-### Minimal Package Structure
+### 最小包结构
 
 ```
 my-package/
@@ -65,7 +65,7 @@ my-package/
     └── test_module.py
 ```
 
-### Minimal pyproject.toml
+### 最小 pyproject.toml
 
 ```toml
 [build-system]
@@ -90,9 +90,9 @@ dev = [
 ]
 ```
 
-## Package Structure Patterns
+## 包结构模式
 
-### Pattern 1: Source Layout (Recommended)
+### 模式 1:源码布局（推荐）
 
 ```
 my-package/
@@ -105,7 +105,7 @@ my-package/
 │       ├── __init__.py
 │       ├── core.py
 │       ├── utils.py
-│       └── py.typed          # For type hints
+│       └── py.typed          # 用于类型提示
 ├── tests/
 │   ├── __init__.py
 │   ├── test_core.py
@@ -114,20 +114,20 @@ my-package/
     └── index.md
 ```
 
-**Advantages:**
+**优势：**
 
-- Prevents accidentally importing from source
-- Cleaner test imports
-- Better isolation
+- 防止意外从源代码导入
+- 更清晰的测试导入
+- 更好的隔离性
 
-**pyproject.toml for source layout:**
+**源码布局的 pyproject.toml：**
 
 ```toml
 [tool.setuptools.packages.find]
 where = ["src"]
 ```
 
-### Pattern 2: Flat Layout
+### 模式 2:扁平布局
 
 ```
 my-package/
@@ -140,12 +140,12 @@ my-package/
     └── test_module.py
 ```
 
-**Simpler but:**
+**更简单但：**
 
-- Can import package without installing
-- Less professional for libraries
+- 可以在不安装的情况下导入包
+- 对于库来说不够专业
 
-### Pattern 3: Multi-Package Project
+### 模式 3:多包项目
 
 ```
 project/
@@ -160,9 +160,9 @@ project/
 └── tests/
 ```
 
-## Complete pyproject.toml Examples
+## 完整 pyproject.toml 示例
 
-### Pattern 4: Full-Featured pyproject.toml
+### 模式 4:功能完整的 pyproject.toml
 
 ```toml
 [build-system]
@@ -243,13 +243,13 @@ exclude = ["tests*"]
 [tool.setuptools.package-data]
 my_package = ["py.typed", "*.pyi", "data/*.json"]
 
-# Black configuration
+# Black 配置
 [tool.black]
 line-length = 100
 target-version = ["py38", "py39", "py310", "py311"]
 include = '\.pyi?$'
 
-# Ruff configuration
+# Ruff 配置
 [tool.ruff]
 line-length = 100
 target-version = "py38"
@@ -257,20 +257,20 @@ target-version = "py38"
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
 
-# MyPy configuration
+# MyPy 配置
 [tool.mypy]
 python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 
-# Pytest configuration
+# Pytest 配置
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = "-v --cov=my_package --cov-report=term-missing"
 
-# Coverage configuration
+# Coverage 配置
 [tool.coverage.run]
 source = ["src"]
 omit = ["*/tests/*"]
@@ -284,7 +284,7 @@ exclude_lines = [
 ]
 ```
 
-### Pattern 5: Dynamic Versioning
+### 模式 5:动态版本管理
 
 ```toml
 [build-system]
@@ -299,25 +299,25 @@ description = "Package with dynamic version"
 [tool.setuptools.dynamic]
 version = {attr = "my_package.__version__"}
 
-# Or use setuptools-scm for git-based versioning
+# 或使用 setuptools-scm 进行基于 git 的版本管理
 [tool.setuptools_scm]
 write_to = "src/my_package/_version.py"
 ```
 
-**In **init**.py:**
+**在 __init__.py 中：**
 
 ```python
 # src/my_package/__init__.py
 __version__ = "1.0.0"
 
-# Or with setuptools-scm
+# 或使用 setuptools-scm
 from importlib.metadata import version
 __version__ = version("my-package")
 ```
 
-## Command-Line Interface (CLI) Patterns
+## 命令行界面（CLI）模式
 
-### Pattern 6: CLI with Click
+### 模式 6:使用 Click 的 CLI
 
 ```python
 # src/my_package/cli.py
@@ -351,14 +351,14 @@ if __name__ == "__main__":
     main()
 ```
 
-**Register in pyproject.toml:**
+**在 pyproject.toml 中注册：**
 
 ```toml
 [project.scripts]
 my-tool = "my_package.cli:main"
 ```
 
-**Usage:**
+**使用：**
 
 ```bash
 pip install -e .
@@ -367,7 +367,7 @@ my-tool greet Alice --greeting="Hi"
 my-tool repeat --count=3
 ```
 
-### Pattern 7: CLI with argparse
+### 模式 7:使用 argparse 的 CLI
 
 ```python
 # src/my_package/cli.py
@@ -389,7 +389,7 @@ def main():
 
     subparsers = parser.add_subparsers(dest="command", help="Commands")
 
-    # Add subcommand
+    # 添加子命令
     process_parser = subparsers.add_parser("process", help="Process data")
     process_parser.add_argument("input_file", help="Input file path")
     process_parser.add_argument(
@@ -414,46 +414,46 @@ if __name__ == "__main__":
     main()
 ```
 
-## Building and Publishing
+## 构建和发布
 
-### Pattern 8: Build Package Locally
+### 模式 8:本地构建包
 
 ```bash
-# Install build tools
+# 安装构建工具
 pip install build twine
 
-# Build distribution
+# 构建分发版本
 python -m build
 
-# This creates:
+# 这将创建：
 # dist/
-#   my-package-1.0.0.tar.gz (source distribution)
+#   my-package-1.0.0.tar.gz (源代码分发)
 #   my_package-1.0.0-py3-none-any.whl (wheel)
 
-# Check the distribution
+# 检查分发版本
 twine check dist/*
 ```
 
-### Pattern 9: Publishing to PyPI
+### 模式 9:发布到 PyPI
 
 ```bash
-# Install publishing tools
+# 安装发布工具
 pip install twine
 
-# Test on TestPyPI first
+# 首先在 TestPyPI 上测试
 twine upload --repository testpypi dist/*
 
-# Install from TestPyPI to test
+# 从 TestPyPI 安装以测试
 pip install --index-url https://test.pypi.org/simple/ my-package
 
-# If all good, publish to PyPI
+# 如果一切正常,发布到 PyPI
 twine upload dist/*
 ```
 
-**Using API tokens (recommended):**
+**使用 API 令牌（推荐）：**
 
 ```bash
-# Create ~/.pypirc
+# 创建 ~/.pypirc
 [distutils]
 index-servers =
     pypi
@@ -468,7 +468,7 @@ username = __token__
 password = pypi-...your-test-token...
 ```
 
-### Pattern 10: Automated Publishing with GitHub Actions
+### 模式 10:使用 GitHub Actions 自动发布
 
 ```yaml
 # .github/workflows/publish.yml
@@ -507,9 +507,9 @@ jobs:
         run: twine upload dist/*
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 11: Including Data Files
+### 模式 11:包含数据文件
 
 ```toml
 [tool.setuptools.package-data]
@@ -521,7 +521,7 @@ my_package = [
 ]
 ```
 
-**Accessing data files:**
+**访问数据文件：**
 
 ```python
 # src/my_package/loader.py
@@ -540,25 +540,25 @@ from importlib.resources import files
 data = files("my_package").joinpath("data/file.txt").read_text()
 ```
 
-### Pattern 12: Namespace Packages
+### 模式 12:命名空间包
 
-**For large projects split across multiple repositories:**
+**适用于跨多个仓库拆分的大型项目：**
 
 ```
-# Package 1: company-core
+# 包 1: company-core
 company/
 └── core/
     ├── __init__.py
     └── models.py
 
-# Package 2: company-api
+# 包 2: company-api
 company/
 └── api/
     ├── __init__.py
     └── routes.py
 ```
 
-**Do NOT include **init**.py in the namespace directory (company/):**
+**不要在命名空间目录（company/）中包含 __init__.py：**
 
 ```toml
 # company-core/pyproject.toml
@@ -578,15 +578,15 @@ where = ["."]
 include = ["company.api*"]
 ```
 
-**Usage:**
+**使用：**
 
 ```python
-# Both packages can be imported under same namespace
+# 两个包可以在同一命名空间下导入
 from company.core import models
 from company.api import routes
 ```
 
-### Pattern 13: C Extensions
+### 模式 13:C 扩展
 
 ```toml
 [build-system]
@@ -599,7 +599,7 @@ ext-modules = [
 ]
 ```
 
-**Or with setup.py:**
+**或使用 setup.py：**
 
 ```python
 # setup.py
@@ -616,32 +616,32 @@ setup(
 )
 ```
 
-## Version Management
+## 版本管理
 
-### Pattern 14: Semantic Versioning
+### 模式 14:语义化版本
 
 ```python
 # src/my_package/__init__.py
 __version__ = "1.2.3"
 
-# Semantic versioning: MAJOR.MINOR.PATCH
-# MAJOR: Breaking changes
-# MINOR: New features (backward compatible)
-# PATCH: Bug fixes
+# 语义化版本：MAJOR.MINOR.PATCH
+# MAJOR：重大变更
+# MINOR：新功能（向后兼容）
+# PATCH：错误修复
 ```
 
-**Version constraints in dependencies:**
+**依赖项中的版本约束：**
 
 ```toml
 dependencies = [
-    "requests>=2.28.0,<3.0.0",  # Compatible range
-    "click~=8.1.0",              # Compatible release (~= 8.1.0 means >=8.1.0,<8.2.0)
-    "pydantic>=2.0",             # Minimum version
-    "numpy==1.24.3",             # Exact version (avoid if possible)
+    "requests>=2.28.0,<3.0.0",  # 兼容范围
+    "click~=8.1.0",              # 兼容发布版本（~= 8.1.0 表示 >=8.1.0,<8.2.0）
+    "pydantic>=2.0",             # 最小版本
+    "numpy==1.24.3",             # 精确版本（尽可能避免）
 ]
 ```
 
-### Pattern 15: Git-Based Versioning
+### 模式 15:基于 Git 的版本管理
 
 ```toml
 [build-system]
@@ -658,51 +658,51 @@ version_scheme = "post-release"
 local_scheme = "dirty-tag"
 ```
 
-**Creates versions like:**
+**创建如下版本：**
 
-- `1.0.0` (from git tag)
-- `1.0.1.dev3+g1234567` (3 commits after tag)
+- `1.0.0`（来自 git 标签）
+- `1.0.1.dev3+g1234567`（标签后 3 次提交）
 
-## Testing Installation
+## 测试安装
 
-### Pattern 16: Editable Install
+### 模式 16:可编辑安装
 
 ```bash
-# Install in development mode
+# 以开发模式安装
 pip install -e .
 
-# With optional dependencies
+# 带有可选依赖项
 pip install -e ".[dev]"
 pip install -e ".[dev,docs]"
 
-# Now changes to source code are immediately reflected
+# 现在对源代码的更改会立即生效
 ```
 
-### Pattern 17: Testing in Isolated Environment
+### 模式 17:在隔离环境中测试
 
 ```bash
-# Create virtual environment
+# 创建虚拟环境
 python -m venv test-env
 source test-env/bin/activate  # Linux/Mac
 # test-env\Scripts\activate  # Windows
 
-# Install package
+# 安装包
 pip install dist/my_package-1.0.0-py3-none-any.whl
 
-# Test it works
+# 测试是否正常工作
 python -c "import my_package; print(my_package.__version__)"
 
-# Test CLI
+# 测试 CLI
 my-tool --help
 
-# Cleanup
+# 清理
 deactivate
 rm -rf test-env
 ```
 
-## Documentation
+## 文档
 
-### Pattern 18: README.md Template
+### 模式 18:README.md 模板
 
 ````markdown
 # My Package
@@ -717,7 +717,6 @@ Brief description of your package.
 
 ```bash
 pip install my-package
-```
 ````
 
 ## Quick Start
@@ -753,9 +752,9 @@ MIT
 
 ````
 
-## Common Patterns
+## 常见模式
 
-### Pattern 19: Multi-Architecture Wheels
+### 模式 19:多架构 Wheel
 
 ```yaml
 # .github/workflows/wheels.yml
@@ -782,27 +781,27 @@ jobs:
           path: ./wheelhouse/*.whl
 ````
 
-### Pattern 20: Private Package Index
+### 模式 20:私有包索引
 
 ```bash
-# Install from private index
+# 从私有索引安装
 pip install my-package --index-url https://private.pypi.org/simple/
 
-# Or add to pip.conf
+# 或添加到 pip.conf
 [global]
 index-url = https://private.pypi.org/simple/
 extra-index-url = https://pypi.org/simple/
 
-# Upload to private index
+# 上传到私有索引
 twine upload --repository-url https://private.pypi.org/ dist/*
 ```
 
-## File Templates
+## 文件模板
 
-### .gitignore for Python Packages
+### Python 包的 .gitignore
 
 ```gitignore
-# Build artifacts
+# 构建产物
 build/
 dist/
 *.egg-info/
@@ -815,7 +814,7 @@ __pycache__/
 *$py.class
 *.so
 
-# Virtual environments
+# 虚拟环境
 venv/
 env/
 ENV/
@@ -825,12 +824,12 @@ ENV/
 .idea/
 *.swp
 
-# Testing
+# 测试
 .pytest_cache/
 .coverage
 htmlcov/
 
-# Distribution
+# 分发
 *.whl
 *.tar.gz
 ```
@@ -849,40 +848,40 @@ recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
 ```
 
-## Checklist for Publishing
+## 发布检查清单
 
-- [ ] Code is tested (pytest passing)
-- [ ] Documentation is complete (README, docstrings)
-- [ ] Version number updated
-- [ ] CHANGELOG.md updated
-- [ ] License file included
-- [ ] pyproject.toml is complete
-- [ ] Package builds without errors
-- [ ] Installation tested in clean environment
-- [ ] CLI tools work (if applicable)
-- [ ] PyPI metadata is correct (classifiers, keywords)
-- [ ] GitHub repository linked
-- [ ] Tested on TestPyPI first
-- [ ] Git tag created for release
+- [ ] 代码已测试（pytest 通过）
+- [ ] 文档已完成（README、文档字符串）
+- [ ] 版本号已更新
+- [ ] CHANGELOG.md 已更新
+- [ ] 许可证文件已包含
+- [ ] pyproject.toml 已完成
+- [ ] 包构建无错误
+- [ ] 在干净环境中测试安装
+- [ ] CLI 工具正常工作（如适用）
+- [ ] PyPI 元数据正确（分类器、关键词）
+- [ ] GitHub 仓库已链接
+- [ ] 首先在 TestPyPI 上测试
+- [ ] 为发布创建 git 标签
 
-## Resources
+## 资源
 
-- **Python Packaging Guide**: https://packaging.python.org/
-- **PyPI**: https://pypi.org/
-- **TestPyPI**: https://test.pypi.org/
-- **setuptools documentation**: https://setuptools.pypa.io/
-- **build**: https://pypa-build.readthedocs.io/
-- **twine**: https://twine.readthedocs.io/
+- **Python 打包指南**：https://packaging.python.org/
+- **PyPI**：https://pypi.org/
+- **TestPyPI**：https://test.pypi.org/
+- **setuptools 文档**：https://setuptools.pypa.io/
+- **build**：https://pypa-build.readthedocs.io/
+- **twine**：https://twine.readthedocs.io/
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Use src/ layout** for cleaner package structure
-2. **Use pyproject.toml** for modern packaging
-3. **Pin build dependencies** in build-system.requires
-4. **Version appropriately** with semantic versioning
-5. **Include all metadata** (classifiers, URLs, etc.)
-6. **Test installation** in clean environments
-7. **Use TestPyPI** before publishing to PyPI
-8. **Document thoroughly** with README and docstrings
-9. **Include LICENSE** file
-10. **Automate publishing** with CI/CD
+1. **使用 src/ 布局**以获得更清晰的包结构
+2. **使用 pyproject.toml**进行现代打包
+3. **固定构建依赖项**在 build-system.requires 中
+4. **适当使用版本控制**遵循语义化版本
+5. **包含所有元数据**（分类器、URL 等）
+6. **在干净环境中测试安装**
+7. **在发布到 PyPI 之前使用 TestPyPI**
+8. **通过 README 和文档字符串详细记录**
+9. **包含 LICENSE** 文件
+10. **使用 CI/CD 自动发布**

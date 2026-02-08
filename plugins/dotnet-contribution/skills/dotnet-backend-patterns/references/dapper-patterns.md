@@ -1,38 +1,38 @@
-# Dapper Patterns and Best Practices
+# Dapper 模式和最佳实践
 
-Advanced patterns for high-performance data access with Dapper in .NET.
+在 .NET 中使用 Dapper 进行高性能数据访问的高级模式。
 
-## Why Dapper?
+## 为什么选择 Dapper？
 
-| Aspect           | Dapper                         | EF Core                |
-| ---------------- | ------------------------------ | ---------------------- |
-| Performance      | ~10x faster for simple queries | Good with optimization |
-| Control          | Full SQL control               | Abstracted             |
-| Learning curve   | Low (just SQL)                 | Higher                 |
-| Complex mappings | Manual                         | Automatic              |
-| Change tracking  | None                           | Built-in               |
-| Migrations       | External tools                 | Built-in               |
+| 方面            | Dapper                          | EF Core                |
+| --------------- | ------------------------------- | ---------------------- |
+| 性能            | 简单查询快约 10 倍              | 优化后性能良好         |
+| 控制            | 完全 SQL 控制                   | 抽象化                 |
+| 学习曲线        | 低（只需 SQL）                  | 较高                   |
+| 复杂映射        | 手动                            | 自动                   |
+| 更改跟踪        | 无                              | 内置                   |
+| 迁移            | 外部工具                        | 内置                   |
 
-**Use Dapper when:**
+**使用 Dapper 的场景：**
 
-- Performance is critical (hot paths)
-- You need complex SQL (CTEs, window functions)
-- Read-heavy workloads
-- Legacy database schemas
+- 性能至关重要（热路径）
+- 需要复杂 SQL（CTE、窗口函数）
+- 读取密集型工作负载
+- 遗留数据库架构
 
-**Use EF Core when:**
+**使用 EF Core 的场景：**
 
-- Rich domain models with relationships
-- Need change tracking
-- Want LINQ-to-SQL translation
-- Complex object graphs
+- 具有关系的富领域模型
+- 需要更改跟踪
+- 需要 LINQ-to-SQL 转换
+- 复杂对象图
 
-## Connection Management
+## 连接管理
 
-### 1. Proper Connection Handling
+### 1. 正确的连接处理
 
 ```csharp
-// Register connection factory
+// 注册连接工厂
 services.AddScoped<IDbConnection>(sp =>
 {
     var connectionString = sp.GetRequiredService<IConfiguration>()
@@ -40,7 +40,7 @@ services.AddScoped<IDbConnection>(sp =>
     return new SqlConnection(connectionString);
 });
 
-// Or use a factory for more control
+// 或使用工厂进行更多控制
 public interface IDbConnectionFactory
 {
     IDbConnection CreateConnection();
@@ -53,14 +53,14 @@ public class SqlConnectionFactory : IDbConnectionFactory
     public SqlConnectionFactory(IConfiguration configuration)
     {
         _connectionString = configuration.GetConnectionString("Default")
-            ?? throw new InvalidOperationException("Connection string not found");
+            ?? throw new InvalidOperationException("未找到连接字符串");
     }
 
     public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
 }
 ```
 
-### 2. Connection Lifecycle
+### 2. 连接生命周期
 
 ```csharp
 public class ProductRepository
@@ -74,7 +74,7 @@ public class ProductRepository
 
     public async Task<Product?> GetByIdAsync(string id, CancellationToken ct)
     {
-        // Connection opens automatically, closes on dispose
+        // 连接自动打开，在释放时关闭
         using var connection = _factory.CreateConnection();
 
         return await connection.QueryFirstOrDefaultAsync<Product>(
@@ -86,22 +86,22 @@ public class ProductRepository
 }
 ```
 
-## Query Patterns
+## 查询模式
 
-### 3. Basic CRUD Operations
+### 3. 基本 CRUD 操作
 
 ```csharp
-// SELECT single
+// SELECT 单个
 var product = await connection.QueryFirstOrDefaultAsync<Product>(
     "SELECT * FROM Products WHERE Id = @Id",
     new { Id = id });
 
-// SELECT multiple
+// SELECT 多个
 var products = await connection.QueryAsync<Product>(
     "SELECT * FROM Products WHERE CategoryId = @CategoryId",
     new { CategoryId = categoryId });
 
-// INSERT with identity return
+// INSERT 返回标识
 var newId = await connection.QuerySingleAsync<int>(
     """
     INSERT INTO Products (Name, Price, CategoryId)
@@ -110,7 +110,7 @@ var newId = await connection.QuerySingleAsync<int>(
     """,
     product);
 
-// INSERT with OUTPUT clause (returns full entity)
+// INSERT 使用 OUTPUT 子句（返回完整实体）
 var inserted = await connection.QuerySingleAsync<Product>(
     """
     INSERT INTO Products (Name, Price, CategoryId)
@@ -134,7 +134,7 @@ await connection.ExecuteAsync(
     new { Id = id });
 ```
 
-### 4. Dynamic Query Building
+### 4. 动态查询构建
 
 ```csharp
 public async Task<IReadOnlyList<Product>> SearchAsync(ProductSearchCriteria criteria)
@@ -166,7 +166,7 @@ public async Task<IReadOnlyList<Product>> SearchAsync(ProductSearchCriteria crit
         parameters.Add("MaxPrice", criteria.MaxPrice.Value);
     }
 
-    // Pagination
+    // 分页
     sql.Append(" ORDER BY Name");
     sql.Append(" OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY");
     parameters.Add("Offset", (criteria.Page - 1) * criteria.PageSize);
@@ -178,10 +178,10 @@ public async Task<IReadOnlyList<Product>> SearchAsync(ProductSearchCriteria crit
 }
 ```
 
-### 5. Multi-Mapping (Joins)
+### 5. 多映射（联接）
 
 ```csharp
-// One-to-One mapping
+// 一对一映射
 public async Task<Product?> GetProductWithCategoryAsync(string id)
 {
     const string sql = """
@@ -201,12 +201,12 @@ public async Task<Product?> GetProductWithCategoryAsync(string id)
             return product;
         },
         new { Id = id },
-        splitOn: "Id");  // Column where split occurs
+        splitOn: "Id");  // 发生拆分的列
 
     return result.FirstOrDefault();
 }
 
-// One-to-Many mapping
+// 一对多映射
 public async Task<Order?> GetOrderWithItemsAsync(int orderId)
 {
     const string sql = """
@@ -247,17 +247,17 @@ public async Task<Order?> GetOrderWithItemsAsync(int orderId)
 }
 ```
 
-### 6. Multiple Result Sets
+### 6. 多个结果集
 
 ```csharp
 public async Task<(IReadOnlyList<Product> Products, int TotalCount)> SearchWithCountAsync(
     ProductSearchCriteria criteria)
 {
     const string sql = """
-        -- First result set: count
+        -- 第一个结果集：计数
         SELECT COUNT(*) FROM Products WHERE CategoryId = @CategoryId;
 
-        -- Second result set: data
+        -- 第二个结果集：数据
         SELECT * FROM Products
         WHERE CategoryId = @CategoryId
         ORDER BY Name
@@ -279,15 +279,15 @@ public async Task<(IReadOnlyList<Product> Products, int TotalCount)> SearchWithC
 }
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### 7. Table-Valued Parameters (Bulk Operations)
+### 7. 表值参数（批量操作）
 
 ```csharp
-// SQL Server TVP for bulk operations
+// SQL Server TVP 用于批量操作
 public async Task<IReadOnlyList<Product>> GetByIdsAsync(IEnumerable<string> ids)
 {
-    // Create DataTable matching TVP structure
+    // 创建匹配 TVP 结构的 DataTable
     var table = new DataTable();
     table.Columns.Add("Id", typeof(string));
 
@@ -305,11 +305,11 @@ public async Task<IReadOnlyList<Product>> GetByIdsAsync(IEnumerable<string> ids)
     return results.ToList();
 }
 
-// SQL to create the TVP type:
+// 用于创建 TVP 类型的 SQL：
 // CREATE TYPE dbo.StringIdList AS TABLE (Id NVARCHAR(40));
 ```
 
-### 8. Stored Procedures
+### 8. 存储过程
 
 ```csharp
 public async Task<IReadOnlyList<Product>> GetTopProductsAsync(int categoryId, int count)
@@ -324,7 +324,7 @@ public async Task<IReadOnlyList<Product>> GetTopProductsAsync(int categoryId, in
     return results.ToList();
 }
 
-// With output parameters
+// 带输出参数
 public async Task<(Order Order, string ConfirmationCode)> CreateOrderAsync(Order order)
 {
     var parameters = new DynamicParameters(new
@@ -349,7 +349,7 @@ public async Task<(Order Order, string ConfirmationCode)> CreateOrderAsync(Order
 }
 ```
 
-### 9. Transactions
+### 9. 事务
 
 ```csharp
 public async Task<Order> CreateOrderWithItemsAsync(Order order, List<OrderItem> items)
@@ -361,7 +361,7 @@ public async Task<Order> CreateOrderWithItemsAsync(Order order, List<OrderItem> 
 
     try
     {
-        // Insert order
+        // 插入订单
         order.Id = await connection.QuerySingleAsync<int>(
             """
             INSERT INTO Orders (CustomerId, Total, CreatedAt)
@@ -371,7 +371,7 @@ public async Task<Order> CreateOrderWithItemsAsync(Order order, List<OrderItem> 
             order,
             transaction);
 
-        // Insert items
+        // 插入订单项
         foreach (var item in items)
         {
             item.OrderId = order.Id;
@@ -398,10 +398,10 @@ public async Task<Order> CreateOrderWithItemsAsync(Order order, List<OrderItem> 
 }
 ```
 
-### 10. Custom Type Handlers
+### 10. 自定义类型处理器
 
 ```csharp
-// Register custom type handler for JSON columns
+// 为 JSON 列注册自定义类型处理器
 public class JsonTypeHandler<T> : SqlMapper.TypeHandler<T>
 {
     public override T Parse(object value)
@@ -420,22 +420,22 @@ public class JsonTypeHandler<T> : SqlMapper.TypeHandler<T>
     }
 }
 
-// Register at startup
+// 在启动时注册
 SqlMapper.AddTypeHandler(new JsonTypeHandler<ProductMetadata>());
 
-// Now you can query directly
+// 现在可以直接查询
 var product = await connection.QueryFirstAsync<Product>(
     "SELECT Id, Name, Metadata FROM Products WHERE Id = @Id",
     new { Id = id });
-// product.Metadata is automatically deserialized from JSON
+// product.Metadata 从 JSON 自动反序列化
 ```
 
-## Performance Tips
+## 性能提示
 
-### 11. Use CommandDefinition for Cancellation
+### 11. 使用 CommandDefinition 进行取消
 
 ```csharp
-// Always use CommandDefinition for async operations
+// 始终对异步操作使用 CommandDefinition
 var result = await connection.QueryAsync<Product>(
     new CommandDefinition(
         commandText: "SELECT * FROM Products WHERE CategoryId = @CategoryId",
@@ -444,22 +444,22 @@ var result = await connection.QueryAsync<Product>(
         commandTimeout: 30));
 ```
 
-### 12. Buffered vs Unbuffered Queries
+### 12. 缓冲 vs 非缓冲查询
 
 ```csharp
-// Buffered (default) - loads all results into memory
-var products = await connection.QueryAsync<Product>(sql);  // Returns list
+// 缓冲（默认）- 将所有结果加载到内存中
+var products = await connection.QueryAsync<Product>(sql);  // 返回列表
 
-// Unbuffered - streams results (lower memory for large result sets)
-var products = await connection.QueryUnbufferedAsync<Product>(sql);  // Returns IAsyncEnumerable
+// 非缓冲 - 流式传输结果（大型结果集的内存占用更低）
+var products = await connection.QueryUnbufferedAsync<Product>(sql);  // 返回 IAsyncEnumerable
 
 await foreach (var product in products)
 {
-    // Process one at a time
+    // 每次处理一个
 }
 ```
 
-### 13. Connection Pooling Settings
+### 13. 连接池设置
 
 ```json
 {
@@ -469,9 +469,9 @@ await foreach (var product in products)
 }
 ```
 
-## Common Patterns
+## 常见模式
 
-### Repository Base Class
+### 仓储基类
 
 ```csharp
 public abstract class DapperRepositoryBase<T> where T : class
@@ -518,29 +518,29 @@ public abstract class DapperRepositoryBase<T> where T : class
 }
 ```
 
-## Anti-Patterns to Avoid
+## 避免的反模式
 
 ```csharp
-// ❌ Bad - SQL injection risk
+// ❌ 不好 - SQL 注入风险
 var sql = $"SELECT * FROM Products WHERE Name = '{userInput}'";
 
-// ✅ Good - Parameterized query
+// ✅ 好 - 参数化查询
 var sql = "SELECT * FROM Products WHERE Name = @Name";
 await connection.QueryAsync<Product>(sql, new { Name = userInput });
 
-// ❌ Bad - Not disposing connection
+// ❌ 不好 - 未释放连接
 var connection = new SqlConnection(connectionString);
 var result = await connection.QueryAsync<Product>(sql);
-// Connection leak!
+// 连接泄漏！
 
-// ✅ Good - Using statement
+// ✅ 好 - Using 语句
 using var connection = new SqlConnection(connectionString);
 var result = await connection.QueryAsync<Product>(sql);
 
-// ❌ Bad - Opening connection manually when not needed
-await connection.OpenAsync();  // Dapper does this automatically
+// ❌ 不好 - 不需要时手动打开连接
+await connection.OpenAsync();  // Dapper 自动执行此操作
 var result = await connection.QueryAsync<Product>(sql);
 
-// ✅ Good - Let Dapper manage connection
+// ✅ 好 - 让 Dapper 管理连接
 var result = await connection.QueryAsync<Product>(sql);
 ```

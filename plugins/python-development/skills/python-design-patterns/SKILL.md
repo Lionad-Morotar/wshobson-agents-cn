@@ -3,56 +3,56 @@ name: python-design-patterns
 description: Python design patterns including KISS, Separation of Concerns, Single Responsibility, and composition over inheritance. Use when making architecture decisions, refactoring code structure, or evaluating when abstractions are appropriate.
 ---
 
-# Python Design Patterns
+# Python 设计模式
 
-Write maintainable Python code using fundamental design principles. These patterns help you build systems that are easy to understand, test, and modify.
+使用基本的设计原则编写可维护的 Python 代码。这些模式帮助你构建易于理解、测试和修改的系统。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Designing new components or services
-- Refactoring complex or tangled code
-- Deciding whether to create an abstraction
-- Choosing between inheritance and composition
-- Evaluating code complexity and coupling
-- Planning modular architectures
+- 设计新的组件或服务
+- 重构复杂或混乱的代码
+- 决定是否创建抽象
+- 在继承和组合之间做出选择
+- 评估代码复杂度和耦合度
+- 规划模块化架构
 
-## Core Concepts
+## 核心概念
 
-### 1. KISS (Keep It Simple)
+### 1. KISS（保持简单）
 
-Choose the simplest solution that works. Complexity must be justified by concrete requirements.
+选择可行的最简单解决方案。复杂度必须由具体需求来证明其合理性。
 
-### 2. Single Responsibility (SRP)
+### 2. 单一职责（SRP）
 
-Each unit should have one reason to change. Separate concerns into focused components.
+每个单元应该只有一个变更原因。将关注点分离到专注的组件中。
 
-### 3. Composition Over Inheritance
+### 3. 组合优于继承
 
-Build behavior by combining objects, not extending classes.
+通过组合对象来构建行为，而不是扩展类。
 
-### 4. Rule of Three
+### 4. 三次法则
 
-Wait until you have three instances before abstracting. Duplication is often better than premature abstraction.
+在拥有三个实例之前，不要进行抽象。重复通常比过早抽象更好。
 
-## Quick Start
+## 快速开始
 
 ```python
-# Simple beats clever
-# Instead of a factory/registry pattern:
+# 简单胜过巧妙
+# 不使用工厂/注册表模式：
 FORMATTERS = {"json": JsonFormatter, "csv": CsvFormatter}
 
 def get_formatter(name: str) -> Formatter:
     return FORMATTERS[name]()
 ```
 
-## Fundamental Patterns
+## 基础模式
 
-### Pattern 1: KISS - Keep It Simple
+### 模式 1：KISS - 保持简单
 
-Before adding complexity, ask: does a simpler solution work?
+在添加复杂性之前，先问：有更简单的解决方案吗？
 
 ```python
-# Over-engineered: Factory with registration
+# 过度工程：带注册功能的工厂
 class OutputFormatterFactory:
     _formatters: dict[str, type[Formatter]] = {}
 
@@ -71,7 +71,7 @@ class OutputFormatterFactory:
 class JsonFormatter(Formatter):
     ...
 
-# Simple: Just use a dictionary
+# 简单：直接使用字典
 FORMATTERS = {
     "json": JsonFormatter,
     "csv": CsvFormatter,
@@ -79,52 +79,52 @@ FORMATTERS = {
 }
 
 def get_formatter(name: str) -> Formatter:
-    """Get formatter by name."""
+    """按名称获取格式化器。"""
     if name not in FORMATTERS:
         raise ValueError(f"Unknown format: {name}")
     return FORMATTERS[name]()
 ```
 
-The factory pattern adds code without adding value here. Save patterns for when they solve real problems.
+在这里，工厂模式增加了代码但没有增加价值。把模式留给解决真正问题的时候使用。
 
-### Pattern 2: Single Responsibility Principle
+### 模式 2：单一职责原则
 
-Each class or function should have one reason to change.
+每个类或函数应该只有一个变更原因。
 
 ```python
-# BAD: Handler does everything
+# 糟糕：处理器包揽一切
 class UserHandler:
     async def create_user(self, request: Request) -> Response:
-        # HTTP parsing
+        # HTTP 解析
         data = await request.json()
 
-        # Validation
+        # 验证
         if not data.get("email"):
             return Response({"error": "email required"}, status=400)
 
-        # Database access
+        # 数据库访问
         user = await db.execute(
             "INSERT INTO users (email, name) VALUES ($1, $2) RETURNING *",
             data["email"], data["name"]
         )
 
-        # Response formatting
+        # 响应格式化
         return Response({"id": user.id, "email": user.email}, status=201)
 
-# GOOD: Separated concerns
+# 良好：分离关注点
 class UserService:
-    """Business logic only."""
+    """仅包含业务逻辑。"""
 
     def __init__(self, repo: UserRepository) -> None:
         self._repo = repo
 
     async def create_user(self, data: CreateUserInput) -> User:
-        # Only business rules here
+        # 这里只处理业务规则
         user = User(email=data.email, name=data.name)
         return await self._repo.save(user)
 
 class UserHandler:
-    """HTTP concerns only."""
+    """仅处理 HTTP 相关事务。"""
 
     def __init__(self, service: UserService) -> None:
         self._service = service
@@ -135,41 +135,41 @@ class UserHandler:
         return Response(user.to_dict(), status=201)
 ```
 
-Now HTTP changes don't affect business logic, and vice versa.
+现在 HTTP 变更不会影响业务逻辑，反之亦然。
 
-### Pattern 3: Separation of Concerns
+### 模式 3：关注点分离
 
-Organize code into distinct layers with clear responsibilities.
+将代码组织成具有明确职责的不同层。
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  API Layer (handlers)                                │
-│  - Parse requests                                    │
-│  - Call services                                     │
-│  - Format responses                                  │
+│  API 层（处理器）                                     │
+│  - 解析请求                                          │
+│  - 调用服务                                          │
+│  - 格式化响应                                        │
 └─────────────────────────────────────────────────────┘
                         │
                         ▼
 ┌─────────────────────────────────────────────────────┐
-│  Service Layer (business logic)                      │
-│  - Domain rules and validation                       │
-│  - Orchestrate operations                            │
-│  - Pure functions where possible                     │
+│  服务层（业务逻辑）                                   │
+│  - 领域规则和验证                                    │
+│  - 编排操作                                          │
+│  - 尽可能使用纯函数                                  │
 └─────────────────────────────────────────────────────┘
                         │
                         ▼
 ┌─────────────────────────────────────────────────────┐
-│  Repository Layer (data access)                      │
-│  - SQL queries                                       │
-│  - External API calls                                │
-│  - Cache operations                                  │
+│  仓储层（数据访问）                                   │
+│  - SQL 查询                                          │
+│  - 外部 API 调用                                     │
+│  - 缓存操作                                          │
 └─────────────────────────────────────────────────────┘
 ```
 
-Each layer depends only on layers below it:
+每一层仅依赖于其下方的层：
 
 ```python
-# Repository: Data access
+# 仓储：数据访问
 class UserRepository:
     async def get_by_id(self, user_id: str) -> User | None:
         row = await self._db.fetchrow(
@@ -177,7 +177,7 @@ class UserRepository:
         )
         return User(**row) if row else None
 
-# Service: Business logic
+# 服务：业务逻辑
 class UserService:
     def __init__(self, repo: UserRepository) -> None:
         self._repo = repo
@@ -188,30 +188,30 @@ class UserService:
             raise UserNotFoundError(user_id)
         return user
 
-# Handler: HTTP concerns
+# 处理器：HTTP 相关事务
 @app.get("/users/{user_id}")
 async def get_user(user_id: str) -> UserResponse:
     user = await user_service.get_user(user_id)
     return UserResponse.from_user(user)
 ```
 
-### Pattern 4: Composition Over Inheritance
+### 模式 4：组合优于继承
 
-Build behavior by combining objects rather than inheriting.
+通过组合对象而非继承来构建行为。
 
 ```python
-# Inheritance: Rigid and hard to test
+# 继承：僵化且难以测试
 class EmailNotificationService(NotificationService):
     def __init__(self):
         super().__init__()
-        self._smtp = SmtpClient()  # Hard to mock
+        self._smtp = SmtpClient()  # 难以模拟
 
     def notify(self, user: User, message: str) -> None:
         self._smtp.send(user.email, message)
 
-# Composition: Flexible and testable
+# 组合：灵活且可测试
 class NotificationService:
-    """Send notifications via multiple channels."""
+    """通过多个渠道发送通知。"""
 
     def __init__(
         self,
@@ -240,21 +240,21 @@ class NotificationService:
         if "push" in channels and self._push and user.device_token:
             await self._push.send(user.device_token, message)
 
-# Easy to test with fakes
+# 易于使用假对象进行测试
 service = NotificationService(
     email_sender=FakeEmailSender(),
     sms_sender=FakeSmsSender(),
 )
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 5: Rule of Three
+### 模式 5：三次法则
 
-Wait until you have three instances before abstracting.
+在拥有三个实例之前，不要进行抽象。
 
 ```python
-# Two similar functions? Don't abstract yet
+# 两个相似的函数？暂时不要抽象
 def process_orders(orders: list[Order]) -> list[Result]:
     results = []
     for order in orders:
@@ -271,34 +271,34 @@ def process_returns(returns: list[Return]) -> list[Result]:
         results.append(result)
     return results
 
-# These look similar, but wait! Are they actually the same?
-# Different validation, different processing, different errors...
-# Duplication is often better than the wrong abstraction
+# 这些看起来很相似，但是等等！它们真的相同吗？
+# 不同的验证、不同的处理、不同的错误...
+# 重复通常比错误的抽象更好
 
-# Only after a third case, consider if there's a real pattern
-# But even then, sometimes explicit is better than abstract
+# 只有在出现第三种情况后，才考虑是否真的存在模式
+# 但即使那样，有时显式比抽象更好
 ```
 
-### Pattern 6: Function Size Guidelines
+### 模式 6：函数大小指南
 
-Keep functions focused. Extract when a function:
+保持函数专注。当函数出现以下情况时进行提取：
 
-- Exceeds 20-50 lines (varies by complexity)
-- Serves multiple distinct purposes
-- Has deeply nested logic (3+ levels)
+- 超过 20-50 行（因复杂度而异）
+- 服务于多个不同的目的
+- 有深度嵌套的逻辑（3 层以上）
 
 ```python
-# Too long, multiple concerns mixed
+# 太长，混合了多个关注点
 def process_order(order: Order) -> Result:
-    # 50 lines of validation...
-    # 30 lines of inventory check...
-    # 40 lines of payment processing...
-    # 20 lines of notification...
+    # 50 行验证...
+    # 30 行库存检查...
+    # 40 行支付处理...
+    # 20 行通知...
     pass
 
-# Better: Composed from focused functions
+# 更好：由专注的函数组合而成
 def process_order(order: Order) -> Result:
-    """Process a customer order through the complete workflow."""
+    """通过完整工作流程处理客户订单。"""
     validate_order(order)
     reserve_inventory(order)
     payment_result = charge_payment(order)
@@ -306,9 +306,9 @@ def process_order(order: Order) -> Result:
     return Result(success=True, order_id=order.id)
 ```
 
-### Pattern 7: Dependency Injection
+### 模式 7：依赖注入
 
-Pass dependencies through constructors for testability.
+通过构造函数传递依赖以提高可测试性。
 
 ```python
 from typing import Protocol
@@ -322,7 +322,7 @@ class Cache(Protocol):
     async def set(self, key: str, value: str, ttl: int) -> None: ...
 
 class UserService:
-    """Service with injected dependencies."""
+    """带有注入依赖的服务。"""
 
     def __init__(
         self,
@@ -335,27 +335,27 @@ class UserService:
         self._logger = logger
 
     async def get_user(self, user_id: str) -> User:
-        # Check cache first
+        # 首先检查缓存
         cached = await self._cache.get(f"user:{user_id}")
         if cached:
             self._logger.info("Cache hit", user_id=user_id)
             return User.from_json(cached)
 
-        # Fetch from database
+        # 从数据库获取
         user = await self._repo.get_by_id(user_id)
         if user:
             await self._cache.set(f"user:{user_id}", user.to_json(), ttl=300)
 
         return user
 
-# Production
+# 生产环境
 service = UserService(
     repository=PostgresUserRepository(db),
     cache=RedisCache(redis),
     logger=StructlogLogger(),
 )
 
-# Testing
+# 测试
 service = UserService(
     repository=InMemoryUserRepository(),
     cache=FakeCache(),
@@ -363,49 +363,49 @@ service = UserService(
 )
 ```
 
-### Pattern 8: Avoiding Common Anti-Patterns
+### 模式 8：避免常见反模式
 
-**Don't expose internal types:**
+**不要暴露内部类型：**
 
 ```python
-# BAD: Leaking ORM model to API
+# 糟糕：将 ORM 模型暴露给 API
 @app.get("/users/{id}")
-def get_user(id: str) -> UserModel:  # SQLAlchemy model
+def get_user(id: str) -> UserModel:  # SQLAlchemy 模型
     return db.query(UserModel).get(id)
 
-# GOOD: Use response schemas
+# 良好：使用响应模式
 @app.get("/users/{id}")
 def get_user(id: str) -> UserResponse:
     user = db.query(UserModel).get(id)
     return UserResponse.from_orm(user)
 ```
 
-**Don't mix I/O with business logic:**
+**不要将 I/O 与业务逻辑混合：**
 
 ```python
-# BAD: SQL embedded in business logic
+# 糟糕：SQL 嵌入在业务逻辑中
 def calculate_discount(user_id: str) -> float:
     user = db.query("SELECT * FROM users WHERE id = ?", user_id)
     orders = db.query("SELECT * FROM orders WHERE user_id = ?", user_id)
-    # Business logic mixed with data access
+    # 业务逻辑与数据访问混合
 
-# GOOD: Repository pattern
+# 良好：仓储模式
 def calculate_discount(user: User, order_history: list[Order]) -> float:
-    # Pure business logic, easily testable
+    # 纯业务逻辑，易于测试
     if len(order_history) > 10:
         return 0.15
     return 0.0
 ```
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Keep it simple** - Choose the simplest solution that works
-2. **Single responsibility** - Each unit has one reason to change
-3. **Separate concerns** - Distinct layers with clear purposes
-4. **Compose, don't inherit** - Combine objects for flexibility
-5. **Rule of three** - Wait before abstracting
-6. **Keep functions small** - 20-50 lines (varies by complexity), one purpose
-7. **Inject dependencies** - Constructor injection for testability
-8. **Delete before abstracting** - Remove dead code, then consider patterns
-9. **Test each layer** - Isolated tests for each concern
-10. **Explicit over clever** - Readable code beats elegant code
+1. **保持简单** - 选择可行的最简单解决方案
+2. **单一职责** - 每个单元只有一个变更原因
+3. **分离关注点** - 具有明确目的的不同层
+4. **组合，不要继承** - 组合对象以获得灵活性
+5. **三次法则** - 抽象之前先等待
+6. **保持函数短小** - 20-50 行（因复杂度而异），单一目的
+7. **注入依赖** - 构造函数注入以提高可测试性
+8. **先删除再抽象** - 删除死代码，然后考虑模式
+9. **测试每一层** - 为每个关注点进行隔离测试
+10. **显式胜过巧妙** - 可读的代码胜过优雅的代码

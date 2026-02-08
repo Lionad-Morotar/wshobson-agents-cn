@@ -1,77 +1,77 @@
 ---
 name: secrets-management
-description: Implement secure secrets management for CI/CD pipelines using Vault, AWS Secrets Manager, or native platform solutions. Use when handling sensitive credentials, rotating secrets, or securing CI/CD environments.
+description: 使用 Vault、AWS Secrets Manager 或原生平台解决方案为 CI/CD 流水线实施安全的密钥管理。用于处理敏感凭证、轮换密钥或保护 CI/CD 环境。
 ---
 
-# Secrets Management
+# 密钥管理
 
-Secure secrets management practices for CI/CD pipelines using Vault, AWS Secrets Manager, and other tools.
+使用 Vault、AWS Secrets Manager 和其他工具为 CI/CD 流水线实施安全密钥管理实践。
 
-## Purpose
+## 目的
 
-Implement secure secrets management in CI/CD pipelines without hardcoding sensitive information.
+在 CI/CD 流水线中实施安全的密钥管理,而无需硬编码敏感信息。
 
-## When to Use
+## 何时使用
 
-- Store API keys and credentials
-- Manage database passwords
-- Handle TLS certificates
-- Rotate secrets automatically
-- Implement least-privilege access
+- 存储 API 密钥和凭证
+- 管理数据库密码
+- 处理 TLS 证书
+- 自动轮换密钥
+- 实施最小权限访问
 
-## Secrets Management Tools
+## 密钥管理工具
 
 ### HashiCorp Vault
 
-- Centralized secrets management
-- Dynamic secrets generation
-- Secret rotation
-- Audit logging
-- Fine-grained access control
+- 集中式密钥管理
+- 动态密钥生成
+- 密钥轮换
+- 审计日志
+- 细粒度访问控制
 
 ### AWS Secrets Manager
 
-- AWS-native solution
-- Automatic rotation
-- Integration with RDS
-- CloudFormation support
+- AWS 原生解决方案
+- 自动轮换
+- 与 RDS 集成
+- CloudFormation 支持
 
 ### Azure Key Vault
 
-- Azure-native solution
-- HSM-backed keys
-- Certificate management
-- RBAC integration
+- Azure 原生解决方案
+- HSM 支持的密钥
+- 证书管理
+- RBAC 集成
 
 ### Google Secret Manager
 
-- GCP-native solution
-- Versioning
-- IAM integration
+- GCP 原生解决方案
+- 版本控制
+- IAM 集成
 
-## HashiCorp Vault Integration
+## HashiCorp Vault 集成
 
-### Setup Vault
+### 设置 Vault
 
 ```bash
-# Start Vault dev server
+# 启动 Vault 开发服务器
 vault server -dev
 
-# Set environment
+# 设置环境变量
 export VAULT_ADDR='http://127.0.0.1:8200'
 export VAULT_TOKEN='root'
 
-# Enable secrets engine
+# 启用密钥引擎
 vault secrets enable -path=secret kv-v2
 
-# Store secret
+# 存储密钥
 vault kv put secret/database/config username=admin password=secret
 ```
 
-### GitHub Actions with Vault
+### GitHub Actions 与 Vault 集成
 
 ```yaml
-name: Deploy with Vault Secrets
+name: 使用 Vault 密钥部署
 
 on: [push]
 
@@ -81,7 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Import Secrets from Vault
+      - name: 从 Vault 导入密钥
         uses: hashicorp/vault-action@v2
         with:
           url: https://vault.example.com:8200
@@ -91,13 +91,13 @@ jobs:
             secret/data/database password | DB_PASSWORD ;
             secret/data/api key | API_KEY
 
-      - name: Use secrets
+      - name: 使用密钥
         run: |
-          echo "Connecting to database as $DB_USERNAME"
-          # Use $DB_PASSWORD, $API_KEY
+          echo "以 $DB_USERNAME 身份连接数据库"
+          # 使用 $DB_PASSWORD, $API_KEY
 ```
 
-### GitLab CI with Vault
+### GitLab CI 与 Vault 集成
 
 ```yaml
 deploy:
@@ -110,15 +110,15 @@ deploy:
     - |
       DB_PASSWORD=$(vault kv get -field=password secret/database/config)
       API_KEY=$(vault kv get -field=key secret/api/credentials)
-      echo "Deploying with secrets..."
-      # Use $DB_PASSWORD, $API_KEY
+      echo "正在使用密钥部署..."
+      # 使用 $DB_PASSWORD, $API_KEY
 ```
 
-**Reference:** See `references/vault-setup.md`
+**参考:** 参见 `references/vault-setup.md`
 
 ## AWS Secrets Manager
 
-### Store Secret
+### 存储密钥
 
 ```bash
 aws secretsmanager create-secret \
@@ -126,17 +126,17 @@ aws secretsmanager create-secret \
   --secret-string "super-secret-password"
 ```
 
-### Retrieve in GitHub Actions
+### 在 GitHub Actions 中检索
 
 ```yaml
-- name: Configure AWS credentials
+- name: 配置 AWS 凭证
   uses: aws-actions/configure-aws-credentials@v4
   with:
     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     aws-region: us-west-2
 
-- name: Get secret from AWS
+- name: 从 AWS 获取密钥
   run: |
     SECRET=$(aws secretsmanager get-secret-value \
       --secret-id production/database/password \
@@ -145,13 +145,13 @@ aws secretsmanager create-secret \
     echo "::add-mask::$SECRET"
     echo "DB_PASSWORD=$SECRET" >> $GITHUB_ENV
 
-- name: Use secret
+- name: 使用密钥
   run: |
-    # Use $DB_PASSWORD
+    # 使用 $DB_PASSWORD
     ./deploy.sh
 ```
 
-### Terraform with AWS Secrets Manager
+### Terraform 与 AWS Secrets Manager
 
 ```hcl
 data "aws_secretsmanager_secret_version" "db_password" {
@@ -167,64 +167,64 @@ resource "aws_db_instance" "main" {
 }
 ```
 
-## GitHub Secrets
+## GitHub 密钥
 
-### Organization/Repository Secrets
+### 组织/仓库密钥
 
 ```yaml
-- name: Use GitHub secret
+- name: 使用 GitHub 密钥
   run: |
-    echo "API Key: ${{ secrets.API_KEY }}"
-    echo "Database URL: ${{ secrets.DATABASE_URL }}"
+    echo "API 密钥: ${{ secrets.API_KEY }}"
+    echo "数据库 URL: ${{ secrets.DATABASE_URL }}"
 ```
 
-### Environment Secrets
+### 环境密钥
 
 ```yaml
 deploy:
   runs-on: ubuntu-latest
   environment: production
   steps:
-    - name: Deploy
+    - name: 部署
       run: |
-        echo "Deploying with ${{ secrets.PROD_API_KEY }}"
+        echo "使用 ${{ secrets.PROD_API_KEY }} 部署"
 ```
 
-**Reference:** See `references/github-secrets.md`
+**参考:** 参见 `references/github-secrets.md`
 
-## GitLab CI/CD Variables
+## GitLab CI/CD 变量
 
-### Project Variables
+### 项目变量
 
 ```yaml
 deploy:
   script:
-    - echo "Deploying with $API_KEY"
-    - echo "Database: $DATABASE_URL"
+    - echo "使用 $API_KEY 部署"
+    - echo "数据库: $DATABASE_URL"
 ```
 
-### Protected and Masked Variables
+### 受保护和掩码变量
 
-- Protected: Only available in protected branches
-- Masked: Hidden in job logs
-- File type: Stored as file
+- 受保护: 仅在受保护分支中可用
+- 掩码: 在任务日志中隐藏
+- 文件类型: 存储为文件
 
-## Best Practices
+## 最佳实践
 
-1. **Never commit secrets** to Git
-2. **Use different secrets** per environment
-3. **Rotate secrets regularly**
-4. **Implement least-privilege access**
-5. **Enable audit logging**
-6. **Use secret scanning** (GitGuardian, TruffleHog)
-7. **Mask secrets in logs**
-8. **Encrypt secrets at rest**
-9. **Use short-lived tokens** when possible
-10. **Document secret requirements**
+1. **绝不将密钥提交到 Git**
+2. **每个环境使用不同的密钥**
+3. **定期轮换密钥**
+4. **实施最小权限访问**
+5. **启用审计日志**
+6. **使用密钥扫描** (GitGuardian, TruffleHog)
+7. **在日志中掩码密钥**
+8. **静态加密密钥**
+9. **尽可能使用短期令牌**
+10. **记录密钥要求**
 
-## Secret Rotation
+## 密钥轮换
 
-### Automated Rotation with AWS
+### 使用 AWS 自动轮换
 
 ```python
 import boto3
@@ -233,17 +233,17 @@ import json
 def lambda_handler(event, context):
     client = boto3.client('secretsmanager')
 
-    # Get current secret
+    # 获取当前密钥
     response = client.get_secret_value(SecretId='my-secret')
     current_secret = json.loads(response['SecretString'])
 
-    # Generate new password
+    # 生成新密码
     new_password = generate_strong_password()
 
-    # Update database password
+    # 更新数据库密码
     update_database_password(new_password)
 
-    # Update secret
+    # 更新密钥
     client.put_secret_value(
         SecretId='my-secret',
         SecretString=json.dumps({
@@ -255,17 +255,17 @@ def lambda_handler(event, context):
     return {'statusCode': 200}
 ```
 
-### Manual Rotation Process
+### 手动轮换流程
 
-1. Generate new secret
-2. Update secret in secret store
-3. Update applications to use new secret
-4. Verify functionality
-5. Revoke old secret
+1. 生成新密钥
+2. 更新密钥存储中的密钥
+3. 更新应用程序以使用新密钥
+4. 验证功能
+5. 撤销旧密钥
 
 ## External Secrets Operator
 
-### Kubernetes Integration
+### Kubernetes 集成
 
 ```yaml
 apiVersion: external-secrets.io/v1beta1
@@ -309,26 +309,26 @@ spec:
         property: password
 ```
 
-## Secret Scanning
+## 密钥扫描
 
-### Pre-commit Hook
+### Pre-commit 钩子
 
 ```bash
 #!/bin/bash
 # .git/hooks/pre-commit
 
-# Check for secrets with TruffleHog
+# 使用 TruffleHog 检查密钥
 docker run --rm -v "$(pwd):/repo" \
   trufflesecurity/trufflehog:latest \
   filesystem --directory=/repo
 
 if [ $? -ne 0 ]; then
-  echo "❌ Secret detected! Commit blocked."
+  echo "❌ 检测到密钥! 提交被阻止。"
   exit 1
 fi
 ```
 
-### CI/CD Secret Scanning
+### CI/CD 密钥扫描
 
 ```yaml
 secret-scan:
@@ -339,13 +339,13 @@ secret-scan:
   allow_failure: false
 ```
 
-## Reference Files
+## 参考文件
 
-- `references/vault-setup.md` - HashiCorp Vault configuration
-- `references/github-secrets.md` - GitHub Secrets best practices
+- `references/vault-setup.md` - HashiCorp Vault 配置
+- `references/github-secrets.md` - GitHub Secrets 最佳实践
 
-## Related Skills
+## 相关技能
 
-- `github-actions-templates` - For GitHub Actions integration
-- `gitlab-ci-patterns` - For GitLab CI integration
-- `deployment-pipeline-design` - For pipeline architecture
+- `github-actions-templates` - GitHub Actions 集成
+- `gitlab-ci-patterns` - GitLab CI 集成
+- `deployment-pipeline-design` - 流水线架构

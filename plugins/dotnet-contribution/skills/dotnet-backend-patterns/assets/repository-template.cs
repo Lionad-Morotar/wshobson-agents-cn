@@ -1,5 +1,5 @@
-// Repository Implementation Template for .NET 8+
-// Demonstrates both Dapper (performance) and EF Core (convenience) patterns
+// .NET 8+ 的仓储实现模板
+// 演示 Dapper（性能）和 EF Core（便利性）模式
 
 using System.Data;
 using Dapper;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace YourNamespace.Infrastructure.Data;
 
-#region Interfaces
+#region 接口
 
 public interface IProductRepository
 {
@@ -24,7 +24,7 @@ public interface IProductRepository
 
 #endregion
 
-#region Dapper Implementation (High Performance)
+#region Dapper 实现（高性能）
 
 public class DapperProductRepository : IProductRepository
 {
@@ -64,13 +64,13 @@ public class DapperProductRepository : IProductRepository
     }
 
     public async Task<(IReadOnlyList<Product> Items, int TotalCount)> SearchAsync(
-        ProductSearchRequest request, 
+        ProductSearchRequest request,
         CancellationToken ct = default)
     {
         var whereClauses = new List<string> { "IsDeleted = 0" };
         var parameters = new DynamicParameters();
 
-        // Build dynamic WHERE clause
+        // 构建动态 WHERE 子句
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
             whereClauses.Add("(Name LIKE @SearchTerm OR Sku LIKE @SearchTerm)");
@@ -103,12 +103,12 @@ public class DapperProductRepository : IProductRepository
         parameters.Add("Offset", offset);
         parameters.Add("PageSize", pageSize);
 
-        // Use multi-query for count + data in single roundtrip
+        // 使用多查询在单次往返中获取计数 + 数据
         var sql = $"""
-            -- Count query
+            -- 计数查询
             SELECT COUNT(*) FROM Products WHERE {whereClause};
-            
-            -- Data query with pagination
+
+            -- 带分页的数据查询
             SELECT Id, Name, Sku, Price, CategoryId, Stock, CreatedAt, UpdatedAt
             FROM Products
             WHERE {whereClause}
@@ -130,7 +130,7 @@ public class DapperProductRepository : IProductRepository
         const string sql = """
             INSERT INTO Products (Id, Name, Sku, Price, CategoryId, Stock, CreatedAt, IsDeleted)
             VALUES (@Id, @Name, @Sku, @Price, @CategoryId, @Stock, @CreatedAt, 0);
-            
+
             SELECT Id, Name, Sku, Price, CategoryId, Stock, CreatedAt, UpdatedAt
             FROM Products WHERE Id = @Id;
             """;
@@ -150,7 +150,7 @@ public class DapperProductRepository : IProductRepository
                 Stock = @Stock,
                 UpdatedAt = @UpdatedAt
             WHERE Id = @Id AND IsDeleted = 0;
-            
+
             SELECT Id, Name, Sku, Price, CategoryId, Stock, CreatedAt, UpdatedAt
             FROM Products WHERE Id = @Id;
             """;
@@ -172,7 +172,7 @@ public class DapperProductRepository : IProductRepository
     }
 
     public async Task<IReadOnlyList<Product>> GetByIdsAsync(
-        IEnumerable<string> ids, 
+        IEnumerable<string> ids,
         CancellationToken ct = default)
     {
         var idList = ids.ToList();
@@ -194,7 +194,7 @@ public class DapperProductRepository : IProductRepository
 
 #endregion
 
-#region EF Core Implementation (Rich Domain Models)
+#region EF Core 实现（富域模型）
 
 public class EfCoreProductRepository : IProductRepository
 {
@@ -224,17 +224,17 @@ public class EfCoreProductRepository : IProductRepository
     }
 
     public async Task<(IReadOnlyList<Product> Items, int TotalCount)> SearchAsync(
-        ProductSearchRequest request, 
+        ProductSearchRequest request,
         CancellationToken ct = default)
     {
         var query = _context.Products.AsNoTracking();
 
-        // Apply filters
+        // 应用过滤器
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
             var term = request.SearchTerm.ToLower();
-            query = query.Where(p => 
-                p.Name.ToLower().Contains(term) || 
+            query = query.Where(p =>
+                p.Name.ToLower().Contains(term) ||
                 p.Sku.ToLower().Contains(term));
         }
 
@@ -247,10 +247,10 @@ public class EfCoreProductRepository : IProductRepository
         if (request.MaxPrice.HasValue)
             query = query.Where(p => p.Price <= request.MaxPrice.Value);
 
-        // Get count before pagination
+        // 在分页前获取计数
         var totalCount = await query.CountAsync(ct);
 
-        // Apply pagination
+        // 应用分页
         var page = request.Page ?? 1;
         var pageSize = request.PageSize ?? 50;
 
@@ -289,7 +289,7 @@ public class EfCoreProductRepository : IProductRepository
     }
 
     public async Task<IReadOnlyList<Product>> GetByIdsAsync(
-        IEnumerable<string> ids, 
+        IEnumerable<string> ids,
         CancellationToken ct = default)
     {
         var idList = ids.ToList();
@@ -305,7 +305,7 @@ public class EfCoreProductRepository : IProductRepository
 
 #endregion
 
-#region DbContext Configuration
+#region DbContext 配置
 
 public class AppDbContext : DbContext
 {
@@ -318,10 +318,10 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Apply all configurations from assembly
+        // 从程序集应用所有配置
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-        // Global query filter for soft delete
+        // 软删除的全局查询过滤器
         modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
     }
 }
@@ -346,12 +346,12 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Price)
             .HasPrecision(18, 2);
 
-        // Indexes
+        // 索引
         builder.HasIndex(p => p.Sku).IsUnique();
         builder.HasIndex(p => p.CategoryId);
         builder.HasIndex(p => new { p.CategoryId, p.Name });
 
-        // Relationships
+        // 关系
         builder.HasOne(p => p.Category)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryId);
@@ -360,10 +360,10 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
 #endregion
 
-#region Advanced Patterns
+#region 高级模式
 
 /// <summary>
-/// Unit of Work pattern for coordinating multiple repositories
+/// 用于协调多个仓储的工作单元模式
 /// </summary>
 public interface IUnitOfWork : IDisposable
 {
@@ -429,7 +429,7 @@ public class UnitOfWork : IUnitOfWork
 }
 
 /// <summary>
-/// Specification pattern for complex queries
+/// 用于复杂查询的规约模式
 /// </summary>
 public interface ISpecification<T>
 {
@@ -460,7 +460,7 @@ public abstract class BaseSpecification<T> : ISpecification<T>
     protected void ApplyPaging(int skip, int take) { Skip = skip; Take = take; }
 }
 
-// Example specification
+// 示例规约
 public class ProductsByCategorySpec : BaseSpecification<Product>
 {
     public ProductsByCategorySpec(int categoryId, int page, int pageSize)
@@ -474,7 +474,7 @@ public class ProductsByCategorySpec : BaseSpecification<Product>
 
 #endregion
 
-#region Entity Definitions
+#region 实体定义
 
 public class Product
 {
@@ -488,7 +488,7 @@ public class Product
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    // Navigation
+    // 导航属性
     public Category? Category { get; set; }
 }
 

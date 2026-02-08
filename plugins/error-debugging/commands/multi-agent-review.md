@@ -1,45 +1,45 @@
-# Multi-Agent Code Review Orchestration Tool
+# 多代理代码审查编排工具
 
-## Role: Expert Multi-Agent Review Orchestration Specialist
+## 角色:专家级多代理审查编排专家
 
-A sophisticated AI-powered code review system designed to provide comprehensive, multi-perspective analysis of software artifacts through intelligent agent coordination and specialized domain expertise.
+一个复杂的 AI 驱动代码审查系统,旨在通过智能代理协调和专业领域知识,为软件工件提供全面的多视角分析。
 
-## Context and Purpose
+## 上下文和目的
 
-The Multi-Agent Review Tool leverages a distributed, specialized agent network to perform holistic code assessments that transcend traditional single-perspective review approaches. By coordinating agents with distinct expertise, we generate a comprehensive evaluation that captures nuanced insights across multiple critical dimensions:
+多代理审查工具利用分布式、专业化的代理网络,执行超越传统单视角审查方法的整体代码评估。通过协调具有不同专业知识的代理,我们生成一个全面的评估,涵盖多个关键维度的细致洞察:
 
-- **Depth**: Specialized agents dive deep into specific domains
-- **Breadth**: Parallel processing enables comprehensive coverage
-- **Intelligence**: Context-aware routing and intelligent synthesis
-- **Adaptability**: Dynamic agent selection based on code characteristics
+- **深度**: 专业代理深入研究特定领域
+- **广度**: 并行处理实现全面覆盖
+- **智能**: 上下文感知路由和智能综合
+- **适应性**: 基于代码特征的动态代理选择
 
-## Tool Arguments and Configuration
+## 工具参数和配置
 
-### Input Parameters
+### 输入参数
 
-- `$ARGUMENTS`: Target code/project for review
-  - Supports: File paths, Git repositories, code snippets
-  - Handles multiple input formats
-  - Enables context extraction and agent routing
+- `$ARGUMENTS`: 审查的目标代码/项目
+  - 支持:文件路径、Git 仓库、代码片段
+  - 处理多种输入格式
+  - 启用上下文提取和代理路由
 
-### Agent Types
+### 代理类型
 
-1. Code Quality Reviewers
-2. Security Auditors
-3. Architecture Specialists
-4. Performance Analysts
-5. Compliance Validators
-6. Best Practices Experts
+1. 代码质量审查员
+2. 安全审计员
+3. 架构专家
+4. 性能分析师
+5. 合规验证器
+6. 最佳实践专家
 
-## Multi-Agent Coordination Strategy
+## 多代理协调策略
 
-### 1. Agent Selection and Routing Logic
+### 1. 代理选择和路由逻辑
 
-- **Dynamic Agent Matching**:
-  - Analyze input characteristics
-  - Select most appropriate agent types
-  - Configure specialized sub-agents dynamically
-- **Expertise Routing**:
+- **动态代理匹配**:
+  - 分析输入特征
+  - 选择最合适的代理类型
+  - 动态配置专业子代理
+- **专业知识路由**:
   ```python
   def route_agents(code_context):
       agents = []
@@ -53,13 +53,13 @@ The Multi-Agent Review Tool leverages a distributed, specialized agent network t
       return agents
   ```
 
-### 2. Context Management and State Passing
+### 2. 上下文管理和状态传递
 
-- **Contextual Intelligence**:
-  - Maintain shared context across agent interactions
-  - Pass refined insights between agents
-  - Support incremental review refinement
-- **Context Propagation Model**:
+- **上下文智能**:
+  - 在代理交互之间维护共享上下文
+  - 在代理之间传递精炼的洞察
+  - 支持增量审查细化
+- **上下文传播模型**:
 
   ```python
   class ReviewContext:
@@ -72,36 +72,36 @@ The Multi-Agent Review Tool leverages a distributed, specialized agent network t
           self.agent_insights[agent_type] = insights
   ```
 
-### 3. Parallel vs Sequential Execution
+### 3. 并行与顺序执行
 
-- **Hybrid Execution Strategy**:
-  - Parallel execution for independent reviews
-  - Sequential processing for dependent insights
-  - Intelligent timeout and fallback mechanisms
-- **Execution Flow**:
+- **混合执行策略**:
+  - 并行执行独立审查
+  - 顺序处理依赖性洞察
+  - 智能超时和回退机制
+- **执行流程**:
 
   ```python
   def execute_review(review_context):
-      # Parallel independent agents
+      # 并行独立代理
       parallel_agents = [
           "code-quality-reviewer",
           "security-auditor"
       ]
 
-      # Sequential dependent agents
+      # 顺序依赖代理
       sequential_agents = [
           "architecture-reviewer",
           "performance-optimizer"
       ]
   ```
 
-### 4. Result Aggregation and Synthesis
+### 4. 结果聚合和综合
 
-- **Intelligent Consolidation**:
-  - Merge insights from multiple agents
-  - Resolve conflicting recommendations
-  - Generate unified, prioritized report
-- **Synthesis Algorithm**:
+- **智能整合**:
+  - 合并来自多个代理的洞察
+  - 解决冲突的建议
+  - 生成统一、优先级的报告
+- **综合算法**:
   ```python
   def synthesize_review_insights(agent_results):
       consolidated_report = {
@@ -109,51 +109,51 @@ The Multi-Agent Review Tool leverages a distributed, specialized agent network t
           "important_issues": [],
           "improvement_suggestions": []
       }
-      # Intelligent merging logic
+      # 智能合并逻辑
       return consolidated_report
   ```
 
-### 5. Conflict Resolution Mechanism
+### 5. 冲突解决机制
 
-- **Smart Conflict Handling**:
-  - Detect contradictory agent recommendations
-  - Apply weighted scoring
-  - Escalate complex conflicts
-- **Resolution Strategy**:
+- **智能冲突处理**:
+  - 检测矛盾的代理建议
+  - 应用加权评分
+  - 升级复杂冲突
+- **解决策略**:
   ```python
   def resolve_conflicts(agent_insights):
       conflict_resolver = ConflictResolutionEngine()
       return conflict_resolver.process(agent_insights)
   ```
 
-### 6. Performance Optimization
+### 6. 性能优化
 
-- **Efficiency Techniques**:
-  - Minimal redundant processing
-  - Cached intermediate results
-  - Adaptive agent resource allocation
-- **Optimization Approach**:
+- **效率技术**:
+  - 最少的冗余处理
+  - 缓存中间结果
+  - 自适应代理资源分配
+- **优化方法**:
   ```python
   def optimize_review_process(review_context):
       return ReviewOptimizer.allocate_resources(review_context)
   ```
 
-### 7. Quality Validation Framework
+### 7. 质量验证框架
 
-- **Comprehensive Validation**:
-  - Cross-agent result verification
-  - Statistical confidence scoring
-  - Continuous learning and improvement
-- **Validation Process**:
+- **全面验证**:
+  - 跨代理结果验证
+  - 统计置信度评分
+  - 持续学习和改进
+- **验证过程**:
   ```python
   def validate_review_quality(review_results):
       quality_score = QualityScoreCalculator.compute(review_results)
       return quality_score > QUALITY_THRESHOLD
   ```
 
-## Example Implementations
+## 实施示例
 
-### 1. Parallel Code Review Scenario
+### 1. 并行代码审查场景
 
 ```python
 multi_agent_review(
@@ -166,7 +166,7 @@ multi_agent_review(
 )
 ```
 
-### 2. Sequential Workflow
+### 2. 顺序工作流
 
 ```python
 sequential_review_workflow = [
@@ -177,7 +177,7 @@ sequential_review_workflow = [
 ]
 ```
 
-### 3. Hybrid Orchestration
+### 3. 混合编排
 
 ```python
 hybrid_review_strategy = {
@@ -186,23 +186,23 @@ hybrid_review_strategy = {
 }
 ```
 
-## Reference Implementations
+## 参考实施
 
-1. **Web Application Security Review**
-2. **Microservices Architecture Validation**
+1. **Web 应用安全审查**
+2. **微服务架构验证**
 
-## Best Practices and Considerations
+## 最佳实践和注意事项
 
-- Maintain agent independence
-- Implement robust error handling
-- Use probabilistic routing
-- Support incremental reviews
-- Ensure privacy and security
+- 维护代理独立性
+- 实施健壮的错误处理
+- 使用概率路由
+- 支持增量审查
+- 确保隐私和安全
 
-## Extensibility
+## 可扩展性
 
-The tool is designed with a plugin-based architecture, allowing easy addition of new agent types and review strategies.
+该工具采用基于插件的架构设计,允许轻松添加新的代理类型和审查策略。
 
-## Invocation
+## 调用
 
-Target for review: $ARGUMENTS
+审查目标: $ARGUMENTS

@@ -1,22 +1,22 @@
 ---
 name: nft-standards
-description: Implement NFT standards (ERC-721, ERC-1155) with proper metadata handling, minting strategies, and marketplace integration. Use when creating NFT contracts, building NFT marketplaces, or implementing digital asset systems.
+description: 实现具有适当元数据处理、铸造策略和市场集成的 NFT 标准（ERC-721、ERC-1155）。在创建 NFT 合约、构建 NFT 市场或实现数字资产系统时使用。
 ---
 
-# NFT Standards
+# NFT 标准
 
-Master ERC-721 and ERC-1155 NFT standards, metadata best practices, and advanced NFT features.
+掌握 ERC-721 和 ERC-1155 NFT 标准、元数据最佳实践和高级 NFT 功能。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Creating NFT collections (art, gaming, collectibles)
-- Implementing marketplace functionality
-- Building on-chain or off-chain metadata
-- Creating soulbound tokens (non-transferable)
-- Implementing royalties and revenue sharing
-- Developing dynamic/evolving NFTs
+- 创建 NFT 集合（艺术、游戏、收藏品）
+- 实现市场功能
+- 构建链上或链下元数据
+- 创建灵魂绑定代币（不可转让）
+- 实现版税和收入共享
+- 开发动态/演进式 NFT
 
-## ERC-721 (Non-Fungible Token Standard)
+## ERC-721（非同质化代币标准）
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -51,11 +51,11 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
     }
 
     function generateTokenURI(uint256 tokenId) internal pure returns (string memory) {
-        // Return IPFS URI or on-chain metadata
+        // 返回 IPFS URI 或链上元数据
         return string(abi.encodePacked("ipfs://QmHash/", Strings.toString(tokenId), ".json"));
     }
 
-    // Required overrides
+    // 必需的覆盖函数
     function _beforeTokenTransfer(
         address from,
         address to,
@@ -88,7 +88,7 @@ contract MyNFT is ERC721URIStorage, ERC721Enumerable, Ownable {
 }
 ```
 
-## ERC-1155 (Multi-Token Standard)
+## ERC-1155（多代币标准）
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -147,9 +147,9 @@ contract GameItems is ERC1155, Ownable {
 }
 ```
 
-## Metadata Standards
+## 元数据标准
 
-### Off-Chain Metadata (IPFS)
+### 链下元数据（IPFS）
 
 ```json
 {
@@ -175,7 +175,7 @@ contract GameItems is ERC1155, Ownable {
 }
 ```
 
-### On-Chain Metadata
+### 链上元数据
 
 ```solidity
 contract OnChainNFT is ERC721 {
@@ -211,13 +211,13 @@ contract OnChainNFT is ERC721 {
     }
 
     function generateSVG(Traits memory traits) internal pure returns (string memory) {
-        // Generate SVG based on traits
+        // 基于特征生成 SVG
         return "...";
     }
 }
 ```
 
-## Royalties (EIP-2981)
+## 版税（EIP-2981）
 
 ```solidity
 import "@openzeppelin/contracts/interfaces/IERC2981.sol";
@@ -240,7 +240,7 @@ contract NFTWithRoyalties is ERC721, IERC2981 {
     }
 
     function setRoyalty(address recipient, uint96 fee) external onlyOwner {
-        require(fee <= 1000, "Royalty fee too high"); // Max 10%
+        require(fee <= 1000, "Royalty fee too high"); // 最大 10%
         royaltyRecipient = recipient;
         royaltyFee = fee;
     }
@@ -257,7 +257,7 @@ contract NFTWithRoyalties is ERC721, IERC2981 {
 }
 ```
 
-## Soulbound Tokens (Non-Transferable)
+## 灵魂绑定代币（不可转让）
 
 ```solidity
 contract SoulboundToken is ERC721 {
@@ -278,7 +278,7 @@ contract SoulboundToken is ERC721 {
         _safeMint(to, tokenId);
     }
 
-    // Burn is allowed (user can destroy their SBT)
+    // 允许销毁（用户可以销毁他们的 SBT）
     function burn(uint256 tokenId) external {
         require(ownerOf(tokenId) == msg.sender, "Not token owner");
         _burn(tokenId);
@@ -286,7 +286,7 @@ contract SoulboundToken is ERC721 {
 }
 ```
 
-## Dynamic NFTs
+## 动态 NFT
 
 ```solidity
 contract DynamicNFT is ERC721 {
@@ -304,7 +304,7 @@ contract DynamicNFT is ERC721 {
         TokenState storage state = tokenStates[tokenId];
         state.experience += exp;
 
-        // Level up logic
+        // 升级逻辑
         if (state.experience >= state.level * 100) {
             state.level++;
         }
@@ -315,7 +315,7 @@ contract DynamicNFT is ERC721 {
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         TokenState memory state = tokenStates[tokenId];
 
-        // Generate metadata based on current state
+        // 基于当前状态生成元数据
         return generateMetadata(tokenId, state);
     }
 
@@ -324,13 +324,13 @@ contract DynamicNFT is ERC721 {
         pure
         returns (string memory)
     {
-        // Dynamic metadata generation
+        // 动态元数据生成
         return "";
     }
 }
 ```
 
-## Gas-Optimized Minting (ERC721A)
+## Gas 优化的铸造（ERC721A）
 
 ```solidity
 import "erc721a/contracts/ERC721A.sol";
@@ -354,30 +354,30 @@ contract OptimizedNFT is ERC721A {
 }
 ```
 
-## Resources
+## 资源
 
-- **references/erc721.md**: ERC-721 specification details
-- **references/erc1155.md**: ERC-1155 multi-token standard
-- **references/metadata-standards.md**: Metadata best practices
-- **references/enumeration.md**: Token enumeration patterns
-- **assets/erc721-contract.sol**: Production ERC-721 template
-- **assets/erc1155-contract.sol**: Production ERC-1155 template
-- **assets/metadata-schema.json**: Standard metadata format
-- **assets/metadata-uploader.py**: IPFS upload utility
+- **references/erc721.md**：ERC-721 规范详情
+- **references/erc1155.md**：ERC-1155 多代币标准
+- **references/metadata-standards.md**：元数据最佳实践
+- **references/enumeration.md**：代币枚举模式
+- **assets/erc721-contract.sol**：生产级 ERC-721 模板
+- **assets/erc1155-contract.sol**：生产级 ERC-1155 模板
+- **assets/metadata-schema.json**：标准元数据格式
+- **assets/metadata-uploader.py**：IPFS 上传工具
 
-## Best Practices
+## 最佳实践
 
-1. **Use OpenZeppelin**: Battle-tested implementations
-2. **Pin Metadata**: Use IPFS with pinning service
-3. **Implement Royalties**: EIP-2981 for marketplace compatibility
-4. **Gas Optimization**: Use ERC721A for batch minting
-5. **Reveal Mechanism**: Placeholder → reveal pattern
-6. **Enumeration**: Support walletOfOwner for marketplaces
-7. **Whitelist**: Merkle trees for efficient whitelisting
+1. **使用 OpenZeppelin**：经过实战测试的实现
+2. **固定元数据**：使用带有固定服务的 IPFS
+3. **实现版税**：EIP-2981 用于市场兼容性
+4. **Gas 优化**：批量铸造使用 ERC721A
+5. **揭示机制**：占位符 → 揭示模式
+6. **枚举**：支持 walletOfOwner 用于市场
+7. **白名单**：使用默克尔树实现高效白名单
 
-## Marketplace Integration
+## 市场集成
 
-- OpenSea: ERC-721/1155, metadata standards
-- LooksRare: Royalty enforcement
-- Rarible: Protocol fees, lazy minting
-- Blur: Gas-optimized trading
+- OpenSea：ERC-721/1155、元数据标准
+- LooksRare：版税执行
+- Rarible：协议费用、懒惰铸造
+- Blur：Gas 优化的交易

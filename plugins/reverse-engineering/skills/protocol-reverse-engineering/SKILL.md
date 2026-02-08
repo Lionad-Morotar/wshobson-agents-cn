@@ -1,197 +1,197 @@
 ---
 name: protocol-reverse-engineering
-description: Master network protocol reverse engineering including packet analysis, protocol dissection, and custom protocol documentation. Use when analyzing network traffic, understanding proprietary protocols, or debugging network communication.
+description: 精通网络协议逆向工程，包括数据包分析、协议解析和自定义协议文档。用于分析网络流量、理解专有协议或调试网络通信。
 ---
 
-# Protocol Reverse Engineering
+# 协议逆向工程
 
-Comprehensive techniques for capturing, analyzing, and documenting network protocols for security research, interoperability, and debugging.
+用于捕获、分析和记录网络协议的综合技术，应用于安全研究、互操作性和调试。
 
-## Traffic Capture
+## 流量捕获
 
-### Wireshark Capture
+### Wireshark 捕获
 
 ```bash
-# Capture on specific interface
+# 在特定接口上捕获
 wireshark -i eth0 -k
 
-# Capture with filter
+# 使用过滤器捕获
 wireshark -i eth0 -k -f "port 443"
 
-# Capture to file
+# 捕获到文件
 tshark -i eth0 -w capture.pcap
 
-# Ring buffer capture (rotate files)
+# 环形缓冲区捕获（轮转文件）
 tshark -i eth0 -b filesize:100000 -b files:10 -w capture.pcap
 ```
 
-### tcpdump Capture
+### tcpdump 捕获
 
 ```bash
-# Basic capture
+# 基本捕获
 tcpdump -i eth0 -w capture.pcap
 
-# With filter
+# 使用过滤器
 tcpdump -i eth0 port 8080 -w capture.pcap
 
-# Capture specific bytes
-tcpdump -i eth0 -s 0 -w capture.pcap  # Full packet
+# 捕获特定字节数
+tcpdump -i eth0 -s 0 -w capture.pcap  # 完整数据包
 
-# Real-time display
+# 实时显示
 tcpdump -i eth0 -X port 80
 ```
 
-### Man-in-the-Middle Capture
+### 中间人捕获
 
 ```bash
-# mitmproxy for HTTP/HTTPS
+# mitmproxy 用于 HTTP/HTTPS
 mitmproxy --mode transparent -p 8080
 
-# SSL/TLS interception
+# SSL/TLS 拦截
 mitmproxy --mode transparent --ssl-insecure
 
-# Dump to file
+# 转储到文件
 mitmdump -w traffic.mitm
 
 # Burp Suite
-# Configure browser proxy to 127.0.0.1:8080
+# 将浏览器代理配置为 127.0.0.1:8080
 ```
 
-## Protocol Analysis
+## 协议分析
 
-### Wireshark Analysis
+### Wireshark 分析
 
 ```
-# Display filters
+# 显示过滤器
 tcp.port == 8080
 http.request.method == "POST"
 ip.addr == 192.168.1.1
 tcp.flags.syn == 1 && tcp.flags.ack == 0
 frame contains "password"
 
-# Following streams
-Right-click > Follow > TCP Stream
-Right-click > Follow > HTTP Stream
+# 跟踪流
+右键 > 跟踪 > TCP 流
+右键 > 跟踪 > HTTP 流
 
-# Export objects
-File > Export Objects > HTTP
+# 导出对象
+文件 > 导出对象 > HTTP
 
-# Decryption
-Edit > Preferences > Protocols > TLS
-  - (Pre)-Master-Secret log filename
-  - RSA keys list
+# 解密
+编辑 > 首选项 > 协议 > TLS
+  - (Pre)-Master-Secret 日志文件名
+  - RSA 密钥列表
 ```
 
-### tshark Analysis
+### tshark 分析
 
 ```bash
-# Extract specific fields
+# 提取特定字段
 tshark -r capture.pcap -T fields -e ip.src -e ip.dst -e tcp.port
 
-# Statistics
+# 统计信息
 tshark -r capture.pcap -q -z conv,tcp
 tshark -r capture.pcap -q -z endpoints,ip
 
-# Filter and extract
+# 过滤并提取
 tshark -r capture.pcap -Y "http" -T json > http_traffic.json
 
-# Protocol hierarchy
+# 协议层次结构
 tshark -r capture.pcap -q -z io,phs
 ```
 
-### Scapy for Custom Analysis
+### Scapy 自定义分析
 
 ```python
 from scapy.all import *
 
-# Read pcap
+# 读取 pcap
 packets = rdpcap("capture.pcap")
 
-# Analyze packets
+# 分析数据包
 for pkt in packets:
     if pkt.haslayer(TCP):
-        print(f"Src: {pkt[IP].src}:{pkt[TCP].sport}")
-        print(f"Dst: {pkt[IP].dst}:{pkt[TCP].dport}")
+        print(f"源: {pkt[IP].src}:{pkt[TCP].sport}")
+        print(f"目的: {pkt[IP].dst}:{pkt[TCP].dport}")
         if pkt.haslayer(Raw):
-            print(f"Data: {pkt[Raw].load[:50]}")
+            print(f"数据: {pkt[Raw].load[:50]}")
 
-# Filter packets
+# 过滤数据包
 http_packets = [p for p in packets if p.haslayer(TCP)
                 and (p[TCP].sport == 80 or p[TCP].dport == 80)]
 
-# Create custom packets
+# 创建自定义数据包
 pkt = IP(dst="target")/TCP(dport=80)/Raw(load="GET / HTTP/1.1\r\n")
 send(pkt)
 ```
 
-## Protocol Identification
+## 协议识别
 
-### Common Protocol Signatures
-
-```
-HTTP        - "HTTP/1." or "GET " or "POST " at start
-TLS/SSL     - 0x16 0x03 (record layer)
-DNS         - UDP port 53, specific header format
-SMB         - 0xFF 0x53 0x4D 0x42 ("SMB" signature)
-SSH         - "SSH-2.0" banner
-FTP         - "220 " response, "USER " command
-SMTP        - "220 " banner, "EHLO" command
-MySQL       - 0x00 length prefix, protocol version
-PostgreSQL  - 0x00 0x00 0x00 startup length
-Redis       - "*" RESP array prefix
-MongoDB     - BSON documents with specific header
-```
-
-### Protocol Header Patterns
+### 常见协议特征
 
 ```
+HTTP        - 开头的 "HTTP/1." 或 "GET " 或 "POST "
+TLS/SSL     - 0x16 0x03（记录层）
+DNS         - UDP 端口 53，特定头部格式
+SMB         - 0xFF 0x53 0x4D 0x42（"SMB" 签名）
+SSH         - "SSH-2.0" 标识
+FTP         - "220 " 响应，"USER " 命令
+SMTP        - "220 " 标识，"EHLO" 命令
+MySQL       - 0x00 长度前缀，协议版本
+PostgreSQL  - 0x00 0x00 0x00 启动长度
+Redis       - "*" RESP 数组前缀
+MongoDB     - 具有特定头部的 BSON 文档
+```
+
+### 协议头部模式
+
+```
 +--------+--------+--------+--------+
-|  Magic number / Signature         |
+|  魔数 / 签名                     |
 +--------+--------+--------+--------+
-|  Version       |  Flags          |
+|  版本          |  标志            |
 +--------+--------+--------+--------+
-|  Length        |  Message Type   |
+|  长度          |  消息类型         |
 +--------+--------+--------+--------+
-|  Sequence Number / Session ID     |
+|  序列号 / 会话 ID                 |
 +--------+--------+--------+--------+
-|  Payload...                       |
+|  有效载荷...                      |
 +--------+--------+--------+--------+
 ```
 
-## Binary Protocol Analysis
+## 二进制协议分析
 
-### Structure Identification
+### 结构识别
 
 ```python
-# Common patterns in binary protocols
+# 二进制协议中的常见模式
 
-# Length-prefixed message
+# 长度前缀消息
 struct Message {
-    uint32_t length;      # Total message length
-    uint16_t msg_type;    # Message type identifier
-    uint8_t  flags;       # Flags/options
-    uint8_t  reserved;    # Padding/alignment
-    uint8_t  payload[];   # Variable-length payload
+    uint32_t length;      # 总消息长度
+    uint16_t msg_type;    # 消息类型标识符
+    uint8_t  flags;       # 标志/选项
+    uint8_t  reserved;    # 填充/对齐
+    uint8_t  payload[];   # 可变长度有效载荷
 };
 
-# Type-Length-Value (TLV)
+# 类型-长度-值（TLV）
 struct TLV {
-    uint8_t  type;        # Field type
-    uint16_t length;      # Field length
-    uint8_t  value[];     # Field data
+    uint8_t  type;        # 字段类型
+    uint16_t length;      # 字段长度
+    uint8_t  value[];     # 字段数据
 };
 
-# Fixed header + variable payload
+# 固定头部 + 可变载荷
 struct Packet {
-    uint8_t  magic[4];    # "ABCD" signature
+    uint8_t  magic[4];    # "ABCD" 签名
     uint32_t version;
     uint32_t payload_len;
-    uint32_t checksum;    # CRC32 or similar
+    uint32_t checksum;    # CRC32 或类似
     uint8_t  payload[];
 };
 ```
 
-### Python Protocol Parser
+### Python 协议解析器
 
 ```python
 import struct
@@ -223,7 +223,7 @@ def parse_messages(data: bytes):
 
     return messages
 
-# Parse TLV structure
+# 解析 TLV 结构
 def parse_tlv(data: bytes):
     fields = []
     offset = 0
@@ -238,11 +238,11 @@ def parse_tlv(data: bytes):
     return fields
 ```
 
-### Hex Dump Analysis
+### 十六进制转储分析
 
 ```python
 def hexdump(data: bytes, width: int = 16):
-    """Format binary data as hex dump."""
+    """将二进制数据格式化为十六进制转储。"""
     lines = []
     for i in range(0, len(data), width):
         chunk = data[i:i+width]
@@ -254,17 +254,17 @@ def hexdump(data: bytes, width: int = 16):
         lines.append(f'{i:08x}  {hex_part:<{width*3}}  {ascii_part}')
     return '\n'.join(lines)
 
-# Example output:
+# 示例输出：
 # 00000000  48 54 54 50 2f 31 2e 31  20 32 30 30 20 4f 4b 0d  HTTP/1.1 200 OK.
 # 00000010  0a 43 6f 6e 74 65 6e 74  2d 54 79 70 65 3a 20 74  .Content-Type: t
 ```
 
-## Encryption Analysis
+## 加密分析
 
-### Identifying Encryption
+### 识别加密
 
 ```python
-# Entropy analysis - high entropy suggests encryption/compression
+# 熵分析 - 高熵表明加密/压缩
 import math
 from collections import Counter
 
@@ -275,99 +275,99 @@ def entropy(data: bytes) -> float:
     probs = [count / len(data) for count in counter.values()]
     return -sum(p * math.log2(p) for p in probs)
 
-# Entropy thresholds:
-# < 6.0: Likely plaintext or structured data
-# 6.0-7.5: Possibly compressed
-# > 7.5: Likely encrypted or random
+# 熵阈值：
+# < 6.0：可能是明文或结构化数据
+# 6.0-7.5：可能已压缩
+# > 7.5：可能已加密或随机
 
-# Common encryption indicators
-# - High, uniform entropy
-# - No obvious structure or patterns
-# - Length often multiple of block size (16 for AES)
-# - Possible IV at start (16 bytes for AES-CBC)
+# 常见加密指标
+# - 高且均匀的熵
+# - 没有明显的结构或模式
+# - 长度通常是块大小的倍数（AES 为 16）
+# - 开头可能有 IV（AES-CBC 为 16 字节）
 ```
 
-### TLS Analysis
+### TLS 分析
 
 ```bash
-# Extract TLS metadata
+# 提取 TLS 元数据
 tshark -r capture.pcap -Y "ssl.handshake" \
     -T fields -e ip.src -e ssl.handshake.ciphersuite
 
-# JA3 fingerprinting (client)
+# JA3 指纹识别（客户端）
 tshark -r capture.pcap -Y "ssl.handshake.type == 1" \
     -T fields -e ssl.handshake.ja3
 
-# JA3S fingerprinting (server)
+# JA3S 指纹识别（服务端）
 tshark -r capture.pcap -Y "ssl.handshake.type == 2" \
     -T fields -e ssl.handshake.ja3s
 
-# Certificate extraction
+# 证书提取
 tshark -r capture.pcap -Y "ssl.handshake.certificate" \
     -T fields -e x509sat.printableString
 ```
 
-### Decryption Approaches
+### 解密方法
 
 ```bash
-# Pre-master secret log (browser)
+# Pre-master 密钥日志（浏览器）
 export SSLKEYLOGFILE=/tmp/keys.log
 
-# Configure Wireshark
-# Edit > Preferences > Protocols > TLS
-# (Pre)-Master-Secret log filename: /tmp/keys.log
+# 配置 Wireshark
+# 编辑 > 首选项 > 协议 > TLS
+# (Pre)-Master-Secret 日志文件名：/tmp/keys.log
 
-# Decrypt with private key (if available)
-# Only works for RSA key exchange
-# Edit > Preferences > Protocols > TLS > RSA keys list
+# 使用私钥解密（如果可用）
+# 仅适用于 RSA 密钥交换
+# 编辑 > 首选项 > 协议 > TLS > RSA 密钥列表
 ```
 
-## Custom Protocol Documentation
+## 自定义协议文档
 
-### Protocol Specification Template
+### 协议规范模板
 
 ```markdown
-# Protocol Name Specification
+# 协议名称规范
 
-## Overview
+## 概述
 
-Brief description of protocol purpose and design.
+协议目的和设计的简要描述。
 
-## Transport
+## 传输层
 
-- Layer: TCP/UDP
-- Port: XXXX
-- Encryption: TLS 1.2+
+- 层：TCP/UDP
+- 端口：XXXX
+- 加密：TLS 1.2+
 
-## Message Format
+## 消息格式
 
-### Header (12 bytes)
+### 头部（12 字节）
 
-| Offset | Size | Field   | Description             |
-| ------ | ---- | ------- | ----------------------- |
-| 0      | 4    | Magic   | 0x50524F54 ("PROT")     |
-| 4      | 2    | Version | Protocol version (1)    |
-| 6      | 2    | Type    | Message type identifier |
-| 8      | 4    | Length  | Payload length in bytes |
+| 偏移 | 大小 | 字段   | 描述                     |
+| ---- | ---- | ------ | ------------------------ |
+| 0    | 4    | Magic  | 0x50524F54 ("PROT")      |
+| 4    | 2    | Version | 协议版本（1）           |
+| 6    | 2    | Type   | 消息类型标识符           |
+| 8    | 4    | Length | 有效载荷长度（字节）     |
 
-### Message Types
+### 消息类型
 
-| Type | Name      | Description            |
-| ---- | --------- | ---------------------- |
-| 0x01 | HELLO     | Connection initiation  |
-| 0x02 | HELLO_ACK | Connection accepted    |
-| 0x03 | DATA      | Application data       |
-| 0x04 | CLOSE     | Connection termination |
+| 类型 | 名称      | 描述             |
+| ---- | --------- | ---------------- |
+| 0x01 | HELLO     | 连接发起         |
+| 0x02 | HELLO_ACK | 连接接受         |
+| 0x03 | DATA      | 应用数据         |
+| 0x04 | CLOSE     | 连接终止         |
 
-### Type 0x01: HELLO
+### 类型 0x01：HELLO
 
-| Offset | Size | Field      | Description              |
-| ------ | ---- | ---------- | ------------------------ |
-| 0      | 4    | ClientID   | Unique client identifier |
-| 4      | 2    | Flags      | Connection flags         |
-| 6      | var  | Extensions | TLV-encoded extensions   |
+| 偏移 | 大小 | 字段      | 描述                 |
+| ---- | ---- | --------- | -------------------- |
+| 0    | 4    | ClientID  | 唯一客户端标识符     |
+| 4    | 2    | Flags     | 连接标志             |
+| 6    | 变长 | Extensions | TLV 编码的扩展       |
 
-## State Machine
+## 状态机
 ```
 
 [INIT] --HELLO--> [WAIT_ACK] --HELLO_ACK--> [CONNECTED]
@@ -378,25 +378,25 @@ DATA/DATA
 
 ```
 
-## Examples
-### Connection Establishment
+## 示例
+### 连接建立
 ```
 
-Client -> Server: HELLO (ClientID=0x12345678)
-Server -> Client: HELLO_ACK (Status=OK)
-Client -> Server: DATA (payload)
+客户端 -> 服务端：HELLO (ClientID=0x12345678)
+服务端 -> 客户端：HELLO_ACK (Status=OK)
+客户端 -> 服务端：DATA (载荷)
 
 ```
 
 ```
 
-### Wireshark Dissector (Lua)
+### Wireshark 解析器（Lua）
 
 ```lua
 -- custom_protocol.lua
 local proto = Proto("custom", "Custom Protocol")
 
--- Define fields
+-- 定义字段
 local f_magic = ProtoField.string("custom.magic", "Magic")
 local f_version = ProtoField.uint16("custom.version", "Version")
 local f_type = ProtoField.uint16("custom.type", "Type")
@@ -405,7 +405,7 @@ local f_payload = ProtoField.bytes("custom.payload", "Payload")
 
 proto.fields = { f_magic, f_version, f_type, f_length, f_payload }
 
--- Message type names
+-- 消息类型名称
 local msg_types = {
     [0x01] = "HELLO",
     [0x02] = "HELLO_ACK",
@@ -418,7 +418,7 @@ function proto.dissector(buffer, pinfo, tree)
 
     local subtree = tree:add(proto, buffer())
 
-    -- Parse header
+    -- 解析头部
     subtree:add(f_magic, buffer(0, 4))
     subtree:add(f_version, buffer(4, 2))
 
@@ -435,14 +435,14 @@ function proto.dissector(buffer, pinfo, tree)
     end
 end
 
--- Register for TCP port
+-- 为 TCP 端口注册
 local tcp_table = DissectorTable.get("tcp.port")
 tcp_table:add(8888, proto)
 ```
 
-## Active Testing
+## 主动测试
 
-### Fuzzing with Boofuzz
+### 使用 Boofuzz 进行模糊测试
 
 ```python
 from boofuzz import *
@@ -454,12 +454,12 @@ def main():
         )
     )
 
-    # Define protocol structure
+    # 定义协议结构
     s_initialize("HELLO")
-    s_static(b"\x50\x52\x4f\x54")  # Magic
-    s_word(1, name="version")       # Version
-    s_word(0x01, name="type")       # Type (HELLO)
-    s_size("payload", length=4)     # Length field
+    s_static(b"\x50\x52\x4f\x54")  # 魔数
+    s_word(1, name="version")       # 版本
+    s_word(0x01, name="type")       # 类型（HELLO）
+    s_size("payload", length=4)     # 长度字段
     s_block_start("payload")
     s_dword(0x12345678, name="client_id")
     s_word(0, name="flags")
@@ -472,49 +472,49 @@ if __name__ == "__main__":
     main()
 ```
 
-### Replay and Modification
+### 重放和修改
 
 ```python
 from scapy.all import *
 
-# Replay captured traffic
+# 重放捕获的流量
 packets = rdpcap("capture.pcap")
 for pkt in packets:
     if pkt.haslayer(TCP) and pkt[TCP].dport == 8888:
         send(pkt)
 
-# Modify and replay
+# 修改并重放
 for pkt in packets:
     if pkt.haslayer(Raw):
-        # Modify payload
+        # 修改载荷
         original = pkt[Raw].load
         modified = original.replace(b"client", b"CLIENT")
         pkt[Raw].load = modified
-        # Recalculate checksums
+        # 重新计算校验和
         del pkt[IP].chksum
         del pkt[TCP].chksum
         send(pkt)
 ```
 
-## Best Practices
+## 最佳实践
 
-### Analysis Workflow
+### 分析工作流
 
-1. **Capture traffic**: Multiple sessions, different scenarios
-2. **Identify boundaries**: Message start/end markers
-3. **Map structure**: Fixed header, variable payload
-4. **Identify fields**: Compare multiple samples
-5. **Document format**: Create specification
-6. **Validate understanding**: Implement parser/generator
-7. **Test edge cases**: Fuzzing, boundary conditions
+1. **捕获流量**：多个会话，不同场景
+2. **识别边界**：消息开始/结束标记
+3. **映射结构**：固定头部，可变载荷
+4. **识别字段**：比较多个样本
+5. **文档格式**：创建规范
+6. **验证理解**：实现解析器/生成器
+7. **测试边界情况**：模糊测试、边界条件
 
-### Common Patterns to Look For
+### 寻找的常见模式
 
-- Magic numbers/signatures at message start
-- Version fields for compatibility
-- Length fields (often before variable data)
-- Type/opcode fields for message identification
-- Sequence numbers for ordering
-- Checksums/CRCs for integrity
-- Timestamps for timing
-- Session/connection identifiers
+- 消息开头的魔数/签名
+- 用于兼容性的版本字段
+- 长度字段（通常在可变数据之前）
+- 用于消息识别的类型/操作码字段
+- 用于排序的序列号
+- 用于完整性的校验和/CRC
+- 用于计时的时间戳
+- 会话/连接标识符

@@ -1,19 +1,19 @@
-# Android Navigation Patterns
+# Android 导航模式
 
-## Navigation Compose Basics
+## Navigation Compose 基础
 
-### Setup and Dependencies
+### 设置和依赖
 
 ```kotlin
 // build.gradle.kts
 dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
-    // For type-safe navigation (recommended)
+    // 用于类型安全导航（推荐）
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 }
 ```
 
-### Basic Navigation
+### 基础导航
 
 ```kotlin
 @Serializable
@@ -61,10 +61,10 @@ fun AppNavigation() {
 }
 ```
 
-### Navigation with Arguments
+### 带参数的导航
 
 ```kotlin
-// Type-safe routes with arguments
+// 带参数的类型安全路由
 @Serializable
 data class ProductDetail(
     val productId: String,
@@ -113,9 +113,9 @@ fun NavigationWithArgs() {
 }
 ```
 
-## Bottom Navigation
+## 底部导航
 
-### Standard Implementation
+### 标准实现
 
 ```kotlin
 enum class BottomNavDestination(
@@ -147,13 +147,13 @@ fun MainScreenWithBottomNav() {
                         selected = currentDestination?.hasRoute(destination.route::class) == true,
                         onClick = {
                             navController.navigate(destination.route) {
-                                // Pop up to start destination to avoid building up stack
+                                // 弹出至起始目标以避免堆栈累积
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
-                                // Avoid multiple copies of same destination
+                                // 避免同一目标的多个副本
                                 launchSingleTop = true
-                                // Restore state when reselecting
+                                // 重新选择时恢复状态
                                 restoreState = true
                             }
                         }
@@ -176,7 +176,7 @@ fun MainScreenWithBottomNav() {
 }
 ```
 
-### Bottom Nav with Badges
+### 带徽章的底部导航
 
 ```kotlin
 @Composable
@@ -234,9 +234,9 @@ fun BottomNavWithBadges(
 }
 ```
 
-## Navigation Drawer
+## 导航抽屉
 
-### Modal Navigation Drawer
+### 模态导航抽屉
 
 ```kotlin
 @Composable
@@ -256,7 +256,7 @@ fun ModalDrawerNavigation() {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                // Header
+                // 头部
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -286,7 +286,7 @@ fun ModalDrawerNavigation() {
 
                 Spacer(Modifier.height(12.dp))
 
-                // Navigation items
+                // 导航项
                 items.forEachIndexed { index, item ->
                     NavigationDrawerItem(
                         icon = { Icon(item.icon, contentDescription = null) },
@@ -302,7 +302,7 @@ fun ModalDrawerNavigation() {
 
                 Spacer(Modifier.weight(1f))
 
-                // Footer
+                // 底部
                 HorizontalDivider()
                 NavigationDrawerItem(
                     icon = { Icon(Icons.Default.Logout, null) },
@@ -335,7 +335,7 @@ fun ModalDrawerNavigation() {
 data class DrawerItem(val icon: ImageVector, val label: String)
 ```
 
-### Permanent Navigation Drawer (Tablets)
+### 永久导航抽屉（平板）
 
 ```kotlin
 @Composable
@@ -365,13 +365,13 @@ fun PermanentDrawerLayout() {
             }
         }
     ) {
-        // Main content takes remaining space
+        // 主内容占据剩余空间
         MainContent()
     }
 }
 ```
 
-## Navigation Rail
+## 导航栏
 
 ```kotlin
 @Composable
@@ -403,7 +403,7 @@ fun NavigationRailLayout() {
             Spacer(Modifier.weight(1f))
         }
 
-        // Main content
+        // 主内容
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -419,12 +419,12 @@ fun NavigationRailLayout() {
 }
 ```
 
-## Deep Linking
+## 深度链接
 
-### Basic Deep Link Setup
+### 基础深度链接设置
 
 ```kotlin
-// In AndroidManifest.xml
+// 在 AndroidManifest.xml 中
 // <intent-filter>
 //     <action android:name="android.intent.action.VIEW" />
 //     <category android:name="android.intent.category.DEFAULT" />
@@ -473,7 +473,7 @@ fun DeepLinkNavigation() {
 }
 ```
 
-### Handling Intent in Activity
+### 在 Activity 中处理 Intent
 
 ```kotlin
 class MainActivity : ComponentActivity() {
@@ -484,7 +484,7 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 val navController = rememberNavController()
 
-                // Handle deep link from intent
+                // 处理来自 intent 的深度链接
                 LaunchedEffect(Unit) {
                     intent?.data?.let { uri ->
                         navController.handleDeepLink(intent)
@@ -498,13 +498,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        // Handle new intents when activity is already running
+        // 当 activity 已在运行时处理新的 intent
         setIntent(intent)
     }
 }
 ```
 
-## Nested Navigation
+## 嵌套导航
 
 ```kotlin
 @Composable
@@ -512,7 +512,7 @@ fun NestedNavigation() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = MainGraph) {
-        // Main graph with bottom navigation
+        // 带底部导航的主图
         navigation<MainGraph>(startDestination = Home) {
             composable<Home> {
                 HomeScreen(
@@ -527,13 +527,13 @@ fun NestedNavigation() {
             }
         }
 
-        // Nested detail graph
+        // 嵌套详情图
         composable<Detail> { backStackEntry ->
             val args: Detail = backStackEntry.toRoute()
             DetailScreen(itemId = args.itemId)
         }
 
-        // Separate settings graph (full screen, no bottom nav)
+        // 独立的设置图（全屏，无底部导航）
         navigation<SettingsGraph>(startDestination = SettingsMain) {
             composable<SettingsMain> {
                 SettingsScreen(
@@ -554,9 +554,9 @@ fun NestedNavigation() {
 @Serializable object NotificationSettings
 ```
 
-## Navigation State Management
+## 导航状态管理
 
-### ViewModel Integration
+### ViewModel 集成
 
 ```kotlin
 @HiltViewModel
@@ -605,7 +605,7 @@ fun NavigationHandler(
 }
 ```
 
-### Back Handler
+### 返回处理
 
 ```kotlin
 @Composable
@@ -614,7 +614,7 @@ fun ScreenWithBackHandler(
 ) {
     var showExitDialog by remember { mutableStateOf(false) }
 
-    // Intercept back press
+    // 拦截返回按键
     BackHandler {
         showExitDialog = true
     }
@@ -637,12 +637,12 @@ fun ScreenWithBackHandler(
         )
     }
 
-    // Screen content
+    // 屏幕内容
     Content()
 }
 ```
 
-## Navigation Animations
+## 导航动画
 
 ```kotlin
 @Composable
@@ -682,7 +682,7 @@ fun AnimatedNavigation() {
         }
 
         composable<Detail>(
-            // Custom transition for specific route
+            // 为特定路由自定义转场
             enterTransition = {
                 fadeIn(animationSpec = tween(500)) +
                     scaleIn(initialScale = 0.9f, animationSpec = tween(500))

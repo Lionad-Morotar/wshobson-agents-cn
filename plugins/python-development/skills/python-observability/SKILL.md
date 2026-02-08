@@ -3,38 +3,38 @@ name: python-observability
 description: Python observability patterns including structured logging, metrics, and distributed tracing. Use when adding logging, implementing metrics collection, setting up tracing, or debugging production systems.
 ---
 
-# Python Observability
+# Python 可观测性
 
-Instrument Python applications with structured logs, metrics, and traces. When something breaks in production, you need to answer "what, where, and why" without deploying new code.
+为 Python 应用添加结构化日志、指标和追踪的 instrumentation。当生产环境出现问题时,你无需部署新代码就能回答"什么、哪里、为什么"。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Adding structured logging to applications
-- Implementing metrics collection with Prometheus
-- Setting up distributed tracing across services
-- Propagating correlation IDs through request chains
-- Debugging production issues
-- Building observability dashboards
+- 为应用添加结构化日志
+- 使用 Prometheus 实现指标采集
+- 跨服务设置分布式追踪
+- 在请求链中传播关联 ID
+- 调试生产环境问题
+- 构建可观测性仪表板
 
-## Core Concepts
+## 核心概念
 
-### 1. Structured Logging
+### 1. 结构化日志
 
-Emit logs as JSON with consistent fields for production environments. Machine-readable logs enable powerful queries and alerts. For local development, consider human-readable formats.
+在生产环境中以 JSON 格式输出具有一致性字段的日志。机器可读的日志能够实现强大的查询和告警。对于本地开发,可考虑使用人类可读的格式。
 
-### 2. The Four Golden Signals
+### 2. 四大黄金信号
 
-Track latency, traffic, errors, and saturation for every service boundary.
+在每个服务边界上跟踪延迟、流量、错误和饱和度。
 
-### 3. Correlation IDs
+### 3. 关联 ID
 
-Thread a unique ID through all logs and spans for a single request, enabling end-to-end tracing.
+为单个请求在所有日志和 span 中串联一个唯一 ID,实现端到端追踪。
 
-### 4. Bounded Cardinality
+### 4. 有界基数
 
-Keep metric label values bounded. Unbounded labels (like user IDs) explode storage costs.
+保持指标标签值的范围有限。无界标签(如用户 ID)会导致存储成本激增。
 
-## Quick Start
+## 快速开始
 
 ```python
 import structlog
@@ -50,18 +50,18 @@ logger = structlog.get_logger()
 logger.info("Request processed", user_id="123", duration_ms=45)
 ```
 
-## Fundamental Patterns
+## 基础模式
 
-### Pattern 1: Structured Logging with Structlog
+### 模式 1: 使用 Structlog 的结构化日志
 
-Configure structlog for JSON output with consistent fields.
+配置 structlog 以输出具有一致性字段的 JSON 格式日志。
 
 ```python
 import logging
 import structlog
 
 def configure_logging(log_level: str = "INFO") -> None:
-    """Configure structured logging for the application."""
+    """为应用配置结构化日志。"""
     structlog.configure(
         processors=[
             structlog.contextvars.merge_contextvars,
@@ -79,26 +79,26 @@ def configure_logging(log_level: str = "INFO") -> None:
         cache_logger_on_first_use=True,
     )
 
-# Initialize at application startup
+# 在应用启动时初始化
 configure_logging("INFO")
 logger = structlog.get_logger()
 ```
 
-### Pattern 2: Consistent Log Fields
+### 模式 2: 一致的日志字段
 
-Every log entry should include standard fields for filtering and correlation.
+每条日志条目都应包含用于过滤和关联的标准字段。
 
 ```python
 import structlog
 from contextvars import ContextVar
 
-# Store correlation ID in context
+# 在上下文中存储关联 ID
 correlation_id: ContextVar[str] = ContextVar("correlation_id", default="")
 
 logger = structlog.get_logger()
 
 def process_request(request: Request) -> Response:
-    """Process request with structured logging."""
+    """处理请求并记录结构化日志。"""
     logger.info(
         "Request received",
         correlation_id=correlation_id.get(),
@@ -126,25 +126,25 @@ def process_request(request: Request) -> Response:
         raise
 ```
 
-### Pattern 3: Semantic Log Levels
+### 模式 3: 语义化日志级别
 
-Use log levels consistently across the application.
+在整个应用中一致地使用日志级别。
 
-| Level | Purpose | Examples |
+| 级别 | 用途 | 示例 |
 |-------|---------|----------|
-| `DEBUG` | Development diagnostics | Variable values, internal state |
-| `INFO` | Request lifecycle, operations | Request start/end, job completion |
-| `WARNING` | Recoverable anomalies | Retry attempts, fallback used |
-| `ERROR` | Failures needing attention | Exceptions, service unavailable |
+| `DEBUG` | 开发诊断 | 变量值、内部状态 |
+| `INFO` | 请求生命周期、操作 | 请求开始/结束、任务完成 |
+| `WARNING` | 可恢复的异常 | 重试尝试、使用降级方案 |
+| `ERROR` | 需要关注的失败 | 异常、服务不可用 |
 
 ```python
-# DEBUG: Detailed internal information
+# DEBUG: 详细的内部信息
 logger.debug("Cache lookup", key=cache_key, hit=cache_hit)
 
-# INFO: Normal operational events
+# INFO: 正常的操作事件
 logger.info("Order created", order_id=order.id, total=order.total)
 
-# WARNING: Abnormal but handled situations
+# WARNING: 异常但已处理的情况
 logger.warning(
     "Rate limit approaching",
     current_rate=950,
@@ -152,7 +152,7 @@ logger.warning(
     reset_seconds=30,
 )
 
-# ERROR: Failures requiring investigation
+# ERROR: 需要调查的失败
 logger.error(
     "Payment processing failed",
     order_id=order.id,
@@ -161,11 +161,11 @@ logger.error(
 )
 ```
 
-Never log expected behavior at `ERROR`. A user entering a wrong password is `INFO`, not `ERROR`.
+切勿将预期行为记录为 `ERROR`。用户输入错误密码是 `INFO`,不是 `ERROR`。
 
-### Pattern 4: Correlation ID Propagation
+### 模式 4: 关联 ID 传播
 
-Generate a unique ID at ingress and thread it through all operations.
+在入口处生成唯一 ID,并在所有操作中串联它。
 
 ```python
 from contextvars import ContextVar
@@ -175,18 +175,18 @@ import structlog
 correlation_id: ContextVar[str] = ContextVar("correlation_id", default="")
 
 def set_correlation_id(cid: str | None = None) -> str:
-    """Set correlation ID for current context."""
+    """为当前上下文设置关联 ID。"""
     cid = cid or str(uuid.uuid4())
     correlation_id.set(cid)
     structlog.contextvars.bind_contextvars(correlation_id=cid)
     return cid
 
-# FastAPI middleware example
+# FastAPI 中间件示例
 from fastapi import Request
 
 async def correlation_middleware(request: Request, call_next):
-    """Middleware to set and propagate correlation ID."""
-    # Use incoming header or generate new
+    """设置和传播关联 ID 的中间件。"""
+    # 使用传入的 header 或生成新的
     cid = request.headers.get("X-Correlation-ID") or str(uuid.uuid4())
     set_correlation_id(cid)
 
@@ -195,13 +195,13 @@ async def correlation_middleware(request: Request, call_next):
     return response
 ```
 
-Propagate to outbound requests:
+传播到出站请求:
 
 ```python
 import httpx
 
 async def call_downstream_service(endpoint: str, data: dict) -> dict:
-    """Call downstream service with correlation ID."""
+    """调用下游服务并携带关联 ID。"""
     async with httpx.AsyncClient() as client:
         response = await client.post(
             endpoint,
@@ -211,16 +211,16 @@ async def call_downstream_service(endpoint: str, data: dict) -> dict:
         return response.json()
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 5: The Four Golden Signals with Prometheus
+### 模式 5: 使用 Prometheus 的四大黄金信号
 
-Track these metrics for every service boundary:
+为每个服务边界跟踪这些指标:
 
 ```python
 from prometheus_client import Counter, Histogram, Gauge
 
-# Latency: How long requests take
+# 延迟: 请求耗时
 REQUEST_LATENCY = Histogram(
     "http_request_duration_seconds",
     "Request latency in seconds",
@@ -228,35 +228,35 @@ REQUEST_LATENCY = Histogram(
     buckets=[0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
 )
 
-# Traffic: Request rate
+# 流量: 请求速率
 REQUEST_COUNT = Counter(
     "http_requests_total",
     "Total HTTP requests",
     ["method", "endpoint", "status"],
 )
 
-# Errors: Error rate
+# 错误: 错误率
 ERROR_COUNT = Counter(
     "http_errors_total",
     "Total HTTP errors",
     ["method", "endpoint", "error_type"],
 )
 
-# Saturation: Resource utilization
+# 饱和度: 资源利用率
 DB_POOL_USAGE = Gauge(
     "db_connection_pool_used",
     "Number of database connections in use",
 )
 ```
 
-Instrument your endpoints:
+为你的端点添加 instrumentation:
 
 ```python
 import time
 from functools import wraps
 
 def track_request(func):
-    """Decorator to track request metrics."""
+    """跟踪请求指标的装饰器。"""
     @wraps(func)
     async def wrapper(request: Request, *args, **kwargs):
         method = request.method
@@ -283,31 +283,31 @@ def track_request(func):
     return wrapper
 ```
 
-### Pattern 6: Bounded Cardinality
+### 模式 6: 有界基数
 
-Avoid labels with unbounded values to prevent metric explosion.
+避免使用无界值的标签以防止指标爆炸。
 
 ```python
-# BAD: User ID has potentially millions of values
-REQUEST_COUNT.labels(method="GET", user_id=user.id)  # Don't do this!
+# 错误: 用户 ID 可能有数百万个值
+REQUEST_COUNT.labels(method="GET", user_id=user.id)  # 不要这样做!
 
-# GOOD: Bounded values only
+# 正确: 仅使用有界值
 REQUEST_COUNT.labels(method="GET", endpoint="/users", status="200")
 
-# If you need per-user metrics, use a different approach:
-# - Log the user_id and query logs
-# - Use a separate analytics system
-# - Bucket users by type/tier
+# 如果需要每个用户的指标,使用不同的方法:
+# - 记录 user_id 并查询日志
+# - 使用独立的分析系统
+# - 按类型/层级对用户进行分桶
 REQUEST_COUNT.labels(
     method="GET",
     endpoint="/users",
-    user_tier="premium",  # Bounded set of values
+    user_tier="premium",  # 有界的值集合
 )
 ```
 
-### Pattern 7: Timed Operations with Context Manager
+### 模式 7: 使用上下文管理器的定时操作
 
-Create a reusable timing context manager for operations.
+创建可重用的定时上下文管理器来跟踪操作。
 
 ```python
 from contextlib import contextmanager
@@ -318,7 +318,7 @@ logger = structlog.get_logger()
 
 @contextmanager
 def timed_operation(name: str, **extra_fields):
-    """Context manager for timing and logging operations."""
+    """用于定时和记录操作的上下文管理器。"""
     start = time.perf_counter()
     logger.debug("Operation started", operation=name, **extra_fields)
 
@@ -343,16 +343,16 @@ def timed_operation(name: str, **extra_fields):
             **extra_fields,
         )
 
-# Usage
+# 使用示例
 with timed_operation("fetch_user_orders", user_id=user.id):
     orders = await order_repository.get_by_user(user.id)
 ```
 
-### Pattern 8: OpenTelemetry Tracing
+### 模式 8: OpenTelemetry 追踪
 
-Set up distributed tracing with OpenTelemetry.
+使用 OpenTelemetry 设置分布式追踪。
 
-**Note:** OpenTelemetry is actively evolving. Check the [official Python documentation](https://opentelemetry.io/docs/languages/python/) for the latest API patterns and best practices.
+**注意:** OpenTelemetry 正在积极演进。请查阅 [官方 Python 文档](https://opentelemetry.io/docs/languages/python/) 获取最新的 API 模式和最佳实践。
 
 ```python
 from opentelemetry import trace
@@ -361,7 +361,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
 def configure_tracing(service_name: str, otlp_endpoint: str) -> None:
-    """Configure OpenTelemetry tracing."""
+    """配置 OpenTelemetry 追踪。"""
     provider = TracerProvider()
     processor = BatchSpanProcessor(OTLPSpanExporter(endpoint=otlp_endpoint))
     provider.add_span_processor(processor)
@@ -370,7 +370,7 @@ def configure_tracing(service_name: str, otlp_endpoint: str) -> None:
 tracer = trace.get_tracer(__name__)
 
 async def process_order(order_id: str) -> Order:
-    """Process order with tracing."""
+    """处理订单并记录追踪。"""
     with tracer.start_as_current_span("process_order") as span:
         span.set_attribute("order.id", order_id)
 
@@ -386,15 +386,15 @@ async def process_order(order_id: str) -> Order:
         return order
 ```
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Use structured logging** - JSON logs with consistent fields
-2. **Propagate correlation IDs** - Thread through all requests and logs
-3. **Track the four golden signals** - Latency, traffic, errors, saturation
-4. **Bound label cardinality** - Never use unbounded values as metric labels
-5. **Log at appropriate levels** - Don't cry wolf with ERROR
-6. **Include context** - User ID, request ID, operation name in logs
-7. **Use context managers** - Consistent timing and error handling
-8. **Separate concerns** - Observability code shouldn't pollute business logic
-9. **Test your observability** - Verify logs and metrics in integration tests
-10. **Set up alerts** - Metrics are useless without alerting
+1. **使用结构化日志** - 带有一致字段的 JSON 日志
+2. **传播关联 ID** - 在所有请求和日志中串联
+3. **跟踪四大黄金信号** - 延迟、流量、错误、饱和度
+4. **限制标签基数** - 永远不要使用无界值作为指标标签
+5. **使用适当的日志级别** - 不要滥用 ERROR 级别
+6. **包含上下文** - 在日志中包含用户 ID、请求 ID、操作名称
+7. **使用上下文管理器** - 一致的定时和错误处理
+8. **分离关注点** - 可观测性代码不应污染业务逻辑
+9. **测试可观测性** - 在集成测试中验证日志和指标
+10. **设置告警** - 没有告警的指标毫无用处

@@ -1,129 +1,129 @@
-# Complete Git Workflow with Multi-Agent Orchestration
+# 完整 Git 工作流与多智能体编排
 
-Orchestrate a comprehensive git workflow from code review through PR creation, leveraging specialized agents for quality assurance, testing, and deployment readiness. This workflow implements modern git best practices including Conventional Commits, automated testing, and structured PR creation.
+编排一个从代码审查到 PR 创建的完整 Git 工作流，利用专业智能体进行质量保证、测试和部署就绪验证。该工作流实现了现代 Git 最佳实践，包括规范提交（Conventional Commits）、自动化测试和结构化 PR 创建。
 
-[Extended thinking: This workflow coordinates multiple specialized agents to ensure code quality before commits are made. The code-reviewer agent performs initial quality checks, test-automator ensures all tests pass, and deployment-engineer verifies production readiness. By orchestrating these agents sequentially with context passing, we prevent broken code from entering the repository while maintaining high velocity. The workflow supports both trunk-based and feature-branch strategies with configurable options for different team needs.]
+[扩展思考：此工作流协调多个专业智能体，确保提交前的代码质量。code-reviewer 智能体执行初始质量检查，test-automator 确保所有测试通过，deployment-engineer 验证生产就绪状态。通过顺序编排这些智能体并传递上下文，我们防止损坏的代码进入代码库，同时保持高速度。工作流支持基于主干和基于功能分支的策略，并提供可配置选项以满足不同团队需求。]
 
-## Configuration
+## 配置
 
-**Target branch**: $ARGUMENTS (defaults to 'main' if not specified)
+**目标分支**: $ARGUMENTS（未指定时默认为 'main'）
 
-**Supported flags**:
+**支持的标志**:
 
-- `--skip-tests`: Skip automated test execution (use with caution)
-- `--draft-pr`: Create PR as draft for work-in-progress
-- `--no-push`: Perform all checks but don't push to remote
-- `--squash`: Squash commits before pushing
-- `--conventional`: Enforce Conventional Commits format strictly
-- `--trunk-based`: Use trunk-based development workflow
-- `--feature-branch`: Use feature branch workflow (default)
+- `--skip-tests`: 跳过自动化测试执行（谨慎使用）
+- `--draft-pr`: 将 PR 创建为草稿（用于进行中的工作）
+- `--no-push`: 执行所有检查但不推送到远程
+- `--squash`: 推送前压缩提交
+- `--conventional`: 严格执行规范提交格式
+- `--trunk-based`: 使用基于主干开发的工作流
+- `--feature-branch`: 使用功能分支工作流（默认）
 
-## Phase 1: Pre-Commit Review and Analysis
+## 第一阶段：提交前审查和分析
 
-### 1. Code Quality Assessment
+### 1. 代码质量评估
 
-- Use Task tool with subagent_type="code-reviewer"
-- Prompt: "Review all uncommitted changes for code quality issues. Check for: 1) Code style violations, 2) Security vulnerabilities, 3) Performance concerns, 4) Missing error handling, 5) Incomplete implementations. Generate a detailed report with severity levels (critical/high/medium/low) and provide specific line-by-line feedback. Output format: JSON with {issues: [], summary: {critical: 0, high: 0, medium: 0, low: 0}, recommendations: []}"
-- Expected output: Structured code review report for next phase
+- 使用 Task 工具，subagent_type="code-reviewer"
+- 提示："审查所有未提交更改的代码质量问题。检查：1) 代码风格违规，2) 安全漏洞，3) 性能问题，4) 缺失错误处理，5) 未完成实现。生成详细报告，包含严重级别（critical/high/medium/low）并提供逐行具体反馈。输出格式：JSON，格式为 {issues: [], summary: {critical: 0, high: 0, medium: 0, low: 0}, recommendations: []}"
+- 预期输出：用于下一阶段的结构化代码审查报告
 
-### 2. Dependency and Breaking Change Analysis
+### 2. 依赖和重大变更分析
 
-- Use Task tool with subagent_type="code-reviewer"
-- Prompt: "Analyze the changes for: 1) New dependencies or version changes, 2) Breaking API changes, 3) Database schema modifications, 4) Configuration changes, 5) Backward compatibility issues. Context from previous review: [insert issues summary]. Identify any changes that require migration scripts or documentation updates."
-- Context from previous: Code quality issues that might indicate breaking changes
-- Expected output: Breaking change assessment and migration requirements
+- 使用 Task 工具，subagent_type="code-reviewer"
+- 提示："分析以下更改：1) 新依赖或版本变更，2) 重大 API 变更，3) 数据库 schema 修改，4) 配置变更，5) 向后兼容性问题。前一次审查的上下文：[插入问题摘要]。识别任何需要迁移脚本或文档更新的变更。"
+- 前一阶段的上下文：可能表明重大变更的代码质量问题
+- 预期输出：重大变更评估和迁移需求
 
-## Phase 2: Testing and Validation
+## 第二阶段：测试和验证
 
-### 1. Test Execution and Coverage
+### 1. 测试执行和覆盖率
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Execute all test suites for the modified code. Run: 1) Unit tests, 2) Integration tests, 3) End-to-end tests if applicable. Generate coverage report and identify any untested code paths. Based on review issues: [insert critical/high issues], ensure tests cover the problem areas. Provide test results in format: {passed: [], failed: [], skipped: [], coverage: {statements: %, branches: %, functions: %, lines: %}, untested_critical_paths: []}"
-- Context from previous: Critical code review issues that need test coverage
-- Expected output: Complete test results and coverage metrics
+- 使用 Task 工具，subagent_type="unit-testing::test-automator"
+- 提示："为修改的代码执行所有测试套件。运行：1) 单元测试，2) 集成测试，3) 端到端测试（如适用）。生成覆盖率报告并识别任何未测试的代码路径。基于审查问题：[插入 critical/high 问题]，确保测试覆盖问题区域。以以下格式提供测试结果：{passed: [], failed: [], skipped: [], coverage: {statements: %, branches: %, functions: %, lines: %}, untested_critical_paths: []}"
+- 前一阶段的上下文：需要测试覆盖的关键代码审查问题
+- 预期输出：完整测试结果和覆盖率指标
 
-### 2. Test Recommendations and Gap Analysis
+### 2. 测试建议和差距分析
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Based on test results [insert summary] and code changes, identify: 1) Missing test scenarios, 2) Edge cases not covered, 3) Integration points needing verification, 4) Performance benchmarks needed. Generate test implementation recommendations prioritized by risk. Consider the breaking changes identified: [insert breaking changes]."
-- Context from previous: Test results, breaking changes, untested paths
-- Expected output: Prioritized list of additional tests needed
+- 使用 Task 工具，subagent_type="unit-testing::test-automator"
+- 提示："基于测试结果 [插入摘要] 和代码变更，识别：1) 缺失测试场景，2) 未覆盖的边缘情况，3) 需要验证的集成点，4) 所需性能基准。生成按风险优先级排序的测试实现建议。考虑识别的重大变更：[插入重大变更]。"
+- 前一阶段的上下文：测试结果、重大变更、未测试路径
+- 预期输出：按优先级排序的额外测试需求列表
 
-## Phase 3: Commit Message Generation
+## 第三阶段：提交消息生成
 
-### 1. Change Analysis and Categorization
+### 1. 变更分析和分类
 
-- Use Task tool with subagent_type="code-reviewer"
-- Prompt: "Analyze all changes and categorize them according to Conventional Commits specification. Identify the primary change type (feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert) and scope. For changes: [insert file list and summary], determine if this should be a single commit or multiple atomic commits. Consider test results: [insert test summary]."
-- Context from previous: Test results, code review summary
-- Expected output: Commit structure recommendation
+- 使用 Task 工具，subagent_type="code-reviewer"
+- 提示："根据规范提交规范分析所有变更并分类。识别主要变更类型（feat/fix/docs/style/refactor/perf/test/build/ci/chore/revert）和范围。对于变更：[插入文件列表和摘要]，确定应该是单个提交还是多个原子提交。考虑测试结果：[插入测试摘要]。"
+- 前一阶段的上下文：测试结果、代码审查摘要
+- 预期输出：提交结构建议
 
-### 2. Conventional Commit Message Creation
+### 2. 规范提交消息创建
 
-- Use Task tool with subagent_type="llm-application-dev::prompt-engineer"
-- Prompt: "Create Conventional Commits format message(s) based on categorization: [insert categorization]. Format: <type>(<scope>): <subject> with blank line then <body> explaining what and why (not how), then <footer> with BREAKING CHANGE: if applicable. Include: 1) Clear subject line (50 chars max), 2) Detailed body explaining rationale, 3) References to issues/tickets, 4) Co-authors if applicable. Consider the impact: [insert breaking changes if any]."
-- Context from previous: Change categorization, breaking changes
-- Expected output: Properly formatted commit message(s)
+- 使用 Task 工具，subagent_type="llm-application-dev::prompt-engineer"
+- 提示："基于分类创建规范提交格式的消息：[插入分类]。格式：<type>(<scope>): <subject>，空一行后是 <body> 解释是什么和为什么（不是如何），然后是 <footer> 如适用则包含 BREAKING CHANGE:。包括：1) 清晰的主题行（最多 50 字符），2) 详细说明基本原理的正文，3) 引用 issue/ticket，4) 如适用则包括共同作者。考虑影响：[插入重大变更（如有）]。"
+- 前一阶段的上下文：变更分类、重大变更
+- 预期输出：正确格式的提交消息
 
-## Phase 4: Branch Strategy and Push Preparation
+## 第四阶段：分支策略和推送准备
 
-### 1. Branch Management
+### 1. 分支管理
 
-- Use Task tool with subagent_type="cicd-automation::deployment-engineer"
-- Prompt: "Based on workflow type [--trunk-based or --feature-branch], prepare branch strategy. For feature branch: ensure branch name follows pattern (feature|bugfix|hotfix)/<ticket>-<description>. For trunk-based: prepare for direct main push with feature flag strategy if needed. Current branch: [insert branch], target: [insert target branch]. Verify no conflicts with target branch."
-- Expected output: Branch preparation commands and conflict status
+- 使用 Task 工具，subagent_type="cicd-automation::deployment-engineer"
+- 提示："基于工作流类型 [--trunk-based 或 --feature-branch]，准备分支策略。对于功能分支：确保分支名称遵循模式 (feature|bugfix|hotfix)/<ticket>-<description>。对于基于主干：准备直接推送到 main，如需要则使用功能标志策略。当前分支：[插入分支]，目标：[插入目标分支]。验证与目标分支无冲突。"
+- 预期输出：分支准备命令和冲突状态
 
-### 2. Pre-Push Validation
+### 2. 推送前验证
 
-- Use Task tool with subagent_type="cicd-automation::deployment-engineer"
-- Prompt: "Perform final pre-push checks: 1) Verify all CI checks will pass, 2) Confirm no sensitive data in commits, 3) Validate commit signatures if required, 4) Check branch protection rules, 5) Ensure all review comments addressed. Test summary: [insert test results]. Review status: [insert review summary]."
-- Context from previous: All previous validation results
-- Expected output: Push readiness confirmation or blocking issues
+- 使用 Task 工具，subagent_type="cicd-automation::deployment-engineer"
+- 提示："执行最终推送前检查：1) 验证所有 CI 检查将通过，2) 确认提交中无敏感数据，3) 验证提交签名（如需要），4) 检查分支保护规则，5) 确保所有审查意见已处理。测试摘要：[插入测试结果]。审查状态：[插入审查摘要]。"
+- 前一阶段的上下文：所有之前的验证结果
+- 预期输出：推送就绪确认或阻止问题
 
-## Phase 5: Pull Request Creation
+## 第五阶段：Pull Request 创建
 
-### 1. PR Description Generation
+### 1. PR 描述生成
 
-- Use Task tool with subagent_type="documentation-generation::docs-architect"
-- Prompt: "Create comprehensive PR description including: 1) Summary of changes (what and why), 2) Type of change checklist, 3) Testing performed summary from [insert test results], 4) Screenshots/recordings if UI changes, 5) Deployment notes from [insert deployment considerations], 6) Related issues/tickets, 7) Breaking changes section if applicable: [insert breaking changes], 8) Reviewer checklist. Format as GitHub-flavored Markdown."
-- Context from previous: All validation results, test outcomes, breaking changes
-- Expected output: Complete PR description in Markdown
+- 使用 Task 工具，subagent_type="documentation-generation::docs-architect"
+- 提示："创建全面的 PR 描述，包括：1) 变更摘要（什么和为什么），2) 变更类型检查清单，3) 从 [插入测试结果] 执行的测试摘要，4) 截图/录制（如 UI 变更），5) 从 [插入部署考虑] 的部署说明，6) 相关 issue/ticket，7) 重大变更部分（如适用）：[插入重大变更]，8) 审查者检查清单。格式为 GitHub 风格的 Markdown。"
+- 前一阶段的上下文：所有验证结果、测试结果、重大变更
+- 预期输出：完整 Markdown 格式的 PR 描述
 
-### 2. PR Metadata and Automation Setup
+### 2. PR 元数据和自动化设置
 
-- Use Task tool with subagent_type="cicd-automation::deployment-engineer"
-- Prompt: "Configure PR metadata: 1) Assign appropriate reviewers based on CODEOWNERS, 2) Add labels (type, priority, component), 3) Link related issues, 4) Set milestone if applicable, 5) Configure merge strategy (squash/merge/rebase), 6) Set up auto-merge if all checks pass. Consider draft status: [--draft-pr flag]. Include test status: [insert test summary]."
-- Context from previous: PR description, test results, review status
-- Expected output: PR configuration commands and automation rules
+- 使用 Task 工具，subagent_type="cicd-automation::deployment-engineer"
+- 提示："配置 PR 元数据：1) 基于 CODEOWNERS 分配适当的审查者，2) 添加标签（类型、优先级、组件），3) 链接相关 issue，4) 设置里程碑（如适用），5) 配置合并策略（squash/merge/rebase），6) 如所有检查通过则设置自动合并。考虑草稿状态：[--draft-pr 标志]。包括测试状态：[插入测试摘要]。"
+- 前一阶段的上下文：PR 描述、测试结果、审查状态
+- 预期输出：PR 配置命令和自动化规则
 
-## Success Criteria
+## 成功标准
 
-- ✅ All critical and high-severity code issues resolved
-- ✅ Test coverage maintained or improved (target: >80%)
-- ✅ All tests passing (unit, integration, e2e)
-- ✅ Commit messages follow Conventional Commits format
-- ✅ No merge conflicts with target branch
-- ✅ PR description complete with all required sections
-- ✅ Branch protection rules satisfied
-- ✅ Security scanning completed with no critical vulnerabilities
-- ✅ Performance benchmarks within acceptable thresholds
-- ✅ Documentation updated for any API changes
+- ✅ 所有关键和高严重性代码问题已解决
+- ✅ 测试覆盖率保持或提高（目标：>80%）
+- ✅ 所有测试通过（单元、集成、e2e）
+- ✅ 提交消息遵循规范提交格式
+- ✅ 与目标分支无合并冲突
+- ✅ PR 描述完整，包含所有必需部分
+- ✅ 分支保护规则已满足
+- ✅ 安全扫描完成，无关键漏洞
+- ✅ 性能基准在可接受阈值内
+- ✅ API 变更的文档已更新
 
-## Rollback Procedures
+## 回滚程序
 
-In case of issues after merge:
+合并后出现问题：
 
-1. **Immediate Revert**: Create revert PR with `git revert <commit-hash>`
-2. **Feature Flag Disable**: If using feature flags, disable immediately
-3. **Hotfix Branch**: For critical issues, create hotfix branch from main
-4. **Communication**: Notify team via designated channels
-5. **Root Cause Analysis**: Document issue in postmortem template
+1. **立即回滚**: 使用 `git revert <commit-hash>` 创建回滚 PR
+2. **功能标志禁用**: 如使用功能标志，立即禁用
+3. **热修复分支**: 对于关键问题，从 main 创建热修复分支
+4. **沟通**: 通过指定渠道通知团队
+5. **根本原因分析**: 在事后分析模板中记录问题
 
-## Best Practices Reference
+## 最佳实践参考
 
-- **Commit Frequency**: Commit early and often, but ensure each commit is atomic
-- **Branch Naming**: `(feature|bugfix|hotfix|docs|chore)/<ticket-id>-<brief-description>`
-- **PR Size**: Keep PRs under 400 lines for effective review
-- **Review Response**: Address review comments within 24 hours
-- **Merge Strategy**: Squash for feature branches, merge for release branches
-- **Sign-Off**: Require at least 2 approvals for main branch changes
+- **提交频率**: 早提交、常提交，但确保每个提交是原子的
+- **分支命名**: `(feature|bugfix|hotfix|docs|chore)/<ticket-id>-<brief-description>`
+- **PR 大小**: 保持 PR 在 400 行以内以有效审查
+- **审查响应**: 在 24 小时内处理审查意见
+- **合并策略**: 功能分支使用 squash，发布分支使用 merge
+- **签署**: main 分支变更需要至少 2 个批准

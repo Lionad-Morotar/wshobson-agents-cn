@@ -1,196 +1,196 @@
-# Product Guidelines
+# 产品指南
 
-## Voice & Tone
+## 语音与语调
 
-### Brand Voice
+### 品牌语音
 
 {{BRAND_VOICE_DESCRIPTION}}
 
-### Voice Attributes
+### 语音属性
 
-- **{{ATTRIBUTE_1}}:** {{ATTRIBUTE_1_DESCRIPTION}}
-- **{{ATTRIBUTE_2}}:** {{ATTRIBUTE_2_DESCRIPTION}}
-- **{{ATTRIBUTE_3}}:** {{ATTRIBUTE_3_DESCRIPTION}}
+- **{{ATTRIBUTE_1}}：** {{ATTRIBUTE_1_DESCRIPTION}}
+- **{{ATTRIBUTE_2}}：** {{ATTRIBUTE_2_DESCRIPTION}}
+- **{{ATTRIBUTE_3}}：** {{ATTRIBUTE_3_DESCRIPTION}}
 
-### Tone Variations by Context
+### 按上下文变化的语调
 
-| Context        | Tone                 | Example                 |
+| 上下文        | 语调                 | 示例                 |
 | -------------- | -------------------- | ----------------------- |
-| Success states | {{SUCCESS_TONE}}     | {{SUCCESS_EXAMPLE}}     |
-| Error states   | {{ERROR_TONE}}       | {{ERROR_EXAMPLE}}       |
-| Onboarding     | {{ONBOARDING_TONE}}  | {{ONBOARDING_EXAMPLE}}  |
-| Empty states   | {{EMPTY_STATE_TONE}} | {{EMPTY_STATE_EXAMPLE}} |
+| 成功状态 | {{SUCCESS_TONE}}     | {{SUCCESS_EXAMPLE}}     |
+| 错误状态   | {{ERROR_TONE}}       | {{ERROR_EXAMPLE}}       |
+| 入门指南     | {{ONBOARDING_TONE}}  | {{ONBOARDING_EXAMPLE}}  |
+| 空状态   | {{EMPTY_STATE_TONE}} | {{EMPTY_STATE_EXAMPLE}} |
 
-### Words We Use
+### 我们使用的词汇
 
 - {{PREFERRED_WORD_1}}
 - {{PREFERRED_WORD_2}}
 - {{PREFERRED_WORD_3}}
 
-### Words We Avoid
+### 我们避免的词汇
 
 - {{AVOIDED_WORD_1}}
 - {{AVOIDED_WORD_2}}
 - {{AVOIDED_WORD_3}}
 
-## Messaging Guidelines
+## 消息传递指南
 
-### Core Messages
+### 核心消息
 
-**Primary Message:**
+**主要消息：**
 
 > {{PRIMARY_MESSAGE}}
 
-**Supporting Messages:**
+**支持消息：**
 
 1. {{SUPPORTING_MESSAGE_1}}
 2. {{SUPPORTING_MESSAGE_2}}
 3. {{SUPPORTING_MESSAGE_3}}
 
-### Message Hierarchy
+### 消息层次
 
-1. **Must Communicate:** {{MUST_COMMUNICATE}}
-2. **Should Communicate:** {{SHOULD_COMMUNICATE}}
-3. **Could Communicate:** {{COULD_COMMUNICATE}}
+1. **必须传达：** {{MUST_COMMUNICATE}}
+2. **应该传达：** {{SHOULD_COMMUNICATE}}
+3. **可以传达：** {{COULD_COMMUNICATE}}
 
-### Audience-Specific Messaging
+### 特定受众的消息传递
 
-| Audience       | Key Message   | Proof Points |
+| 受众       | 关键消息   | 证明点 |
 | -------------- | ------------- | ------------ |
 | {{AUDIENCE_1}} | {{MESSAGE_1}} | {{PROOF_1}}  |
 | {{AUDIENCE_2}} | {{MESSAGE_2}} | {{PROOF_2}}  |
 
-## Design Principles
+## 设计原则
 
-### Principle 1: {{PRINCIPLE_1_NAME}}
+### 原则 1：{{PRINCIPLE_1_NAME}}
 
 {{PRINCIPLE_1_DESCRIPTION}}
 
-**Do:**
+**应该做：**
 
 - {{PRINCIPLE_1_DO_1}}
 - {{PRINCIPLE_1_DO_2}}
 
-**Don't:**
+**不应该做：**
 
 - {{PRINCIPLE_1_DONT_1}}
 - {{PRINCIPLE_1_DONT_2}}
 
-### Principle 2: {{PRINCIPLE_2_NAME}}
+### 原则 2：{{PRINCIPLE_2_NAME}}
 
 {{PRINCIPLE_2_DESCRIPTION}}
 
-**Do:**
+**应该做：**
 
 - {{PRINCIPLE_2_DO_1}}
 - {{PRINCIPLE_2_DO_2}}
 
-**Don't:**
+**不应该做：**
 
 - {{PRINCIPLE_2_DONT_1}}
 - {{PRINCIPLE_2_DONT_2}}
 
-### Principle 3: {{PRINCIPLE_3_NAME}}
+### 原则 3：{{PRINCIPLE_3_NAME}}
 
 {{PRINCIPLE_3_DESCRIPTION}}
 
-**Do:**
+**应该做：**
 
 - {{PRINCIPLE_3_DO_1}}
 - {{PRINCIPLE_3_DO_2}}
 
-**Don't:**
+**不应该做：**
 
 - {{PRINCIPLE_3_DONT_1}}
 - {{PRINCIPLE_3_DONT_2}}
 
-## Accessibility Standards
+## 无障碍标准
 
-### Compliance Target
+### 合规目标
 
-{{ACCESSIBILITY_STANDARD}} (e.g., WCAG 2.1 AA)
+{{ACCESSIBILITY_STANDARD}}（例如 WCAG 2.1 AA）
 
-### Core Requirements
+### 核心要求
 
-#### Perceivable
+#### 可感知
 
-- All images have meaningful alt text
-- Color is not the only means of conveying information
-- Text has minimum contrast ratio of 4.5:1
-- Content is readable at 200% zoom
+- 所有图像都有有意义的替代文本
+- 颜色不是传达信息的唯一手段
+- 文本的最小对比度比例为 4.5:1
+- 内容在 200% 缩放时可读
 
-#### Operable
+#### 可操作
 
-- All functionality available via keyboard
-- No content flashes more than 3 times per second
-- Skip navigation links provided
-- Focus indicators clearly visible
+- 所有功能均可通过键盘使用
+- 没有内容每秒闪烁超过 3 次
+- 提供跳过导航链接
+- 焦点指示器清晰可见
 
-#### Understandable
+#### 可理解
 
-- Language is clear and simple
-- Navigation is consistent
-- Error messages are descriptive and helpful
-- Labels and instructions are clear
+- 语言清晰简单
+- 导航一致
+- 错误消息具有描述性和帮助性
+- 标签和说明清晰
 
-#### Robust
+#### 健壮
 
-- Valid HTML markup
-- ARIA labels used appropriately
-- Compatible with assistive technologies
-- Progressive enhancement approach
+- 有效的 HTML 标记
+- 适当使用 ARIA 标签
+- 与辅助技术兼容
+- 渐进增强方法
 
-### Testing Requirements
+### 测试要求
 
-- Screen reader testing with {{SCREEN_READER}}
-- Keyboard-only navigation testing
-- Color contrast verification
-- Automated accessibility scans
+- 使用 {{SCREEN_READER}} 进行屏幕阅读器测试
+- 仅键盘导航测试
+- 颜色对比度验证
+- 自动化无障碍扫描
 
-## Error Handling Philosophy
+## 错误处理理念
 
-### Error Prevention
+### 错误预防
 
-- Validate input early and often
-- Provide clear constraints and requirements upfront
-- Use inline validation where appropriate
-- Confirm destructive actions
+- 尽早并频繁地验证输入
+- 提前提供明确的约束和要求
+- 在适当的地方使用内联验证
+- 确认破坏性操作
 
-### Error Communication
+### 错误传达
 
-#### Principles
+#### 原则
 
-1. **Be specific:** Tell users exactly what went wrong
-2. **Be helpful:** Explain how to fix the problem
-3. **Be human:** Use friendly, non-technical language
-4. **Be timely:** Show errors as soon as they're detected
+1. **具体：** 准确告诉用户出了什么问题
+2. **有帮助：** 解释如何解决问题
+3. **人性化：** 使用友好的、非技术性语言
+4. **及时：** 检测到错误后立即显示
 
-#### Error Message Structure
+#### 错误消息结构
 
 ```
-[What happened] + [Why it happened (if relevant)] + [How to fix it]
+[发生了什么] + [为什么发生（如相关）] + [如何修复]
 ```
 
-#### Examples
+#### 示例
 
-| Bad             | Good                                                 |
+| 糟糕             | 良好                                                 |
 | --------------- | ---------------------------------------------------- |
-| "Invalid input" | "Email address must include @ symbol"                |
-| "Error 500"     | "We couldn't save your changes. Please try again."   |
-| "Failed"        | "Unable to connect. Check your internet connection." |
+| "无效输入" | "电子邮件地址必须包含 @ 符号"                |
+| "错误 500"     | "我们无法保存您的更改。请再试一次。"   |
+| "失败"        | "无法连接。请检查您的互联网连接。" |
 
-### Error States
+### 错误状态
 
-| Severity | Visual Treatment       | User Action Required |
+| 严重性 | 视觉处理       | 需要用户操作 |
 | -------- | ---------------------- | -------------------- |
-| Info     | {{INFO_TREATMENT}}     | Optional             |
-| Warning  | {{WARNING_TREATMENT}}  | Recommended          |
-| Error    | {{ERROR_TREATMENT}}    | Required             |
-| Critical | {{CRITICAL_TREATMENT}} | Immediate            |
+| 信息     | {{INFO_TREATMENT}}     | 可选             |
+| 警告  | {{WARNING_TREATMENT}}  | 推荐          |
+| 错误    | {{ERROR_TREATMENT}}    | 必需             |
+| 严重 | {{CRITICAL_TREATMENT}} | 立即            |
 
-### Recovery Patterns
+### 恢复模式
 
-- Auto-save user progress where possible
-- Provide clear "try again" actions
-- Offer alternative paths when primary fails
-- Preserve user input on errors
+- 尽可能自动保存用户进度
+- 提供清晰的"重试"操作
+- 当主要操作失败时提供替代路径
+- 在错误时保留用户输入

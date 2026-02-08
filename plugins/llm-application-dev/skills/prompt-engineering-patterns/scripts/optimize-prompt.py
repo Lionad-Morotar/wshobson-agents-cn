@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Prompt Optimization Script
+提示优化脚本
 
-Automatically test and optimize prompts using A/B testing and metrics tracking.
+使用 A/B 测试和指标跟踪自动测试和优化提示。
 """
 
 import json
@@ -28,11 +28,11 @@ class PromptOptimizer:
         self.executor = ThreadPoolExecutor()
 
     def shutdown(self):
-        """Shutdown the thread pool executor."""
+        """关闭线程池执行器。"""
         self.executor.shutdown(wait=True)
 
     def evaluate_prompt(self, prompt_template: str, test_cases: List[TestCase] = None) -> Dict[str, float]:
-        """Evaluate a prompt template against test cases in parallel."""
+        """并行评估提示模板与测试用例。"""
         if test_cases is None:
             test_cases = self.test_suite
 
@@ -46,16 +46,16 @@ class PromptOptimizer:
         def process_test_case(test_case):
             start_time = time.time()
 
-            # Render prompt with test case inputs
+            # 使用测试用例输入渲染提示
             prompt = prompt_template.format(**test_case.input)
 
-            # Get LLM response
+            # 获取 LLM 响应
             response = self.client.complete(prompt)
 
-            # Measure latency
+            # 测量延迟
             latency = time.time() - start_time
 
-            # Calculate individual metrics
+            # 计算单个指标
             token_count = len(prompt.split()) + len(response.split())
             success = 1 if response else 0
             accuracy = self.calculate_accuracy(response, test_case.expected_output)
@@ -67,10 +67,10 @@ class PromptOptimizer:
                 'accuracy': accuracy
             }
 
-        # Run test cases in parallel
+        # 并行运行测试用例
         results = list(self.executor.map(process_test_case, test_cases))
 
-        # Aggregate metrics
+        # 聚合指标
         for result in results:
             metrics['latency'].append(result['latency'])
             metrics['token_count'].append(result['token_count'])
@@ -86,12 +86,12 @@ class PromptOptimizer:
         }
 
     def calculate_accuracy(self, response: str, expected: str) -> float:
-        """Calculate accuracy score between response and expected output."""
-        # Simple exact match
+        """计算响应与期望输出之间的准确度分数。"""
+        # 简单的精确匹配
         if response.strip().lower() == expected.strip().lower():
             return 1.0
 
-        # Partial match using word overlap
+        # 使用单词重叠的部分匹配
         response_words = set(response.lower().split())
         expected_words = set(expected.lower().split())
 
@@ -102,45 +102,45 @@ class PromptOptimizer:
         return overlap / len(expected_words)
 
     def optimize(self, base_prompt: str, max_iterations: int = 5) -> Dict[str, Any]:
-        """Iteratively optimize a prompt."""
+        """迭代优化提示。"""
         current_prompt = base_prompt
         best_prompt = base_prompt
         best_score = 0
         current_metrics = None
 
         for iteration in range(max_iterations):
-            print(f"\nIteration {iteration + 1}/{max_iterations}")
+            print(f"\n迭代 {iteration + 1}/{max_iterations}")
 
-            # Evaluate current prompt
-            # Bolt Optimization: Avoid re-evaluating if we already have metrics from previous iteration
+            # 评估当前提示
+            # Bolt 优化：如果我们已有前一次迭代的指标，避免重新评估
             if current_metrics:
                 metrics = current_metrics
             else:
                 metrics = self.evaluate_prompt(current_prompt)
 
-            print(f"Accuracy: {metrics['avg_accuracy']:.2f}, Latency: {metrics['avg_latency']:.2f}s")
+            print(f"准确度: {metrics['avg_accuracy']:.2f}, 延迟: {metrics['avg_latency']:.2f}s")
 
-            # Track results
+            # 跟踪结果
             self.results_history.append({
                 'iteration': iteration,
                 'prompt': current_prompt,
                 'metrics': metrics
             })
 
-            # Update best if improved
+            # 如果改进则更新最佳
             if metrics['avg_accuracy'] > best_score:
                 best_score = metrics['avg_accuracy']
                 best_prompt = current_prompt
 
-            # Stop if good enough
+            # 如果足够好则停止
             if metrics['avg_accuracy'] > 0.95:
-                print("Achieved target accuracy!")
+                print("达到目标准确度！")
                 break
 
-            # Generate variations for next iteration
+            # 为下一次迭代生成变体
             variations = self.generate_variations(current_prompt, metrics)
 
-            # Test variations and pick best
+            # 测试变体并选择最佳
             best_variation = current_prompt
             best_variation_score = metrics['avg_accuracy']
             best_variation_metrics = metrics
@@ -162,31 +162,31 @@ class PromptOptimizer:
         }
 
     def generate_variations(self, prompt: str, current_metrics: Dict) -> List[str]:
-        """Generate prompt variations to test."""
+        """生成要测试的提示变体。"""
         variations = []
 
-        # Variation 1: Add explicit format instruction
-        variations.append(prompt + "\n\nProvide your answer in a clear, concise format.")
+        # 变体 1：添加明确的格式指令
+        variations.append(prompt + "\n\n以清晰、简洁的格式提供答案。")
 
-        # Variation 2: Add step-by-step instruction
-        variations.append("Let's solve this step by step.\n\n" + prompt)
+        # 变体 2：添加逐步指令
+        variations.append("让我们一步步解决这个问题。\n\n" + prompt)
 
-        # Variation 3: Add verification step
-        variations.append(prompt + "\n\nVerify your answer before responding.")
+        # 变体 3：添加验证步骤
+        variations.append(prompt + "\n\n在回答前验证你的答案。")
 
-        # Variation 4: Make more concise
+        # 变体 4：使其更简洁
         concise = self.make_concise(prompt)
         if concise != prompt:
             variations.append(concise)
 
-        # Variation 5: Add examples (if none present)
+        # 变体 5：添加示例（如果没有）
         if "example" not in prompt.lower():
             variations.append(self.add_examples(prompt))
 
-        return variations[:3]  # Return top 3 variations
+        return variations[:3]  # 返回前 3 个变体
 
     def make_concise(self, prompt: str) -> str:
-        """Remove redundant words to make prompt more concise."""
+        """删除冗余单词使提示更简洁。"""
         replacements = [
             ("in order to", "to"),
             ("due to the fact that", "because"),
@@ -201,20 +201,20 @@ class PromptOptimizer:
         return result
 
     def add_examples(self, prompt: str) -> str:
-        """Add example section to prompt."""
+        """为提示添加示例部分。"""
         return f"""{prompt}
 
-Example:
-Input: Sample input
-Output: Sample output
+示例：
+输入：示例输入
+输出：示例输出
 """
 
     def compare_prompts(self, prompt_a: str, prompt_b: str) -> Dict[str, Any]:
-        """A/B test two prompts."""
-        print("Testing Prompt A...")
+        """A/B 测试两个提示。"""
+        print("正在测试提示 A...")
         metrics_a = self.evaluate_prompt(prompt_a)
 
-        print("Testing Prompt B...")
+        print("正在测试提示 B...")
         metrics_b = self.evaluate_prompt(prompt_b)
 
         return {
@@ -225,50 +225,50 @@ Output: Sample output
         }
 
     def export_results(self, filename: str):
-        """Export optimization results to JSON."""
+        """将优化结果导出为 JSON。"""
         with open(filename, 'w') as f:
             json.dump(self.results_history, f, indent=2)
 
 
 def main():
-    # Example usage
+    # 使用示例
     test_suite = [
         TestCase(
-            input={'text': 'This movie was amazing!'},
-            expected_output='Positive'
+            input={'text': '这部电影太棒了！'},
+            expected_output='正面'
         ),
         TestCase(
-            input={'text': 'Worst purchase ever.'},
-            expected_output='Negative'
+            input={'text': '最糟糕的购买。'},
+            expected_output='负面'
         ),
         TestCase(
-            input={'text': 'It was okay, nothing special.'},
-            expected_output='Neutral'
+            input={'text': '还可以，没什么特别的。'},
+            expected_output='中性'
         )
     ]
 
-    # Mock LLM client for demonstration
+    # 用于演示的模拟 LLM 客户端
     class MockLLMClient:
         def complete(self, prompt):
-            # Simulate LLM response
+            # 模拟 LLM 响应
             if 'amazing' in prompt:
-                return 'Positive'
-            elif 'worst' in prompt.lower():
-                return 'Negative'
+                return '正面'
+            elif '最糟糕' in prompt:
+                return '负面'
             else:
-                return 'Neutral'
+                return '中性'
 
     optimizer = PromptOptimizer(MockLLMClient(), test_suite)
 
     try:
-        base_prompt = "Classify the sentiment of: {text}\nSentiment:"
+        base_prompt = "分类以下情感：{text}\n情感："
 
         results = optimizer.optimize(base_prompt)
 
         print("\n" + "="*50)
-        print("Optimization Complete!")
-        print(f"Best Accuracy: {results['best_score']:.2f}")
-        print(f"Best Prompt:\n{results['best_prompt']}")
+        print("优化完成！")
+        print(f"最佳准确度：{results['best_score']:.2f}")
+        print(f"最佳提示：\n{results['best_prompt']}")
 
         optimizer.export_results('optimization_results.json')
     finally:

@@ -1,30 +1,30 @@
 ---
 name: github-actions-templates
-description: Create production-ready GitHub Actions workflows for automated testing, building, and deploying applications. Use when setting up CI/CD with GitHub Actions, automating development workflows, or creating reusable workflow templates.
+description: 创建用于自动化测试、构建和部署应用程序的生产级 GitHub Actions 工作流。用于使用 GitHub Actions 设置 CI/CD、自动化开发工作流或创建可重用的工作流模板。
 ---
 
-# GitHub Actions Templates
+# GitHub Actions 模板
 
-Production-ready GitHub Actions workflow patterns for testing, building, and deploying applications.
+用于测试、构建和部署应用程序的生产级 GitHub Actions 工作流模式。
 
-## Purpose
+## 目的
 
-Create efficient, secure GitHub Actions workflows for continuous integration and deployment across various tech stacks.
+为各种技术栈的持续集成和部署创建高效、安全的 GitHub Actions 工作流。
 
-## When to Use
+## 何时使用
 
-- Automate testing and deployment
-- Build Docker images and push to registries
-- Deploy to Kubernetes clusters
-- Run security scans
-- Implement matrix builds for multiple environments
+- 自动化测试和部署
+- 构建 Docker 镜像并推送到镜像仓库
+- 部署到 Kubernetes 集群
+- 运行安全扫描
+- 为多个环境实施矩阵构建
 
-## Common Workflow Patterns
+## 常见工作流模式
 
-### Pattern 1: Test Workflow
+### 模式 1: 测试工作流
 
 ```yaml
-name: Test
+name: 测试
 
 on:
   push:
@@ -43,33 +43,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: 使用 Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: npm ci
 
-      - name: Run linter
+      - name: 运行 linter
         run: npm run lint
 
-      - name: Run tests
+      - name: 运行测试
         run: npm test
 
-      - name: Upload coverage
+      - name: 上传覆盖率
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage/lcov.info
 ```
 
-**Reference:** See `assets/test-workflow.yml`
+**参考:** 参见 `assets/test-workflow.yml`
 
-### Pattern 2: Build and Push Docker Image
+### 模式 2: 构建并推送 Docker 镜像
 
 ```yaml
-name: Build and Push
+name: 构建并推送
 
 on:
   push:
@@ -90,14 +90,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Log in to Container Registry
+      - name: 登录到容器镜像仓库
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: 提取元数据
         id: meta
         uses: docker/metadata-action@v5
         with:
@@ -108,7 +108,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
 
-      - name: Build and push
+      - name: 构建并推送
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -119,12 +119,12 @@ jobs:
           cache-to: type=gha,mode=max
 ```
 
-**Reference:** See `assets/deploy-workflow.yml`
+**参考:** 参见 `assets/deploy-workflow.yml`
 
-### Pattern 3: Deploy to Kubernetes
+### 模式 3: 部署到 Kubernetes
 
 ```yaml
-name: Deploy to Kubernetes
+name: 部署到 Kubernetes
 
 on:
   push:
@@ -137,33 +137,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure AWS credentials
+      - name: 配置 AWS 凭证
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
 
-      - name: Update kubeconfig
+      - name: 更新 kubeconfig
         run: |
           aws eks update-kubeconfig --name production-cluster --region us-west-2
 
-      - name: Deploy to Kubernetes
+      - name: 部署到 Kubernetes
         run: |
           kubectl apply -f k8s/
           kubectl rollout status deployment/my-app -n production
           kubectl get services -n production
 
-      - name: Verify deployment
+      - name: 验证部署
         run: |
           kubectl get pods -n production
           kubectl describe deployment my-app -n production
 ```
 
-### Pattern 4: Matrix Build
+### 模式 4: 矩阵构建
 
 ```yaml
-name: Matrix Build
+name: 矩阵构建
 
 on: [push, pull_request]
 
@@ -179,40 +179,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: 设置 Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: 运行测试
         run: pytest
 ```
 
-**Reference:** See `assets/matrix-build.yml`
+**参考:** 参见 `assets/matrix-build.yml`
 
-## Workflow Best Practices
+## 工作流最佳实践
 
-1. **Use specific action versions** (@v4, not @latest)
-2. **Cache dependencies** to speed up builds
-3. **Use secrets** for sensitive data
-4. **Implement status checks** on PRs
-5. **Use matrix builds** for multi-version testing
-6. **Set appropriate permissions**
-7. **Use reusable workflows** for common patterns
-8. **Implement approval gates** for production
-9. **Add notification steps** for failures
-10. **Use self-hosted runners** for sensitive workloads
+1. **使用特定的 action 版本** (@v4,而不是 @latest)
+2. **缓存依赖** 以加速构建
+3. **使用密钥** 处理敏感数据
+4. **在 PR 上实施状态检查**
+5. **使用矩阵构建** 进行多版本测试
+6. **设置适当的权限**
+7. **使用可重用工作流** 处理常见模式
+8. **为生产环境实施审批网关**
+9. **添加通知步骤** 处理失败
+10. **使用自托管运行器** 处理敏感工作负载
 
-## Reusable Workflows
+## 可重用工作流
 
 ```yaml
 # .github/workflows/reusable-test.yml
-name: Reusable Test Workflow
+name: 可重用测试工作流
 
 on:
   workflow_call:
@@ -236,7 +236,7 @@ jobs:
       - run: npm test
 ```
 
-**Use reusable workflow:**
+**使用可重用工作流:**
 
 ```yaml
 jobs:
@@ -248,10 +248,10 @@ jobs:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-## Security Scanning
+## 安全扫描
 
 ```yaml
-name: Security Scan
+name: 安全扫描
 
 on:
   push:
@@ -266,7 +266,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner
+      - name: 运行 Trivy 漏洞扫描器
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: "fs"
@@ -274,21 +274,21 @@ jobs:
           format: "sarif"
           output: "trivy-results.sarif"
 
-      - name: Upload Trivy results to GitHub Security
+      - name: 上传 Trivy 结果到 GitHub Security
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: "trivy-results.sarif"
 
-      - name: Run Snyk Security Scan
+      - name: 运行 Snyk 安全扫描
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 ```
 
-## Deployment with Approvals
+## 带审批的部署
 
 ```yaml
-name: Deploy to Production
+name: 部署到生产环境
 
 on:
   push:
@@ -304,31 +304,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy application
+      - name: 部署应用
         run: |
-          echo "Deploying to production..."
-          # Deployment commands here
+          echo "正在部署到生产环境..."
+          # 部署命令
 
-      - name: Notify Slack
+      - name: 通知 Slack
         if: success()
         uses: slackapi/slack-github-action@v1
         with:
           webhook-url: ${{ secrets.SLACK_WEBHOOK }}
           payload: |
             {
-              "text": "Deployment to production completed successfully!"
+              "text": "生产环境部署成功完成!"
             }
 ```
 
-## Reference Files
+## 参考文件
 
-- `assets/test-workflow.yml` - Testing workflow template
-- `assets/deploy-workflow.yml` - Deployment workflow template
-- `assets/matrix-build.yml` - Matrix build template
-- `references/common-workflows.md` - Common workflow patterns
+- `assets/test-workflow.yml` - 测试工作流模板
+- `assets/deploy-workflow.yml` - 部署工作流模板
+- `assets/matrix-build.yml` - 矩阵构建模板
+- `references/common-workflows.md` - 常见工作流模式
 
-## Related Skills
+## 相关技能
 
-- `gitlab-ci-patterns` - For GitLab CI workflows
-- `deployment-pipeline-design` - For pipeline architecture
-- `secrets-management` - For secrets handling
+- `gitlab-ci-patterns` - GitLab CI 工作流
+- `deployment-pipeline-design` - 流水线架构
+- `secrets-management` - 密钥处理

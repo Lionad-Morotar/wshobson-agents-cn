@@ -1,46 +1,46 @@
 ---
 name: spark-optimization
-description: Optimize Apache Spark jobs with partitioning, caching, shuffle optimization, and memory tuning. Use when improving Spark performance, debugging slow jobs, or scaling data processing pipelines.
+description: 优化 Apache Spark 作业，包括分区策略、缓存机制、shuffle 优化和内存调优。适用于提升 Spark 性能、调试慢查询或扩容数据处理管道的场景。
 ---
 
-# Apache Spark Optimization
+# Apache Spark 优化指南
 
-Production patterns for optimizing Apache Spark jobs including partitioning strategies, memory management, shuffle optimization, and performance tuning.
+生产环境中优化 Apache Spark 作业的最佳实践，涵盖分区策略、内存管理、shuffle 优化以及性能调优。
 
-## When to Use This Skill
+## 适用场景
 
-- Optimizing slow Spark jobs
-- Tuning memory and executor configuration
-- Implementing efficient partitioning strategies
-- Debugging Spark performance issues
-- Scaling Spark pipelines for large datasets
-- Reducing shuffle and data skew
+- 优化运行缓慢的 Spark 作业
+- 调优内存和执行器配置
+- 实施高效的分区策略
+- 调试 Spark 性能问题
+- 为大规模数据集扩容 Spark 管道
+- 减少 shuffle 开销和数据倾斜
 
-## Core Concepts
+## 核心概念
 
-### 1. Spark Execution Model
+### 1. Spark 执行模型
 
 ```
 Driver Program
     ↓
-Job (triggered by action)
+Job (由 action 触发)
     ↓
-Stages (separated by shuffles)
+Stages (由 shuffle 分隔)
     ↓
-Tasks (one per partition)
+Tasks (每个 partition 一个 task)
 ```
 
-### 2. Key Performance Factors
+### 2. 关键性能影响因素
 
-| Factor            | Impact                | Solution                      |
-| ----------------- | --------------------- | ----------------------------- |
-| **Shuffle**       | Network I/O, disk I/O | Minimize wide transformations |
-| **Data Skew**     | Uneven task duration  | Salting, broadcast joins      |
-| **Serialization** | CPU overhead          | Use Kryo, columnar formats    |
-| **Memory**        | GC pressure, spills   | Tune executor memory          |
-| **Partitions**    | Parallelism           | Right-size partitions         |
+| 因素              | 影响范围                  | 解决方案                      |
+| ----------------- | ------------------------- | ----------------------------- |
+| **Shuffle**       | 网络 I/O、磁盘 I/O        | 减少宽依赖转换                |
+| **Data Skew**     | 任务执行时长不均衡        | 加盐技术、broadcast join      |
+| **Serialization** | CPU 开销                  | 使用 Kryo、列式存储格式       |
+| **Memory**        | GC 压力、内存溢出         | 调优 executor 内存            |
+| **Partitions**    | 并行度                    | 合理设置 partition 数量       |
 
-## Quick Start
+## 快速开始
 
 ```python
 from pyspark.sql import SparkSession
@@ -72,9 +72,9 @@ result = (df
 result.write.mode("overwrite").parquet("s3://bucket/output/")
 ```
 
-## Patterns
+## 模式
 
-### Pattern 1: Optimal Partitioning
+### Pattern 1: 最优分区策略
 
 ```python
 # Calculate optimal partition count
@@ -103,7 +103,7 @@ df = (spark.read.parquet("s3://bucket/data/")
     .parquet("s3://bucket/partitioned_output/"))
 ```
 
-### Pattern 2: Join Optimization
+### Pattern 2: Join 优化
 
 ```python
 from pyspark.sql import functions as F
@@ -168,7 +168,7 @@ def salt_join(df_skewed, df_other, key_col, num_salts=10):
     return df_salted.join(df_exploded, on="salted_key", how="inner")
 ```
 
-### Pattern 3: Caching and Persistence
+### Pattern 3: 缓存与持久化
 
 ```python
 from pyspark import StorageLevel
@@ -209,7 +209,7 @@ df_complex = (df
 df_complex.checkpoint()  # Breaks lineage, materializes
 ```
 
-### Pattern 4: Memory Tuning
+### Pattern 4: 内存调优
 
 ```python
 # Executor memory configuration
@@ -244,7 +244,7 @@ def print_memory_usage(spark):
         print(f"{executor}: {total:.2f}GB total, {free:.2f}GB free")
 ```
 
-### Pattern 5: Shuffle Optimization
+### Pattern 5: Shuffle 优化
 
 ```python
 # Reduce shuffle data size
@@ -275,7 +275,7 @@ df_reduced = df.coalesce(10)  # No shuffle
 spark.conf.set("spark.io.compression.codec", "lz4")  # Fast compression
 ```
 
-### Pattern 6: Data Format Optimization
+### Pattern 6: 数据格式优化
 
 ```python
 # Parquet optimizations
@@ -307,7 +307,7 @@ spark.sql("""
 """)
 ```
 
-### Pattern 7: Monitoring and Debugging
+### Pattern 7: 监控与调试
 
 ```python
 # Enable detailed metrics
@@ -355,7 +355,7 @@ def check_partition_skew(df):
     print(f"Skew ratio: {skew_ratio:.2f}x (>2x indicates skew)")
 ```
 
-## Configuration Cheat Sheet
+## 配置速查表
 
 ```python
 # Production configuration template
@@ -392,26 +392,26 @@ spark_configs = {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Enable AQE** - Adaptive query execution handles many issues
-- **Use Parquet/Delta** - Columnar formats with compression
-- **Broadcast small tables** - Avoid shuffle for small joins
-- **Monitor Spark UI** - Check for skew, spills, GC
-- **Right-size partitions** - 128MB - 256MB per partition
+- **启用 AQE** - 自适应查询执行能自动处理许多问题
+- **使用 Parquet/Delta** - 支持压缩的列式存储格式
+- **广播小表** - 小表 join 避免 shuffle
+- **监控 Spark UI** - 检查数据倾斜、内存溢出、GC 情况
+- **合理设置分区** - 每个 partition 大小控制在 128MB - 256MB
 
-### Don'ts
+### 不应该做
 
-- **Don't collect large data** - Keep data distributed
-- **Don't use UDFs unnecessarily** - Use built-in functions
-- **Don't over-cache** - Memory is limited
-- **Don't ignore data skew** - It dominates job time
-- **Don't use `.count()` for existence** - Use `.take(1)` or `.isEmpty()`
+- **不要 collect 大数据** - 保持数据分布式处理
+- **不要滥用 UDF** - 优先使用内置函数
+- **不要过度缓存** - 内存资源有限
+- **不要忽视数据倾斜** - 它会主导作业执行时间
+- **不要用 `.count()` 判断是否存在** - 使用 `.take(1)` 或 `.isEmpty()`
 
-## Resources
+## 参考资料
 
-- [Spark Performance Tuning](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
-- [Spark Configuration](https://spark.apache.org/docs/latest/configuration.html)
-- [Databricks Optimization Guide](https://docs.databricks.com/en/optimizations/index.html)
+- [Spark 性能调优官方文档](https://spark.apache.org/docs/latest/sql-performance-tuning.html)
+- [Spark 配置参数文档](https://spark.apache.org/docs/latest/configuration.html)
+- [Databricks 优化指南](https://docs.databricks.com/en/optimizations/index.html)

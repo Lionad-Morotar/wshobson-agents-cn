@@ -1,527 +1,485 @@
 ---
 name: employment-contract-templates
-description: Create employment contracts, offer letters, and HR policy documents following legal best practices. Use when drafting employment agreements, creating HR policies, or standardizing employment documentation.
+description: 创建遵循法律最佳实践的雇佣合同、录用信和人力资源政策文档。在起草雇佣协议、创建人力资源政策或标准化雇佣文档时使用。
 ---
 
-# Employment Contract Templates
+# 雇佣合同模板
 
-Templates and patterns for creating legally sound employment documentation including contracts, offer letters, and HR policies.
+创建法律上健全的雇佣文档的模板和模式，包括合同、录用信和人力资源政策。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Drafting employment contracts
-- Creating offer letters
-- Writing employee handbooks
-- Developing HR policies
-- Standardizing employment documentation
-- Onboarding documentation
+- 起草雇佣合同
+- 创建录用信
+- 编写员工手册
+- 制定人力资源政策
+- 标准化雇佣文档
+- 入职文档
 
-## Core Concepts
+## 核心概念
 
-### 1. Employment Document Types
+### 1. 雇佣文档类型
 
-| Document                | Purpose                 | When Used     |
+| 文档 | 用途 | 使用时间 |
 | ----------------------- | ----------------------- | ------------- |
-| **Offer Letter**        | Initial job offer       | Pre-hire      |
-| **Employment Contract** | Formal agreement        | Hire          |
-| **Employee Handbook**   | Policies & procedures   | Onboarding    |
-| **NDA**                 | Confidentiality         | Before access |
-| **Non-Compete**         | Competition restriction | Hire/Exit     |
+| **录用信** | 初始工作录用 | 雇佣前 |
+| **雇佣合同** | 正式协议 | 雇佣 |
+| **员工手册** | 政策和程序 | 入职 |
+| **NDA** | 保密性 | 获得访问权限前 |
+| **竞业禁止** | 竞争限制 | 雇佣/离职 |
 
-### 2. Key Legal Considerations
+### 2. 主要法律考虑因素
 
 ```
-Employment Relationship:
-├── At-Will vs. Contract
-├── Employee vs. Contractor
-├── Full-Time vs. Part-Time
-├── Exempt vs. Non-Exempt
-└── Jurisdiction-Specific Requirements
+雇佣关系:
+├── 随意雇佣 vs. 合同
+├── 员工 vs. 承包商
+├── 全职 vs. 兼职
+├── 豁免 vs. 非豁免
+└── 司法管辖区特定要求
 ```
 
-**DISCLAIMER: These templates are for informational purposes only and do not constitute legal advice. Consult with qualified legal counsel before using any employment documents.**
+**免责声明：这些模板仅供参考，不构成法律建议。在使用任何雇佣文档之前，请咨询合格的法律顾问。**
 
-## Templates
+## 模板
 
-### Template 1: Offer Letter
+### 模板 1：录用信
 
 ```markdown
-# EMPLOYMENT OFFER LETTER
+# 雇佣录用信
 
-[Company Letterhead]
+[公司信头]
 
-Date: [DATE]
+日期: [日期]
 
-[Candidate Name]
-[Address]
-[City, State ZIP]
+[候选人姓名]
+[地址]
+[城市, 州 邮编]
 
-Dear [Candidate Name],
+亲爱的 [候选人姓名]，
 
-We are pleased to extend an offer of employment for the position of [JOB TITLE]
-at [COMPANY NAME]. We believe your skills and experience will be valuable
-additions to our team.
+我们很高兴提供 [公司名称] 的 [职位名称] 职位的雇佣录用。我们相信您的技能和经验将是我们团队的有价值补充。
 
-## Position Details
+## 职位详情
 
-**Title:** [Job Title]
-**Department:** [Department]
-**Reports To:** [Manager Name/Title]
-**Location:** [Office Location / Remote]
-**Start Date:** [Proposed Start Date]
-**Employment Type:** [Full-Time/Part-Time], [Exempt/Non-Exempt]
+**职位名称：** [职位名称]
+**部门：** [部门]
+**汇报对象：** [经理姓名/职位]
+**工作地点：** [办公地点 / 远程]
+**开始日期：** [建议开始日期]
+**雇佣类型：** [全职/兼职]，[豁免/非豁免]
 
-## Compensation
+## 薪酬
 
-**Base Salary:** $[AMOUNT] per [year/hour], paid [bi-weekly/semi-monthly/monthly]
-**Bonus:** [Eligible for annual bonus of up to X% based on company and individual
-performance / Not applicable]
-**Equity:** [X shares of stock options vesting over 4 years with 1-year cliff /
-Not applicable]
+**基本工资：** 每年/小时 $[金额]，每 [两周/半月/月] 支付
+**奖金：** [有资格获得基于公司和个人绩效的年度最高 X% 奖金 / 不适用]
+**股权：** [分 4 年归属的 X 股股票期权，1 年等待期 / 不适用]
 
-## Benefits
+## 福利
 
-You will be eligible for our standard benefits package, including:
+您将有资格获得我们的标准福利套餐，包括：
 
-- Health insurance (medical, dental, vision) effective [date]
-- 401(k) with [X]% company match
-- [x] days paid time off per year
-- [x] paid holidays
-- [Other benefits]
+- 健康保险（医疗、牙科、视力），[日期] 生效
+- 401(k)，公司匹配 [X]%
+- 每年 [x] 天带薪假期
+- [x] 天带薪节假日
+- [其他福利]
 
-Full details will be provided during onboarding.
+详细信息将在入职期间提供。
 
-## Contingencies
+## 先决条件
 
-This offer is contingent upon:
+此录用取决于：
 
-- Successful completion of background check
-- Verification of your right to work in [Country]
-- Execution of required employment documents including:
-  - Confidentiality Agreement
-  - [Non-Compete Agreement, if applicable]
-  - [IP Assignment Agreement]
+- 背景调查成功完成
+- 验证您在 [国家] 的工作权利
+- 签署所需的雇佣文件，包括：
+  - 保密协议
+  - [竞业禁止协议（如适用）]
+  - [知识产权转让协议]
 
-## At-Will Employment
+## 随意雇佣
 
-Please note that employment with [Company Name] is at-will. This means that
-either you or the Company may terminate the employment relationship at any time,
-with or without cause or notice. This offer letter does not constitute a
-contract of employment for any specific period.
+请注意，与 [公司名称] 的雇佣是随意的。这意味着您或公司可以随时终止雇佣关系，无论是否有理由或通知。本录用信不构成任何特定期限的雇佣合同。
 
-## Acceptance
+## 接受
 
-To accept this offer, please sign below and return by [DEADLINE DATE]. This
-offer will expire if not accepted by that date.
+要接受此录用，请在下方签字并在 [截止日期] 之前退回。如果在该日期之前未接受，此录用将失效。
 
-We are excited about the possibility of you joining our team. If you have any
-questions, please contact [HR Contact] at [email/phone].
+我们很高兴您有可能加入我们的团队。如果您有任何问题，请联系 [人力资源联系人]，[电子邮件/电话]。
 
-Sincerely,
+此致，
 
 ---
 
-[Hiring Manager Name]
-[Title]
-[Company Name]
+[招聘经理姓名]
+[职位]
+[公司名称]
 
 ---
 
-## ACCEPTANCE
+## 接受
 
-I accept this offer of employment and agree to the terms stated above.
+我接受此雇佣录用并同意上述条款。
 
-Signature: ************\_************
+签字: ________________
 
-Printed Name: ************\_************
+打印姓名: ________________
 
-Date: ************\_************
+日期: ________________
 
-Anticipated Start Date: ************\_************
+预计开始日期: ________________
 ```
 
-### Template 2: Employment Agreement (Contract Position)
+### 模板 2：雇佣协议（合同职位）
 
 ```markdown
-# EMPLOYMENT AGREEMENT
+# 雇佣协议
 
-This Employment Agreement ("Agreement") is entered into as of [DATE]
-("Effective Date") by and between:
+本雇佣协议（"协议"）于 [日期]（"生效日期"）由以下双方签订：
 
-**Employer:** [COMPANY LEGAL NAME], a [State] [corporation/LLC]
-with principal offices at [Address] ("Company")
+**雇主：** [公司法律名称]，[州] [公司/有限责任公司]
+主要办公地点位于 [地址]（"公司"）
 
-**Employee:** [EMPLOYEE NAME], an individual residing at [Address] ("Employee")
+**员工：** [员工姓名]，居住在 [地址] 的个人（"员工"）
 
-## 1. EMPLOYMENT
+## 1. 雇佣
 
-1.1 **Position.** The Company agrees to employ Employee as [JOB TITLE],
-reporting to [Manager Title]. Employee accepts such employment subject to
-the terms of this Agreement.
+1.1 **职位。** 公司同意雇佣员工担任 [职位名称]，
+向 [经理职位] 汇报。员工接受本协议条款下的此类雇佣。
 
-1.2 **Duties.** Employee shall perform duties consistent with their position,
-including but not limited to:
+1.2 **职责。** 员工应履行与其职位一致的职责，包括但不限于：
 
-- [Primary duty 1]
-- [Primary duty 2]
-- [Primary duty 3]
-- Other duties as reasonably assigned
+- [主要职责 1]
+- [主要职责 2]
+- [主要职责 3]
+- 合理分配的其他职责
 
-  1.3 **Best Efforts.** Employee agrees to devote their full business time,
-  attention, and best efforts to the Company's business during employment.
+  1.3 **最大努力。** 员工同意在雇佣期间将全部工作时间、
+  精力和最大努力投入到公司业务。
 
-  1.4 **Location.** Employee's primary work location shall be [Location/Remote].
-  [Travel requirements, if any.]
+  1.4 **工作地点。** 员工的主要工作地点应为 [地点/远程]。
+  [差旅要求（如有）。]
 
-## 2. TERM
+## 2. 期限
 
-2.1 **Employment Period.** This Agreement shall commence on [START DATE] and
-continue until terminated as provided herein.
+2.1 **雇佣期。** 本协议应于 [开始日期] 开始，
+并按照本规定终止时持续有效。
 
-2.2 **At-Will Employment.** [FOR AT-WILL STATES] Notwithstanding anything
-herein, employment is at-will and may be terminated by either party at any
-time, with or without cause or notice.
+2.2 **随意雇佣。** [对于随意雇佣州] 尽管本协议有任何规定，
+雇佣是随意的，任何一方均可随时终止，无论是否有理由或通知。
 
-[OR FOR FIXED TERM:]
-2.2 **Fixed Term.** This Agreement is for a fixed term of [X] months/years,
-ending on [END DATE], unless terminated earlier as provided herein or extended
-by mutual written agreement.
+[或对于固定期限:]
+2.2 **固定期限。** 本协议的固定期限为 [X] 个月/年，
+于 [结束日期] 结束，除非按照本规定提前终止或经双方书面同意延长。
 
-## 3. COMPENSATION
+## 3. 薪酬
 
-3.1 **Base Salary.** Employee shall receive a base salary of $[AMOUNT] per year,
-payable in accordance with the Company's standard payroll practices, subject to
-applicable withholdings.
+3.1 **基本工资。** 员工应获得每年 $[金额] 的基本工资，
+按照公司标准薪资惯例支付，需适用适用的预扣税。
 
-3.2 **Bonus.** Employee may be eligible for an annual discretionary bonus of up
-to [X]% of base salary, based on [criteria]. Bonus payments are at Company's
-sole discretion and require active employment at payment date.
+3.2 **奖金。** 员工可能有资格获得基于 [标准] 的基本工资年度自由裁量奖金，最高 [X]%。
+奖金支付完全由公司决定，并要求在支付之日处于在职状态。
 
-3.3 **Equity.** [If applicable] Subject to Board approval and the Company's
-equity incentive plan, Employee shall be granted [X shares/options] under the
-terms of a separate Stock Option Agreement.
+3.3 **股权。** [如适用] 根据董事会批准和公司股权激励计划，
+员工应根据单独的股票期权协议条款获得 [X 股/期权]。
 
-3.4 **Benefits.** Employee shall be entitled to participate in benefit plans
-offered to similarly situated employees, subject to plan terms and eligibility
-requirements.
+3.4 **福利。** 员工有权参与向类似情况员工提供的福利计划，
+需遵守计划条款和资格要求。
 
-3.5 **Expenses.** Company shall reimburse Employee for reasonable business
-expenses incurred in accordance with Company policy.
+3.5 **费用。** 公司应根据公司政策报销员工产生的合理业务费用。
 
-## 4. CONFIDENTIALITY
+## 4. 保密
 
-4.1 **Confidential Information.** Employee acknowledges access to confidential
-and proprietary information including: trade secrets, business plans, customer
-lists, financial data, technical information, and other non-public information
-("Confidential Information").
+4.1 **保密信息。** 员工确认有权访问机密和专有信息，包括：
+商业秘密、业务计划、客户名单、财务数据、技术信息和其他非公开信息（"保密信息"）。
 
-4.2 **Non-Disclosure.** During and after employment, Employee shall not
-disclose, use, or permit use of any Confidential Information except as required
-for their duties or with prior written consent.
+4.2 **不披露。** 在雇佣期间和之后，员工不得披露、使用或允许使用任何保密信息，
+除非其职责需要或事先获得书面同意。
 
-4.3 **Return of Materials.** Upon termination, Employee shall immediately return
-all Company property and Confidential Information in any form.
+4.3 **材料归还。** 终止时，员工应立即以任何形式归还所有公司财产和保密信息。
 
-4.4 **Survival.** Confidentiality obligations survive termination indefinitely
-for trade secrets and for [3] years for other Confidential Information.
+4.4 **存续。** 对于商业秘密，保密义务无限期存续，对于其他保密信息存续 [3] 年。
 
-## 5. INTELLECTUAL PROPERTY
+## 5. 知识产权
 
-5.1 **Work Product.** All inventions, discoveries, works, and developments
-created by Employee during employment, relating to Company's business, or using
-Company resources ("Work Product") shall be Company's sole property.
+5.1 **工作成果。** 员工在雇佣期间创造的、与公司业务相关的或使用
+公司资源的所有发明、发现、作品和开发（"工作成果"）应为公司的唯一财产。
 
-5.2 **Assignment.** Employee hereby assigns to Company all rights in Work
-Product, including all intellectual property rights.
+5.2 **转让。** 员工特此将工作成果中的所有权利（包括所有知识产权）转让给公司。
 
-5.3 **Assistance.** Employee agrees to execute documents and take actions
-necessary to perfect Company's rights in Work Product.
+5.3 **协助。** 员工同意执行文件并采取必要行动完善公司对工作成果的权利。
 
-5.4 **Prior Inventions.** Attached as Exhibit A is a list of any prior
-inventions that Employee wishes to exclude from this Agreement.
+5.4 **先前的发明。** 作为附件 A 附上的是员工希望从本协议中排除的任何先前发明的清单。
 
-## 6. NON-COMPETITION AND NON-SOLICITATION
+## 6. 竞业禁止和招揽限制
 
-[NOTE: Enforceability varies by jurisdiction. Consult local counsel.]
+[注意：可执行性因司法管辖区而异。请咨询当地法律顾问。]
 
-6.1 **Non-Competition.** During employment and for [12] months after
-termination, Employee shall not, directly or indirectly, engage in any business
-competitive with Company's business within [Geographic Area].
+6.1 **竞业禁止。** 在雇佣期间及终止后 [12] 个月内，
+员工不得直接或间接在 [地理区域] 内从事与公司业务竞争的任何业务。
 
-6.2 **Non-Solicitation of Customers.** During employment and for [12] months
-after termination, Employee shall not solicit any customer of the Company for
-competing products or services.
+6.2 **客户招揽限制。** 在雇佣期间及终止后 [12] 个月内，
+员工不得为竞争产品或服务招揽公司的任何客户。
 
-6.3 **Non-Solicitation of Employees.** During employment and for [12] months
-after termination, Employee shall not recruit or solicit any Company employee
-to leave Company employment.
+6.3 **员工招揽限制。** 在雇佣期间及终止后 [12] 个月内，
+员工不得招募或招揽任何公司员工离开公司雇佣。
 
-## 7. TERMINATION
+## 7. 终止
 
-7.1 **By Company for Cause.** Company may terminate immediately for Cause,
-defined as:
-(a) Material breach of this Agreement
-(b) Conviction of a felony
-(c) Fraud, dishonesty, or gross misconduct
-(d) Failure to perform duties after written notice and cure period
+7.1 **公司因故终止。** 公司可能因故立即终止，原因定义为：
+(a) 重大违反本协议
+(b) 重罪定罪
+(c) 欺诈、不诚实或严重不当行为
+(d) 在书面通知和补救期后未履行职责
 
-7.2 **By Company Without Cause.** Company may terminate without Cause upon
-[30] days written notice.
+7.2 **公司无故终止。** 公司可在 [30] 天书面通知后无故终止。
 
-7.3 **By Employee.** Employee may terminate upon [30] days written notice.
+7.3 **员工终止。** 员工可在 [30] 天书面通知后终止。
 
-7.4 **Severance.** [If applicable] Upon termination without Cause, Employee
-shall receive [X] weeks base salary as severance, contingent upon execution
-of a release agreement.
+7.4 **遣散费。** [如适用] 无故终止时，
+员工应获得 [X] 周基本工资作为遣散费，需执行免除协议。
 
-7.5 **Effect of Termination.** Upon termination:
+7.5 **终止的影响。** 终止时：
 
-- All compensation earned through termination date shall be paid
-- Unvested equity shall be forfeited
-- Benefits terminate per plan terms
-- Sections 4, 5, 6, 8, and 9 survive termination
+- 终止之日之前赚取的所有薪酬应予支付
+- 未归属的股权应予没收
+- 福利按照计划条款终止
+- 第 4、5、6、8 和 9 条在终止后继续有效
 
-## 8. GENERAL PROVISIONS
+## 8. 一般条款
 
-8.1 **Entire Agreement.** This Agreement constitutes the entire agreement and
-supersedes all prior negotiations, representations, and agreements.
+8.1 **完整协议。** 本协议构成完整协议，并取代所有先前的谈判、陈述和协议。
 
-8.2 **Amendments.** This Agreement may be amended only by written agreement
-signed by both parties.
+8.2 **修正案。** 本协议只能经双方签署的书面协议修正。
 
-8.3 **Governing Law.** This Agreement shall be governed by the laws of [State],
-without regard to conflicts of law principles.
+8.3 **管辖法律。** 本协议应受 [州] 法律管辖，
+不考虑法律冲突原则。
 
-8.4 **Dispute Resolution.** [Arbitration clause or jurisdiction selection]
+8.4 **争议解决。** [仲裁条款或管辖权选择]
 
-8.5 **Severability.** If any provision is unenforceable, it shall be modified
-to the minimum extent necessary, and remaining provisions shall remain in effect.
+8.5 **可分割性。** 如果任何条款不可执行，应修改至最低必要程度，
+其余条款仍有效。
 
-8.6 **Notices.** Notices shall be in writing and delivered to addresses above.
+8.6 **通知。** 通知应为书面形式并送达上述地址。
 
-8.7 **Assignment.** Employee may not assign this Agreement. Company may assign
-to a successor.
+8.7 **转让。** 员工不得转让本协议。公司可转让给继任者。
 
-8.8 **Waiver.** Failure to enforce any provision shall not constitute waiver.
+8.8 **放弃。** 未执行任何条款不应构成放弃。
 
-## 9. ACKNOWLEDGMENTS
+## 9. 确认
 
-Employee acknowledges:
+员工确认：
 
-- Having read and understood this Agreement
-- Having opportunity to consult with counsel
-- Agreeing to all terms voluntarily
+- 已阅读并理解本协议
+- 有机会咨询法律顾问
+- 自愿同意所有条款
 
 ---
 
-IN WITNESS WHEREOF, the parties have executed this Agreement as of the
-Effective Date.
+特此证明，双方已于生效日期执行本协议。
 
-**[COMPANY NAME]**
+**[公司名称]**
 
-By: ************\_************
-Name: [Authorized Signatory]
-Title: [Title]
-Date: ************\_************
+代表: ________________
+姓名: [授权签字人]
+职位: [职位]
+日期: ________________
 
-**EMPLOYEE**
+**员工**
 
-Signature: ************\_************
-Name: [Employee Name]
-Date: ************\_************
+签字: ________________
+姓名: [员工姓名]
+日期: ________________
 
 ---
 
-## EXHIBIT A: PRIOR INVENTIONS
+## 附件 A：先前的发明
 
-[Employee to list any prior inventions, if any, or write "None"]
+[员工列出任何先前的发明，如有，或写"无"]
 
 ---
 ```
 
-### Template 3: Employee Handbook Policy Section
+### 模板 3：员工手册政策部分
 
 ```markdown
-# EMPLOYEE HANDBOOK - POLICY SECTION
+# 员工手册 - 政策部分
 
-## EMPLOYMENT POLICIES
+## 雇佣政策
 
-### Equal Employment Opportunity
+### 平等就业机会
 
-[Company Name] is an equal opportunity employer. We do not discriminate based on
-race, color, religion, sex, sexual orientation, gender identity, national
-origin, age, disability, veteran status, or any other protected characteristic.
+[公司名称] 是平等机会雇主。我们不基于种族、肤色、宗教、性别、性取向、
+性别认同、国籍、年龄、残疾、退伍军人身份或任何其他受保护特征进行歧视。
 
-This policy applies to all employment practices including:
+本政策适用于所有雇佣惯例，包括：
 
-- Recruitment and hiring
-- Compensation and benefits
-- Training and development
-- Promotions and transfers
-- Termination
+- 招聘和雇佣
+- 薪酬和福利
+- 培训和发展
+- 晋升和调动
+- 终止
 
-### Anti-Harassment Policy
+### 反骚扰政策
 
-[Company Name] is committed to providing a workplace free from harassment.
-Harassment based on any protected characteristic is strictly prohibited.
+[公司名称] 致力于提供无骚扰的工作场所。严格禁止基于任何受保护特征的骚扰。
 
-**Prohibited Conduct Includes:**
+**禁止的行为包括：**
 
-- Unwelcome sexual advances or requests for sexual favors
-- Offensive comments, jokes, or slurs
-- Physical conduct such as assault or unwanted touching
-- Visual conduct such as displaying offensive images
-- Threatening, intimidating, or hostile acts
+- 不受欢迎的性挑逗或性要求
+- 冒犯性评论、玩笑或侮辱
+- 袭击或不受欢迎的触摸等身体行为
+- 显示冒犯性图像的视觉行为
+- 威胁、恐吓或敌对行为
 
-**Reporting Procedure:**
+**报告程序：**
 
-1. Report to your manager, HR, or any member of leadership
-2. Reports may be made verbally or in writing
-3. Anonymous reports are accepted via [hotline/email]
+1. 向您的经理、人力资源或任何领导层成员报告
+2. 报告可口头或书面提出
+3. 通过 [热线/电子邮件] 接受匿名报告
 
-**Investigation:**
-All reports will be promptly investigated. Retaliation against anyone who
-reports harassment is strictly prohibited and will result in disciplinary
-action up to termination.
+**调查：**
+所有报告都将得到及时调查。严格禁止对报告骚扰的任何人进行报复，
+并将导致包括终止在内的纪律处分。
 
-### Work Hours and Attendance
+### 工作时间和出勤
 
-**Standard Hours:** [8:00 AM - 5:00 PM, Monday through Friday]
-**Core Hours:** [10:00 AM - 3:00 PM] - Employees expected to be available
-**Flexible Work:** [Policy on remote work, flexible scheduling]
+**标准时间：** [周一至周五，上午 8:00 - 下午 5:00]
+**核心时间：** [上午 10:00 - 下午 3:00] - 员工应在此时间段有空
+**灵活工作：** [远程工作、灵活排班政策]
 
-**Attendance Expectations:**
+**出勤期望：**
 
-- Notify your manager as soon as possible if you will be absent
-- Excessive unexcused absences may result in disciplinary action
-- [x] unexcused absences in [Y] days considered excessive
+- 如果您将缺席，请尽快通知您的经理
+- 过多的无理由缺席可能导致纪律处分
+- 在 [Y] 天内 [x] 次无理由缺席被视为过多
 
-### Paid Time Off (PTO)
+### 带薪假期（PTO）
 
-**PTO Accrual:**
-| Years of Service | Annual PTO Days |
+**PTO 累积：**
+| 服务年限 | 年度 PTO 天数 |
 |------------------|-----------------|
-| 0-2 years | 15 days |
-| 3-5 years | 20 days |
-| 6+ years | 25 days |
+| 0-2 年 | 15 天 |
+| 3-5 年 | 20 天 |
+| 6+ 年 | 25 天 |
 
-**PTO Guidelines:**
+**PTO 指南：**
 
-- PTO accrues per pay period
-- Maximum accrual: [X] days (use it or lose it after)
-- Request PTO at least [2] weeks in advance
-- Manager approval required
-- PTO may not be taken during [blackout periods]
+- PTO 按薪酬期累积
+- 最大累积：[X] 天（之后为用完即止）
+- 至少提前 [2] 周请求 PTO
+- 需要经理批准
+- PTO 不得在 [封锁期] 期间使用
 
-### Sick Leave
+### 病假
 
-- [x] days sick leave per year
-- May be used for personal illness or family member care
-- Doctor's note required for absences exceeding [3] days
+- 每年 [x] 天病假
+- 可用于个人疾病或家庭成员护理
+- 超过 [3] 天的缺席需要医生证明
 
-### Holidays
+### 节假日
 
-The following paid holidays are observed:
+以下带薪节假日：
 
-- New Year's Day
-- Martin Luther King Jr. Day
-- Presidents Day
-- Memorial Day
-- Independence Day
-- Labor Day
-- Thanksgiving Day
-- Day after Thanksgiving
-- Christmas Day
-- [Floating holiday]
+- 元旦
+- 马丁·路德·金纪念日
+- 总统日
+- 阵亡将士纪念日
+- 独立日
+- 劳动节
+- 感恩节
+- 感恩节次日
+- 圣诞节
+- [浮动节假日]
 
-### Code of Conduct
+### 行为准则
 
-All employees are expected to:
+所有员工应：
 
-- Act with integrity and honesty
-- Treat colleagues, customers, and partners with respect
-- Protect company confidential information
-- Avoid conflicts of interest
-- Comply with all laws and regulations
-- Report any violations of this code
+- 诚实正直地行事
+- 尊重地对待同事、客户和合作伙伴
+- 保护公司机密信息
+- 避免利益冲突
+- 遵守所有法律法规
+- 报告本准则的任何违规行为
 
-**Violations may result in disciplinary action up to and including termination.**
+**违规行为可能导致包括终止在内的纪律处分。**
 
-### Technology and Communication
+### 技术和通信
 
-**Acceptable Use:**
+**可接受的使用：**
 
-- Company technology is for business purposes
-- Limited personal use is permitted if it doesn't interfere with work
-- No illegal activities or viewing inappropriate content
+- 公司技术用于业务目的
+- 如果不影响工作，允许有限个人使用
+- 不得进行非法活动或查看不当内容
 
-**Monitoring:**
+**监控：**
 
-- Company reserves the right to monitor company systems
-- Employees should have no expectation of privacy on company devices
+- 公司保留监控公司系统的权利
+- 员工在公司设备上不应有隐私期望
 
-**Security:**
+**安全：**
 
-- Use strong passwords and enable 2FA
-- Report security incidents immediately
-- Lock devices when unattended
+- 使用强密码并启用 2FA
+- 立即报告安全事件
+- 设备无人看管时锁定
 
-### Social Media Policy
+### 社交媒体政策
 
-**Personal Social Media:**
+**个人社交媒体：**
 
-- Clearly state opinions are your own, not the company's
-- Do not share confidential company information
-- Be respectful and professional
+- 明确声明观点是您自己的，而非公司的
+- 不要分享机密公司信息
+- 保持尊重和专业
 
-**Company Social Media:**
+**公司社交媒体：**
 
-- Only authorized personnel may post on behalf of the company
-- Follow brand guidelines
-- Escalate negative comments to [Marketing/PR]
+- 只有授权人员可代表公司发布
+- 遵循品牌指南
+- 将负面评论升级给 [营销/公关]
 
 ---
 
-## ACKNOWLEDGMENT
+## 确认
 
-I acknowledge that I have received a copy of the Employee Handbook and
-understand that:
+我确认我已收到员工手册副本，并理解：
 
-1. I am responsible for reading and understanding its contents
-2. The handbook does not create a contract of employment
-3. Policies may be changed at any time at the company's discretion
-4. Employment is at-will [if applicable]
+1. 我有责任阅读和理解其内容
+2. 本手册不创建雇佣合同
+3. 政策可随时由公司自行更改
+4. 雇佣是随意的 [如适用]
 
-I agree to abide by the policies and procedures outlined in this handbook.
+我同意遵守本手册中概述的政策和程序。
 
-Employee Signature: ************\_************
+员工签字: ________________
 
-Employee Name (Print): ************\_************
+员工姓名（打印）: ________________
 
-Date: ************\_************
+日期: ________________
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该
 
-- **Consult legal counsel** - Employment law varies by jurisdiction
-- **Keep copies signed** - Document all agreements
-- **Update regularly** - Laws and policies change
-- **Be clear and specific** - Avoid ambiguity
-- **Train managers** - On policies and procedures
+- **咨询法律顾问** - 雇佣法律因司法管辖区而异
+- **保存签署副本** - 记录所有协议
+- **定期更新** - 法律和政策会变化
+- **清晰具体** - 避免歧义
+- **培训经理** - 政策和程序
 
-### Don'ts
+### 不应该
 
-- **Don't use generic templates** - Customize for your jurisdiction
-- **Don't make promises** - That could create implied contracts
-- **Don't discriminate** - In language or application
-- **Don't forget at-will language** - Where applicable
-- **Don't skip review** - Have legal counsel review all documents
+- **不要使用通用模板** - 为您的司法管辖区定制
+- **不要做出承诺** - 这可能产生默示合同
+- **不要歧视** - 在语言或应用中
+- **不要忘记随意雇佣语言** - 如适用
+- **不要跳过审查** - 让法律顾问审查所有文档
 
-## Resources
+## 资源
 
-- [SHRM Employment Templates](https://www.shrm.org/)
-- [Department of Labor](https://www.dol.gov/)
-- [EEOC Guidance](https://www.eeoc.gov/)
-- State-specific labor departments
+- [SHRM 雇佣模板](https://www.shrm.org/)
+- [劳工部](https://www.dol.gov/)
+- [EEOC 指导](https://www.eeoc.gov/)
+- 州特定的劳工部门

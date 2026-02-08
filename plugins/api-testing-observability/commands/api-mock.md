@@ -1,22 +1,22 @@
-# API Mocking Framework
+# API 模拟框架
 
-You are an API mocking expert specializing in creating realistic mock services for development, testing, and demonstration purposes. Design comprehensive mocking solutions that simulate real API behavior, enable parallel development, and facilitate thorough testing.
+你是一位 API 模拟专家，专注于为开发、测试和演示目的创建逼真的模拟服务。设计全面的模拟解决方案，模拟真实的 API 行为，实现并行开发并促进全面测试。
 
-## Context
+## 上下文
 
-The user needs to create mock APIs for development, testing, or demonstration purposes. Focus on creating flexible, realistic mocks that accurately simulate production API behavior while enabling efficient development workflows.
+用户需要为开发、测试或演示目的创建模拟 API。专注于创建灵活、逼真的模拟，准确模拟生产 API 行为，同时实现高效的工作流程。
 
-## Requirements
+## 需求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. Mock Server Setup
+### 1. 模拟服务器设置
 
-Create comprehensive mock server infrastructure:
+创建全面的模拟服务器基础设施：
 
-**Mock Server Framework**
+**模拟服务器框架**
 
 ```python
 from typing import Dict, List, Any, Optional
@@ -35,23 +35,23 @@ class MockAPIServer:
         self.scenario_manager = ScenarioManager()
 
     def setup_mock_server(self):
-        """Setup comprehensive mock server"""
-        # Configure middleware
+        """设置全面的模拟服务器"""
+        # 配置中间件
         self._setup_middleware()
 
-        # Load mock definitions
+        # 加载模拟定义
         self._load_mock_definitions()
 
-        # Setup dynamic routes
+        # 设置动态路由
         self._setup_dynamic_routes()
 
-        # Initialize scenarios
+        # 初始化场景
         self._initialize_scenarios()
 
         return self.app
 
     def _setup_middleware(self):
-        """Configure server middleware"""
+        """配置服务器中间件"""
         @self.app.middleware("http")
         async def add_mock_headers(request: Request, call_next):
             response = await call_next(request)
@@ -61,15 +61,15 @@ class MockAPIServer:
 
         @self.app.middleware("http")
         async def simulate_latency(request: Request, call_next):
-            # Simulate network latency
+            # 模拟网络延迟
             latency = self._calculate_latency(request.url.path)
-            await asyncio.sleep(latency / 1000)  # Convert to seconds
+            await asyncio.sleep(latency / 1000)  # 转换为秒
             response = await call_next(request)
             return response
 
         @self.app.middleware("http")
         async def track_requests(request: Request, call_next):
-            # Track request for verification
+            # 跟踪请求以供验证
             self.state_manager.track_request({
                 'method': request.method,
                 'path': str(request.url.path),
@@ -80,10 +80,10 @@ class MockAPIServer:
             return response
 
     def _setup_dynamic_routes(self):
-        """Setup dynamic route handling"""
+        """设置动态路由处理"""
         @self.app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH"])
         async def handle_mock_request(path: str, request: Request):
-            # Find matching mock
+            # 查找匹配的模拟
             mock = self._find_matching_mock(request.method, path, request)
 
             if not mock:
@@ -93,7 +93,7 @@ class MockAPIServer:
                     media_type="application/json"
                 )
 
-            # Process mock response
+            # 处理模拟响应
             response_data = await self._process_mock_response(mock, request)
 
             return Response(
@@ -104,36 +104,36 @@ class MockAPIServer:
             )
 
     async def _process_mock_response(self, mock: Dict[str, Any], request: Request):
-        """Process and generate mock response"""
-        # Check for conditional responses
+        """处理并生成模拟响应"""
+        # 检查条件响应
         if mock.get('conditions'):
             for condition in mock['conditions']:
                 if self._evaluate_condition(condition, request):
                     return await self._generate_response(condition['response'], request)
 
-        # Use default response
+        # 使用默认响应
         return await self._generate_response(mock['response'], request)
 
     def _generate_response(self, response_template: Dict[str, Any], request: Request):
-        """Generate response from template"""
+        """从模板生成响应"""
         response = {
             'status': response_template.get('status', 200),
             'headers': response_template.get('headers', {}),
             'body': self._process_response_body(response_template['body'], request)
         }
 
-        # Apply response transformations
+        # 应用响应转换
         if response_template.get('transformations'):
             response = self._apply_transformations(response, response_template['transformations'])
 
         return response
 ```
 
-### 2. Request/Response Stubbing
+### 2. 请求/响应存根
 
-Implement flexible stubbing system:
+实现灵活的存根系统：
 
-**Stubbing Engine**
+**存根引擎**
 
 ```python
 class StubbingEngine:
@@ -142,7 +142,7 @@ class StubbingEngine:
         self.matchers = self._initialize_matchers()
 
     def create_stub(self, method: str, path: str, **kwargs):
-        """Create a new stub"""
+        """创建新存根"""
         stub_id = self._generate_stub_id()
 
         stub = {
@@ -152,7 +152,7 @@ class StubbingEngine:
             'matchers': self._build_matchers(kwargs),
             'response': kwargs.get('response', {}),
             'priority': kwargs.get('priority', 0),
-            'times': kwargs.get('times', -1),  # -1 for unlimited
+            'times': kwargs.get('times', -1),  # -1 表示无限
             'delay': kwargs.get('delay', 0),
             'scenario': kwargs.get('scenario', 'default')
         }
@@ -161,31 +161,31 @@ class StubbingEngine:
         return stub_id
 
     def _build_matchers(self, kwargs):
-        """Build request matchers"""
+        """构建请求匹配器"""
         matchers = []
 
-        # Path parameter matching
+        # 路径参数匹配
         if 'path_params' in kwargs:
             matchers.append({
                 'type': 'path_params',
                 'params': kwargs['path_params']
             })
 
-        # Query parameter matching
+        # 查询参数匹配
         if 'query_params' in kwargs:
             matchers.append({
                 'type': 'query_params',
                 'params': kwargs['query_params']
             })
 
-        # Header matching
+        # Header 匹配
         if 'headers' in kwargs:
             matchers.append({
                 'type': 'headers',
                 'headers': kwargs['headers']
             })
 
-        # Body matching
+        # Body 匹配
         if 'body' in kwargs:
             matchers.append({
                 'type': 'body',
@@ -196,42 +196,42 @@ class StubbingEngine:
         return matchers
 
     def match_request(self, request: Dict[str, Any]):
-        """Find matching stub for request"""
+        """为请求查找匹配的存根"""
         candidates = []
 
         for stub in self.stubs.values():
             if self._matches_stub(request, stub):
                 candidates.append(stub)
 
-        # Sort by priority and return best match
+        # 按优先级排序并返回最佳匹配
         if candidates:
             return sorted(candidates, key=lambda x: x['priority'], reverse=True)[0]
 
         return None
 
     def _matches_stub(self, request: Dict[str, Any], stub: Dict[str, Any]):
-        """Check if request matches stub"""
-        # Check method
+        """检查请求是否匹配存根"""
+        # 检查方法
         if request['method'] != stub['method']:
             return False
 
-        # Check path
+        # 检查路径
         if not self._matches_path(request['path'], stub['path']):
             return False
 
-        # Check all matchers
+        # 检查所有匹配器
         for matcher in stub['matchers']:
             if not self._evaluate_matcher(request, matcher):
                 return False
 
-        # Check if stub is still valid
+        # 检查存根是否仍然有效
         if stub['times'] == 0:
             return False
 
         return True
 
     def create_dynamic_stub(self):
-        """Create dynamic stub with callbacks"""
+        """创建带回调的动态存根"""
         return '''
 class DynamicStub:
     def __init__(self, path_pattern: str):
@@ -240,18 +240,18 @@ class DynamicStub:
         self.state_modifier = None
 
     def with_response_generator(self, generator):
-        """Set dynamic response generator"""
+        """设置动态响应生成器"""
         self.response_generator = generator
         return self
 
     def with_state_modifier(self, modifier):
-        """Set state modification callback"""
+        """设置状态修改回调"""
         self.state_modifier = modifier
         return self
 
     async def process_request(self, request: Request, state: Dict[str, Any]):
-        """Process request dynamically"""
-        # Extract request data
+        """动态处理请求"""
+        # 提取请求数据
         request_data = {
             'method': request.method,
             'path': request.url.path,
@@ -260,11 +260,11 @@ class DynamicStub:
             'body': await request.json() if request.method in ['POST', 'PUT'] else None
         }
 
-        # Modify state if needed
+        # 根据需要修改状态
         if self.state_modifier:
             state = self.state_modifier(state, request_data)
 
-        # Generate response
+        # 生成响应
         if self.response_generator:
             response = self.response_generator(request_data, state)
         else:
@@ -272,7 +272,7 @@ class DynamicStub:
 
         return response, state
 
-# Usage example
+# 使用示例
 dynamic_stub = DynamicStub('/api/users/{user_id}')
 dynamic_stub.with_response_generator(lambda req, state: {
     'status': 200,
@@ -288,11 +288,11 @@ dynamic_stub.with_response_generator(lambda req, state: {
 '''
 ```
 
-### 3. Dynamic Data Generation
+### 3. 动态数据生成
 
-Generate realistic mock data:
+生成逼真的模拟数据：
 
-**Mock Data Generator**
+**模拟数据生成器**
 
 ```python
 from faker import Faker
@@ -306,10 +306,10 @@ class MockDataGenerator:
         self.generators = self._init_generators()
 
     def generate_data(self, schema: Dict[str, Any]):
-        """Generate data based on schema"""
+        """基于模式生成数据"""
         if isinstance(schema, dict):
             if '$ref' in schema:
-                # Reference to another schema
+                # 引用另一个模式
                 return self.generate_data(self.resolve_ref(schema['$ref']))
 
             result = {}
@@ -320,7 +320,7 @@ class MockDataGenerator:
             return result
 
         elif isinstance(schema, list):
-            # Generate array
+            # 生成数组
             count = random.randint(1, 10)
             return [self.generate_data(schema[0]) for _ in range(count)]
 
@@ -328,18 +328,18 @@ class MockDataGenerator:
             return schema
 
     def _generate_field(self, field_schema: Dict[str, Any]):
-        """Generate field value based on schema"""
+        """基于模式生成字段值"""
         field_type = field_schema.get('type', 'string')
 
-        # Check for custom generator
+        # 检查自定义生成器
         if 'generator' in field_schema:
             return self._use_custom_generator(field_schema['generator'])
 
-        # Check for enum
+        # 检查枚举
         if 'enum' in field_schema:
             return random.choice(field_schema['enum'])
 
-        # Generate based on type
+        # 基于类型生成
         generators = {
             'string': self._generate_string,
             'number': self._generate_number,
@@ -353,8 +353,8 @@ class MockDataGenerator:
         return generator(field_schema)
 
     def _generate_string(self, schema: Dict[str, Any]):
-        """Generate string value"""
-        # Check for format
+        """生成字符串值"""
+        # 检查格式
         format_type = schema.get('format', '')
 
         format_generators = {
@@ -374,17 +374,17 @@ class MockDataGenerator:
         if format_type in format_generators:
             return format_generators[format_type]()
 
-        # Check for pattern
+        # 检查模式
         if 'pattern' in schema:
             return self._generate_from_pattern(schema['pattern'])
 
-        # Default string generation
+        # 默认字符串生成
         min_length = schema.get('minLength', 5)
         max_length = schema.get('maxLength', 20)
         return self.faker.text(max_nb_chars=random.randint(min_length, max_length))
 
     def create_data_templates(self):
-        """Create reusable data templates"""
+        """创建可重用的数据模板"""
         return {
             'user': {
                 'id': {'type': 'string', 'format': 'uuid'},
@@ -414,14 +414,14 @@ class MockDataGenerator:
         }
 
     def generate_relational_data(self):
-        """Generate data with relationships"""
+        """生成具有关系的数据"""
         return '''
 class RelationalDataGenerator:
     def generate_related_entities(self, schema: Dict[str, Any], count: int):
-        """Generate related entities maintaining referential integrity"""
+        """生成维护引用完整性的相关实体"""
         entities = {}
 
-        # First pass: generate primary entities
+        # 第一遍：生成主要实体
         for entity_name, entity_schema in schema['entities'].items():
             entities[entity_name] = []
             for i in range(count):
@@ -429,21 +429,21 @@ class RelationalDataGenerator:
                 entity['id'] = f"{entity_name}_{i}"
                 entities[entity_name].append(entity)
 
-        # Second pass: establish relationships
+        # 第二遍：建立关系
         for relationship in schema.get('relationships', []):
             self.establish_relationship(entities, relationship)
 
         return entities
 
     def establish_relationship(self, entities: Dict[str, List], relationship: Dict):
-        """Establish relationships between entities"""
+        """在实体之间建立关系"""
         source = relationship['source']
         target = relationship['target']
         rel_type = relationship['type']
 
         if rel_type == 'one-to-many':
             for source_entity in entities[source['entity']]:
-                # Select random targets
+                # 选择随机目标
                 num_targets = random.randint(1, 5)
                 target_refs = random.sample(
                     entities[target['entity']],
@@ -453,17 +453,17 @@ class RelationalDataGenerator:
 
         elif rel_type == 'many-to-one':
             for target_entity in entities[target['entity']]:
-                # Select one source
+                # 选择一个源
                 source_ref = random.choice(entities[source['entity']])
                 target_entity[target['field']] = source_ref['id']
 '''
 ```
 
-### 4. Mock Scenarios
+### 4. 模拟场景
 
-Implement scenario-based mocking:
+实现基于场景的模拟：
 
-**Scenario Manager**
+**场景管理器**
 
 ```python
 class ScenarioManager:
@@ -473,7 +473,7 @@ class ScenarioManager:
         self.scenario_states = {}
 
     def define_scenario(self, name: str, definition: Dict[str, Any]):
-        """Define a mock scenario"""
+        """定义模拟场景"""
         self.scenarios[name] = {
             'name': name,
             'description': definition.get('description', ''),
@@ -484,10 +484,10 @@ class ScenarioManager:
         }
 
     def create_test_scenarios(self):
-        """Create common test scenarios"""
+        """创建常见测试场景"""
         return {
             'happy_path': {
-                'description': 'All operations succeed',
+                'description': '所有操作成功',
                 'stubs': [
                     {
                         'path': '/api/auth/login',
@@ -513,7 +513,7 @@ class ScenarioManager:
                 ]
             },
             'error_scenario': {
-                'description': 'Various error conditions',
+                'description': '各种错误条件',
                 'sequences': [
                     {
                         'name': 'rate_limiting',
@@ -536,11 +536,11 @@ class ScenarioManager:
                 ]
             },
             'degraded_performance': {
-                'description': 'Slow responses and timeouts',
+                'description': '缓慢响应和超时',
                 'stubs': [
                     {
                         'path': '/api/*',
-                        'delay': 5000,  # 5 second delay
+                        'delay': 5000,  # 5 秒延迟
                         'response': {'status': 200}
                     }
                 ]
@@ -548,24 +548,24 @@ class ScenarioManager:
         }
 
     def execute_scenario_sequence(self):
-        """Execute scenario sequences"""
+        """执行场景序列"""
         return '''
 class SequenceExecutor:
     def __init__(self):
         self.sequence_states = {}
 
     def get_sequence_response(self, sequence_name: str, request: Dict):
-        """Get response based on sequence state"""
+        """基于序列状态获取响应"""
         if sequence_name not in self.sequence_states:
             self.sequence_states[sequence_name] = {'step': 0, 'count': 0}
 
         state = self.sequence_states[sequence_name]
         sequence = self.get_sequence_definition(sequence_name)
 
-        # Get current step
+        # 获取当前步骤
         current_step = sequence['steps'][state['step']]
 
-        # Check if we should advance to next step
+        # 检查是否应该前进到下一步
         state['count'] += 1
         if state['count'] >= current_step.get('repeat', 1):
             state['step'] = (state['step'] + 1) % len(sequence['steps'])
@@ -574,7 +574,7 @@ class SequenceExecutor:
         return current_step['response']
 
     def create_stateful_scenario(self):
-        """Create scenario with stateful behavior"""
+        """创建具有状态行为的场景"""
         return {
             'shopping_cart': {
                 'initial_state': {
@@ -625,11 +625,11 @@ class SequenceExecutor:
 '''
 ```
 
-### 5. Contract Testing
+### 5. 契约测试
 
-Implement contract-based mocking:
+实现基于契约的模拟：
 
-**Contract Testing Framework**
+**契约测试框架**
 
 ```python
 class ContractMockServer:
@@ -638,11 +638,11 @@ class ContractMockServer:
         self.validators = self._init_validators()
 
     def load_contract(self, contract_path: str):
-        """Load API contract (OpenAPI, AsyncAPI, etc.)"""
+        """加载 API 契约（OpenAPI、AsyncAPI 等）"""
         with open(contract_path, 'r') as f:
             contract = yaml.safe_load(f)
 
-        # Parse contract
+        # 解析契约
         self.contracts[contract['info']['title']] = {
             'spec': contract,
             'endpoints': self._parse_endpoints(contract),
@@ -650,7 +650,7 @@ class ContractMockServer:
         }
 
     def generate_mocks_from_contract(self, contract_name: str):
-        """Generate mocks from contract specification"""
+        """从契约规范生成模拟"""
         contract = self.contracts[contract_name]
         mocks = []
 
@@ -662,14 +662,14 @@ class ContractMockServer:
         return mocks
 
     def _create_mock_from_spec(self, path: str, method: str, spec: Dict):
-        """Create mock from endpoint specification"""
+        """从端点规范创建模拟"""
         mock = {
             'method': method.upper(),
             'path': self._convert_path_to_pattern(path),
             'responses': {}
         }
 
-        # Generate responses for each status code
+        # 为每个状态代码生成响应
         for status_code, response_spec in spec.get('responses', {}).items():
             mock['responses'][status_code] = {
                 'status': int(status_code),
@@ -677,24 +677,24 @@ class ContractMockServer:
                 'body': self._generate_response_body(response_spec)
             }
 
-        # Add request validation
+        # 添加请求验证
         if 'requestBody' in spec:
             mock['request_validation'] = self._create_request_validator(spec['requestBody'])
 
         return mock
 
     def validate_against_contract(self):
-        """Validate mock responses against contract"""
+        """根据契约验证模拟响应"""
         return '''
 class ContractValidator:
     def validate_response(self, contract_spec, actual_response):
-        """Validate response against contract"""
+        """根据契约验证响应"""
         validation_results = {
             'valid': True,
             'errors': []
         }
 
-        # Find response spec for status code
+        # 查找状态代码的响应规范
         response_spec = contract_spec['responses'].get(
             str(actual_response['status']),
             contract_spec['responses'].get('default')
@@ -708,7 +708,7 @@ class ContractValidator:
             validation_results['valid'] = False
             return validation_results
 
-        # Validate headers
+        # 验证 headers
         if 'headers' in response_spec:
             header_errors = self.validate_headers(
                 response_spec['headers'],
@@ -716,7 +716,7 @@ class ContractValidator:
             )
             validation_results['errors'].extend(header_errors)
 
-        # Validate body schema
+        # 验证 body 模式
         if 'content' in response_spec:
             body_errors = self.validate_body(
                 response_spec['content'],
@@ -728,15 +728,15 @@ class ContractValidator:
         return validation_results
 
     def validate_body(self, content_spec, actual_body):
-        """Validate response body against schema"""
+        """根据模式验证响应体"""
         errors = []
 
-        # Get schema for content type
+        # 获取内容类型的模式
         schema = content_spec.get('application/json', {}).get('schema')
         if not schema:
             return errors
 
-        # Validate against JSON schema
+        # 根据 JSON 模式验证
         try:
             validate(instance=actual_body, schema=schema)
         except ValidationError as e:
@@ -750,11 +750,11 @@ class ContractValidator:
 '''
 ```
 
-### 6. Performance Testing
+### 6. 性能测试
 
-Create performance testing mocks:
+创建性能测试模拟：
 
-**Performance Mock Server**
+**性能模拟服务器**
 
 ```python
 class PerformanceMockServer:
@@ -763,27 +763,27 @@ class PerformanceMockServer:
         self.metrics_collector = MetricsCollector()
 
     def create_performance_profile(self, name: str, config: Dict):
-        """Create performance testing profile"""
+        """创建性能测试配置"""
         self.performance_profiles[name] = {
             'latency': config.get('latency', {'min': 10, 'max': 100}),
-            'throughput': config.get('throughput', 1000),  # requests per second
-            'error_rate': config.get('error_rate', 0.01),  # 1% errors
+            'throughput': config.get('throughput', 1000),  # 每秒请求数
+            'error_rate': config.get('error_rate', 0.01),  # 1% 错误率
             'response_size': config.get('response_size', {'min': 100, 'max': 10000})
         }
 
     async def simulate_performance(self, profile_name: str, request: Request):
-        """Simulate performance characteristics"""
+        """模拟性能特征"""
         profile = self.performance_profiles[profile_name]
 
-        # Simulate latency
+        # 模拟延迟
         latency = random.uniform(profile['latency']['min'], profile['latency']['max'])
         await asyncio.sleep(latency / 1000)
 
-        # Simulate errors
+        # 模拟错误
         if random.random() < profile['error_rate']:
             return self._generate_error_response()
 
-        # Generate response with specified size
+        # 生成指定大小的响应
         response_size = random.randint(
             profile['response_size']['min'],
             profile['response_size']['max']
@@ -791,7 +791,7 @@ class PerformanceMockServer:
 
         response_data = self._generate_data_of_size(response_size)
 
-        # Track metrics
+        # 跟踪指标
         self.metrics_collector.record({
             'latency': latency,
             'response_size': response_size,
@@ -801,10 +801,10 @@ class PerformanceMockServer:
         return response_data
 
     def create_load_test_scenarios(self):
-        """Create load testing scenarios"""
+        """创建负载测试场景"""
         return {
             'gradual_load': {
-                'description': 'Gradually increase load',
+                'description': '逐渐增加负载',
                 'stages': [
                     {'duration': 60, 'target_rps': 100},
                     {'duration': 120, 'target_rps': 500},
@@ -813,7 +813,7 @@ class PerformanceMockServer:
                 ]
             },
             'spike_test': {
-                'description': 'Sudden spike in traffic',
+                'description': '流量突然激增',
                 'stages': [
                     {'duration': 60, 'target_rps': 100},
                     {'duration': 10, 'target_rps': 5000},
@@ -821,7 +821,7 @@ class PerformanceMockServer:
                 ]
             },
             'stress_test': {
-                'description': 'Find breaking point',
+                'description': '找到崩溃点',
                 'stages': [
                     {'duration': 60, 'target_rps': 100},
                     {'duration': 60, 'target_rps': 500},
@@ -834,7 +834,7 @@ class PerformanceMockServer:
         }
 
     def implement_throttling(self):
-        """Implement request throttling"""
+        """实现请求节流"""
         return '''
 class ThrottlingMiddleware:
     def __init__(self, max_rps: int):
@@ -844,11 +844,11 @@ class ThrottlingMiddleware:
     async def __call__(self, request: Request, call_next):
         current_time = time.time()
 
-        # Remove old requests
+        # 移除旧请求
         while self.request_times and self.request_times[0] < current_time - 1:
             self.request_times.popleft()
 
-        # Check if we're over limit
+        # 检查是否超过限制
         if len(self.request_times) >= self.max_rps:
             return Response(
                 content=json.dumps({
@@ -859,20 +859,20 @@ class ThrottlingMiddleware:
                 headers={'Retry-After': '1'}
             )
 
-        # Record this request
+        # 记录此请求
         self.request_times.append(current_time)
 
-        # Process request
+        # 处理请求
         response = await call_next(request)
         return response
 '''
 ```
 
-### 7. Mock Data Management
+### 7. 模拟数据管理
 
-Manage mock data effectively:
+有效管理模拟数据：
 
-**Mock Data Store**
+**模拟数据存储**
 
 ```python
 class MockDataStore:
@@ -881,49 +881,49 @@ class MockDataStore:
         self.indexes = {}
 
     def create_collection(self, name: str, schema: Dict = None):
-        """Create a new data collection"""
+        """创建新数据集合"""
         self.collections[name] = {
             'data': {},
             'schema': schema,
             'counter': 0
         }
 
-        # Create default index on 'id'
+        # 在 'id' 上创建默认索引
         self.create_index(name, 'id')
 
     def insert(self, collection: str, data: Dict):
-        """Insert data into collection"""
+        """向集合插入数据"""
         collection_data = self.collections[collection]
 
-        # Validate against schema if exists
+        # 根据模式验证
         if collection_data['schema']:
             self._validate_data(data, collection_data['schema'])
 
-        # Generate ID if not provided
+        # 如果未提供则生成 ID
         if 'id' not in data:
             collection_data['counter'] += 1
             data['id'] = str(collection_data['counter'])
 
-        # Store data
+        # 存储数据
         collection_data['data'][data['id']] = data
 
-        # Update indexes
+        # 更新索引
         self._update_indexes(collection, data)
 
         return data['id']
 
     def query(self, collection: str, filters: Dict = None):
-        """Query collection with filters"""
+        """使用过滤器查询集合"""
         collection_data = self.collections[collection]['data']
 
         if not filters:
             return list(collection_data.values())
 
-        # Use indexes if available
+        # 使用可用索引
         if self._can_use_index(collection, filters):
             return self._query_with_index(collection, filters)
 
-        # Full scan
+        # 全扫描
         results = []
         for item in collection_data.values():
             if self._matches_filters(item, filters):
@@ -932,7 +932,7 @@ class MockDataStore:
         return results
 
     def create_relationships(self):
-        """Define relationships between collections"""
+        """在集合之间定义关系"""
         return '''
 class RelationshipManager:
     def __init__(self, data_store: MockDataStore):
@@ -944,7 +944,7 @@ class RelationshipManager:
                           target_collection: str,
                           relationship_type: str,
                           foreign_key: str):
-        """Define relationship between collections"""
+        """在集合之间定义关系"""
         self.relationships[f"{source_collection}->{target_collection}"] = {
             'type': relationship_type,
             'source': source_collection,
@@ -953,19 +953,19 @@ class RelationshipManager:
         }
 
     def populate_related_data(self, entity: Dict, collection: str, depth: int = 1):
-        """Populate related data for entity"""
+        """为实体填充相关数据"""
         if depth <= 0:
             return entity
 
-        # Find relationships for this collection
+        # 查找此集合的关系
         for rel_key, rel in self.relationships.items():
             if rel['source'] == collection:
-                # Get related data
+                # 获取相关数据
                 foreign_id = entity.get(rel['foreign_key'])
                 if foreign_id:
                     related = self.store.get(rel['target'], foreign_id)
                     if related:
-                        # Recursively populate
+                        # 递归填充
                         related = self.populate_related_data(
                             related,
                             rel['target'],
@@ -976,12 +976,12 @@ class RelationshipManager:
         return entity
 
     def cascade_operations(self, operation: str, collection: str, entity_id: str):
-        """Handle cascade operations"""
+        """处理级联操作"""
         if operation == 'delete':
-            # Find dependent relationships
+            # 查找依赖关系
             for rel in self.relationships.values():
                 if rel['target'] == collection:
-                    # Delete dependent entities
+                    # 删除依赖实体
                     dependents = self.store.query(
                         rel['source'],
                         {rel['foreign_key']: entity_id}
@@ -991,16 +991,16 @@ class RelationshipManager:
 '''
 ```
 
-### 8. Testing Framework Integration
+### 8. 测试框架集成
 
-Integrate with popular testing frameworks:
+与流行测试框架集成：
 
-**Testing Integration**
+**测试集成**
 
 ```python
 class TestingFrameworkIntegration:
     def create_jest_integration(self):
-        """Jest testing integration"""
+        """Jest 测试集成"""
         return '''
 // jest.mock.config.js
 import { MockServer } from './mockServer';
@@ -1010,10 +1010,10 @@ const mockServer = new MockServer();
 beforeAll(async () => {
     await mockServer.start({ port: 3001 });
 
-    // Load mock definitions
+    // 加载模拟定义
     await mockServer.loadMocks('./mocks/*.json');
 
-    // Set default scenario
+    // 设置默认场景
     await mockServer.setScenario('test');
 });
 
@@ -1022,11 +1022,11 @@ afterAll(async () => {
 });
 
 beforeEach(async () => {
-    // Reset mock state
+    // 重置模拟状态
     await mockServer.reset();
 });
 
-// Test helper functions
+// 测试辅助函数
 export const setupMock = async (stub) => {
     return await mockServer.addStub(stub);
 };
@@ -1036,10 +1036,10 @@ export const verifyRequests = async (matcher) => {
     return requests;
 };
 
-// Example test
+// 示例测试
 describe('User API', () => {
     it('should fetch user details', async () => {
-        // Setup mock
+        // 设置模拟
         await setupMock({
             method: 'GET',
             path: '/api/users/123',
@@ -1049,14 +1049,14 @@ describe('User API', () => {
             }
         });
 
-        // Make request
+        // 发出请求
         const response = await fetch('http://localhost:3001/api/users/123');
         const user = await response.json();
 
-        // Verify
+        // 验证
         expect(user.name).toBe('Test User');
 
-        // Verify mock was called
+        // 验证模拟被调用
         const requests = await verifyRequests({ path: '/api/users/123' });
         expect(requests).toHaveLength(1);
     });
@@ -1064,7 +1064,7 @@ describe('User API', () => {
 '''
 
     def create_pytest_integration(self):
-        """Pytest integration"""
+        """Pytest 集成"""
         return '''
 # conftest.py
 import pytest
@@ -1088,11 +1088,11 @@ async def mock_server(event_loop):
 async def reset_mocks(mock_server):
     await mock_server.reset()
     yield
-    # Verify no unexpected calls
+    # 验证没有意外的调用
     unmatched = await mock_server.get_unmatched_requests()
     assert len(unmatched) == 0, f"Unmatched requests: {unmatched}"
 
-# Test utilities
+# 测试工具
 class MockBuilder:
     def __init__(self, mock_server):
         self.server = mock_server
@@ -1122,10 +1122,10 @@ class MockBuilder:
         for stub in self.stubs:
             await self.server.add_stub(stub)
 
-# Example test
+# 示例测试
 @pytest.mark.asyncio
 async def test_user_creation(mock_server):
-    # Setup mocks
+    # 设置模拟
     mock = MockBuilder(mock_server)
     mock.when('POST', '/api/users') \
         .with_body({'name': 'New User'}) \
@@ -1133,20 +1133,20 @@ async def test_user_creation(mock_server):
 
     await mock.setup()
 
-    # Test code here
+    # 测试代码
     response = await create_user({'name': 'New User'})
     assert response['id'] == '456'
 '''
 ```
 
-### 9. Mock Server Deployment
+### 9. 模拟服务器部署
 
-Deploy mock servers:
+部署模拟服务器：
 
-**Deployment Configuration**
+**部署配置**
 
 ```yaml
-# docker-compose.yml for mock services
+# mock services 的 docker-compose.yml
 version: "3.8"
 
 services:
@@ -1216,71 +1216,71 @@ spec:
             name: mock-definitions
 ```
 
-### 10. Mock Documentation
+### 10. 模拟文档
 
-Generate mock API documentation:
+生成模拟 API 文档：
 
-**Documentation Generator**
+**文档生成器**
 
 ````python
 class MockDocumentationGenerator:
     def generate_documentation(self, mock_server):
-        """Generate comprehensive mock documentation"""
+        """生成全面的模拟文档"""
         return f"""
-# Mock API Documentation
+# Mock API 文档
 
-## Overview
+## 概述
 {self._generate_overview(mock_server)}
 
-## Available Endpoints
+## 可用端点
 {self._generate_endpoints_doc(mock_server)}
 
-## Scenarios
+## 场景
 {self._generate_scenarios_doc(mock_server)}
 
-## Data Models
+## 数据模型
 {self._generate_models_doc(mock_server)}
 
-## Usage Examples
+## 使用示例
 {self._generate_examples(mock_server)}
 
-## Configuration
+## 配置
 {self._generate_config_doc(mock_server)}
 """
 
     def _generate_endpoints_doc(self, mock_server):
-        """Generate endpoint documentation"""
+        """生成端点文档"""
         doc = ""
         for endpoint in mock_server.get_endpoints():
             doc += f"""
 ### {endpoint['method']} {endpoint['path']}
 
-**Description**: {endpoint.get('description', 'No description')}
+**描述**: {endpoint.get('description', 'No description')}
 
-**Request**:
+**请求**:
 ```json
 {json.dumps(endpoint.get('request_example', {}), indent=2)}
 ````
 
-**Response**:
+**响应**:
 
 ```json
 {json.dumps(endpoint.get('response_example', {}), indent=2)}
 ```
 
-**Scenarios**:
+**场景**:
 {self.\_format_endpoint_scenarios(endpoint)}
 """
 return doc
 
     def create_interactive_docs(self):
-        """Create interactive API documentation"""
+        """创建交互式 API 文档"""
         return '''
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mock API Interactive Documentation</title>
+    <title>Mock API 交互式文档</title>
     <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css">
 </head>
@@ -1298,16 +1298,16 @@ return doc
                 layout: "BaseLayout",
                 tryItOutEnabled: true,
                 requestInterceptor: (request) => {
-                    request.headers['X-Mock-Scenario'] = 
+                    request.headers['X-Mock-Scenario'] =
                         document.getElementById('scenario-select').value;
                     return request;
                 }
             });
         }
     </script>
-    
+
     <div class="scenario-selector">
-        <label>Scenario:</label>
+        <label>场景:</label>
         <select id="scenario-select">
             <option value="default">Default</option>
             <option value="error">Error Conditions</option>
@@ -1317,19 +1317,19 @@ return doc
 </body>
 </html>
 '''
-```
+````
 
-## Output Format
+## 输出格式
 
-1. **Mock Server Setup**: Complete mock server implementation
-2. **Stubbing Configuration**: Flexible request/response stubbing
-3. **Data Generation**: Realistic mock data generation
-4. **Scenario Definitions**: Comprehensive test scenarios
-5. **Contract Testing**: Contract-based mock validation
-6. **Performance Simulation**: Performance testing capabilities
-7. **Data Management**: Mock data storage and relationships
-8. **Testing Integration**: Framework integration examples
-9. **Deployment Guide**: Mock server deployment configurations
-10. **Documentation**: Auto-generated mock API documentation
+1. **模拟服务器设置**: 完整的模拟服务器实现
+2. **存根配置**: 灵活的请求/响应存根
+3. **数据生成**: 逼真的模拟数据生成
+4. **场景定义**: 全面的测试场景
+5. **契约测试**: 基于契约的模拟验证
+6. **性能模拟**: 性能测试功能
+7. **数据管理**: 模拟数据存储和关系
+8. **测试集成**: 框架集成示例
+9. **部署指南**: 模拟服务器部署配置
+10. **文档**: 自动生成的模拟 API 文档
 
-Focus on creating flexible, realistic mock services that enable efficient development, thorough testing, and reliable API simulation for all stages of the development lifecycle.
+专注于创建灵活、逼真的模拟服务，实现高效开发、全面测试和可靠的 API 模拟，覆盖开发生命周期的所有阶段。

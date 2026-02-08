@@ -1,151 +1,151 @@
-# WCAG 2.2 Guidelines Reference
+# WCAG 2.2 指南参考
 
-## Overview
+## 概述
 
-The Web Content Accessibility Guidelines (WCAG) 2.2 provide recommendations for making web content more accessible. They are organized into four principles (POUR): Perceivable, Operable, Understandable, and Robust.
+Web 内容无障碍指南(WCAG)2.2 提供了使 Web 内容更易访问的建议。它们组织成四个原则(POUR):可感知、可操作、可理解和健壮性。
 
-## Conformance Levels
+## 合规级别
 
-- **Level A**: Minimum accessibility (must satisfy)
-- **Level AA**: Standard accessibility (should satisfy)
-- **Level AAA**: Enhanced accessibility (may satisfy)
+- **A 级**:最小无障碍(必须满足)
+- **AA 级**:标准无障碍(应该满足)
+- **AAA 级**:增强无障碍(可以满足)
 
-Most organizations target Level AA compliance.
+大多数组织的目标是 AA 级合规。
 
-## Principle 1: Perceivable
+## 原则 1: 可感知
 
-Content must be presentable in ways users can perceive.
+内容必须能以用户可感知的方式呈现。
 
-### 1.1 Text Alternatives
+### 1.1 文本替代
 
-#### 1.1.1 Non-text Content (Level A)
+#### 1.1.1 非文本内容(A 级)
 
-All non-text content needs text alternatives.
+所有非文本内容都需要文本替代。
 
 ```tsx
-// Images
-<img src="chart.png" alt="Q3 sales increased 25% compared to Q2" />
+// 图片
+<img src="chart.png" alt="第三季度销售额比第二季度增长25%" />
 
-// Decorative images
+// 装饰性图片
 <img src="decorative-line.svg" alt="" role="presentation" />
 
-// Complex images with long descriptions
+// 具有长描述的复杂图片
 <figure>
-  <img src="org-chart.png" alt="Organization chart" aria-describedby="org-desc" />
+  <img src="org-chart.png" alt="组织结构图" aria-describedby="org-desc" />
   <figcaption id="org-desc">
-    The CEO reports to the board. Three VPs report to the CEO:
-    VP Engineering, VP Sales, and VP Marketing...
+    CEO 向董事会汇报。三位副总裁向 CEO 汇报:
+    工程副总裁、销售副总裁和营销副总裁...
   </figcaption>
 </figure>
 
-// Icons with meaning
-<button aria-label="Delete item">
+// 有意义的图标
+<button aria-label="删除项目">
   <TrashIcon aria-hidden="true" />
 </button>
 
-// Icon buttons with visible text
+// 带有可见文本的图标按钮
 <button>
   <DownloadIcon aria-hidden="true" />
-  <span>Download</span>
+  <span>下载</span>
 </button>
 ```
 
-### 1.2 Time-based Media
+### 1.2 基于时间的媒体
 
-#### 1.2.1 Audio-only and Video-only (Level A)
+#### 1.2.1 仅音频和仅视频(A 级)
 
 ```tsx
-// Audio with transcript
+// 带有文字稿的音频
 <audio src="podcast.mp3" controls />
 <details>
-  <summary>View transcript</summary>
-  <p>Full transcript text here...</p>
+  <summary>查看文字稿</summary>
+  <p>完整文字稿文本...</p>
 </details>
 
-// Video with captions
+// 带有字幕的视频
 <video controls>
   <source src="tutorial.mp4" type="video/mp4" />
-  <track kind="captions" src="captions-en.vtt" srclang="en" label="English" />
-  <track kind="subtitles" src="subtitles-es.vtt" srclang="es" label="Spanish" />
+  <track kind="captions" src="captions-en.vtt" srclang="en" label="英语" />
+  <track kind="subtitles" src="subtitles-es.vtt" srclang="es" label="西班牙语" />
 </video>
 ```
 
-### 1.3 Adaptable
+### 1.3 可适应
 
-#### 1.3.1 Info and Relationships (Level A)
+#### 1.3.1 信息和关系(A 级)
 
-Structure and relationships must be programmatically determinable.
+结构和关系必须可通过程序确定。
 
 ```tsx
-// Proper heading hierarchy
+// 正确的标题层次结构
 <main>
-  <h1>Page Title</h1>
+  <h1>页面标题</h1>
   <section>
-    <h2>Section Title</h2>
-    <h3>Subsection</h3>
+    <h2>章节标题</h2>
+    <h3>小节</h3>
   </section>
 </main>
 
-// Data tables with headers
+// 带有标题的数据表
 <table>
-  <caption>Quarterly Sales Report</caption>
+  <caption>季度销售报告</caption>
   <thead>
     <tr>
-      <th scope="col">Product</th>
-      <th scope="col">Q1</th>
-      <th scope="col">Q2</th>
+      <th scope="col">产品</th>
+      <th scope="col">第一季度</th>
+      <th scope="col">第二季度</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">Widget A</th>
+      <th scope="row">小部件 A</th>
       <td>$10,000</td>
       <td>$12,000</td>
     </tr>
   </tbody>
 </table>
 
-// Lists for grouped content
-<nav aria-label="Main navigation">
+// 用于分组内容的列表
+<nav aria-label="主导航">
   <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/about">About</a></li>
-    <li><a href="/contact">Contact</a></li>
+    <li><a href="/">首页</a></li>
+    <li><a href="/about">关于</a></li>
+    <li><a href="/contact">联系</a></li>
   </ul>
 </nav>
 ```
 
-#### 1.3.5 Identify Input Purpose (Level AA)
+#### 1.3.5 识别输入目的(AA 级)
 
 ```tsx
-// Input with autocomplete for autofill
+// 带有自动完成的输入,用于自动填充
 <form>
-  <label htmlFor="name">Full Name</label>
+  <label htmlFor="name">全名</label>
   <input id="name" name="name" autoComplete="name" />
 
-  <label htmlFor="email">Email</label>
+  <label htmlFor="email">电子邮件</label>
   <input id="email" name="email" type="email" autoComplete="email" />
 
-  <label htmlFor="phone">Phone</label>
+  <label htmlFor="phone">电话</label>
   <input id="phone" name="phone" type="tel" autoComplete="tel" />
 
-  <label htmlFor="address">Street Address</label>
+  <label htmlFor="address">街道地址</label>
   <input id="address" name="address" autoComplete="street-address" />
 
-  <label htmlFor="cc">Credit Card Number</label>
+  <label htmlFor="cc">信用卡号</label>
   <input id="cc" name="cc" autoComplete="cc-number" />
 </form>
 ```
 
-### 1.4 Distinguishable
+### 1.4 可区分
 
-#### 1.4.1 Use of Color (Level A)
+#### 1.4.1 颜色使用(A 级)
 
 ```tsx
-// Bad: Color only indicates error
+// 不好:仅颜色表示错误
 <input className={hasError ? 'border-red-500' : ''} />
 
-// Good: Color plus icon and text
+// 好:颜色加图标和文本
 <div>
   <input
     className={hasError ? 'border-red-500' : ''}
@@ -155,42 +155,42 @@ Structure and relationships must be programmatically determinable.
   {hasError && (
     <p id="error-message" className="text-red-500 flex items-center gap-1">
       <AlertIcon aria-hidden="true" />
-      This field is required
+      此字段为必填
     </p>
   )}
 </div>
 ```
 
-#### 1.4.3 Contrast (Minimum) (Level AA)
+#### 1.4.3 对比度(最小)(AA 级)
 
 ```css
-/* Minimum contrast ratios */
-/* Normal text: 4.5:1 */
-/* Large text (18pt+ or 14pt bold+): 3:1 */
+/* 最小对比度 */
+/* 普通文本: 4.5:1 */
+/* 大文本(18pt+ 或 14pt 粗体+): 3:1 */
 
-/* Good contrast examples */
+/* 良好对比度示例 */
 .text-on-white {
-  color: #595959; /* 7:1 ratio on white */
+  color: #595959; /* 白色上 7:1 比例 */
 }
 
 .text-on-dark {
   color: #ffffff;
-  background: #333333; /* 12.6:1 ratio */
+  background: #333333; /* 12.6:1 比例 */
 }
 
-/* Link must be distinguishable from surrounding text */
+/* 链接必须与周围文本区分开 */
 .link {
-  color: #0066cc; /* 4.5:1 on white */
-  text-decoration: underline; /* Additional visual cue */
+  color: #0066cc; /* 白色上 4.5:1 */
+  text-decoration: underline; /* 额外的视觉提示 */
 }
 ```
 
-#### 1.4.11 Non-text Contrast (Level AA)
+#### 1.4.11 非文本对比度(AA 级)
 
 ```css
-/* UI components need 3:1 contrast */
+/* UI 组件需要 3:1 对比度 */
 .button {
-  border: 2px solid #767676; /* 3:1 against white */
+  border: 2px solid #767676; /* 与白色 3:1 */
   background: white;
 }
 
@@ -199,11 +199,11 @@ Structure and relationships must be programmatically determinable.
 }
 
 .input:focus {
-  outline: 2px solid #0066cc; /* Focus indicator needs 3:1 */
+  outline: 2px solid #0066cc; /* 焦点指示器需要 3:1 */
   outline-offset: 2px;
 }
 
-/* Custom checkbox */
+/* 自定义复选框 */
 .checkbox {
   border: 2px solid #767676;
 }
@@ -214,36 +214,36 @@ Structure and relationships must be programmatically determinable.
 }
 ```
 
-#### 1.4.12 Text Spacing (Level AA)
+#### 1.4.12 文本间距(AA 级)
 
-Content must not be lost when user adjusts text spacing.
+用户调整文本间距时不得丢失内容。
 
 ```css
-/* Allow text spacing adjustments without breaking layout */
+/* 允许文本间距调整而不破坏布局 */
 .content {
-  /* Use relative units */
-  line-height: 1.5; /* At least 1.5x font size */
-  letter-spacing: 0.12em; /* Support for 0.12em */
-  word-spacing: 0.16em; /* Support for 0.16em */
+  /* 使用相对单位 */
+  line-height: 1.5; /* 至少 1.5x 字体大小 */
+  letter-spacing: 0.12em; /* 支持 0.12em */
+  word-spacing: 0.16em; /* 支持 0.16em */
 
-  /* Don't use fixed heights on text containers */
+  /* 不要在文本容器上使用固定高度 */
   min-height: auto;
 
-  /* Allow wrapping */
+  /* 允许换行 */
   overflow-wrap: break-word;
 }
 
-/* Test with these values: */
-/* Line height: 1.5x font size */
-/* Letter spacing: 0.12em */
-/* Word spacing: 0.16em */
-/* Paragraph spacing: 2x font size */
+/* 使用这些值测试: */
+/* 行高: 1.5x 字体大小 */
+/* 字间距: 0.12em */
+/* 词间距: 0.16em */
+/* 段落间距: 2x 字体大小 */
 ```
 
-#### 1.4.13 Content on Hover or Focus (Level AA)
+#### 1.4.13 悬停或焦点上的内容(AA 级)
 
 ```tsx
-// Tooltip pattern
+// 工具提示模式
 function Tooltip({ content, children }) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -258,12 +258,12 @@ function Tooltip({ content, children }) {
       {isVisible && (
         <div
           role="tooltip"
-          // Dismissible: user can close without moving pointer
+          // 可关闭:用户可以不移动指针就关闭
           onKeyDown={(e) => e.key === "Escape" && setIsVisible(false)}
-          // Hoverable: content stays visible when pointer moves to it
+          // 可悬停:当指针移动到内容上时保持可见
           onMouseEnter={() => setIsVisible(true)}
           onMouseLeave={() => setIsVisible(false)}
-          // Persistent: stays until trigger loses focus/hover
+          // 持久:保持到触发器失去焦点/悬停
         >
           {content}
         </div>
@@ -273,18 +273,18 @@ function Tooltip({ content, children }) {
 }
 ```
 
-## Principle 2: Operable
+## 原则 2: 可操作
 
-Interface components must be operable by all users.
+界面组件必须对所有用户都可操作。
 
-### 2.1 Keyboard Accessible
+### 2.1 键盘可访问
 
-#### 2.1.1 Keyboard (Level A)
+#### 2.1.1 键盘(A 级)
 
-All functionality must be operable via keyboard.
+所有功能都必须通过键盘操作。
 
 ```tsx
-// Custom interactive element
+// 自定义交互元素
 function CustomButton({ onClick, children }) {
   return (
     <div
@@ -303,20 +303,20 @@ function CustomButton({ onClick, children }) {
   );
 }
 
-// Better: just use a button
+// 更好:只使用 button
 function BetterButton({ onClick, children }) {
   return <button onClick={onClick}>{children}</button>;
 }
 ```
 
-#### 2.1.2 No Keyboard Trap (Level A)
+#### 2.1.2 无键盘陷阱(A 级)
 
 ```tsx
-// Modal with proper focus management
+// 具有适当焦点管理的模态框
 function Modal({ isOpen, onClose, children }) {
   const closeButtonRef = useRef(null);
 
-  // Return focus on close
+  // 关闭时返回焦点
   useEffect(() => {
     if (!isOpen) return;
 
@@ -328,7 +328,7 @@ function Modal({ isOpen, onClose, children }) {
     };
   }, [isOpen]);
 
-  // Allow Escape to close
+  // 允许 Escape 关闭
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -341,7 +341,7 @@ function Modal({ isOpen, onClose, children }) {
     <FocusTrap>
       <div role="dialog" aria-modal="true">
         <button ref={closeButtonRef} onClick={onClose}>
-          Close
+          关闭
         </button>
         {children}
       </div>
@@ -350,72 +350,72 @@ function Modal({ isOpen, onClose, children }) {
 }
 ```
 
-### 2.4 Navigable
+### 2.4 可导航
 
-#### 2.4.1 Bypass Blocks (Level A)
+#### 2.4.1 绕过块(A 级)
 
 ```tsx
-// Skip links
+// 跳过链接
 <body>
   <a href="#main" className="skip-link">
-    Skip to main content
+    跳转到主内容
   </a>
   <a href="#nav" className="skip-link">
-    Skip to navigation
+    跳转到导航
   </a>
 
   <header>...</header>
 
-  <nav id="nav" aria-label="Main">
+  <nav id="nav" aria-label="主">
     ...
   </nav>
 
   <main id="main" tabIndex={-1}>
-    {/* Main content */}
+    {/* 主内容 */}
   </main>
 </body>
 ```
 
-#### 2.4.4 Link Purpose (In Context) (Level A)
+#### 2.4.4 链接目的(在上下文中)(A 级)
 
 ```tsx
-// Bad: Ambiguous link text
-<a href="/report">Click here</a>
-<a href="/report">Read more</a>
+// 不好:模糊的链接文本
+<a href="/report">点击这里</a>
+<a href="/report">阅读更多</a>
 
-// Good: Descriptive link text
-<a href="/report">View quarterly sales report</a>
+// 好:描述性链接文本
+<a href="/report">查看季度销售报告</a>
 
-// Good: Context provides meaning
+// 好:上下文提供含义
 <article>
-  <h2>Quarterly Sales Report</h2>
-  <p>Sales increased by 25% this quarter...</p>
-  <a href="/report">Read full report</a>
+  <h2>季度销售报告</h2>
+  <p>本季度销售额增长25%...</p>
+  <a href="/report">阅读完整报告</a>
 </article>
 
-// Good: Visually hidden text for context
+// 好:视觉隐藏文本提供上下文
 <a href="/report">
-  Read more
-  <span className="sr-only"> about quarterly sales report</span>
+  阅读更多
+  <span className="sr-only"> 关于季度销售报告</span>
 </a>
 ```
 
-#### 2.4.7 Focus Visible (Level AA)
+#### 2.4.7 焦点可见(AA 级)
 
 ```css
-/* Always show focus indicator */
+/* 始终显示焦点指示器 */
 :focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-/* Custom focus styles */
+/* 自定义焦点样式 */
 .button:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--color-focus);
 }
 
-/* High visibility focus for links */
+/* 链接的高可见性焦点 */
 .link:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
@@ -423,44 +423,44 @@ function Modal({ isOpen, onClose, children }) {
 }
 ```
 
-### 2.5 Input Modalities (New in 2.2)
+### 2.5 输入方式(2.2 新增)
 
-#### 2.5.8 Target Size (Minimum) (Level AA) - NEW
+#### 2.5.8 目标尺寸(最小)(AA 级) - 新增
 
-Interactive targets must be at least 24x24 CSS pixels.
+交互目标必须至少 24x24 CSS 像素。
 
 ```css
-/* Minimum target size */
+/* 最小目标尺寸 */
 .interactive {
   min-width: 24px;
   min-height: 24px;
 }
 
-/* Recommended size for touch (44x44) */
+/* 触摸推荐尺寸(44x44) */
 .touch-target {
   min-width: 44px;
   min-height: 44px;
 }
 
-/* Inline links are exempt if they have adequate spacing */
+/* 如果有足够的间距,内联链接可以豁免 */
 .link {
-  /* Inline text links don't need minimum size */
-  /* but should have adequate line-height */
+  /* 内联文本链接不需要最小尺寸 */
+  /* 但应该有足够的行高 */
   line-height: 1.5;
 }
 ```
 
-## Principle 3: Understandable
+## 原则 3: 可理解
 
-Content and interface must be understandable.
+内容和界面必须可理解。
 
-### 3.1 Readable
+### 3.1 可读
 
-#### 3.1.1 Language of Page (Level A)
+#### 3.1.1 页面语言(A 级)
 
 ```html
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     ...
   </head>
@@ -470,36 +470,36 @@ Content and interface must be understandable.
 </html>
 ```
 
-#### 3.1.2 Language of Parts (Level AA)
+#### 3.1.2 部分语言(AA 级)
 
 ```tsx
 <p>
-  The French phrase <span lang="fr">c'est la vie</span> means "that's life."
+  法语短语 <span lang="fr">c'est la vie</span> 意思是"这就是生活"。
 </p>
 ```
 
-### 3.2 Predictable
+### 3.2 可预测
 
-#### 3.2.2 On Input (Level A)
+#### 3.2.2 输入时(A 级)
 
-Don't automatically change context on input.
+不要在输入时自动更改上下文。
 
 ```tsx
-// Bad: Auto-submit on selection
+// 不好:选择时自动提交
 <select onChange={(e) => form.submit()}>
-  <option>Select country</option>
+  <option>选择国家</option>
 </select>
 
-// Good: Explicit submit action
+// 好:显式提交操作
 <select onChange={(e) => setCountry(e.target.value)}>
-  <option>Select country</option>
+  <option>选择国家</option>
 </select>
-<button type="submit">Continue</button>
+<button type="submit">继续</button>
 ```
 
-### 3.3 Input Assistance
+### 3.3 输入帮助
 
-#### 3.3.1 Error Identification (Level A)
+#### 3.3.1 错误识别(A 级)
 
 ```tsx
 function FormField({ id, label, error, ...props }) {
@@ -522,12 +522,12 @@ function FormField({ id, label, error, ...props }) {
 }
 ```
 
-#### 3.3.7 Redundant Entry (Level A) - NEW
+#### 3.3.7 重复输入(A 级) - 新增
 
-Don't require users to re-enter previously provided information.
+不要要求用户重新输入之前提供的信息。
 
 ```tsx
-// Auto-fill shipping address from billing
+// 从账单地址自动填充送货地址
 function CheckoutForm() {
   const [sameAsBilling, setSameAsBilling] = useState(false);
   const [billing, setBilling] = useState({});
@@ -536,7 +536,7 @@ function CheckoutForm() {
   return (
     <form>
       <fieldset>
-        <legend>Billing Address</legend>
+        <legend>账单地址</legend>
         <AddressFields value={billing} onChange={setBilling} />
       </fieldset>
 
@@ -549,12 +549,12 @@ function CheckoutForm() {
             if (e.target.checked) setShipping(billing);
           }}
         />
-        Shipping same as billing
+        送货地址与账单地址相同
       </label>
 
       {!sameAsBilling && (
         <fieldset>
-          <legend>Shipping Address</legend>
+          <legend>送货地址</legend>
           <AddressFields value={shipping} onChange={setShipping} />
         </fieldset>
       )}
@@ -563,16 +563,16 @@ function CheckoutForm() {
 }
 ```
 
-## Principle 4: Robust
+## 原则 4: 健壮性
 
-Content must be robust enough for assistive technologies.
+内容必须足够健壮以支持辅助技术。
 
-### 4.1 Compatible
+### 4.1 兼容
 
-#### 4.1.2 Name, Role, Value (Level A)
+#### 4.1.2 名称、角色、值(A 级)
 
 ```tsx
-// Custom components must expose name, role, and value
+// 自定义组件必须暴露名称、角色和值
 function CustomCheckbox({ checked, onChange, label }) {
   return (
     <button
@@ -586,7 +586,7 @@ function CustomCheckbox({ checked, onChange, label }) {
   );
 }
 
-// Custom slider
+// 自定义滑块
 function CustomSlider({ value, min, max, label, onChange }) {
   return (
     <div
@@ -607,39 +607,39 @@ function CustomSlider({ value, min, max, label, onChange }) {
 }
 ```
 
-## Testing Checklist
+## 测试检查清单
 
 ```markdown
-## Keyboard Testing
+## 键盘测试
 
-- [ ] All interactive elements focusable with Tab
-- [ ] Focus order matches visual order
-- [ ] Focus indicator always visible
-- [ ] No keyboard traps
-- [ ] Escape closes modals/dropdowns
-- [ ] Enter/Space activates buttons and links
+- [ ] 所有交互元素都可用 Tab 聚焦
+- [ ] 焦点顺序与视觉顺序匹配
+- [ ] 焦点指示器始终可见
+- [ ] 无键盘陷阱
+- [ ] Escape 关闭模态框/下拉菜单
+- [ ] Enter/Space 激活按钮和链接
 
-## Screen Reader Testing
+## 屏幕阅读器测试
 
-- [ ] All images have alt text
-- [ ] Form inputs have labels
-- [ ] Headings in logical order
-- [ ] Landmarks present (main, nav, header, footer)
-- [ ] Dynamic content announced
-- [ ] Error messages announced
+- [ ] 所有图片都有 alt 文本
+- [ ] 表单输入有标签
+- [ ] 标题按逻辑顺序
+- [ ] 地标存在(main、nav、header、footer)
+- [ ] 动态内容被宣布
+- [ ] 错误消息被宣布
 
-## Visual Testing
+## 视觉测试
 
-- [ ] Text contrast at least 4.5:1
-- [ ] UI component contrast at least 3:1
-- [ ] Works at 200% zoom
-- [ ] Content readable with text spacing
-- [ ] Focus indicators visible
-- [ ] Color not sole indicator of meaning
+- [ ] 文本对比度至少 4.5:1
+- [ ] UI 组件对比度至少 3:1
+- [ ] 在 200% 缩放下工作
+- [ ] 内容在文本间距下可读
+- [ ] 焦点指示器可见
+- [ ] 颜色不是含义的唯一指示器
 ```
 
-## Resources
+## 资源
 
-- [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
-- [Understanding WCAG 2.2](https://www.w3.org/WAI/WCAG22/Understanding/)
-- [Techniques for WCAG 2.2](https://www.w3.org/WAI/WCAG22/Techniques/)
+- [WCAG 2.2 快速参考](https://www.w3.org/WAI/WCAG22/quickref/)
+- [理解 WCAG 2.2](https://www.w3.org/WAI/WCAG22/Understanding/)
+- [WCAG 2.2 技术](https://www.w3.org/WAI/WCAG22/Techniques/)

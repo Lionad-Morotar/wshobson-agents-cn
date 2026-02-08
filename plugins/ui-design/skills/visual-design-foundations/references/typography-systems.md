@@ -1,13 +1,13 @@
-# Typography Systems Reference
+# 字体系统参考
 
-## Type Scale Construction
+## 字体比例构建
 
-### Modular Scale
+### 模块化比例
 
-A modular scale creates harmonious relationships between font sizes using a mathematical ratio.
+模块化比例使用数学比例创建字体尺寸之间的和谐关系。
 
 ```tsx
-// Common ratios
+// 常用比例
 const RATIOS = {
   minorSecond: 1.067, // 16:15
   majorSecond: 1.125, // 9:8
@@ -31,16 +31,16 @@ function generateScale(
   return scale;
 }
 
-// Generate a scale with 16px base and perfect fourth ratio
+// 使用 16px 基准和完美四度比例生成比例
 const typeScale = generateScale(16, RATIOS.perfectFourth, 6);
-// Result: [9, 12, 16, 21.33, 28.43, 37.9, 50.52, 67.34, 89.76]
+// 结果: [9, 12, 16, 21.33, 28.43, 37.9, 50.52, 67.34, 89.76]
 ```
 
-### CSS Custom Properties
+### CSS 自定义属性
 
 ```css
 :root {
-  /* Base scale using perfect fourth (1.333) */
+  /* 使用完美四度 (1.333) 的基础比例 */
   --font-size-2xs: 0.563rem; /* ~9px */
   --font-size-xs: 0.75rem; /* 12px */
   --font-size-sm: 0.875rem; /* 14px */
@@ -53,20 +53,20 @@ const typeScale = generateScale(16, RATIOS.perfectFourth, 6);
   --font-size-4xl: 3.157rem; /* ~50px */
   --font-size-5xl: 4.209rem; /* ~67px */
 
-  /* Font weights */
+  /* 字重 */
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* Line heights */
+  /* 行高 */
   --line-height-tight: 1.1;
   --line-height-snug: 1.25;
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
   --line-height-loose: 2;
 
-  /* Letter spacing */
+  /* 字间距 */
   --letter-spacing-tighter: -0.05em;
   --letter-spacing-tight: -0.025em;
   --letter-spacing-normal: 0;
@@ -76,25 +76,25 @@ const typeScale = generateScale(16, RATIOS.perfectFourth, 6);
 }
 ```
 
-## Font Loading Strategies
+## 字体加载策略
 
-### FOUT Prevention
+### FOUT 防止
 
 ```css
-/* Use font-display to control loading behavior */
+/* 使用 font-display 控制加载行为 */
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-Variable.woff2") format("woff2-variations");
   font-weight: 100 900;
   font-style: normal;
-  font-display: swap; /* Show fallback immediately, swap when loaded */
+  font-display: swap; /* 立即显示回退字体，加载后切换 */
 }
 
-/* Optional: size-adjust for better fallback matching */
+/* 可选：size-adjust 用于更好的回退匹配 */
 @font-face {
   font-family: "Inter Fallback";
   src: local("Arial");
-  size-adjust: 107%; /* Adjust to match Inter metrics */
+  size-adjust: 107%; /* 调整以匹配 Inter 指标 */
   ascent-override: 90%;
   descent-override: 22%;
   line-gap-override: 0%;
@@ -105,11 +105,11 @@ body {
 }
 ```
 
-### Preloading Critical Fonts
+### 预加载关键字体
 
 ```html
 <head>
-  <!-- Preload critical fonts -->
+  <!-- 预加载关键字体 -->
   <link
     rel="preload"
     href="/fonts/Inter-Variable.woff2"
@@ -120,10 +120,10 @@ body {
 </head>
 ```
 
-### Variable Fonts
+### 可变字体
 
 ```css
-/* Variable font with weight and width axes */
+/* 带字重和宽度轴的可变字体 */
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-Variable.woff2") format("woff2");
@@ -131,28 +131,28 @@ body {
   font-stretch: 75% 125%;
 }
 
-/* Use font-variation-settings for fine control */
+/* 使用 font-variation-settings 进行精细控制 */
 .custom-weight {
   font-variation-settings:
     "wght" 450,
     "wdth" 95;
 }
 
-/* Or use standard properties */
+/* 或使用标准属性 */
 .semi-expanded {
   font-weight: 550;
   font-stretch: 110%;
 }
 ```
 
-## Responsive Typography
+## 响应式字体
 
-### Fluid Type Scale
+### 流体字体比例
 
 ```css
-/* Using clamp() for responsive sizing */
+/* 使用 clamp() 实现响应式尺寸 */
 h1 {
-  /* min: 32px, preferred: 5vw + 16px, max: 64px */
+  /* 最小: 32px，首选: 5vw + 16px，最大: 64px */
   font-size: clamp(2rem, 5vw + 1rem, 4rem);
   line-height: 1.1;
 }
@@ -167,7 +167,7 @@ p {
   line-height: 1.6;
 }
 
-/* Fluid line height */
+/* 流体行高 */
 .fluid-text {
   --min-line-height: 1.3;
   --max-line-height: 1.6;
@@ -181,10 +181,10 @@ p {
 }
 ```
 
-### Viewport-Based Scaling
+### 基于视口的缩放
 
 ```tsx
-// Tailwind config for responsive type
+// 响应式字体的 Tailwind 配置
 module.exports = {
   theme: {
     fontSize: {
@@ -201,7 +201,7 @@ module.exports = {
   },
 };
 
-// Component with responsive classes
+// 带响应式类的组件
 function Heading({ children }) {
   return (
     <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
@@ -211,36 +211,36 @@ function Heading({ children }) {
 }
 ```
 
-## Readability Guidelines
+## 可读性指南
 
-### Optimal Line Length
+### 最佳行长
 
 ```css
-/* Optimal reading width: 45-75 characters */
+/* 最佳阅读宽度: 45-75 字符 */
 .prose {
-  max-width: 65ch; /* ~65 characters */
+  max-width: 65ch; /* ~65 字符 */
 }
 
-/* Narrower for callouts */
+/* 提示框使用较窄宽度 */
 .callout {
   max-width: 50ch;
 }
 
-/* Wider for code blocks */
+/* 代码块使用较宽宽度 */
 pre {
   max-width: 80ch;
 }
 ```
 
-### Vertical Rhythm
+### 垂直韵律
 
 ```css
-/* Establish baseline grid */
+/* 建立基线网格 */
 :root {
-  --baseline: 1.5rem; /* 24px at 16px base */
+  --baseline: 1.5rem; /* 16px 基准时的 24px */
 }
 
-/* All margins should be multiples of baseline */
+/* 所有边距应为基线的倍数 */
 h1 {
   font-size: 2.5rem;
   line-height: calc(var(--baseline) * 2);
@@ -262,29 +262,29 @@ p {
 }
 ```
 
-### Text Wrapping
+### 文本换行
 
 ```css
-/* Prevent orphans and widows */
+/* 防止孤行和寡行 */
 p {
-  text-wrap: pretty; /* Experimental: improves line breaks */
+  text-wrap: pretty; /* 实验性：改善换行 */
   widows: 3;
   orphans: 3;
 }
 
-/* Balance headings */
+/* 平衡标题 */
 h1,
 h2,
 h3 {
   text-wrap: balance;
 }
 
-/* Prevent breaking in specific elements */
+/* 防止特定元素中断 */
 .no-wrap {
   white-space: nowrap;
 }
 
-/* Hyphenation for justified text */
+/* 两端对齐文本的连字符 */
 .justified {
   text-align: justify;
   hyphens: auto;
@@ -292,34 +292,34 @@ h3 {
 }
 ```
 
-## Font Pairing Guidelines
+## 字体搭配指南
 
-### Contrast Pairings
+### 对比搭配
 
 ```css
-/* Serif heading + Sans body */
+/* 衬线标题 + 无衬线正文 */
 :root {
   --font-heading: "Playfair Display", Georgia, serif;
   --font-body: "Source Sans Pro", -apple-system, sans-serif;
 }
 
-/* Geometric heading + Humanist body */
+/* 几何标题 + 人文主义正文 */
 :root {
   --font-heading: "Space Grotesk", sans-serif;
   --font-body: "IBM Plex Sans", sans-serif;
 }
 
-/* Modern sans heading + Classic serif body */
+/* 现代无衬线标题 + 经典衬线正文 */
 :root {
   --font-heading: "Inter", system-ui, sans-serif;
   --font-body: "Georgia", Times, serif;
 }
 ```
 
-### Superfamily Approach
+### 超家族方法
 
 ```css
-/* Single variable font family for all uses */
+ /* 所有用途使用单一可变字体系列 */
 :root {
   --font-family: "Inter", system-ui, sans-serif;
 }
@@ -345,10 +345,10 @@ p {
 }
 ```
 
-## Semantic Typography Classes
+## 语义化字体类
 
 ```css
-/* Text styles by purpose, not appearance */
+/* 按用途而非外观定义文本样式 */
 .text-display {
   font-size: var(--font-size-5xl);
   font-weight: var(--font-weight-bold);
@@ -397,35 +397,35 @@ p {
 }
 ```
 
-## OpenType Features
+## OpenType 功能
 
 ```css
-/* Enable advanced typography features */
+/* 启用高级字体功能 */
 .fancy-text {
-  /* Small caps */
+  /* 小型大写字母 */
   font-variant-caps: small-caps;
 
-  /* Ligatures */
+  /* 连字 */
   font-variant-ligatures: common-ligatures;
 
-  /* Numeric features */
+  /* 数字功能 */
   font-variant-numeric: tabular-nums lining-nums;
 
-  /* Fractions */
+  /* 分数 */
   font-feature-settings: "frac" 1;
 }
 
-/* Tabular numbers for aligned columns */
+/* 对齐列的表格数字 */
 .data-table td {
   font-variant-numeric: tabular-nums;
 }
 
-/* Old-style figures for body text */
+/* 正文的旧式数字 */
 .prose {
   font-variant-numeric: oldstyle-nums;
 }
 
-/* Discretionary ligatures for headings */
+/* 标题的离散连字 */
 .fancy-heading {
   font-variant-ligatures: discretionary-ligatures;
 }

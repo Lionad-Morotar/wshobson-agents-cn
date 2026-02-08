@@ -1,28 +1,28 @@
-# Entity Framework Core Best Practices
+# Entity Framework Core 最佳实践
 
-Performance optimization and best practices for EF Core in production applications.
+生产应用程序中 EF Core 的性能优化和最佳实践。
 
-## Query Optimization
+## 查询优化
 
-### 1. Use AsNoTracking for Read-Only Queries
+### 1. 对只读查询使用 AsNoTracking
 
 ```csharp
-// ✅ Good - No change tracking overhead
+// ✅ 好 - 无更改跟踪开销
 var products = await _context.Products
     .AsNoTracking()
     .Where(p => p.CategoryId == categoryId)
     .ToListAsync(ct);
 
-// ❌ Bad - Unnecessary tracking for read-only data
+// ❌ 不好 - 只读数据的不必要跟踪
 var products = await _context.Products
     .Where(p => p.CategoryId == categoryId)
     .ToListAsync(ct);
 ```
 
-### 2. Select Only Needed Columns
+### 2. 仅选择所需列
 
 ```csharp
-// ✅ Good - Project to DTO
+// ✅ 好 - 投影到 DTO
 var products = await _context.Products
     .AsNoTracking()
     .Where(p => p.CategoryId == categoryId)
@@ -34,16 +34,16 @@ var products = await _context.Products
     })
     .ToListAsync(ct);
 
-// ❌ Bad - Fetching all columns
+// ❌ 不好 - 获取所有列
 var products = await _context.Products
     .Where(p => p.CategoryId == categoryId)
     .ToListAsync(ct);
 ```
 
-### 3. Avoid N+1 Queries with Eager Loading
+### 3. 使用预加载避免 N+1 查询
 
 ```csharp
-// ✅ Good - Single query with Include
+// ✅ 好 - 使用 Include 的单个查询
 var orders = await _context.Orders
     .AsNoTracking()
     .Include(o => o.Items)
@@ -51,38 +51,38 @@ var orders = await _context.Orders
     .Where(o => o.CustomerId == customerId)
     .ToListAsync(ct);
 
-// ❌ Bad - N+1 queries (lazy loading)
+// ❌ 不好 - N+1 查询（延迟加载）
 var orders = await _context.Orders
     .Where(o => o.CustomerId == customerId)
     .ToListAsync(ct);
 
 foreach (var order in orders)
 {
-    // Each iteration triggers a separate query!
+    // 每次迭代触发单独的查询！
     var items = order.Items.ToList();
 }
 ```
 
-### 4. Use Split Queries for Large Includes
+### 4. 对大型 Include 使用拆分查询
 
 ```csharp
-// ✅ Good - Prevents cartesian explosion
+// ✅ 好 - 防止笛卡尔爆炸
 var orders = await _context.Orders
     .AsNoTracking()
     .Include(o => o.Items)
     .Include(o => o.Payments)
     .Include(o => o.ShippingHistory)
-    .AsSplitQuery()  // Executes as multiple queries
+    .AsSplitQuery()  // 作为多个查询执行
     .Where(o => o.CustomerId == customerId)
     .ToListAsync(ct);
 ```
 
-### 5. Use Compiled Queries for Hot Paths
+### 5. 为热路径使用编译查询
 
 ```csharp
 public class ProductRepository
 {
-    // Compile once, reuse many times
+    // 编译一次，多次重用
     private static readonly Func<AppDbContext, string, Task<Product?>> GetByIdQuery =
         EF.CompileAsyncQuery((AppDbContext ctx, string id) =>
             ctx.Products.AsNoTracking().FirstOrDefault(p => p.Id == id));
@@ -99,12 +99,12 @@ public class ProductRepository
 }
 ```
 
-## Batch Operations
+## 批量操作
 
-### 6. Use ExecuteUpdate/ExecuteDelete (.NET 7+)
+### 6. 使用 ExecuteUpdate/ExecuteDelete（.NET 7+）
 
 ```csharp
-// ✅ Good - Single SQL UPDATE
+// ✅ 好 - 单个 SQL UPDATE
 await _context.Products
     .Where(p => p.CategoryId == oldCategoryId)
     .ExecuteUpdateAsync(s => s
@@ -112,12 +112,12 @@ await _context.Products
         .SetProperty(p => p.UpdatedAt, DateTime.UtcNow),
         ct);
 
-// ✅ Good - Single SQL DELETE
+// ✅ 好 - 单个 SQL DELETE
 await _context.Products
     .Where(p => p.IsDeleted && p.UpdatedAt < cutoffDate)
     .ExecuteDeleteAsync(ct);
 
-// ❌ Bad - Loads all entities into memory
+// ❌ 不好 - 将所有实体加载到内存中
 var products = await _context.Products
     .Where(p => p.CategoryId == oldCategoryId)
     .ToListAsync(ct);
@@ -129,16 +129,16 @@ foreach (var product in products)
 await _context.SaveChangesAsync(ct);
 ```
 
-### 7. Bulk Insert with EFCore.BulkExtensions
+### 7. 使用 EFCore.BulkExtensions 批量插入
 
 ```csharp
-// Using EFCore.BulkExtensions package
+// 使用 EFCore.BulkExtensions 包
 var products = GenerateLargeProductList();
 
-// ✅ Good - Bulk insert (much faster for large datasets)
+// ✅ 好 - 批量插入（对于大型数据集快得多）
 await _context.BulkInsertAsync(products, ct);
 
-// ❌ Bad - Individual inserts
+// ❌ 不好 - 单个插入
 foreach (var product in products)
 {
     _context.Products.Add(product);
@@ -146,9 +146,9 @@ foreach (var product in products)
 await _context.SaveChangesAsync(ct);
 ```
 
-## Connection Management
+## 连接管理
 
-### 8. Configure Connection Pooling
+### 8. 配置连接池
 
 ```csharp
 services.AddDbContext<AppDbContext>(options =>
@@ -163,10 +163,10 @@ services.AddDbContext<AppDbContext>(options =>
         sqlOptions.CommandTimeout(30);
     });
 
-    // Performance settings
+    // 性能设置
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
-    // Development only
+    // 仅开发环境
     if (env.IsDevelopment())
     {
         options.EnableSensitiveDataLogging();
@@ -175,21 +175,21 @@ services.AddDbContext<AppDbContext>(options =>
 });
 ```
 
-### 9. Use DbContext Pooling
+### 9. 使用 DbContext 池
 
 ```csharp
-// ✅ Good - Context pooling (reduces allocation overhead)
+// ✅ 好 - Context 池（减少分配开销）
 services.AddDbContextPool<AppDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
 }, poolSize: 128);
 
-// Instead of AddDbContext
+// 代替 AddDbContext
 ```
 
-## Concurrency and Transactions
+## 并发和事务
 
-### 10. Handle Concurrency with Row Versioning
+### 10. 使用行版本控制处理并发
 
 ```csharp
 public class Product
@@ -201,11 +201,11 @@ public class Product
     public byte[] RowVersion { get; set; }  // SQL Server rowversion
 }
 
-// Or with Fluent API
+// 或使用 Fluent API
 builder.Property(p => p.RowVersion)
     .IsRowVersion();
 
-// Handle concurrency conflicts
+// 处理并发冲突
 try
 {
     await _context.SaveChangesAsync(ct);
@@ -217,24 +217,24 @@ catch (DbUpdateConcurrencyException ex)
 
     if (databaseValues == null)
     {
-        // Entity was deleted
-        throw new NotFoundException("Product was deleted by another user");
+        // 实体已被删除
+        throw new NotFoundException("产品已被另一个用户删除");
     }
 
-    // Client wins - overwrite database values
+    // 客户端优先 - 覆盖数据库值
     entry.OriginalValues.SetValues(databaseValues);
     await _context.SaveChangesAsync(ct);
 }
 ```
 
-### 11. Use Explicit Transactions When Needed
+### 11. 需要时使用显式事务
 
 ```csharp
 await using var transaction = await _context.Database.BeginTransactionAsync(ct);
 
 try
 {
-    // Multiple operations
+    // 多个操作
     _context.Orders.Add(order);
     await _context.SaveChangesAsync(ct);
 
@@ -252,58 +252,58 @@ catch
 }
 ```
 
-## Indexing Strategy
+## 索引策略
 
-### 12. Create Indexes for Query Patterns
+### 12. 为查询模式创建索引
 
 ```csharp
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        // Unique index
+        // 唯一索引
         builder.HasIndex(p => p.Sku)
             .IsUnique();
 
-        // Composite index for common query patterns
+        // 常见查询模式的复合索引
         builder.HasIndex(p => new { p.CategoryId, p.Name });
 
-        // Filtered index (SQL Server)
+        // 筛选索引（SQL Server）
         builder.HasIndex(p => p.Price)
             .HasFilter("[IsDeleted] = 0");
 
-        // Include columns for covering index
+        // 包含列的覆盖索引
         builder.HasIndex(p => p.CategoryId)
             .IncludeProperties(p => new { p.Name, p.Price });
     }
 }
 ```
 
-## Common Anti-Patterns to Avoid
+## 避免的常见反模式
 
-### ❌ Calling ToList() Too Early
+### ❌ 过早调用 ToList()
 
 ```csharp
-// ❌ Bad - Materializes all products then filters in memory
+// ❌ 不好 - 在内存中过滤之前获取所有产品
 var products = _context.Products.ToList()
     .Where(p => p.Price > 100);
 
-// ✅ Good - Filter in SQL
+// ✅ 好 - 在 SQL 中过滤
 var products = await _context.Products
     .Where(p => p.Price > 100)
     .ToListAsync(ct);
 ```
 
-### ❌ Using Contains with Large Collections
+### ❌ 对大型集合使用 Contains
 
 ```csharp
-// ❌ Bad - Generates massive IN clause
+// ❌ 不好 - 生成巨大的 IN 子句
 var ids = GetThousandsOfIds();
 var products = await _context.Products
     .Where(p => ids.Contains(p.Id))
     .ToListAsync(ct);
 
-// ✅ Good - Use temp table or batch queries
+// ✅ 好 - 使用临时表或批量查询
 var products = new List<Product>();
 foreach (var batch in ids.Chunk(100))
 {
@@ -314,24 +314,24 @@ foreach (var batch in ids.Chunk(100))
 }
 ```
 
-### ❌ String Concatenation in Queries
+### ❌ 查询中的字符串连接
 
 ```csharp
-// ❌ Bad - Can't use index
+// ❌ 不好 - 无法使用索引
 var products = await _context.Products
     .Where(p => (p.FirstName + " " + p.LastName).Contains(searchTerm))
     .ToListAsync(ct);
 
-// ✅ Good - Use computed column with index
+// ✅ 好 - 使用带索引的计算列
 builder.Property(p => p.FullName)
     .HasComputedColumnSql("[FirstName] + ' ' + [LastName]");
 builder.HasIndex(p => p.FullName);
 ```
 
-## Monitoring and Diagnostics
+## 监控和诊断
 
 ```csharp
-// Log slow queries
+// 记录慢查询
 services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(connectionString);
@@ -345,7 +345,7 @@ services.AddDbContext<AppDbContext>(options =>
                 var duration = queryData.Duration;
                 if (duration > TimeSpan.FromSeconds(1))
                 {
-                    _logger.LogWarning("Slow query detected: {Duration}ms - {Query}",
+                    _logger.LogWarning("检测到慢查询：{Duration}ms - {Query}",
                         duration.TotalMilliseconds,
                         queryData.Expression);
                 }

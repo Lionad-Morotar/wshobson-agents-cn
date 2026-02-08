@@ -1,55 +1,55 @@
 ---
 name: modern-javascript-patterns
-description: Master ES6+ features including async/await, destructuring, spread operators, arrow functions, promises, modules, iterators, generators, and functional programming patterns for writing clean, efficient JavaScript code. Use when refactoring legacy code, implementing modern patterns, or optimizing JavaScript applications.
+description: 掌握 ES6+ 特性，包括 async/await、解构、展开运算符、箭头函数、promise、模块、迭代器、生成器和函数式编程模式，以编写整洁、高效的 JavaScript 代码。在重构遗留代码、实施现代模式或优化 JavaScript 应用程序时使用。
 ---
 
-# Modern JavaScript Patterns
+# 现代 JavaScript 模式
 
-Comprehensive guide for mastering modern JavaScript (ES6+) features, functional programming patterns, and best practices for writing clean, maintainable, and performant code.
+掌握现代 JavaScript (ES6+) 特性、函数式编程模式和编写整洁、可维护和高性能代码最佳实践的综合指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Refactoring legacy JavaScript to modern syntax
-- Implementing functional programming patterns
-- Optimizing JavaScript performance
-- Writing maintainable and readable code
-- Working with asynchronous operations
-- Building modern web applications
-- Migrating from callbacks to Promises/async-await
-- Implementing data transformation pipelines
+- 将遗留 JavaScript 重构为现代语法
+- 实施函数式编程模式
+- 优化 JavaScript 性能
+- 编写可维护和可读的代码
+- 处理异步操作
+- 构建现代 Web 应用程序
+- 从回调迁移到 Promises/async-await
+- 实施数据转换流水线
 
-## ES6+ Core Features
+## ES6+ 核心特性
 
-### 1. Arrow Functions
+### 1. 箭头函数
 
-**Syntax and Use Cases:**
+**语法和用例：**
 
 ```javascript
-// Traditional function
+// 传统函数
 function add(a, b) {
   return a + b;
 }
 
-// Arrow function
+// 箭头函数
 const add = (a, b) => a + b;
 
-// Single parameter (parentheses optional)
+// 单个参数（括号可选）
 const double = (x) => x * 2;
 
-// No parameters
+// 无参数
 const getRandom = () => Math.random();
 
-// Multiple statements (need curly braces)
+// 多条语句（需要花括号）
 const processUser = (user) => {
   const normalized = user.name.toLowerCase();
   return { ...user, name: normalized };
 };
 
-// Returning objects (wrap in parentheses)
+// 返回对象（用括号包裹）
 const createUser = (name, age) => ({ name, age });
 ```
 
-**Lexical 'this' Binding:**
+**词法 'this' 绑定：**
 
 ```javascript
 class Counter {
@@ -57,30 +57,30 @@ class Counter {
     this.count = 0;
   }
 
-  // Arrow function preserves 'this' context
+  // 箭头函数保留 'this' 上下文
   increment = () => {
     this.count++;
   };
 
-  // Traditional function loses 'this' in callbacks
+  // 传统函数在回调中丢失 'this'
   incrementTraditional() {
     setTimeout(function () {
-      this.count++; // 'this' is undefined
+      this.count++; // 'this' 是 undefined
     }, 1000);
   }
 
-  // Arrow function maintains 'this'
+  // 箭头函数维持 'this'
   incrementArrow() {
     setTimeout(() => {
-      this.count++; // 'this' refers to Counter instance
+      this.count++; // 'this' 指向 Counter 实例
     }, 1000);
   }
 }
 ```
 
-### 2. Destructuring
+### 2. 解构
 
-**Object Destructuring:**
+**对象解构：**
 
 ```javascript
 const user = {
@@ -93,117 +93,117 @@ const user = {
   },
 };
 
-// Basic destructuring
+// 基本解构
 const { name, email } = user;
 
-// Rename variables
+// 重命名变量
 const { name: userName, email: userEmail } = user;
 
-// Default values
+// 默认值
 const { age = 25 } = user;
 
-// Nested destructuring
+// 嵌套解构
 const {
   address: { city, country },
 } = user;
 
-// Rest operator
+// 剩余运算符
 const { id, ...userWithoutId } = user;
 
-// Function parameters
+// 函数参数
 function greet({ name, age = 18 }) {
   console.log(`Hello ${name}, you are ${age}`);
 }
 greet(user);
 ```
 
-**Array Destructuring:**
+**数组解构：**
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
 
-// Basic destructuring
+// 基本解构
 const [first, second] = numbers;
 
-// Skip elements
+// 跳过元素
 const [, , third] = numbers;
 
-// Rest operator
+// 剩余运算符
 const [head, ...tail] = numbers;
 
-// Swapping variables
+// 交换变量
 let a = 1,
   b = 2;
 [a, b] = [b, a];
 
-// Function return values
+// 函数返回值
 function getCoordinates() {
   return [10, 20];
 }
 const [x, y] = getCoordinates();
 
-// Default values
+// 默认值
 const [one, two, three = 0] = [1, 2];
 ```
 
-### 3. Spread and Rest Operators
+### 3. 展开和剩余运算符
 
-**Spread Operator:**
+**展开运算符：**
 
 ```javascript
-// Array spreading
+// 数组展开
 const arr1 = [1, 2, 3];
 const arr2 = [4, 5, 6];
 const combined = [...arr1, ...arr2];
 
-// Object spreading
+// 对象展开
 const defaults = { theme: "dark", lang: "en" };
 const userPrefs = { theme: "light" };
 const settings = { ...defaults, ...userPrefs };
 
-// Function arguments
+// 函数参数
 const numbers = [1, 2, 3];
 Math.max(...numbers);
 
-// Copying arrays/objects (shallow copy)
+// 复制数组/对象（浅拷贝）
 const copy = [...arr1];
 const objCopy = { ...user };
 
-// Adding items immutably
+// 不可变地添加项目
 const newArr = [...arr1, 4, 5];
 const newObj = { ...user, age: 30 };
 ```
 
-**Rest Parameters:**
+**剩余参数：**
 
 ```javascript
-// Collect function arguments
+// 收集函数参数
 function sum(...numbers) {
   return numbers.reduce((total, num) => total + num, 0);
 }
 sum(1, 2, 3, 4, 5);
 
-// With regular parameters
+// 与常规参数结合
 function greet(greeting, ...names) {
   return `${greeting} ${names.join(", ")}`;
 }
 greet("Hello", "John", "Jane", "Bob");
 
-// Object rest
+// 对象剩余
 const { id, ...userData } = user;
 
-// Array rest
+// 数组剩余
 const [first, ...rest] = [1, 2, 3, 4, 5];
 ```
 
-### 4. Template Literals
+### 4. 模板字面量
 
 ```javascript
-// Basic usage
+// 基本用法
 const name = "John";
 const greeting = `Hello, ${name}!`;
 
-// Multi-line strings
+// 多行字符串
 const html = `
   <div>
     <h1>${title}</h1>
@@ -211,11 +211,11 @@ const html = `
   </div>
 `;
 
-// Expression evaluation
+// 表达式求值
 const price = 19.99;
 const total = `Total: $${(price * 1.2).toFixed(2)}`;
 
-// Tagged template literals
+// 标签模板字面量
 function highlight(strings, ...values) {
   return strings.reduce((result, str, i) => {
     const value = values[i] || "";
@@ -226,19 +226,19 @@ function highlight(strings, ...values) {
 const name = "John";
 const age = 30;
 const html = highlight`Name: ${name}, Age: ${age}`;
-// Output: "Name: <mark>John</mark>, Age: <mark>30</mark>"
+// 输出: "Name: <mark>John</mark>, Age: <mark>30</mark>"
 ```
 
-### 5. Enhanced Object Literals
+### 5. 增强的对象字面量
 
 ```javascript
 const name = "John";
 const age = 30;
 
-// Shorthand property names
+// 简写属性名
 const user = { name, age };
 
-// Shorthand method names
+// 简写方法名
 const calculator = {
   add(a, b) {
     return a + b;
@@ -248,7 +248,7 @@ const calculator = {
   },
 };
 
-// Computed property names
+// 计算属性名
 const field = "email";
 const user = {
   name: "John",
@@ -258,7 +258,7 @@ const user = {
   },
 };
 
-// Dynamic property creation
+// 动态属性创建
 const createUser = (name, ...props) => {
   return props.reduce(
     (user, [key, value]) => ({
@@ -272,14 +272,14 @@ const createUser = (name, ...props) => {
 const user = createUser("John", ["age", 30], ["email", "john@example.com"]);
 ```
 
-## Asynchronous Patterns
+## 异步模式
 
 ### 1. Promises
 
-**Creating and Using Promises:**
+**创建和使用 Promises：**
 
 ```javascript
-// Creating a promise
+// 创建 promise
 const fetchUser = (id) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -292,13 +292,13 @@ const fetchUser = (id) => {
   });
 };
 
-// Using promises
+// 使用 promises
 fetchUser(1)
   .then((user) => console.log(user))
   .catch((error) => console.error(error))
   .finally(() => console.log("Done"));
 
-// Chaining promises
+// 链式 promises
 fetchUser(1)
   .then((user) => fetchUserPosts(user.id))
   .then((posts) => processPosts(posts))
@@ -306,17 +306,17 @@ fetchUser(1)
   .catch((error) => console.error(error));
 ```
 
-**Promise Combinators:**
+**Promise 组合器：**
 
 ```javascript
-// Promise.all - Wait for all promises
+// Promise.all - 等待所有 promises
 const promises = [fetchUser(1), fetchUser(2), fetchUser(3)];
 
 Promise.all(promises)
   .then((users) => console.log(users))
   .catch((error) => console.error("At least one failed:", error));
 
-// Promise.allSettled - Wait for all, regardless of outcome
+// Promise.allSettled - 等待所有，无论结果如何
 Promise.allSettled(promises).then((results) => {
   results.forEach((result) => {
     if (result.status === "fulfilled") {
@@ -327,12 +327,12 @@ Promise.allSettled(promises).then((results) => {
   });
 });
 
-// Promise.race - First to complete
+// Promise.race - 第一个完成的
 Promise.race(promises)
   .then((winner) => console.log("First:", winner))
   .catch((error) => console.error(error));
 
-// Promise.any - First to succeed
+// Promise.any - 第一个成功的
 Promise.any(promises)
   .then((first) => console.log("First success:", first))
   .catch((error) => console.error("All failed:", error));
@@ -340,17 +340,17 @@ Promise.any(promises)
 
 ### 2. Async/Await
 
-**Basic Usage:**
+**基本用法：**
 
 ```javascript
-// Async function always returns a Promise
+// Async 函数总是返回 Promise
 async function fetchUser(id) {
   const response = await fetch(`/api/users/${id}`);
   const user = await response.json();
   return user;
 }
 
-// Error handling with try/catch
+// 使用 try/catch 进行错误处理
 async function getUserData(id) {
   try {
     const user = await fetchUser(id);
@@ -362,10 +362,10 @@ async function getUserData(id) {
   }
 }
 
-// Sequential vs Parallel execution
+// 串行 vs 并行执行
 async function sequential() {
-  const user1 = await fetchUser(1); // Wait
-  const user2 = await fetchUser(2); // Then wait
+  const user1 = await fetchUser(1); // 等待
+  const user2 = await fetchUser(2); // 然后等待
   return [user1, user2];
 }
 
@@ -375,7 +375,7 @@ async function parallel() {
 }
 ```
 
-**Advanced Patterns:**
+**高级模式：**
 
 ```javascript
 // Async IIFE
@@ -384,7 +384,7 @@ async function parallel() {
   console.log(result);
 })();
 
-// Async iteration
+// Async 迭代
 async function processUsers(userIds) {
   for (const id of userIds) {
     const user = await fetchUser(id);
@@ -392,10 +392,10 @@ async function processUsers(userIds) {
   }
 }
 
-// Top-level await (ES2022)
+// 顶层 await (ES2022)
 const config = await fetch("/config.json").then((r) => r.json());
 
-// Retry logic
+// 重试逻辑
 async function fetchWithRetry(url, retries = 3) {
   for (let i = 0; i < retries; i++) {
     try {
@@ -407,7 +407,7 @@ async function fetchWithRetry(url, retries = 3) {
   }
 }
 
-// Timeout wrapper
+// 超时包装器
 async function withTimeout(promise, ms) {
   const timeout = new Promise((_, reject) =>
     setTimeout(() => reject(new Error("Timeout")), ms),
@@ -416,11 +416,11 @@ async function withTimeout(promise, ms) {
 }
 ```
 
-## Functional Programming Patterns
+## 函数式编程模式
 
-### 1. Array Methods
+### 1. 数组方法
 
-**Map, Filter, Reduce:**
+**Map、Filter、Reduce：**
 
 ```javascript
 const users = [
@@ -429,19 +429,19 @@ const users = [
   { id: 3, name: "Bob", age: 35, active: true },
 ];
 
-// Map - Transform array
+// Map - 转换数组
 const names = users.map((user) => user.name);
 const upperNames = users.map((user) => user.name.toUpperCase());
 
-// Filter - Select elements
+// Filter - 选择元素
 const activeUsers = users.filter((user) => user.active);
 const adults = users.filter((user) => user.age >= 18);
 
-// Reduce - Aggregate data
+// Reduce - 聚合数据
 const totalAge = users.reduce((sum, user) => sum + user.age, 0);
 const avgAge = totalAge / users.length;
 
-// Group by property
+// 按属性分组
 const byActive = users.reduce((groups, user) => {
   const key = user.active ? "active" : "inactive";
   return {
@@ -450,7 +450,7 @@ const byActive = users.reduce((groups, user) => {
   };
 }, {});
 
-// Chaining methods
+// 链式方法
 const result = users
   .filter((user) => user.active)
   .map((user) => user.name)
@@ -458,50 +458,50 @@ const result = users
   .join(", ");
 ```
 
-**Advanced Array Methods:**
+**高级数组方法：**
 
 ```javascript
-// Find - First matching element
+// Find - 第一个匹配的元素
 const user = users.find((u) => u.id === 2);
 
-// FindIndex - Index of first match
+// FindIndex - 第一个匹配的索引
 const index = users.findIndex((u) => u.name === "Jane");
 
-// Some - At least one matches
+// Some - 至少一个匹配
 const hasActive = users.some((u) => u.active);
 
-// Every - All match
+// Every - 全部匹配
 const allAdults = users.every((u) => u.age >= 18);
 
-// FlatMap - Map and flatten
+// FlatMap - 映射并展平
 const userTags = [
   { name: "John", tags: ["admin", "user"] },
   { name: "Jane", tags: ["user"] },
 ];
 const allTags = userTags.flatMap((u) => u.tags);
 
-// From - Create array from iterable
+// From - 从可迭代对象创建数组
 const str = "hello";
 const chars = Array.from(str);
 const numbers = Array.from({ length: 5 }, (_, i) => i + 1);
 
-// Of - Create array from arguments
+// Of - 从参数创建数组
 const arr = Array.of(1, 2, 3);
 ```
 
-### 2. Higher-Order Functions
+### 2. 高阶函数
 
-**Functions as Arguments:**
+**函数作为参数：**
 
 ```javascript
-// Custom forEach
+// 自定义 forEach
 function forEach(array, callback) {
   for (let i = 0; i < array.length; i++) {
     callback(array[i], i, array);
   }
 }
 
-// Custom map
+// 自定义 map
 function map(array, transform) {
   const result = [];
   for (const item of array) {
@@ -510,7 +510,7 @@ function map(array, transform) {
   return result;
 }
 
-// Custom filter
+// 自定义 filter
 function filter(array, predicate) {
   const result = [];
   for (const item of array) {
@@ -522,10 +522,10 @@ function filter(array, predicate) {
 }
 ```
 
-**Functions Returning Functions:**
+**返回函数的函数：**
 
 ```javascript
-// Currying
+// 柯里化
 const multiply = (a) => (b) => a * b;
 const double = multiply(2);
 const triple = multiply(3);
@@ -533,7 +533,7 @@ const triple = multiply(3);
 console.log(double(5)); // 10
 console.log(triple(5)); // 15
 
-// Partial application
+// 偏应用
 function partial(fn, ...args) {
   return (...moreArgs) => fn(...args, ...moreArgs);
 }
@@ -542,7 +542,7 @@ const add = (a, b, c) => a + b + c;
 const add5 = partial(add, 5);
 console.log(add5(3, 2)); // 10
 
-// Memoization
+// 记忆化
 function memoize(fn) {
   const cache = new Map();
   return (...args) => {
@@ -562,10 +562,10 @@ const fibonacci = memoize((n) => {
 });
 ```
 
-### 3. Composition and Piping
+### 3. 组合和管道
 
 ```javascript
-// Function composition
+// 函数组合
 const compose =
   (...fns) =>
   (x) =>
@@ -576,7 +576,7 @@ const pipe =
   (x) =>
     fns.reduce((acc, fn) => fn(acc), x);
 
-// Example usage
+// 示例用法
 const addOne = (x) => x + 1;
 const double = (x) => x * 2;
 const square = (x) => x * x;
@@ -587,7 +587,7 @@ console.log(composed(3)); // ((3 + 1) * 2)^2 = 64
 const piped = pipe(addOne, double, square);
 console.log(piped(3)); // ((3 + 1) * 2)^2 = 64
 
-// Practical example
+// 实际示例
 const processUser = pipe(
   (user) => ({ ...user, name: user.name.trim() }),
   (user) => ({ ...user, email: user.email.toLowerCase() }),
@@ -601,17 +601,17 @@ const user = processUser({
 });
 ```
 
-### 4. Pure Functions and Immutability
+### 4. 纯函数和不可变性
 
 ```javascript
-// Impure function (modifies input)
+// 非纯函数（修改输入）
 function addItemImpure(cart, item) {
   cart.items.push(item);
   cart.total += item.price;
   return cart;
 }
 
-// Pure function (no side effects)
+// 纯函数（无副作用）
 function addItemPure(cart, item) {
   return {
     ...cart,
@@ -620,50 +620,50 @@ function addItemPure(cart, item) {
   };
 }
 
-// Immutable array operations
+// 不可变数组操作
 const numbers = [1, 2, 3, 4, 5];
 
-// Add to array
+// 添加到数组
 const withSix = [...numbers, 6];
 
-// Remove from array
+// 从数组中删除
 const withoutThree = numbers.filter((n) => n !== 3);
 
-// Update array element
+// 更新数组元素
 const doubled = numbers.map((n) => (n === 3 ? n * 2 : n));
 
-// Immutable object operations
+// 不可变对象操作
 const user = { name: "John", age: 30 };
 
-// Update property
+// 更新属性
 const olderUser = { ...user, age: 31 };
 
-// Add property
+// 添加属性
 const withEmail = { ...user, email: "john@example.com" };
 
-// Remove property
+// 删除属性
 const { age, ...withoutAge } = user;
 
-// Deep cloning (simple approach)
+// 深拷贝（简单方法）
 const deepClone = (obj) => JSON.parse(JSON.stringify(obj));
 
-// Better deep cloning
+// 更好的深拷贝
 const structuredClone = (obj) => globalThis.structuredClone(obj);
 ```
 
-## Modern Class Features
+## 现代类特性
 
 ```javascript
-// Class syntax
+// 类语法
 class User {
-  // Private fields
+  // 私有字段
   #password;
 
-  // Public fields
+  // 公共字段
   id;
   name;
 
-  // Static field
+  // 静态字段
   static count = 0;
 
   constructor(id, name, password) {
@@ -673,12 +673,12 @@ class User {
     User.count++;
   }
 
-  // Public method
+  // 公共方法
   greet() {
     return `Hello, ${this.name}`;
   }
 
-  // Private method
+  // 私有方法
   #hashPassword(password) {
     return `hashed_${password}`;
   }
@@ -693,13 +693,13 @@ class User {
     this.#password = this.#hashPassword(newPassword);
   }
 
-  // Static method
+  // 静态方法
   static create(id, name, password) {
     return new User(id, name, password);
   }
 }
 
-// Inheritance
+// 继承
 class Admin extends User {
   constructor(id, name, password, role) {
     super(id, name, password);
@@ -712,10 +712,10 @@ class Admin extends User {
 }
 ```
 
-## Modules (ES6)
+## 模块 (ES6)
 
 ```javascript
-// Exporting
+// 导出
 // math.js
 export const PI = 3.14159;
 export function add(a, b) {
@@ -725,36 +725,36 @@ export class Calculator {
   // ...
 }
 
-// Default export
+// 默认导出
 export default function multiply(a, b) {
   return a * b;
 }
 
-// Importing
+// 导入
 // app.js
 import multiply, { PI, add, Calculator } from "./math.js";
 
-// Rename imports
+// 重命名导入
 import { add as sum } from "./math.js";
 
-// Import all
+// 导入所有
 import * as Math from "./math.js";
 
-// Dynamic imports
+// 动态导入
 const module = await import("./math.js");
 const { add } = await import("./math.js");
 
-// Conditional loading
+// 条件加载
 if (condition) {
   const module = await import("./feature.js");
   module.init();
 }
 ```
 
-## Iterators and Generators
+## 迭代器和生成器
 
 ```javascript
-// Custom iterator
+// 自定义迭代器
 const range = {
   from: 1,
   to: 5,
@@ -779,7 +779,7 @@ for (const num of range) {
   console.log(num); // 1, 2, 3, 4, 5
 }
 
-// Generator function
+// 生成器函数
 function* rangeGenerator(from, to) {
   for (let i = from; i <= to; i++) {
     yield i;
@@ -790,7 +790,7 @@ for (const num of rangeGenerator(1, 5)) {
   console.log(num);
 }
 
-// Infinite generator
+// 无限生成器
 function* fibonacci() {
   let [prev, curr] = [0, 1];
   while (true) {
@@ -799,7 +799,7 @@ function* fibonacci() {
   }
 }
 
-// Async generator
+// Async 生成器
 async function* fetchPages(url) {
   let page = 1;
   while (true) {
@@ -816,27 +816,27 @@ for await (const page of fetchPages("/api/users")) {
 }
 ```
 
-## Modern Operators
+## 现代运算符
 
 ```javascript
-// Optional chaining
+// 可选链
 const user = { name: "John", address: { city: "NYC" } };
 const city = user?.address?.city;
 const zipCode = user?.address?.zipCode; // undefined
 
-// Function call
+// 函数调用
 const result = obj.method?.();
 
-// Array access
+// 数组访问
 const first = arr?.[0];
 
-// Nullish coalescing
+// 空值合并
 const value = null ?? "default"; // 'default'
 const value = undefined ?? "default"; // 'default'
 const value = 0 ?? "default"; // 0 (not 'default')
 const value = "" ?? "default"; // '' (not 'default')
 
-// Logical assignment
+// 逻辑赋值
 let a = null;
 a ??= "default"; // a = 'default'
 
@@ -848,10 +848,10 @@ obj.count ||= 1; // obj.count = 1
 obj.count &&= 2; // obj.count = 2
 ```
 
-## Performance Optimization
+## 性能优化
 
 ```javascript
-// Debounce
+// 防抖
 function debounce(fn, delay) {
   let timeoutId;
   return (...args) => {
@@ -862,7 +862,7 @@ function debounce(fn, delay) {
 
 const searchDebounced = debounce(search, 300);
 
-// Throttle
+// 节流
 function throttle(fn, limit) {
   let inThrottle;
   return (...args) => {
@@ -876,52 +876,52 @@ function throttle(fn, limit) {
 
 const scrollThrottled = throttle(handleScroll, 100);
 
-// Lazy evaluation
+// 惰性求值
 function* lazyMap(iterable, transform) {
   for (const item of iterable) {
     yield transform(item);
   }
 }
 
-// Use only what you need
+// 只使用你需要的
 const numbers = [1, 2, 3, 4, 5];
 const doubled = lazyMap(numbers, (x) => x * 2);
-const first = doubled.next().value; // Only computes first value
+const first = doubled.next().value; // 只计算第一个值
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use const by default**: Only use let when reassignment is needed
-2. **Prefer arrow functions**: Especially for callbacks
-3. **Use template literals**: Instead of string concatenation
-4. **Destructure objects and arrays**: For cleaner code
-5. **Use async/await**: Instead of Promise chains
-6. **Avoid mutating data**: Use spread operator and array methods
-7. **Use optional chaining**: Prevent "Cannot read property of undefined"
-8. **Use nullish coalescing**: For default values
-9. **Prefer array methods**: Over traditional loops
-10. **Use modules**: For better code organization
-11. **Write pure functions**: Easier to test and reason about
-12. **Use meaningful variable names**: Self-documenting code
-13. **Keep functions small**: Single responsibility principle
-14. **Handle errors properly**: Use try/catch with async/await
-15. **Use strict mode**: `'use strict'` for better error catching
+1. **默认使用 const**：只在需要重新赋值时使用 let
+2. **首选箭头函数**：特别是用于回调
+3. **使用模板字面量**：而不是字符串拼接
+4. **解构对象和数组**：为了更整洁的代码
+5. **使用 async/await**：而不是 Promise 链
+6. **避免数据变异**：使用展开运算符和数组方法
+7. **使用可选链**：防止 "Cannot read property of undefined"
+8. **使用空值合并**：用于默认值
+9. **首选数组方法**：而不是传统循环
+10. **使用模块**：为了更好的代码组织
+11. **编写纯函数**：更容易测试和推理
+12. **使用有意义的变量名**：自文档化代码
+13. **保持函数小**：单一职责原则
+14. **正确处理错误**：在 async/await 中使用 try/catch
+15. **使用严格模式**：`'use strict'` 用于更好的错误捕获
 
-## Common Pitfalls
+## 常见陷阱
 
-1. **this binding confusion**: Use arrow functions or bind()
-2. **Async/await without error handling**: Always use try/catch
-3. **Promise creation unnecessary**: Don't wrap already async functions
-4. **Mutation of objects**: Use spread operator or Object.assign()
-5. **Forgetting await**: Async functions return promises
-6. **Blocking event loop**: Avoid synchronous operations
-7. **Memory leaks**: Clean up event listeners and timers
-8. **Not handling promise rejections**: Use catch() or try/catch
+1. **this 绑定混淆**：使用箭头函数或 bind()
+2. **没有错误处理的 Async/await**：始终使用 try/catch
+3. **不必要的 Promise 创建**：不要包装已经是异步的函数
+4. **对象变异**：使用展开运算符或 Object.assign()
+5. **忘记 await**：Async 函数返回 promises
+6. **阻塞事件循环**：避免同步操作
+7. **内存泄漏**：清理事件监听器和定时器
+8. **不处理 promise 拒绝**：使用 catch() 或 try/catch
 
-## Resources
+## 资源
 
-- **MDN Web Docs**: https://developer.mozilla.org/en-US/docs/Web/JavaScript
-- **JavaScript.info**: https://javascript.info/
-- **You Don't Know JS**: https://github.com/getify/You-Dont-Know-JS
-- **Eloquent JavaScript**: https://eloquentjavascript.net/
-- **ES6 Features**: http://es6-features.org/
+- **MDN Web Docs**：https://developer.mozilla.org/en-US/docs/Web/JavaScript
+- **JavaScript.info**：https://javascript.info/
+- **You Don't Know JS**：https://github.com/getify/You-Dont-Know-JS
+- **Eloquent JavaScript**：https://eloquentjavascript.net/
+- **ES6 Features**：http://es6-features.org/

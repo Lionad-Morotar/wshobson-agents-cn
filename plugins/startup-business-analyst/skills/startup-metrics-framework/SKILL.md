@@ -1,564 +1,564 @@
 ---
 name: startup-metrics-framework
-description: This skill should be used when the user asks about "key startup metrics", "SaaS metrics", "CAC and LTV", "unit economics", "burn multiple", "rule of 40", "marketplace metrics", or requests guidance on tracking and optimizing business performance metrics.
+description: 当用户询问"关键创业指标"、"SaaS指标"、"CAC和LTV"、"单位经济效益"、"烧钱乘数"、"40法则"、"市场指标"或请求有关跟踪和优化业务绩效指标的指导时，应使用此技能。
 version: 1.0.0
 ---
 
-# Startup Metrics Framework
+# 初创企业指标框架
 
-Comprehensive guide to tracking, calculating, and optimizing key performance metrics for different startup business models from seed through Series A.
+从种子轮到A轮，针对不同初创企业商业模式的关键绩效指标跟踪、计算和优化的综合指南。
 
-## Overview
+## 概述
 
-Track the right metrics at the right stage. Focus on unit economics, growth efficiency, and cash management metrics that matter for fundraising and operational excellence.
+在正确的阶段跟踪正确的指标。专注于对融资和运营卓越重要的单位经济效益、增长效率和现金管理指标。
 
-## Universal Startup Metrics
+## 通用初创企业指标
 
-### Revenue Metrics
+### 收入指标
 
-**MRR (Monthly Recurring Revenue)**
+**MRR（月度经常性收入）**
 
 ```
-MRR = Σ (Active Subscriptions × Monthly Price)
+MRR = Σ (活跃订阅数 × 月度价格)
 ```
 
-**ARR (Annual Recurring Revenue)**
+**ARR（年度经常性收入）**
 
 ```
 ARR = MRR × 12
 ```
 
-**Growth Rate**
+**增长率**
 
 ```
-MoM Growth = (This Month MRR - Last Month MRR) / Last Month MRR
-YoY Growth = (This Year ARR - Last Year ARR) / Last Year ARR
+MoM 增长率 = (本月MRR - 上月MRR) / 上月MRR
+YoY 增长率 = (本年ARR - 去年ARR) / 去年ARR
 ```
 
-**Target Benchmarks:**
+**目标基准：**
 
-- Seed stage: 15-20% MoM growth
-- Series A: 10-15% MoM growth, 3-5x YoY
-- Series B+: 100%+ YoY (Rule of 40)
+- 种子轮：15-20% 月度增长率
+- A轮：10-15% 月度增长率，3-5倍 年度增长率
+- B轮及以后：100%+ 年度增长率（40法则）
 
-### Unit Economics
+### 单位经济效益
 
-**CAC (Customer Acquisition Cost)**
-
-```
-CAC = Total S&M Spend / New Customers Acquired
-```
-
-Include: Sales salaries, marketing spend, tools, overhead
-
-**LTV (Lifetime Value)**
+**CAC（客户获取成本）**
 
 ```
-LTV = ARPU × Gross Margin% × (1 / Churn Rate)
+CAC = 总销售营销支出 / 新获取客户数
 ```
 
-Simplified:
+包括：销售薪资、营销支出、工具、管理费用
+
+**LTV（客户生命周期价值）**
 
 ```
-LTV = ARPU × Average Customer Lifetime × Gross Margin%
+LTV = ARPU × 毛利率% × (1 / 流失率)
 ```
 
-**LTV:CAC Ratio**
+简化版本：
+
+```
+LTV = ARPU × 平均客户生命周期 × 毛利率%
+```
+
+**LTV:CAC 比率**
 
 ```
 LTV:CAC = LTV / CAC
 ```
 
-**Benchmarks:**
+**基准：**
 
-- LTV:CAC > 3.0 = Healthy
-- LTV:CAC 1.0-3.0 = Needs improvement
-- LTV:CAC < 1.0 = Unsustainable
+- LTV:CAC > 3.0 = 健康
+- LTV:CAC 1.0-3.0 = 需要改进
+- LTV:CAC < 1.0 = 不可持续
 
-**CAC Payback Period**
-
-```
-CAC Payback = CAC / (ARPU × Gross Margin%)
-```
-
-**Benchmarks:**
-
-- < 12 months = Excellent
-- 12-18 months = Good
-- > 24 months = Concerning
-
-### Cash Efficiency Metrics
-
-**Burn Rate**
+**CAC 回收期**
 
 ```
-Monthly Burn = Monthly Revenue - Monthly Expenses
+CAC 回收期 = CAC / (ARPU × 毛利率%)
 ```
 
-Negative burn = losing money (typical early-stage)
+**基准：**
 
-**Runway**
+- < 12个月 = 优秀
+- 12-18个月 = 良好
+- > 24个月 = 令人担忧
 
-```
-Runway (months) = Cash Balance / Monthly Burn Rate
-```
+### 现金效率指标
 
-**Target:** Always maintain 12-18 months runway
-
-**Burn Multiple**
+**烧钱率**
 
 ```
-Burn Multiple = Net Burn / Net New ARR
+月度烧钱率 = 月度收入 - 月度支出
 ```
 
-**Benchmarks:**
+负烧钱率 = 亏损（早期阶段典型情况）
 
-- < 1.0 = Exceptional efficiency
-- 1.0-1.5 = Good
-- 1.5-2.0 = Acceptable
-- > 2.0 = Inefficient
-
-Lower is better (spending less to generate ARR)
-
-## SaaS Metrics
-
-### Revenue Composition
-
-**New MRR**
-New customers × ARPU
-
-**Expansion MRR**
-Upsells and cross-sells from existing customers
-
-**Contraction MRR**
-Downgrades from existing customers
-
-**Churned MRR**
-Lost customers
-
-**Net New MRR Formula:**
+**跑道**
 
 ```
-Net New MRR = New MRR + Expansion MRR - Contraction MRR - Churned MRR
+跑道（月数） = 现金余额 / 月度烧钱率
 ```
 
-### Retention Metrics
+**目标：** 始终保持12-18个月的跑道
 
-**Logo Retention**
-
-```
-Logo Retention = (Customers End - New Customers) / Customers Start
-```
-
-**Dollar Retention (NDR - Net Dollar Retention)**
+**烧钱乘数**
 
 ```
-NDR = (ARR Start + Expansion - Contraction - Churn) / ARR Start
+烧钱乘数 = 净烧钱额 / 净新增ARR
 ```
 
-**Benchmarks:**
+**基准：**
 
-- NDR > 120% = Best-in-class
-- NDR 100-120% = Good
-- NDR < 100% = Needs work
+- < 1.0 = 卓越效率
+- 1.0-1.5 = 良好
+- 1.5-2.0 = 可接受
+- > 2.0 = 低效
 
-**Gross Retention**
+越低越好（花费更少来产生ARR）
 
-```
-Gross Retention = (ARR Start - Churn - Contraction) / ARR Start
-```
+## SaaS指标
 
-**Benchmarks:**
+### 收入构成
 
-- > 90% = Excellent
-- 85-90% = Good
-- < 85% = Concerning
+**新增MRR**
+新客户 × ARPU
 
-### SaaS-Specific Metrics
+**扩张MRR**
+现有客户的增购和交叉销售
 
-**Magic Number**
+**收缩MRR**
+现有客户的降级
 
-```
-Magic Number = Net New ARR (quarter) / S&M Spend (prior quarter)
-```
+**流失MRR**
+流失客户
 
-**Benchmarks:**
-
-- > 0.75 = Efficient, ready to scale
-- 0.5-0.75 = Moderate efficiency
-- < 0.5 = Inefficient, don't scale yet
-
-**Rule of 40**
+**净新增MRR公式：**
 
 ```
-Rule of 40 = Revenue Growth Rate% + Profit Margin%
+净新增MRR = 新增MRR + 扩张MRR - 收缩MRR - 流失MRR
 ```
 
-**Benchmarks:**
+### 留存指标
 
-- > 40% = Excellent
-- 20-40% = Acceptable
-- < 20% = Needs improvement
-
-**Example:**
-50% growth + (10%) margin = 40% ✓
-
-**Quick Ratio**
+**客户留存率**
 
 ```
-Quick Ratio = (New MRR + Expansion MRR) / (Churned MRR + Contraction MRR)
+客户留存率 = (期末客户数 - 新增客户数) / 期初客户数
 ```
 
-**Benchmarks:**
-
-- > 4.0 = Healthy growth
-- 2.0-4.0 = Moderate
-- < 2.0 = Churn problem
-
-## Marketplace Metrics
-
-### GMV (Gross Merchandise Value)
-
-**Total Transaction Volume:**
+**金额留存率（NDR - 净金额留存率）**
 
 ```
-GMV = Σ (Transaction Value)
+NDR = (期初ARR + 扩张 - 收缩 - 流失) / 期初ARR
 ```
 
-**Growth Rate:**
+**基准：**
+
+- NDR > 120% = 业内领先
+- NDR 100-120% = 良好
+- NDR < 100% = 需要改进
+
+**毛留存率**
 
 ```
-GMV Growth Rate = (Current Period GMV - Prior Period GMV) / Prior Period GMV
+毛留存率 = (期初ARR - 流失 - 收缩) / 期初ARR
 ```
 
-**Target:** 20%+ MoM early-stage
+**基准：**
 
-### Take Rate
+- > 90% = 优秀
+- 85-90% = 良好
+- < 85% = 令人担忧
+
+### SaaS特定指标
+
+**神奇数字**
 
 ```
-Take Rate = Net Revenue / GMV
+神奇数字 = 净新增ARR（季度） / 销售营销支出（上一季度）
 ```
 
-**Typical Ranges:**
+**基准：**
 
-- Payment processors: 2-3%
-- E-commerce marketplaces: 10-20%
-- Service marketplaces: 15-25%
-- High-value B2B: 5-15%
+- > 0.75 = 高效，准备规模化
+- 0.5-0.75 = 中等效率
+- < 0.5 = 低效，暂不规模化
 
-### Marketplace Liquidity
+**40法则**
 
-**Time to Transaction**
-How long from listing to sale/match?
+```
+40法则 = 收入增长率% + 利润率%
+```
 
-**Fill Rate**
-% of requests that result in transaction
+**基准：**
 
-**Repeat Rate**
-% of users who transact multiple times
+- > 40% = 优秀
+- 20-40% = 可接受
+- < 20% = 需要改进
 
-**Benchmarks:**
+**示例：**
+50%增长率 + (-10%)利润率 = 40% ✓
 
-- Fill rate > 80% = Strong liquidity
-- Repeat rate > 60% = Strong retention
+**快速比率**
 
-### Marketplace Balance
+```
+快速比率 = (新增MRR + 扩张MRR) / (流失MRR + 收缩MRR)
+```
 
-**Supply/Demand Ratio:**
-Track relative growth of supply and demand sides.
+**基准：**
 
-**Warning Signs:**
+- > 4.0 = 健康增长
+- 2.0-4.0 = 中等
+- < 2.0 = 存在流失问题
 
-- Too much supply: Low fill rates, frustrated suppliers
-- Too much demand: Long wait times, frustrated customers
+## 市场指标
 
-**Goal:** Balanced growth (1:1 ratio ideal, but varies by model)
+### GMV（商品交易总额）
 
-## Consumer/Mobile Metrics
+**总交易量：**
 
-### Engagement Metrics
+```
+GMV = Σ (交易价值)
+```
 
-**DAU (Daily Active Users)**
-Unique users active each day
+**增长率：**
 
-**MAU (Monthly Active Users)**
-Unique users active each month
+```
+GMV 增长率 = (本期GMV - 上期GMV) / 上期GMV
+```
 
-**DAU/MAU Ratio**
+**目标：** 早期阶段20%+ 月度增长率
+
+### 抽成率
+
+```
+抽成率 = 净收入 / GMV
+```
+
+**典型范围：**
+
+- 支付处理器：2-3%
+- 电商平台：10-20%
+- 服务市场：15-25%
+- 高价值B2B：5-15%
+
+### 市场流动性
+
+**成交时间**
+从上架到销售/匹配需要多长时间？
+
+**成交率**
+成功交易占总请求的百分比
+
+**复购率**
+多次交易用户的百分比
+
+**基准：**
+
+- 成交率 > 80% = 强流动性
+- 复购率 > 60% = 强留存
+
+### 市场平衡
+
+**供需比率：**
+跟踪供需双方的相对增长。
+
+**警告信号：**
+
+- 供给过多：成交率低，供应商受挫
+- 需求过多：等待时间长，客户受挫
+
+**目标：** 平衡增长（1:1比率理想，但因模式而异）
+
+## 消费者/移动端指标
+
+### 参与度指标
+
+**DAU（日活跃用户）**
+每天活跃的唯一用户数
+
+**MAU（月活跃用户）**
+每月活跃的唯一用户数
+
+**DAU/MAU 比率**
 
 ```
 DAU/MAU = DAU / MAU
 ```
 
-**Benchmarks:**
+**基准：**
 
-- > 50% = Exceptional (daily habit)
-- 20-50% = Good
-- < 20% = Weak engagement
+- > 50% = 卓越（日常习惯）
+- 20-50% = 良好
+- < 20% = 参与度弱
 
-**Session Frequency**
-Average sessions per user per day/week
+**会话频率**
+每个用户每天/周的平均会话次数
 
-**Session Duration**
-Average time spent per session
+**会话时长**
+每次会话的平均时间
 
-### Retention Curves
+### 留存曲线
 
-**Day 1 Retention:** % users who return next day
-**Day 7 Retention:** % users active 7 days after signup
-**Day 30 Retention:** % users active 30 days after signup
+**第1天留存：** 次日返回用户的百分比
+**第7天留存：** 注册后7天活跃用户的百分比
+**第30天留存：** 注册后30天活跃用户的百分比
 
-**Benchmarks (Day 30):**
+**基准（第30天）：**
 
-- > 40% = Excellent
-- 25-40% = Good
-- < 25% = Weak
+- > 40% = 优秀
+- 25-40% = 良好
+- < 25% = 较弱
 
-**Retention Curve Shape:**
+**留存曲线形状：**
 
-- Flattening curve = good (users becoming habitual)
-- Steep decline = poor product-market fit
+- 趋于平缓的曲线 = 良好（用户形成习惯）
+- 急剧下降 = 产品市场契合度差
 
-### Viral Coefficient (K-Factor)
-
-```
-K-Factor = Invites per User × Invite Conversion Rate
-```
-
-**Example:**
-10 invites/user × 20% conversion = 2.0 K-factor
-
-**Benchmarks:**
-
-- K > 1.0 = Viral growth
-- K = 0.5-1.0 = Strong referrals
-- K < 0.5 = Weak virality
-
-## B2B Metrics
-
-### Sales Efficiency
-
-**Win Rate**
+### 病毒系数（K因子）
 
 ```
-Win Rate = Deals Won / Total Opportunities
+K因子 = 每用户邀请数 × 邀请转化率
 ```
 
-**Target:** 20-30% for new sales team, 30-40% mature
+**示例：**
+10次邀请/用户 × 20%转化率 = 2.0 K因子
 
-**Sales Cycle Length**
-Average days from opportunity to close
+**基准：**
 
-**Shorter is better:**
+- K > 1.0 = 病毒式增长
+- K = 0.5-1.0 = 强推荐
+- K < 0.5 = 病毒传播力弱
 
-- SMB: 30-60 days
-- Mid-market: 60-120 days
-- Enterprise: 120-270 days
+## B2B指标
 
-**Average Contract Value (ACV)**
+### 销售效率
 
-```
-ACV = Total Contract Value / Contract Length (years)
-```
-
-### Pipeline Metrics
-
-**Pipeline Coverage**
+**赢单率**
 
 ```
-Pipeline Coverage = Total Pipeline Value / Quota
+赢单率 = 赢单数 / 总机会数
 ```
 
-**Target:** 3-5x coverage (3-5x pipeline needed to hit quota)
+**目标：** 新销售团队20-30%，成熟团队30-40%
 
-**Conversion Rates by Stage:**
+**销售周期长度**
+从机会到成交的平均天数
 
-- Lead → Opportunity: 10-20%
-- Opportunity → Demo: 50-70%
-- Demo → Proposal: 30-50%
-- Proposal → Close: 20-40%
+**越短越好：**
 
-## Metrics by Stage
+- 中小企业：30-60天
+- 中端市场：60-120天
+- 企业级：120-270天
 
-### Pre-Seed (Product-Market Fit)
+**平均合同价值（ACV）**
 
-**Focus Metrics:**
+```
+ACV = 总合同价值 / 合同期限（年）
+```
 
-1. Active users growth
-2. User retention (Day 7, Day 30)
-3. Core engagement (sessions, features used)
-4. Qualitative feedback (NPS, interviews)
+### 销售漏斗指标
 
-**Don't worry about:**
+**漏斗覆盖率**
 
-- Revenue (may be zero)
-- CAC (not optimizing yet)
-- Unit economics
+```
+漏斗覆盖率 = 总漏斗价值 / 配额
+```
 
-### Seed ($500K-$2M ARR)
+**目标：** 3-5倍覆盖率（需要3-5倍漏斗来达成配额）
 
-**Focus Metrics:**
+**各阶段转化率：**
 
-1. MRR growth rate (15-20% MoM)
-2. CAC and LTV (establish baseline)
-3. Gross retention (> 85%)
-4. Core product engagement
+- 线索 → 机会：10-20%
+- 机会 → 演示：50-70%
+- 演示 → 提案：30-50%
+- 提案 → 成交：20-40%
 
-**Start tracking:**
+## 分阶段指标
 
-- Sales efficiency
-- Burn rate and runway
+### 种子前（产品市场契合度）
 
-### Series A ($2M-$10M ARR)
+**关注指标：**
 
-**Focus Metrics:**
+1. 活跃用户增长
+2. 用户留存（第7天、第30天）
+3. 核心参与度（会话、使用的功能）
+4. 定性反馈（NPS、访谈）
 
-1. ARR growth (3-5x YoY)
-2. Unit economics (LTV:CAC > 3, payback < 18 months)
-3. Net dollar retention (> 100%)
-4. Burn multiple (< 2.0)
-5. Magic number (> 0.5)
+**无需担心：**
 
-**Mature tracking:**
+- 收入（可能为零）
+- CAC（尚未优化）
+- 单位经济效益
 
-- Rule of 40
-- Sales efficiency
-- Pipeline coverage
+### 种子轮（50万-200万美元ARR）
 
-## Metric Tracking Best Practices
+**关注指标：**
 
-### Data Infrastructure
+1. MRR增长率（15-20% 月度）
+2. CAC和LTV（建立基线）
+3. 毛留存率（> 85%）
+4. 核心产品参与度
 
-**Requirements:**
+**开始跟踪：**
 
-- Single source of truth (analytics platform)
-- Real-time or daily updates
-- Automated calculations
-- Historical tracking
+- 销售效率
+- 烧钱率和跑道
 
-**Tools:**
+### A轮（200万-1000万美元ARR）
 
-- Mixpanel, Amplitude (product analytics)
-- ChartMogul, Baremetrics (SaaS metrics)
-- Looker, Tableau (BI dashboards)
+**关注指标：**
 
-### Reporting Cadence
+1. ARR增长（3-5倍 年度）
+2. 单位经济效益（LTV:CAC > 3，回收期 < 18个月）
+3. 净金额留存率（> 100%）
+4. 烧钱乘数（< 2.0）
+5. 神奇数字（> 0.5）
 
-**Daily:**
+**成熟跟踪：**
 
-- MRR, active users
-- Sign-ups, conversions
+- 40法则
+- 销售效率
+- 漏斗覆盖率
 
-**Weekly:**
+## 指标跟踪最佳实践
 
-- Growth rates
-- Retention cohorts
-- Sales pipeline
+### 数据基础设施
 
-**Monthly:**
+**要求：**
 
-- Full metric suite
-- Board reporting
-- Investor updates
+- 单一数据源（分析平台）
+- 实时或每日更新
+- 自动化计算
+- 历史跟踪
 
-**Quarterly:**
+**工具：**
 
-- Trend analysis
-- Benchmarking
-- Strategy review
+- Mixpanel、Amplitude（产品分析）
+- ChartMogul、Baremetrics（SaaS指标）
+- Looker、Tableau（BI仪表板）
 
-### Common Mistakes
+### 报告节奏
 
-**Mistake 1: Vanity Metrics**
-Don't focus on:
+**每日：**
 
-- Total users (without retention)
-- Page views (without engagement)
-- Downloads (without activation)
+- MRR、活跃用户
+- 注册、转化
 
-Focus on actionable metrics tied to value.
+**每周：**
 
-**Mistake 2: Too Many Metrics**
-Track 5-7 core metrics intensely, not 50 loosely.
+- 增长率
+- 留存队列
+- 销售漏斗
 
-**Mistake 3: Ignoring Unit Economics**
-CAC and LTV are critical even at seed stage.
+**每月：**
 
-**Mistake 4: Not Segmenting**
-Break down metrics by customer segment, channel, cohort.
+- 完整指标套件
+- 董事会报告
+- 投资者更新
 
-**Mistake 5: Gaming Metrics**
-Optimize for real business outcomes, not dashboard numbers.
+**每季度：**
 
-## Investor Metrics
+- 趋势分析
+- 基准对比
+- 战略回顾
 
-### What VCs Want to See
+### 常见错误
 
-**Seed Round:**
+**错误1：虚荣指标**
+不要关注：
 
-- MRR growth rate
-- User retention
-- Early unit economics
-- Product engagement
+- 总用户数（无留存）
+- 页面浏览量（无参与度）
+- 下载量（无激活）
 
-**Series A:**
+专注于与价值相关的可操作指标。
 
-- ARR and growth rate
-- CAC payback < 18 months
+**错误2：指标过多**
+深入跟踪5-7个核心指标，而非肤浅跟踪50个。
+
+**错误3：忽视单位经济效益**
+CAC和LTV即使在种子轮阶段也至关重要。
+
+**错误4：不分群**
+按客户细分、渠道、队列分解指标。
+
+**错误5：操纵指标**
+优化真实的业务成果，而非仪表板数字。
+
+## 投资者指标
+
+### 风投机构想看什么
+
+**种子轮：**
+
+- MRR增长率
+- 用户留存
+- 早期单位经济效益
+- 产品参与度
+
+**A轮：**
+
+- ARR和增长率
+- CAC回收期 < 18个月
 - LTV:CAC > 3.0
-- Net dollar retention > 100%
-- Burn multiple < 2.0
+- 净金额留存率 > 100%
+- 烧钱乘数 < 2.0
 
-**Series B+:**
+**B轮及以后：**
 
-- Rule of 40 > 40%
-- Efficient growth (magic number)
-- Path to profitability
-- Market leadership metrics
+- 40法则 > 40%
+- 高效增长（神奇数字）
+- 盈利路径
+- 市场领导地位指标
 
-### Metric Presentation
+### 指标展示
 
-**Dashboard Format:**
+**仪表板格式：**
 
 ```
-Current MRR: $250K (↑ 18% MoM)
-ARR: $3.0M (↑ 280% YoY)
-CAC: $1,200 | LTV: $4,800 | LTV:CAC = 4.0x
-NDR: 112% | Logo Retention: 92%
-Burn: $180K/mo | Runway: 18 months
+当前MRR：$250K（↑ 18% 月度）
+ARR：$3.0M（↑ 280% 年度）
+CAC：$1,200 | LTV：$4,800 | LTV:CAC = 4.0x
+NDR：112% | 客户留存率：92%
+烧钱率：$18万/月 | 跑道：18个月
 ```
 
-**Include:**
+**包括：**
 
-- Current value
-- Growth rate or trend
-- Context (target, benchmark)
+- 当前值
+- 增长率或趋势
+- 背景（目标、基准）
 
-## Additional Resources
+## 其他资源
 
-### Reference Files
+### 参考文件
 
-- **`references/metric-definitions.md`** - Complete definitions and formulas for 50+ metrics
-- **`references/benchmarks-by-stage.md`** - Target ranges for each metric by company stage
-- **`references/calculation-examples.md`** - Step-by-step calculation examples
+- **`references/metric-definitions.md`** - 50+指标的完整定义和公式
+- **`references/benchmarks-by-stage.md`** - 按公司阶段划分的每个指标目标范围
+- **`references/calculation-examples.md`** - 逐步计算示例
 
-### Example Files
+### 示例文件
 
-- **`examples/saas-metrics-dashboard.md`** - Complete metrics suite for B2B SaaS company
-- **`examples/marketplace-metrics.md`** - Marketplace-specific metrics with examples
-- **`examples/investor-metrics-deck.md`** - How to present metrics for fundraising
+- **`examples/saas-metrics-dashboard.md`** - B2B SaaS公司的完整指标套件
+- **`examples/marketplace-metrics.md`** - 市场特定指标及示例
+- **`examples/investor-metrics-deck.md`** - 如何为融资展示指标
 
-## Quick Start
+## 快速开始
 
-To implement startup metrics framework:
+要实施初创企业指标框架：
 
-1. **Identify business model** - SaaS, marketplace, consumer, B2B
-2. **Choose 5-7 core metrics** - Based on stage and model
-3. **Establish tracking** - Set up analytics and dashboards
-4. **Calculate unit economics** - CAC, LTV, payback
-5. **Set targets** - Use benchmarks for goals
-6. **Review regularly** - Weekly for core metrics
-7. **Share with team** - Align on goals and progress
-8. **Update investors** - Monthly/quarterly reporting
+1. **确定商业模式** - SaaS、市场、消费者、B2B
+2. **选择5-7个核心指标** - 基于阶段和模式
+3. **建立跟踪** - 设置分析和仪表板
+4. **计算单位经济效益** - CAC、LTV、回收期
+5. **设定目标** - 使用基准作为目标
+6. **定期审查** - 每周审查核心指标
+7. **与团队分享** - 对齐目标和进度
+8. **更新投资者** - 每月/每季度报告
 
-For detailed definitions, benchmarks, and examples, see `references/` and `examples/`.
+有关详细定义、基准和示例，请参阅 `references/` 和 `examples/`。

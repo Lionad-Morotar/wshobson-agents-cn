@@ -1,39 +1,39 @@
 ---
 name: dependency-upgrade
-description: Manage major dependency version upgrades with compatibility analysis, staged rollout, and comprehensive testing. Use when upgrading framework versions, updating major dependencies, or managing breaking changes in libraries.
+description: 通过兼容性分析、分阶段推出和全面测试管理主要依赖版本升级。用于升级框架版本、更新主要依赖或管理库中的破坏性变更时使用。
 ---
 
-# Dependency Upgrade
+# 依赖升级
 
-Master major dependency version upgrades, compatibility analysis, staged upgrade strategies, and comprehensive testing approaches.
+精通主要依赖版本升级、兼容性分析、分阶段升级策略和全面测试方法。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Upgrading major framework versions
-- Updating security-vulnerable dependencies
-- Modernizing legacy dependencies
-- Resolving dependency conflicts
-- Planning incremental upgrade paths
-- Testing compatibility matrices
-- Automating dependency updates
+- 升级主要框架版本
+- 更新有安全漏洞的依赖
+- 现代化遗留依赖
+- 解决依赖冲突
+- 规划增量升级路径
+- 测试兼容性矩阵
+- 自动化依赖更新
 
-## Semantic Versioning Review
+## 语义化版本控制回顾
 
 ```
-MAJOR.MINOR.PATCH (e.g., 2.3.1)
+MAJOR.MINOR.PATCH（例如 2.3.1）
 
-MAJOR: Breaking changes
-MINOR: New features, backward compatible
-PATCH: Bug fixes, backward compatible
+MAJOR：破坏性变更
+MINOR：新功能，向后兼容
+PATCH：错误修复，向后兼容
 
-^2.3.1 = >=2.3.1 <3.0.0 (minor updates)
-~2.3.1 = >=2.3.1 <2.4.0 (patch updates)
-2.3.1 = exact version
+^2.3.1 = >=2.3.1 <3.0.0（次要更新）
+~2.3.1 = >=2.3.1 <2.4.0（补丁更新）
+2.3.1 = 精确版本
 ```
 
-## Dependency Analysis
+## 依赖分析
 
-### Audit Dependencies
+### 审计依赖
 
 ```bash
 # npm
@@ -45,27 +45,27 @@ npm audit fix
 yarn outdated
 yarn audit
 
-# Check for major updates
+# 检查主要更新
 npx npm-check-updates
-npx npm-check-updates -u  # Update package.json
+npx npm-check-updates -u  # 更新 package.json
 ```
 
-### Analyze Dependency Tree
+### 分析依赖树
 
 ```bash
-# See why a package is installed
+# 查看安装包的原因
 npm ls package-name
 yarn why package-name
 
-# Find duplicate packages
+# 查找重复包
 npm dedupe
 yarn dedupe
 
-# Visualize dependencies
+# 可视化依赖
 npx madge --image graph.png src/
 ```
 
-## Compatibility Matrix
+## 兼容性矩阵
 
 ```javascript
 // compatibility-matrix.js
@@ -90,98 +90,98 @@ const compatibilityMatrix = {
 };
 
 function checkCompatibility(packages) {
-  // Validate package versions against matrix
+  // 根据矩阵验证包版本
 }
 ```
 
-## Staged Upgrade Strategy
+## 分阶段升级策略
 
-### Phase 1: Planning
+### 阶段 1：规划
 
 ```bash
-# 1. Identify current versions
+# 1. 识别当前版本
 npm list --depth=0
 
-# 2. Check for breaking changes
-# Read CHANGELOG.md and MIGRATION.md
+# 2. 检查破坏性变更
+# 阅读 CHANGELOG.md 和 MIGRATION.md
 
-# 3. Create upgrade plan
-echo "Upgrade order:
+# 3. 创建升级计划
+echo "升级顺序：
 1. TypeScript
 2. React
 3. React Router
-4. Testing libraries
-5. Build tools" > UPGRADE_PLAN.md
+4. 测试库
+5. 构建工具" > UPGRADE_PLAN.md
 ```
 
-### Phase 2: Incremental Updates
+### 阶段 2：增量更新
 
 ```bash
-# Don't upgrade everything at once!
+# 不要一次升级所有内容！
 
-# Step 1: Update TypeScript
+# 步骤 1：更新 TypeScript
 npm install typescript@latest
 
-# Test
+# 测试
 npm run test
 npm run build
 
-# Step 2: Update React (one major version at a time)
+# 步骤 2：更新 React（一次一个主要版本）
 npm install react@17 react-dom@17
 
-# Test again
+# 再次测试
 npm run test
 
-# Step 3: Continue with other packages
+# 步骤 3：继续其他包
 npm install react-router-dom@6
 
-# And so on...
+# 以此类推...
 ```
 
-### Phase 3: Validation
+### 阶段 3：验证
 
 ```javascript
 // tests/compatibility.test.js
-describe("Dependency Compatibility", () => {
-  it("should have compatible React versions", () => {
+describe("依赖兼容性", () => {
+  it("应该具有兼容的 React 版本", () => {
     const reactVersion = require("react/package.json").version;
     const reactDomVersion = require("react-dom/package.json").version;
 
     expect(reactVersion).toBe(reactDomVersion);
   });
 
-  it("should not have peer dependency warnings", () => {
-    // Run npm ls and check for warnings
+  it("不应该有对等依赖警告", () => {
+    // 运行 npm ls 并检查警告
   });
 });
 ```
 
-## Breaking Change Handling
+## 破坏性变更处理
 
-### Identifying Breaking Changes
+### 识别破坏性变更
 
 ```bash
-# Use changelog parsers
+# 使用变更日志解析器
 npx changelog-parser react 16.0.0 17.0.0
 
-# Or manually check
+# 或手动检查
 curl https://raw.githubusercontent.com/facebook/react/main/CHANGELOG.md
 ```
 
-### Codemod for Automated Fixes
+### 使用 Codemod 自动修复
 
 ```bash
-# React upgrade codemods
+# React 升级 codemods
 npx react-codeshift <transform> <path>
 
-# Example: Update lifecycle methods
+# 示例：更新生命周期方法
 npx react-codeshift \
   --parser tsx \
   --transform react-codeshift/transforms/rename-unsafe-lifecycles.js \
   src/
 ```
 
-### Custom Migration Script
+### 自定义迁移脚本
 
 ```javascript
 // migration-script.js
@@ -192,13 +192,13 @@ glob("src/**/*.tsx", (err, files) => {
   files.forEach((file) => {
     let content = fs.readFileSync(file, "utf8");
 
-    // Replace old API with new API
+    // 用新 API 替换旧 API
     content = content.replace(
       /componentWillMount/g,
       "UNSAFE_componentWillMount",
     );
 
-    // Update imports
+    // 更新导入
     content = content.replace(
       /import { Component } from 'react'/g,
       "import React, { Component } from 'react'",
@@ -209,53 +209,53 @@ glob("src/**/*.tsx", (err, files) => {
 });
 ```
 
-## Testing Strategy
+## 测试策略
 
-### Unit Tests
+### 单元测试
 
 ```javascript
-// Ensure tests pass before and after upgrade
+// 确保升级前后测试通过
 npm run test
 
-// Update test utilities if needed
+// 如需要，更新测试工具
 npm install @testing-library/react@latest
 ```
 
-### Integration Tests
+### 集成测试
 
 ```javascript
 // tests/integration/app.test.js
-describe("App Integration", () => {
-  it("should render without crashing", () => {
+describe("应用集成", () => {
+  it("应该正常渲染且不崩溃", () => {
     render(<App />);
   });
 
-  it("should handle navigation", () => {
+  it("应该处理导航", () => {
     const { getByText } = render(<App />);
-    fireEvent.click(getByText("Navigate"));
-    expect(screen.getByText("New Page")).toBeInTheDocument();
+    fireEvent.click(getByText("导航"));
+    expect(screen.getByText("新页面")).toBeInTheDocument();
   });
 });
 ```
 
-### Visual Regression Tests
+### 视觉回归测试
 
 ```javascript
 // visual-regression.test.js
-describe("Visual Regression", () => {
-  it("should match snapshot", () => {
+describe("视觉回归", () => {
+  it("应该匹配快照", () => {
     const { container } = render(<App />);
     expect(container.firstChild).toMatchSnapshot();
   });
 });
 ```
 
-### E2E Tests
+### 端到端测试
 
 ```javascript
 // cypress/e2e/app.cy.js
-describe("E2E Tests", () => {
-  it("should complete user flow", () => {
+describe("E2E 测试", () => {
+  it("应该完成用户流程", () => {
     cy.visit("/");
     cy.get('[data-testid="login"]').click();
     cy.get('input[name="email"]').type("user@example.com");
@@ -265,9 +265,9 @@ describe("E2E Tests", () => {
 });
 ```
 
-## Automated Dependency Updates
+## 自动化依赖更新
 
-### Renovate Configuration
+### Renovate 配置
 
 ```json
 // renovate.json
@@ -289,7 +289,7 @@ describe("E2E Tests", () => {
 }
 ```
 
-### Dependabot Configuration
+### Dependabot 配置
 
 ```yaml
 # .github/dependabot.yml
@@ -307,123 +307,123 @@ updates:
       include: "scope"
 ```
 
-## Rollback Plan
+## 回滚计划
 
 ```javascript
 // rollback.sh
 #!/bin/bash
 
-# Save current state
+# 保存当前状态
 git stash
 git checkout -b upgrade-branch
 
-# Attempt upgrade
+# 尝试升级
 npm install package@latest
 
-# Run tests
+# 运行测试
 if npm run test; then
-  echo "Upgrade successful"
+  echo "升级成功"
   git add package.json package-lock.json
-  git commit -m "chore: upgrade package"
+  git commit -m "chore: 升级 package"
 else
-  echo "Upgrade failed, rolling back"
+  echo "升级失败，正在回滚"
   git checkout main
   git branch -D upgrade-branch
-  npm install  # Restore from package-lock.json
+  npm install  # 从 package-lock.json 恢复
 fi
 ```
 
-## Common Upgrade Patterns
+## 常见升级模式
 
-### Lock File Management
+### 锁文件管理
 
 ```bash
 # npm
-npm install --package-lock-only  # Update lock file only
-npm ci  # Clean install from lock file
+npm install --package-lock-only  # 仅更新锁文件
+npm ci  # 从锁文件进行干净安装
 
 # yarn
-yarn install --frozen-lockfile  # CI mode
-yarn upgrade-interactive  # Interactive upgrades
+yarn install --frozen-lockfile  # CI 模式
+yarn upgrade-interactive  # 交互式升级
 ```
 
-### Peer Dependency Resolution
+### 对等依赖解析
 
 ```bash
-# npm 7+: strict peer dependencies
-npm install --legacy-peer-deps  # Ignore peer deps
+# npm 7+：严格对等依赖
+npm install --legacy-peer-deps  # 忽略对等依赖
 
-# npm 8+: override peer dependencies
+# npm 8+：覆盖对等依赖
 npm install --force
 ```
 
-### Workspace Upgrades
+### 工作区升级
 
 ```bash
-# Update all workspace packages
+# 更新所有工作区包
 npm install --workspaces
 
-# Update specific workspace
+# 更新特定工作区
 npm install package@latest --workspace=packages/app
 ```
 
-## Resources
+## 资源
 
-- **references/semver.md**: Semantic versioning guide
-- **references/compatibility-matrix.md**: Common compatibility issues
-- **references/staged-upgrades.md**: Incremental upgrade strategies
-- **references/testing-strategy.md**: Comprehensive testing approaches
-- **assets/upgrade-checklist.md**: Step-by-step checklist
-- **assets/compatibility-matrix.csv**: Version compatibility table
-- **scripts/audit-dependencies.sh**: Dependency audit script
+- **references/semver.md**：语义化版本控制指南
+- **references/compatibility-matrix.md**：常见兼容性问题
+- **references/staged-upgrades.md**：增量升级策略
+- **references/testing-strategy.md**：全面测试方法
+- **assets/upgrade-checklist.md**：分步检查清单
+- **assets/compatibility-matrix.csv**：版本兼容性表
+- **scripts/audit-dependencies.sh**：依赖审计脚本
 
-## Best Practices
+## 最佳实践
 
-1. **Read Changelogs**: Understand what changed
-2. **Upgrade Incrementally**: One major version at a time
-3. **Test Thoroughly**: Unit, integration, E2E tests
-4. **Check Peer Dependencies**: Resolve conflicts early
-5. **Use Lock Files**: Ensure reproducible installs
-6. **Automate Updates**: Use Renovate or Dependabot
-7. **Monitor**: Watch for runtime errors post-upgrade
-8. **Document**: Keep upgrade notes
+1. **阅读变更日志**：了解变更内容
+2. **增量升级**：一次一个主要版本
+3. **彻底测试**：单元、集成、E2E 测试
+4. **检查对等依赖**：尽早解决冲突
+5. **使用锁文件**：确保可重现的安装
+6. **自动化更新**：使用 Renovate 或 Dependabot
+7. **监控**：升级后监控运行时错误
+8. **文档**：保留升级笔记
 
-## Upgrade Checklist
+## 升级检查清单
 
 ```markdown
-Pre-Upgrade:
+升级前：
 
-- [ ] Review current dependency versions
-- [ ] Read changelogs for breaking changes
-- [ ] Create feature branch
-- [ ] Backup current state (git tag)
-- [ ] Run full test suite (baseline)
+- [ ] 查看当前依赖版本
+- [ ] 阅读破坏性变更的变更日志
+- [ ] 创建功能分支
+- [ ] 备份当前状态（git 标签）
+- [ ] 运行完整测试套件（基线）
 
-During Upgrade:
+升级期间：
 
-- [ ] Upgrade one dependency at a time
-- [ ] Update peer dependencies
-- [ ] Fix TypeScript errors
-- [ ] Update tests if needed
-- [ ] Run test suite after each upgrade
-- [ ] Check bundle size impact
+- [ ] 一次升级一个依赖
+- [ ] 更新对等依赖
+- [ ] 修复 TypeScript 错误
+- [ ] 如需要，更新测试
+- [ ] 每次升级后运行测试套件
+- [ ] 检查打包大小影响
 
-Post-Upgrade:
+升级后：
 
-- [ ] Full regression testing
-- [ ] Performance testing
-- [ ] Update documentation
-- [ ] Deploy to staging
-- [ ] Monitor for errors
-- [ ] Deploy to production
+- [ ] 完整回归测试
+- [ ] 性能测试
+- [ ] 更新文档
+- [ ] 部署到测试环境
+- [ ] 监控错误
+- [ ] 部署到生产环境
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-- Upgrading all dependencies at once
-- Not testing after each upgrade
-- Ignoring peer dependency warnings
-- Forgetting to update lock file
-- Not reading breaking change notes
-- Skipping major versions
-- Not having rollback plan
+- 一次升级所有依赖
+- 每次升级后不测试
+- 忽略对等依赖警告
+- 忘记更新锁文件
+- 不阅读破坏性变更说明
+- 跳过主要版本
+- 没有回滚计划

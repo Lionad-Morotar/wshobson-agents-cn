@@ -1,141 +1,141 @@
-Implement minimal code to make failing tests pass in TDD green phase:
+在 TDD 绿色阶段实现最少代码以使失败的测试通过：
 
-[Extended thinking: This tool uses the test-automator agent to implement the minimal code necessary to make tests pass. It focuses on simplicity, avoiding over-engineering while ensuring all tests become green.]
+[扩展思考：此工具使用 test-automator 智能体来实现通过测试所需的最少代码。它专注于简单性，避免过度工程化，同时确保所有测试变为绿色。]
 
-## Implementation Process
+## 实现过程
 
-Use Task tool with subagent_type="unit-testing::test-automator" to implement minimal passing code.
+使用 Task 工具，设置 subagent_type="unit-testing::test-automator" 来实现最少的通过代码。
 
-Prompt: "Implement MINIMAL code to make these failing tests pass: $ARGUMENTS. Follow TDD green phase principles:
+提示词："实现最少代码使这些失败的测试通过：$ARGUMENTS。遵循 TDD 绿色阶段原则：
 
-1. **Pre-Implementation Analysis**
-   - Review all failing tests and their error messages
-   - Identify the simplest path to make tests pass
-   - Map test requirements to minimal implementation needs
-   - Avoid premature optimization or over-engineering
-   - Focus only on making tests green, not perfect code
+1. **实现前分析**
+   - 审查所有失败的测试及其错误信息
+   - 确定使测试通过的最简单路径
+   - 将测试需求映射到最少实现需求
+   - 避免过早优化或过度工程化
+   - 专注于使测试通过，而非完美代码
 
-2. **Implementation Strategy**
-   - **Fake It**: Return hard-coded values when appropriate
-   - **Obvious Implementation**: When solution is trivial and clear
-   - **Triangulation**: Generalize only when multiple tests require it
-   - Start with the simplest test and work incrementally
-   - One test at a time - don't try to pass all at once
+2. **实现策略**
+   - **伪造实现**：在适当的时候返回硬编码的值
+   - **显而易见的实现**：当解决方案显而易见且清晰时
+   - **三角测量**：仅当多个测试需要时才进行泛化
+   - 从最简单的测试开始，逐步进行
+   - 一次一个测试 - 不要试图一次性通过所有测试
 
-3. **Code Structure Guidelines**
-   - Write the minimal code that could possibly work
-   - Avoid adding functionality not required by tests
-   - Use simple data structures initially
-   - Defer architectural decisions until refactor phase
-   - Keep methods/functions small and focused
-   - Don't add error handling unless tests require it
+3. **代码结构指南**
+   - 编写可能工作的最少代码
+   - 避免添加测试不需要的功能
+   - 最初使用简单的数据结构
+   - 将架构决策推迟到重构阶段
+   - 保持方法/函数小而专注
+   - 除非测试需要，否则不添加错误处理
 
-4. **Language-Specific Patterns**
-   - **JavaScript/TypeScript**: Simple functions, avoid classes initially
-   - **Python**: Functions before classes, simple returns
-   - **Java**: Minimal class structure, no patterns yet
-   - **C#**: Basic implementations, no interfaces yet
-   - **Go**: Simple functions, defer goroutines/channels
-   - **Ruby**: Procedural before object-oriented when possible
+4. **特定语言模式**
+   - **JavaScript/TypeScript**：简单函数，最初避免使用类
+   - **Python**：函数优先于类，简单返回
+   - **Java**：最小类结构，暂不使用设计模式
+   - **C#**：基本实现，暂不使用接口
+   - **Go**：简单函数，推迟 goroutine/channel 的使用
+   - **Ruby**：尽可能使用过程式而非面向对象
 
-5. **Progressive Implementation**
-   - Make first test pass with simplest possible code
-   - Run tests after each change to verify progress
-   - Add just enough code for next failing test
-   - Resist urge to implement beyond test requirements
-   - Keep track of technical debt for refactor phase
-   - Document assumptions and shortcuts taken
+5. **渐进式实现**
+   - 使用最简单的代码使第一个测试通过
+   - 在每次更改后运行测试以验证进度
+   - 只为下一个失败的测试添加足够的代码
+   - 抵制超出测试需求实现的冲动
+   - 记录技术债务以备重构阶段
+   - 记录所做的假设和捷径
 
-6. **Common Green Phase Techniques**
-   - Hard-coded returns for initial tests
-   - Simple if/else for limited test cases
-   - Basic loops only when iteration tests require
-   - Minimal data structures (arrays before complex objects)
-   - In-memory storage before database integration
-   - Synchronous before asynchronous implementation
+6. **常见绿色阶段技术**
+   - 针对初始测试的硬编码返回
+   - 针对有限测试案例的简单 if/else
+   - 仅当迭代测试需要时才使用基本循环
+   - 最少数据结构（数组优先于复杂对象）
+   - 内存存储优先于数据库集成
+   - 同步实现优先于异步实现
 
-7. **Success Criteria**
-   ✓ All tests pass (green)
-   ✓ No extra functionality beyond test requirements
-   ✓ Code is readable even if not optimal
-   ✓ No broken existing functionality
-   ✓ Implementation time is minimized
-   ✓ Clear path to refactoring identified
+7. **成功标准**
+   ✓ 所有测试通过（绿色）
+   ✓ 除测试需求外无额外功能
+   ✓ 代码可读，即使不是最优的
+   ✓ 没有破坏现有功能
+   ✓ 实现时间最小化
+   ✓ 识别出清晰的重构路径
 
-8. **Anti-Patterns to Avoid**
-   - Gold plating or adding unrequested features
-   - Implementing design patterns prematurely
-   - Complex abstractions without test justification
-   - Performance optimizations without metrics
-   - Adding tests during green phase
-   - Refactoring during implementation
-   - Ignoring test failures to move forward
+8. **避免的反模式**
+   - 镀金或添加未请求的功能
+   - 过早实现设计模式
+   - 没有测试正当性的复杂抽象
+   - 没有度量的性能优化
+   - 在绿色阶段添加测试
+   - 在实现期间重构
+   - 忽略测试失败以继续前进
 
-9. **Implementation Metrics**
-   - Time to green: Track implementation duration
-   - Lines of code: Measure implementation size
-   - Cyclomatic complexity: Keep it low initially
-   - Test pass rate: Must reach 100%
-   - Code coverage: Verify all paths tested
+9. **实现指标**
+   - 变绿时间：跟踪实现持续时间
+   - 代码行数：度量实现大小
+   - 圈复杂度：保持低复杂度
+   - 测试通过率：必须达到 100%
+   - 代码覆盖率：验证所有路径都已测试
 
-10. **Validation Steps**
-    - Run all tests and confirm they pass
-    - Verify no regression in existing tests
-    - Check that implementation is truly minimal
-    - Document any technical debt created
-    - Prepare notes for refactoring phase
+10. **验证步骤**
+    - 运行所有测试并确认它们通过
+    - 验证现有测试没有回归
+    - 检查实现是否真正最少
+    - 记录创建的任何技术债务
+    - 为重构阶段准备笔记
 
-Output should include:
+输出应包括：
 
-- Complete implementation code
-- Test execution results showing all green
-- List of shortcuts taken for later refactoring
-- Implementation time metrics
-- Technical debt documentation
-- Readiness assessment for refactor phase"
+- 完整的实现代码
+- 显示全部绿色的测试执行结果
+- 为后续重构所做的捷径列表
+- 实现时间指标
+- 技术债务文档
+- 重构阶段的准备度评估
 
-## Post-Implementation Checks
+## 实现后检查
 
-After implementation:
+实现后：
 
-1. Run full test suite to confirm all tests pass
-2. Verify no existing tests were broken
-3. Document areas needing refactoring
-4. Check implementation is truly minimal
-5. Record implementation time for metrics
+1. 运行完整测试套件以确认所有测试通过
+2. 验证没有破坏现有测试
+3. 记录需要重构的区域
+4. 检查实现是否真正最少
+5. 记录实现时间以供度量
 
-## Recovery Process
+## 恢复过程
 
-If tests still fail:
+如果测试仍然失败：
 
-- Review test requirements carefully
-- Check for misunderstood assertions
-- Add minimal code to address specific failures
-- Avoid the temptation to rewrite from scratch
-- Consider if tests themselves need adjustment
+- 仔细审查测试需求
+- 检查是否误解了断言
+- 添加最少的代码来解决特定的失败
+- 避免从头重写的诱惑
+- 考虑测试本身是否需要调整
 
-## Integration Points
+## 集成点
 
-- Follows from tdd-red.md test creation
-- Prepares for tdd-refactor.md improvements
-- Updates test coverage metrics
-- Triggers CI/CD pipeline verification
-- Documents technical debt for tracking
+- 紧接 tdd-red.md 测试创建之后
+- 为 tdd-refactor.md 改进做准备
+- 更新测试覆盖率指标
+- 触发 CI/CD 流水线验证
+- 记录技术债务以供跟踪
 
-## Best Practices
+## 最佳实践
 
-- Embrace "good enough" for this phase
-- Speed over perfection (perfection comes in refactor)
-- Make it work, then make it right, then make it fast
-- Trust that refactoring phase will improve code
-- Keep changes small and incremental
-- Celebrate reaching green state!
+- 在此阶段接受"足够好"
+- 速度优于完美（完美来自重构）
+- 先让它工作，然后让它正确，然后让它快速
+- 相信重构阶段会改进代码
+- 保持更改小而渐进
+- 庆祝达到绿色状态！
 
-## Complete Implementation Examples
+## 完整实现示例
 
-### Example 1: Minimal → Production-Ready (User Service)
+### 示例 1：最少 → 生产就绪（用户服务）
 
-**Test Requirements:**
+**测试需求：**
 
 ```typescript
 describe("UserService", () => {
@@ -156,7 +156,7 @@ describe("UserService", () => {
 });
 ```
 
-**Stage 1: Fake It (Minimal)**
+**阶段 1：伪造实现（最少）**
 
 ```typescript
 class UserService {
@@ -170,9 +170,9 @@ class UserService {
 }
 ```
 
-_Tests pass. Implementation is obviously fake but validates test structure._
+_测试通过。实现显然是伪造的，但验证了测试结构。_
 
-**Stage 2: Simple Real Implementation**
+**阶段 2：简单真实实现**
 
 ```typescript
 class UserService {
@@ -191,9 +191,9 @@ class UserService {
 }
 ```
 
-_In-memory storage. Tests pass. Good enough for green phase._
+_内存存储。测试通过。对绿色阶段来说足够好。_
 
-**Stage 3: Production-Ready (Refactor Phase)**
+**阶段 3：生产就绪（重构阶段）**
 
 ```typescript
 class UserService {
@@ -216,11 +216,11 @@ class UserService {
 }
 ```
 
-_Database integration, error handling, validation - saved for refactor phase._
+_数据库集成、错误处理、验证 - 保存到重构阶段。_
 
-### Example 2: API-First Implementation (Express)
+### 示例 2：API 优先实现（Express）
 
-**Test Requirements:**
+**测试需求：**
 
 ```javascript
 describe("POST /api/tasks", () => {
@@ -236,7 +236,7 @@ describe("POST /api/tasks", () => {
 });
 ```
 
-**Stage 1: Hardcoded Response**
+**阶段 1：硬编码响应**
 
 ```javascript
 app.post("/api/tasks", (req, res) => {
@@ -244,9 +244,9 @@ app.post("/api/tasks", (req, res) => {
 });
 ```
 
-_Tests pass immediately. No logic needed yet._
+_测试立即通过。尚不需要逻辑。_
 
-**Stage 2: Simple Logic**
+**阶段 2：简单逻辑**
 
 ```javascript
 let tasks = [];
@@ -259,9 +259,9 @@ app.post("/api/tasks", (req, res) => {
 });
 ```
 
-_Minimal state management. Ready for more tests._
+_最少状态管理。准备好迎接更多测试。_
 
-**Stage 3: Layered Architecture (Refactor)**
+**阶段 3：分层架构（重构）**
 
 ```javascript
 // Controller
@@ -285,11 +285,11 @@ class TaskService {
 }
 ```
 
-_Proper separation of concerns added during refactor phase._
+_在重构阶段添加了适当的关注点分离。_
 
-### Example 3: Database Integration (Django)
+### 示例 3：数据库集成（Django）
 
-**Test Requirements:**
+**测试需求：**
 
 ```python
 def test_product_creation():
@@ -302,7 +302,7 @@ def test_product_price_validation():
         Product.objects.create(name="Widget", price=-1)
 ```
 
-**Stage 1: Model Only**
+**阶段 1：仅模型**
 
 ```python
 class Product(models.Model):
@@ -310,9 +310,9 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
 ```
 
-_First test passes. Second test fails - validation not implemented._
+_第一个测试通过。第二个测试失败 - 验证未实现。_
 
-**Stage 2: Add Validation**
+**阶段 2：添加验证**
 
 ```python
 class Product(models.Model):
@@ -328,9 +328,9 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 ```
 
-_All tests pass. Minimal validation logic added._
+_所有测试通过。添加了最少验证逻辑。_
 
-**Stage 3: Rich Domain Model (Refactor)**
+**阶段 3：丰富的领域模型（重构）**
 
 ```python
 class Product(models.Model):
@@ -353,11 +353,11 @@ class Product(models.Model):
         return self.price * (1 - percentage / 100)
 ```
 
-_Additional features, indexes, business logic added when needed._
+_在需要时添加了额外功能、索引、业务逻辑。_
 
-### Example 4: React Component Implementation
+### 示例 4：React 组件实现
 
-**Test Requirements:**
+**测试需求：**
 
 ```typescript
 describe('UserProfile', () => {
@@ -373,7 +373,7 @@ describe('UserProfile', () => {
 });
 ```
 
-**Stage 1: Minimal JSX**
+**阶段 1：最少 JSX**
 
 ```typescript
 interface UserProfileProps {
@@ -388,9 +388,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => (
 );
 ```
 
-_Tests pass. No styling, no structure._
+_测试通过。没有样式，没有结构。_
 
-**Stage 2: Basic Structure**
+**阶段 2：基本结构**
 
 ```typescript
 const UserProfile: React.FC<UserProfileProps> = ({ user }) => (
@@ -401,9 +401,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => (
 );
 ```
 
-_Added semantic HTML, className for styling hook._
+_添加了语义 HTML、用于样式钩子的 className。_
 
-**Stage 3: Production Component (Refactor)**
+**阶段 3：生产组件（重构）**
 
 ```typescript
 const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
@@ -426,53 +426,53 @@ const UserProfile: React.FC<UserProfileProps> = ({ user }) => {
 };
 ```
 
-_Accessibility, interaction, additional features added incrementally._
+_逐步添加了可访问性、交互、额外功能。_
 
-## Decision Frameworks
+## 决策框架
 
-### Framework 1: Fake vs. Real Implementation
+### 框架 1：伪造 vs. 真实实现
 
-**When to Fake It:**
+**何时伪造实现：**
 
-- First test for a new feature
-- Complex external dependencies (payment gateways, APIs)
-- Implementation approach is still uncertain
-- Need to validate test structure first
-- Time pressure to see all tests green
+- 新功能的第一个测试
+- 复杂的外部依赖（支付网关、API）
+- 实现方法仍不确定
+- 需要先验证测试结构
+- 时间压力下看到所有测试通过
 
-**When to Go Real:**
+**何时真实实现：**
 
-- Second or third test reveals pattern
-- Implementation is obvious and simple
-- Faking would be more complex than real code
-- Need to test integration points
-- Tests explicitly require real behavior
+- 第二个或第三个测试揭示了模式
+- 实现显而易见且简单
+- 伪造比真实代码更复杂
+- 需要测试集成点
+- 测试明确要求真实行为
 
-**Decision Matrix:**
+**决策矩阵：**
 
 ```
-Complexity Low     | High
+复杂度 低     | 高
          ↓         | ↓
-Simple   → REAL    | FAKE first, real later
-Complex  → REAL    | FAKE, evaluate alternatives
+简单   → 真实    | 先伪造，后真实
+复杂  → 真实    | 伪造，评估替代方案
 ```
 
-### Framework 2: Complexity Trade-off Analysis
+### 框架 2：复杂度权衡分析
 
-**Simplicity Score Calculation:**
+**简单性分数计算：**
 
 ```
-Score = (Lines of Code) + (Cyclomatic Complexity × 2) + (Dependencies × 3)
+分数 = (代码行数) + (圈复杂度 × 2) + (依赖项 × 3)
 
-< 20  → Simple enough, implement directly
-20-50 → Consider simpler alternative
-> 50  → Defer complexity to refactor phase
+< 20  → 足够简单，直接实现
+20-50 → 考虑更简单的替代方案
+> 50  → 将复杂度推迟到重构阶段
 ```
 
-**Example Evaluation:**
+**示例评估：**
 
 ```typescript
-// Option A: Direct implementation (Score: 45)
+// 选项 A：直接实现（分数：45）
 function calculateShipping(
   weight: number,
   distance: number,
@@ -485,47 +485,47 @@ function calculateShipping(
   return base;
 }
 
-// Option B: Simplest for green phase (Score: 15)
+// 选项 B：绿色阶段最简单（分数：15）
 function calculateShipping(
   weight: number,
   distance: number,
   express: boolean,
 ): number {
-  return express ? 50 : 25; // Fake it until more tests drive real logic
+  return express ? 50 : 25; // 伪造实现，直到更多测试驱动真实逻辑
 }
 ```
 
-_Choose Option B for green phase, evolve to Option A as tests require._
+_绿色阶段选择选项 B，根据测试需求演进到选项 A。_
 
-### Framework 3: Performance Consideration Timing
+### 框架 3：性能考虑时机
 
-**Green Phase: Focus on Correctness**
+**绿色阶段：专注于正确性**
 
 ```
-❌ Avoid:
-- Caching strategies
-- Database query optimization
-- Algorithmic complexity improvements
-- Premature memory optimization
+❌ 避免：
+- 缓存策略
+- 数据库查询优化
+- 算法复杂度改进
+- 过早的内存优化
 
-✓ Accept:
-- O(n²) if it makes code simpler
-- Multiple database queries
-- Synchronous operations
-- Inefficient but clear algorithms
+✓ 接受：
+- 如果使代码更简单，接受 O(n²)
+- 多次数据库查询
+- 同步操作
+- 低效但清晰的算法
 ```
 
-**When Performance Matters in Green Phase:**
+**绿色阶段何时性能重要：**
 
-1. Performance is explicit test requirement
-2. Implementation would cause timeout in test suite
-3. Memory leak would crash tests
-4. Resource exhaustion prevents testing
+1. 性能是明确的测试需求
+2. 实现会导致测试套件超时
+3. 内存泄漏会使测试崩溃
+4. 资源耗尽阻止测试
 
-**Performance Testing Integration:**
+**性能测试集成：**
 
 ```typescript
-// Add performance test AFTER functional tests pass
+// 在功能测试通过后添加性能测试
 describe("Performance", () => {
   it("should handle 1000 users within 100ms", () => {
     const start = Date.now();
@@ -537,116 +537,116 @@ describe("Performance", () => {
 });
 ```
 
-## Framework-Specific Patterns
+## 框架特定模式
 
-### React Patterns
+### React 模式
 
-**Simple Component → Hooks → Context:**
+**简单组件 → Hooks → Context:**
 
 ```typescript
-// Green Phase: Props only
+// 绿色阶段：仅 Props
 const Counter = ({ count, onIncrement }) => (
   <button onClick={onIncrement}>{count}</button>
 );
 
-// Refactor: Add hooks
+// 重构：添加 Hooks
 const Counter = () => {
   const [count, setCount] = useState(0);
   return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
 };
 
-// Refactor: Extract to context
+// 重构：提取到 Context
 const Counter = () => {
   const { count, increment } = useCounter();
   return <button onClick={increment}>{count}</button>;
 };
 ```
 
-### Django Patterns
+### Django 模式
 
-**Function View → Class View → Generic View:**
+**函数视图 → 类视图 → 通用视图:**
 
 ```python
-# Green Phase: Simple function
+# 绿色阶段：简单函数
 def product_list(request):
     products = Product.objects.all()
     return JsonResponse({'products': list(products.values())})
 
-# Refactor: Class-based view
+# 重构：基于类的视图
 class ProductListView(View):
     def get(self, request):
         products = Product.objects.all()
         return JsonResponse({'products': list(products.values())})
 
-# Refactor: Generic view
+# 重构：通用视图
 class ProductListView(ListView):
     model = Product
     context_object_name = 'products'
 ```
 
-### Express Patterns
+### Express 模式
 
-**Inline → Middleware → Service Layer:**
+**内联 → 中间件 → 服务层:**
 
 ```javascript
-// Green Phase: Inline logic
+// 绿色阶段：内联逻辑
 app.post("/api/users", (req, res) => {
   const user = { id: Date.now(), ...req.body };
   users.push(user);
   res.json(user);
 });
 
-// Refactor: Extract middleware
+// 重构：提取中间件
 app.post("/api/users", validateUser, (req, res) => {
   const user = userService.create(req.body);
   res.json(user);
 });
 
-// Refactor: Full layering
+// 重构：完整分层
 app.post("/api/users", validateUser, asyncHandler(userController.create));
 ```
 
-## Refactoring Resistance Patterns
+## 重构阻力模式
 
-### Pattern 1: Test Anchor Points
+### 模式 1：测试锚点
 
-Keep tests green during refactoring by maintaining interface contracts:
+通过维护接口契约在重构期间保持测试绿色：
 
 ```typescript
-// Original implementation (tests green)
+// 原始实现（测试绿色）
 function calculateTotal(items: Item[]): number {
   return items.reduce((sum, item) => sum + item.price, 0);
 }
 
-// Refactoring: Add tax calculation (keep interface)
+// 重构：添加税收计算（保持接口）
 function calculateTotal(items: Item[]): number {
   const subtotal = items.reduce((sum, item) => sum + item.price, 0);
   const tax = subtotal * 0.1;
   return subtotal + tax;
 }
 
-// Tests still green because return type/behavior unchanged
+// 测试仍然绿色，因为返回类型/行为未改变
 ```
 
-### Pattern 2: Parallel Implementation
+### 模式 2：并行实现
 
-Run old and new implementations side by side:
+并行运行新旧实现：
 
 ```python
 def process_order(order):
-    # Old implementation (tests depend on this)
+    # 旧实现（测试依赖于此）
     result_old = legacy_process(order)
 
-    # New implementation (testing in parallel)
+    # 新实现（并行测试）
     result_new = new_process(order)
 
-    # Verify they match
+    # 验证它们匹配
     assert result_old == result_new, "Implementation mismatch"
 
-    return result_old  # Keep tests green
+    return result_old  # 保持测试绿色
 ```
 
-### Pattern 3: Feature Flags for Refactoring
+### 模式 3：重构的功能标志
 
 ```javascript
 class PaymentService {
@@ -659,20 +659,20 @@ class PaymentService {
 }
 ```
 
-## Performance-First Green Phase Strategies
+## 性能优先的绿色阶段策略
 
-### Strategy 1: Type-Driven Development
+### 策略 1：类型驱动开发
 
-Use types to guide minimal implementation:
+使用类型指导最少实现：
 
 ```typescript
-// Types define contract
+// 类型定义契约
 interface UserRepository {
   findById(id: string): Promise<User | null>;
   save(user: User): Promise<void>;
 }
 
-// Green phase: In-memory implementation
+// 绿色阶段：内存实现
 class InMemoryUserRepository implements UserRepository {
   private users = new Map<string, User>();
 
@@ -685,7 +685,7 @@ class InMemoryUserRepository implements UserRepository {
   }
 }
 
-// Refactor: Database implementation (same interface)
+// 重构：数据库实现（相同接口）
 class DatabaseUserRepository implements UserRepository {
   constructor(private db: Database) {}
 
@@ -699,10 +699,10 @@ class DatabaseUserRepository implements UserRepository {
 }
 ```
 
-### Strategy 2: Contract Testing Integration
+### 策略 2：契约测试集成
 
 ```typescript
-// Define contract
+// 定义契约
 const userServiceContract = {
   create: {
     input: { email: "string", name: "string" },
@@ -710,14 +710,14 @@ const userServiceContract = {
   },
 };
 
-// Green phase: Implementation matches contract
+// 绿色阶段：实现匹配契约
 class UserService {
   create(data: { email: string; name: string }) {
-    return { id: "123", ...data }; // Minimal but contract-compliant
+    return { id: "123", ...data }; // 最少但符合契约
   }
 }
 
-// Contract test ensures compliance
+// 契约测试确保合规性
 describe("UserService Contract", () => {
   it("should match create contract", () => {
     const result = userService.create({ email: "test@test.com", name: "Test" });
@@ -728,18 +728,18 @@ describe("UserService Contract", () => {
 });
 ```
 
-### Strategy 3: Continuous Refactoring Workflow
+### 策略 3：持续重构工作流
 
-**Micro-Refactoring During Green Phase:**
+**绿色阶段期间的微重构：**
 
 ```python
-# Test passes with this
+# 测试通过此实现
 def calculate_discount(price, customer_type):
     if customer_type == 'premium':
         return price * 0.8
     return price
 
-# Immediate micro-refactor (tests still green)
+# 立即微重构（测试仍然绿色）
 DISCOUNT_RATES = {
     'premium': 0.8,
     'standard': 1.0
@@ -750,19 +750,19 @@ def calculate_discount(price, customer_type):
     return price * rate
 ```
 
-**Safe Refactoring Checklist:**
+**安全重构清单：**
 
-- ✓ Tests green before refactoring
-- ✓ Change one thing at a time
-- ✓ Run tests after each change
-- ✓ Commit after each successful refactor
-- ✓ No behavior changes, only structure
+- ✓ 重构前测试绿色
+- ✓ 一次更改一件事
+- ✓ 每次更改后运行测试
+- ✓ 每次成功重构后提交
+- ✓ 没有行为更改，仅结构更改
 
-## Modern Development Practices (2024/2025)
+## 现代开发实践（2024/2025）
 
-### Type-Driven Development
+### 类型驱动开发
 
-**Python Type Hints:**
+**Python 类型提示：**
 
 ```python
 from typing import Optional, List
@@ -779,13 +779,13 @@ class UserService:
         return User(id="123", email=email, name=name)
 
     def find_by_email(self, email: str) -> Optional[User]:
-        return None  # Minimal implementation
+        return None  # 最少实现
 ```
 
-**TypeScript Strict Mode:**
+**TypeScript 严格模式：**
 
 ```typescript
-// Enable strict mode in tsconfig.json
+// 在 tsconfig.json 中启用严格模式
 {
   "compilerOptions": {
     "strict": true,
@@ -794,7 +794,7 @@ class UserService:
   }
 }
 
-// Implementation guided by types
+// 由类型指导的实现
 interface CreateUserDto {
   email: string;
   name: string;
@@ -802,39 +802,39 @@ interface CreateUserDto {
 
 class UserService {
   create(data: CreateUserDto): User {
-    // Type system enforces contract
+    // 类型系统强制执行契约
     return { id: '123', email: data.email, name: data.name };
   }
 }
 ```
 
-### AI-Assisted Green Phase
+### AI 辅助绿色阶段
 
-**Using Copilot/AI Tools:**
+**使用 Copilot/AI 工具：**
 
-1. Write test first (human-driven)
-2. Let AI suggest minimal implementation
-3. Verify suggestion passes tests
-4. Accept if truly minimal, reject if over-engineered
-5. Iterate with AI for refactoring phase
+1. 先编写测试（人工驱动）
+2. 让 AI 建议最少实现
+3. 验证建议通过测试
+4. 如果真正最少则接受，如果过度工程化则拒绝
+5. 与 AI 迭代进行重构阶段
 
-**AI Prompt Pattern:**
+**AI 提示模式：**
 
 ```
-Given these failing tests:
-[paste tests]
+鉴于这些失败的测试：
+[粘贴测试]
 
-Provide the MINIMAL implementation that makes tests pass.
-Do not add error handling, validation, or features beyond test requirements.
-Focus on simplicity over completeness.
+提供使测试通过的最少实现。
+不要添加测试需求之外的错误处理、验证或功能。
+专注于简单性而非完整性。
 ```
 
-### Cloud-Native Patterns
+### 云原生模式
 
-**Local → Container → Cloud:**
+**本地 → 容器 → 云:**
 
 ```javascript
-// Green Phase: Local implementation
+// 绿色阶段：本地实现
 class CacheService {
   private cache = new Map();
 
@@ -842,7 +842,7 @@ class CacheService {
   set(key, value) { this.cache.set(key, value); }
 }
 
-// Refactor: Redis-compatible interface
+// 重构：Redis 兼容接口
 class CacheService {
   constructor(private redis) {}
 
@@ -850,7 +850,7 @@ class CacheService {
   async set(key, value) { return this.redis.set(key, value); }
 }
 
-// Production: Distributed cache with fallback
+// 生产：具有回退的分布式缓存
 class CacheService {
   constructor(private redis, private fallback) {}
 
@@ -864,24 +864,24 @@ class CacheService {
 }
 ```
 
-### Observability-Driven Development
+### 可观察性驱动开发
 
-**Add observability hooks during green phase:**
+**在绿色阶段期间添加可观察性钩子：**
 
 ```typescript
 class OrderService {
   async createOrder(data: CreateOrderDto): Promise<Order> {
-    console.log("[OrderService] Creating order", { data }); // Simple logging
+    console.log("[OrderService] Creating order", { data }); // 简单日志
 
     const order = { id: "123", ...data };
 
-    console.log("[OrderService] Order created", { orderId: order.id }); // Success log
+    console.log("[OrderService] Order created", { orderId: order.id }); // 成功日志
 
     return order;
   }
 }
 
-// Refactor: Structured logging
+// 重构：结构化日志
 class OrderService {
   constructor(private logger: Logger) {}
 
@@ -900,4 +900,4 @@ class OrderService {
 }
 ```
 
-Tests to make pass: $ARGUMENTS
+要使通过的测试：$ARGUMENTS

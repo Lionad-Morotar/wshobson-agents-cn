@@ -1,5 +1,5 @@
-// Service Implementation Template for .NET 8+
-// This template demonstrates best practices for building robust services
+// .NET 8+ 的服务实现模板
+// 此模板演示构建健壮服务的最佳实践
 
 using System.Text.Json;
 using FluentValidation;
@@ -9,12 +9,12 @@ using Microsoft.Extensions.Options;
 namespace YourNamespace.Application.Services;
 
 /// <summary>
-/// Configuration options for the service
+/// 服务的配置选项
 /// </summary>
 public class ProductServiceOptions
 {
     public const string SectionName = "ProductService";
-    
+
     public int DefaultPageSize { get; set; } = 50;
     public int MaxPageSize { get; set; } = 200;
     public TimeSpan CacheDuration { get; set; } = TimeSpan.FromMinutes(15);
@@ -22,7 +22,7 @@ public class ProductServiceOptions
 }
 
 /// <summary>
-/// Generic result type for operations that can fail
+/// 用于可能失败的操作的通用结果类型
 /// </summary>
 public class Result<T>
 {
@@ -30,7 +30,7 @@ public class Result<T>
     public T? Value { get; }
     public string? Error { get; }
     public string? ErrorCode { get; }
-    
+
     private Result(bool isSuccess, T? value, string? error, string? errorCode)
     {
         IsSuccess = isSuccess;
@@ -38,16 +38,16 @@ public class Result<T>
         Error = error;
         ErrorCode = errorCode;
     }
-    
+
     public static Result<T> Success(T value) => new(true, value, null, null);
     public static Result<T> Failure(string error, string? code = null) => new(false, default, error, code);
-    
+
     public Result<TNew> Map<TNew>(Func<T, TNew> mapper) =>
         IsSuccess ? Result<TNew>.Success(mapper(Value!)) : Result<TNew>.Failure(Error!, ErrorCode);
 }
 
 /// <summary>
-/// Service interface - define the contract
+/// 服务接口 - 定义契约
 /// </summary>
 public interface IProductService
 {
@@ -59,7 +59,7 @@ public interface IProductService
 }
 
 /// <summary>
-/// Service implementation with full patterns
+/// 具有完整模式的服务实现
 /// </summary>
 public class ProductService : IProductService
 {
@@ -89,48 +89,48 @@ public class ProductService : IProductService
     public async Task<Result<Product>> GetByIdAsync(string id, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(id))
-            return Result<Product>.Failure("Product ID is required", "INVALID_ID");
+            return Result<Product>.Failure("产品 ID 是必需的", "INVALID_ID");
 
         try
         {
-            // Try cache first
+            // 首先尝试缓存
             var cacheKey = GetCacheKey(id);
             var cached = await _cache.GetAsync<Product>(cacheKey, ct);
-            
+
             if (cached != null)
             {
-                _logger.LogDebug("Cache hit for product {ProductId}", id);
+                _logger.LogDebug("产品 {ProductId} 的缓存命中", id);
                 return Result<Product>.Success(cached);
             }
 
-            // Fetch from repository
+            // 从仓储获取
             var product = await _repository.GetByIdAsync(id, ct);
-            
+
             if (product == null)
             {
-                _logger.LogWarning("Product not found: {ProductId}", id);
-                return Result<Product>.Failure($"Product '{id}' not found", "NOT_FOUND");
+                _logger.LogWarning("未找到产品：{ProductId}", id);
+                return Result<Product>.Failure($"未找到产品 '{id}'", "NOT_FOUND");
             }
 
-            // Populate cache
+            // 填充缓存
             await _cache.SetAsync(cacheKey, product, _options.CacheDuration, ct);
-            
+
             return Result<Product>.Success(product);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error retrieving product {ProductId}", id);
-            return Result<Product>.Failure("An error occurred while retrieving the product", "INTERNAL_ERROR");
+            _logger.LogError(ex, "检索产品 {ProductId} 时出错", id);
+            return Result<Product>.Failure("检索产品时发生错误", "INTERNAL_ERROR");
         }
     }
 
     public async Task<Result<PagedResult<Product>>> SearchAsync(
-        ProductSearchRequest request, 
+        ProductSearchRequest request,
         CancellationToken ct = default)
     {
         try
         {
-            // Sanitize pagination
+            // 清理分页参数
             var pageSize = Math.Clamp(request.PageSize ?? _options.DefaultPageSize, 1, _options.MaxPageSize);
             var page = Math.Max(request.Page ?? 1, 1);
 
@@ -140,7 +140,7 @@ public class ProductService : IProductService
                 Page = page
             };
 
-            // Execute search
+            // 执行搜索
             var (items, totalCount) = await _repository.SearchAsync(sanitizedRequest, ct);
 
             var result = new PagedResult<Product>
@@ -156,14 +156,14 @@ public class ProductService : IProductService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error searching products with request {@Request}", request);
-            return Result<PagedResult<Product>>.Failure("An error occurred while searching products", "INTERNAL_ERROR");
+            _logger.LogError(ex, "使用请求 {@Request} 搜索产品时出错", request);
+            return Result<PagedResult<Product>>.Failure("搜索产品时发生错误", "INTERNAL_ERROR");
         }
     }
 
     public async Task<Result<Product>> CreateAsync(CreateProductRequest request, CancellationToken ct = default)
     {
-        // Validate
+        // 验证
         var validation = await _createValidator.ValidateAsync(request, ct);
         if (!validation.IsValid)
         {
@@ -173,12 +173,12 @@ public class ProductService : IProductService
 
         try
         {
-            // Check for duplicates
+            // 检查重复项
             var existing = await _repository.GetBySkuAsync(request.Sku, ct);
             if (existing != null)
-                return Result<Product>.Failure($"Product with SKU '{request.Sku}' already exists", "DUPLICATE_SKU");
+                return Result<Product>.Failure($"SKU 为 '{request.Sku}' 的产品已存在", "DUPLICATE_SKU");
 
-            // Create entity
+            // 创建实体
             var product = new Product
             {
                 Id = Guid.NewGuid().ToString("N"),
@@ -189,29 +189,29 @@ public class ProductService : IProductService
                 CreatedAt = DateTime.UtcNow
             };
 
-            // Persist
+            // 持久化
             var created = await _repository.CreateAsync(product, ct);
-            
-            _logger.LogInformation("Created product {ProductId} with SKU {Sku}", created.Id, created.Sku);
+
+            _logger.LogInformation("创建了产品 {ProductId}，SKU 为 {Sku}", created.Id, created.Sku);
 
             return Result<Product>.Success(created);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error creating product with SKU {Sku}", request.Sku);
-            return Result<Product>.Failure("An error occurred while creating the product", "INTERNAL_ERROR");
+            _logger.LogError(ex, "创建 SKU 为 {Sku} 的产品时出错", request.Sku);
+            return Result<Product>.Failure("创建产品时发生错误", "INTERNAL_ERROR");
         }
     }
 
     public async Task<Result<Product>> UpdateAsync(
-        string id, 
-        UpdateProductRequest request, 
+        string id,
+        UpdateProductRequest request,
         CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(id))
-            return Result<Product>.Failure("Product ID is required", "INVALID_ID");
+            return Result<Product>.Failure("产品 ID 是必需的", "INVALID_ID");
 
-        // Validate
+        // 验证
         var validation = await _updateValidator.ValidateAsync(request, ct);
         if (!validation.IsValid)
         {
@@ -221,66 +221,66 @@ public class ProductService : IProductService
 
         try
         {
-            // Fetch existing
+            // 获取现有实体
             var existing = await _repository.GetByIdAsync(id, ct);
             if (existing == null)
-                return Result<Product>.Failure($"Product '{id}' not found", "NOT_FOUND");
+                return Result<Product>.Failure($"未找到产品 '{id}'", "NOT_FOUND");
 
-            // Apply updates (only non-null values)
+            // 应用更新（仅非空值）
             if (request.Name != null) existing.Name = request.Name;
             if (request.Price.HasValue) existing.Price = request.Price.Value;
             if (request.CategoryId.HasValue) existing.CategoryId = request.CategoryId.Value;
             existing.UpdatedAt = DateTime.UtcNow;
 
-            // Persist
+            // 持久化
             var updated = await _repository.UpdateAsync(existing, ct);
 
-            // Invalidate cache
+            // 使缓存失效
             await _cache.RemoveAsync(GetCacheKey(id), ct);
-            
-            _logger.LogInformation("Updated product {ProductId}", id);
+
+            _logger.LogInformation("更新了产品 {ProductId}", id);
 
             return Result<Product>.Success(updated);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error updating product {ProductId}", id);
-            return Result<Product>.Failure("An error occurred while updating the product", "INTERNAL_ERROR");
+            _logger.LogError(ex, "更新产品 {ProductId} 时出错", id);
+            return Result<Product>.Failure("更新产品时发生错误", "INTERNAL_ERROR");
         }
     }
 
     public async Task<Result<bool>> DeleteAsync(string id, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(id))
-            return Result<bool>.Failure("Product ID is required", "INVALID_ID");
+            return Result<bool>.Failure("产品 ID 是必需的", "INVALID_ID");
 
         try
         {
             var existing = await _repository.GetByIdAsync(id, ct);
             if (existing == null)
-                return Result<bool>.Failure($"Product '{id}' not found", "NOT_FOUND");
+                return Result<bool>.Failure($"未找到产品 '{id}'", "NOT_FOUND");
 
-            // Soft delete
+            // 软删除
             await _repository.DeleteAsync(id, ct);
 
-            // Invalidate cache
+            // 使缓存失效
             await _cache.RemoveAsync(GetCacheKey(id), ct);
-            
-            _logger.LogInformation("Deleted product {ProductId}", id);
+
+            _logger.LogInformation("删除了产品 {ProductId}", id);
 
             return Result<bool>.Success(true);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error deleting product {ProductId}", id);
-            return Result<bool>.Failure("An error occurred while deleting the product", "INTERNAL_ERROR");
+            _logger.LogError(ex, "删除产品 {ProductId} 时出错", id);
+            return Result<bool>.Failure("删除产品时发生错误", "INTERNAL_ERROR");
         }
     }
 
     private static string GetCacheKey(string id) => $"product:{id}";
 }
 
-// Supporting types
+// 支持类型
 public record CreateProductRequest(string Name, string Sku, decimal Price, int CategoryId);
 public record UpdateProductRequest(string? Name = null, decimal? Price = null, int? CategoryId = null);
 public record ProductSearchRequest(
@@ -313,24 +313,24 @@ public class Product
     public DateTime? UpdatedAt { get; set; }
 }
 
-// Validators using FluentValidation
+// 使用 FluentValidation 的验证器
 public class CreateProductRequestValidator : AbstractValidator<CreateProductRequest>
 {
     public CreateProductRequestValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty().WithMessage("Name is required")
-            .MaximumLength(200).WithMessage("Name must not exceed 200 characters");
+            .NotEmpty().WithMessage("名称是必需的")
+            .MaximumLength(200).WithMessage("名称不得超过 200 个字符");
 
         RuleFor(x => x.Sku)
-            .NotEmpty().WithMessage("SKU is required")
-            .MaximumLength(50).WithMessage("SKU must not exceed 50 characters")
-            .Matches(@"^[A-Z0-9\-]+$").WithMessage("SKU must contain only uppercase letters, numbers, and hyphens");
+            .NotEmpty().WithMessage("SKU 是必需的")
+            .MaximumLength(50).WithMessage("SKU 不得超过 50 个字符")
+            .Matches(@"^[A-Z0-9\-]+$").WithMessage("SKU 只能包含大写字母、数字和连字符");
 
         RuleFor(x => x.Price)
-            .GreaterThan(0).WithMessage("Price must be greater than 0");
+            .GreaterThan(0).WithMessage("价格必须大于 0");
 
         RuleFor(x => x.CategoryId)
-            .GreaterThan(0).WithMessage("Category is required");
+            .GreaterThan(0).WithMessage("类别是必需的");
     }
 }

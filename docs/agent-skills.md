@@ -1,333 +1,333 @@
-# Agent Skills
+# Agent 技能
 
-Agent Skills are modular packages that extend Claude's capabilities with specialized domain knowledge, following Anthropic's [Agent Skills Specification](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md). This plugin ecosystem includes **129 specialized skills** across 27 plugins, enabling progressive disclosure and efficient token usage.
+Agent 技能是模块化包，通过专业领域知识扩展 Claude 的能力，遵循 Anthropic 的 [Agent Skills Specification](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md)。该插件生态系统包含跨 27 个插件的 **129 种专业技能**，实现渐进式披露和高效的 token 使用。
 
-## Overview
+## 概述
 
-Skills provide Claude with deep expertise in specific domains without loading everything into context upfront. Each skill includes:
+技能为 Claude 提供特定领域的深度专业知识，而无需预先将所有内容加载到上下文中。每个技能包括：
 
-- **YAML Frontmatter**: Name and activation criteria
-- **Progressive Disclosure**: Metadata → Instructions → Resources
-- **Activation Triggers**: Clear "Use when" clauses for automatic invocation
+- **YAML Frontmatter**：名称和激活标准
+- **渐进式披露**：元数据 → 指令 → 资源
+- **激活触发器**：清晰的"适用于"子句用于自动调用
 
-## Skills by Plugin
+## 按插件分类的技能
 
-### Kubernetes Operations (4 skills)
+### Kubernetes 运维 (4 个技能)
 
-| Skill                      | Description                                                                                                              |
+| 技能                      | 描述                                                                                                              |
 | -------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **k8s-manifest-generator** | Create production-ready Kubernetes manifests for Deployments, Services, ConfigMaps, and Secrets following best practices |
-| **helm-chart-scaffolding** | Design, organize, and manage Helm charts for templating and packaging Kubernetes applications                            |
-| **gitops-workflow**        | Implement GitOps workflows with ArgoCD and Flux for automated, declarative deployments                                   |
-| **k8s-security-policies**  | Implement Kubernetes security policies including NetworkPolicy, PodSecurityPolicy, and RBAC                              |
+| **k8s-manifest-generator** | 按照最佳实践创建生产就绪的 Kubernetes 清单，用于 Deployment、Service、ConfigMap 和 Secret |
+| **helm-chart-scaffolding** | 设计、组织和管理 Helm 图表，用于模板化和打包 Kubernetes 应用                            |
+| **gitops-workflow**        | 使用 ArgoCD 和 Flux 实现 GitOps 工作流，实现自动化、声明式部署                                   |
+| **k8s-security-policies**  | 实现包括 NetworkPolicy、PodSecurityPolicy 和 RBAC 的 Kubernetes 安全策略                              |
 
-### LLM Application Development (8 skills)
+### LLM 应用开发 (8 个技能)
 
-| Skill                            | Description                                                                                 |
+| 技能                            | 描述                                                                                 |
 | -------------------------------- | ------------------------------------------------------------------------------------------- |
-| **langchain-architecture**       | Design LLM applications using LangChain framework with agents, memory, and tool integration |
-| **prompt-engineering-patterns**  | Master advanced prompt engineering techniques for LLM performance and reliability           |
-| **rag-implementation**           | Build Retrieval-Augmented Generation systems with vector databases and semantic search      |
-| **llm-evaluation**               | Implement comprehensive evaluation strategies with automated metrics and benchmarking       |
-| **embedding-strategies**         | Design embedding pipelines for text, images, and multimodal content with optimal chunking   |
-| **similarity-search-patterns**   | Implement efficient similarity search with ANN algorithms and distance metrics              |
-| **vector-index-tuning**          | Optimize vector index performance with HNSW, IVF, and hybrid configurations                 |
-| **hybrid-search-implementation** | Combine vector and keyword search for improved retrieval accuracy                           |
+| **langchain-architecture**       | 使用 LangChain 框架设计 LLM 应用，包含代理、记忆和工具集成 |
+| **prompt-engineering-patterns**  | 掌握高级提示工程技术，提升 LLM 性能和可靠性           |
+| **rag-implementation**           | 使用向量数据库和语义搜索构建检索增强生成系统      |
+| **llm-evaluation**               | 通过自动化指标和基准测试实现全面评估策略       |
+| **embedding-strategies**         | 设计文本、图像和多模态内容的嵌入管道，实现最优分块   |
+| **similarity-search-patterns**   | 使用 ANN 算法和距离度量实现高效相似性搜索              |
+| **vector-index-tuning**          | 通过 HNSW、IVF 和混合配置优化向量索引性能                 |
+| **hybrid-search-implementation** | 结合向量和关键词搜索以提高检索准确性                           |
 
-### Backend Development (9 skills)
+### 后端开发 (9 个技能)
 
-| Skill                               | Description                                                                                           |
+| 技能                               | 描述                                                                                           |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| **api-design-principles**           | Master REST and GraphQL API design for intuitive, scalable, and maintainable APIs                     |
-| **architecture-patterns**           | Implement Clean Architecture, Hexagonal Architecture, and Domain-Driven Design                        |
-| **microservices-patterns**          | Design microservices with service boundaries, event-driven communication, and resilience              |
-| **workflow-orchestration-patterns** | Design durable workflows with Temporal for distributed systems, saga patterns, and state management   |
-| **temporal-python-testing**         | Test Temporal workflows with pytest, time-skipping, and mocking strategies for comprehensive coverage |
-| **event-store-design**              | Design event stores with optimized schemas, snapshots, and stream partitioning                        |
-| **cqrs-implementation**             | Implement CQRS with separate read/write models and eventual consistency patterns                      |
-| **projection-patterns**             | Build efficient projections from event streams for read-optimized views                               |
-| **saga-orchestration**              | Design distributed sagas with compensation logic and failure handling                                 |
+| **api-design-principles**           | 掌握 REST 和 GraphQL API 设计，构建直观、可扩展且可维护的 API                     |
+| **architecture-patterns**           | 实现整洁架构、六边形架构和领域驱动设计                        |
+| **microservices-patterns**          | 设计微服务，包含服务边界、事件驱动通信和弹性              |
+| **workflow-orchestration-patterns** | 使用 Temporal 设计持久化工作流，用于分布式系统、Saga 模式和状态管理   |
+| **temporal-python-testing**         | 使用 pytest、时间跳过和模拟策略测试 Temporal 工作流，实现全面覆盖 |
+| **event-store-design**              | 设计优化的模式、快照和流分区的事件存储                        |
+| **cqrs-implementation**             | 实现使用分离读/写模型的 CQRS 和最终一致性模式                      |
+| **projection-patterns**             | 从事件流构建高效投影，用于读优化视图                               |
+| **saga-orchestration**              | 设计包含补偿逻辑和故障处理的分布式 Saga                                 |
 
-### Developer Essentials (11 skills)
+### 开发者必备 (11 个技能)
 
-| Skill                            | Description                                                                                     |
+| 技能                            | 描述                                                                                     |
 | -------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **git-advanced-workflows**       | Master advanced Git workflows including rebasing, cherry-picking, bisect, worktrees, and reflog |
-| **sql-optimization-patterns**    | Optimize SQL queries, indexing strategies, and EXPLAIN analysis for database performance        |
-| **error-handling-patterns**      | Implement robust error handling with exceptions, Result types, and graceful degradation         |
-| **code-review-excellence**       | Provide effective code reviews with constructive feedback and systematic analysis               |
-| **e2e-testing-patterns**         | Build reliable E2E test suites with Playwright and Cypress for critical user workflows          |
-| **auth-implementation-patterns** | Implement authentication and authorization with JWT, OAuth2, sessions, and RBAC                 |
-| **debugging-strategies**         | Master systematic debugging techniques, profiling tools, and root cause analysis                |
-| **monorepo-management**          | Manage monorepos with Turborepo, Nx, and pnpm workspaces for scalable multi-package projects    |
-| **nx-workspace-patterns**        | Configure Nx workspaces with computation caching and affected commands                          |
-| **turborepo-caching**            | Optimize Turborepo builds with remote caching and pipeline configuration                        |
-| **bazel-build-optimization**     | Design Bazel builds with hermetic actions and remote execution                                  |
+| **git-advanced-workflows**       | 掌握高级 Git 工作流，包括变基、精选、二分、工作树和 reflog |
+| **sql-optimization-patterns**    | 优化 SQL 查询、索引策略和 EXPLAIN 分析以提升数据库性能        |
+| **error-handling-patterns**      | 实现健壮的错误处理，包含异常、Result 类型和优雅降级         |
+| **code-review-excellence**       | 提供有效的代码审查，包含建设性反馈和系统分析               |
+| **e2e-testing-patterns**         | 使用 Playwright 和 Cypress 为关键用户工作流构建可靠的 E2E 测试套件          |
+| **auth-implementation-patterns** | 使用 JWT、OAuth2、会话和 RBAC 实现认证和授权                 |
+| **debugging-strategies**         | 掌握系统化调试技术、分析工具和根本原因分析                |
+| **monorepo-management**          | 使用 Turborepo、Nx 和 pnpm 工作区管理 monorepo，实现可扩展的多包项目    |
+| **nx-workspace-patterns**        | 使用计算缓存和影响命令配置 Nx 工作区                          |
+| **turborepo-caching**            | 通过远程缓存和管道配置优化 Turborepo 构建                        |
+| **bazel-build-optimization**     | 使用隔离操作和远程执行设计 Bazel 构建                                  |
 
-### Blockchain & Web3 (4 skills)
+### 区块链与 Web3 (4 个技能)
 
-| Skill                       | Description                                                                             |
+| 技能                       | 描述                                                                             |
 | --------------------------- | --------------------------------------------------------------------------------------- |
-| **defi-protocol-templates** | Implement DeFi protocols with templates for staking, AMMs, governance, and lending      |
-| **nft-standards**           | Implement NFT standards (ERC-721, ERC-1155) with metadata and marketplace integration   |
-| **solidity-security**       | Master smart contract security to prevent vulnerabilities and implement secure patterns |
-| **web3-testing**            | Test smart contracts using Hardhat and Foundry with unit tests and mainnet forking      |
+| **defi-protocol-templates** | 使用质押、AMM、治理和借贷模板实现 DeFi 协议      |
+| **nft-standards**           | 实现包含元数据和市场集成的 NFT 标准 (ERC-721, ERC-1155)   |
+| **solidity-security**       | 掌握智能合约安全以防止漏洞并实现安全模式 |
+| **web3-testing**            | 使用 Hardhat 和 Foundry 测试智能合约，包含单元测试和主网分叉      |
 
-### CI/CD Automation (4 skills)
+### CI/CD 自动化 (4 个技能)
 
-| Skill                          | Description                                                                               |
+| 技能                          | 描述                                                                               |
 | ------------------------------ | ----------------------------------------------------------------------------------------- |
-| **deployment-pipeline-design** | Design multi-stage CI/CD pipelines with approval gates and security checks                |
-| **github-actions-templates**   | Create production-ready GitHub Actions workflows for testing, building, and deploying     |
-| **gitlab-ci-patterns**         | Build GitLab CI/CD pipelines with multi-stage workflows and distributed runners           |
-| **secrets-management**         | Implement secure secrets management using Vault, AWS Secrets Manager, or native solutions |
+| **deployment-pipeline-design** | 设计包含审批门和安全检查的多阶段 CI/CD 管道                |
+| **github-actions-templates**   | 创建用于测试、构建和部署的生产就绪 GitHub Actions 工作流     |
+| **gitlab-ci-patterns**         | 使用多阶段工作流和分布式运行器构建 GitLab CI/CD 管道           |
+| **secrets-management**         | 使用 Vault、AWS Secrets Manager 或原生解决方案实现安全密钥管理         |
 
-### Cloud Infrastructure (8 skills)
+### 云基础设施 (8 个技能)
 
-| Skill                          | Description                                                               |
+| 技能                          | 描述                                                               |
 | ------------------------------ | ------------------------------------------------------------------------- |
-| **terraform-module-library**   | Build reusable Terraform modules for AWS, Azure, and GCP infrastructure   |
-| **multi-cloud-architecture**   | Design multi-cloud architectures avoiding vendor lock-in                  |
-| **hybrid-cloud-networking**    | Configure secure connectivity between on-premises and cloud platforms     |
-| **cost-optimization**          | Optimize cloud costs through rightsizing, tagging, and reserved instances |
-| **istio-traffic-management**   | Configure Istio traffic routing, load balancing, and canary deployments   |
-| **linkerd-patterns**           | Implement Linkerd service mesh with automatic mTLS and traffic splitting  |
-| **mtls-configuration**         | Design zero-trust mTLS architectures with certificate management          |
-| **service-mesh-observability** | Build comprehensive observability with distributed tracing and metrics    |
+| **terraform-module-library**   | 为 AWS、Azure 和 GCP 基础设施构建可重用的 Terraform 模块   |
+| **multi-cloud-architecture**   | 设计避免供应商锁定的多云架构                  |
+| **hybrid-cloud-networking**    | 配置本地和云平台之间的安全连接     |
+| **cost-optimization**          | 通过合理调整大小、标记和预留实例优化云成本          |
+| **istio-traffic-management**   | 配置 Istio 流量路由、负载均衡和金丝雀部署   |
+| **linkerd-patterns**           | 使用自动 mTLS 和流量拆分实现 Linkerd 服务网格  |
+| **mtls-configuration**         | 使用证书管理设计零信任 mTLS 架构          |
+| **service-mesh-observability** | 使用分布式跟踪和指标构建全面的可观测性    |
 
-### Framework Migration (4 skills)
+### 框架迁移 (4 个技能)
 
-| Skill                   | Description                                                                   |
+| 技能                   | 描述                                                                   |
 | ----------------------- | ----------------------------------------------------------------------------- |
-| **react-modernization** | Upgrade React apps, migrate to hooks, and adopt concurrent features           |
-| **angular-migration**   | Migrate from AngularJS to Angular using hybrid mode and incremental rewriting |
-| **database-migration**  | Execute database migrations with zero-downtime strategies and transformations |
-| **dependency-upgrade**  | Manage major dependency upgrades with compatibility analysis and testing      |
+| **react-modernization** | 升级 React 应用，迁移到 hooks，采用并发特性           |
+| **angular-migration**   | 使用混合模式和增量重写从 AngularJS 迁移到 Angular |
+| **database-migration**  | 使用零停机策略和转换执行数据库迁移  |
+| **dependency-upgrade**  | 通过兼容性分析和测试管理主要依赖升级      |
 
-### Observability & Monitoring (4 skills)
+### 可观测性与监控 (4 个技能)
 
-| Skill                        | Description                                                             |
+| 技能                        | 描述                                                             |
 | ---------------------------- | ----------------------------------------------------------------------- |
-| **prometheus-configuration** | Set up Prometheus for comprehensive metric collection and monitoring    |
-| **grafana-dashboards**       | Create production Grafana dashboards for real-time system visualization |
-| **distributed-tracing**      | Implement distributed tracing with Jaeger and Tempo to track requests   |
-| **slo-implementation**       | Define SLIs and SLOs with error budgets and alerting                    |
+| **prometheus-configuration** | 设置 Prometheus 以实现全面的指标收集和监控    |
+| **grafana-dashboards**       | 创建生产 Grafana 仪表板以实现实时系统可视化 |
+| **distributed-tracing**      | 使用 Jaeger 和 Tempo 实现分布式跟踪以跟踪请求   |
+| **slo-implementation**       | 使用错误预算和告警定义 SLI 和 SLO                    |
 
-### Payment Processing (4 skills)
+### 支付处理 (4 个技能)
 
-| Skill                  | Description                                                                   |
+| 技能                  | 描述                                                                   |
 | ---------------------- | ----------------------------------------------------------------------------- |
-| **stripe-integration** | Implement Stripe payment processing for checkout, subscriptions, and webhooks |
-| **paypal-integration** | Integrate PayPal payment processing with express checkout and subscriptions   |
-| **pci-compliance**     | Implement PCI DSS compliance for secure payment card data handling            |
-| **billing-automation** | Build automated billing systems for recurring payments and invoicing          |
+| **stripe-integration** | 实现 Stripe 支付处理，包含结账、订阅和 Webhook |
+| **paypal-integration** | 集成 PayPal 支付处理，包含快速结账和订阅   |
+| **pci-compliance**     | 实现 PCI DSS 合规以安全处理支付卡数据            |
+| **billing-automation** | 构建自动计费系统以处理周期性支付和发票          |
 
-### Python Development (5 skills)
+### Python 开发 (5 个技能)
 
-| Skill                               | Description                                                                           |
+| 技能                               | 描述                                                                           |
 | ----------------------------------- | ------------------------------------------------------------------------------------- |
-| **async-python-patterns**           | Master Python asyncio, concurrent programming, and async/await patterns               |
-| **python-testing-patterns**         | Implement comprehensive testing with pytest, fixtures, and mocking                    |
-| **python-packaging**                | Create distributable Python packages with proper structure and PyPI publishing        |
-| **python-performance-optimization** | Profile and optimize Python code using cProfile and performance best practices        |
-| **uv-package-manager**              | Master the uv package manager for fast dependency management and virtual environments |
+| **async-python-patterns**           | 掌握 Python asyncio、并发编程和 async/await 模式               |
+| **python-testing-patterns**         | 使用 pytest、fixture 和 mock 实现全面测试                    |
+| **python-packaging**                | 创建可分发的 Python 包，包含正确的结构和 PyPI 发布        |
+| **python-performance-optimization** | 使用 cProfile 和性能最佳实践分析和优化 Python 代码        |
+| **uv-package-manager**              | 掌握 uv 包管理器以实现快速依赖管理和虚拟环境              |
 
-### JavaScript/TypeScript (4 skills)
+### JavaScript/TypeScript (4 个技能)
 
-| Skill                           | Description                                                                           |
+| 技能                           | 描述                                                                           |
 | ------------------------------- | ------------------------------------------------------------------------------------- |
-| **typescript-advanced-types**   | Master TypeScript's advanced type system including generics and conditional types     |
-| **nodejs-backend-patterns**     | Build production-ready Node.js services with Express/Fastify and best practices       |
-| **javascript-testing-patterns** | Implement comprehensive testing with Jest, Vitest, and Testing Library                |
-| **modern-javascript-patterns**  | Master ES6+ features including async/await, destructuring, and functional programming |
+| **typescript-advanced-types**   | 掌握 TypeScript 高级类型系统，包含泛型和条件类型     |
+| **nodejs-backend-patterns**     | 使用 Express/Fastify 和最佳实践构建生产就绪的 Node.js 服务       |
+| **javascript-testing-patterns** | 使用 Jest、Vitest 和 Testing Library 实现全面测试                |
+| **modern-javascript-patterns**  | 掌握 ES6+ 特性，包含 async/await、解构和函数式编程 |
 
-### API Scaffolding (1 skill)
+### API 脚手架 (1 个技能)
 
-| Skill                 | Description                                                                     |
+| 技能                 | 描述                                                                     |
 | --------------------- | ------------------------------------------------------------------------------- |
-| **fastapi-templates** | Create production-ready FastAPI projects with async patterns and error handling |
+| **fastapi-templates** | 创建包含异步模式和错误处理的生产就绪 FastAPI 项目 |
 
-### Machine Learning Operations (1 skill)
+### 机器学习运维 (1 个技能)
 
-| Skill                    | Description                                                               |
+| 技能                    | 描述                                                               |
 | ------------------------ | ------------------------------------------------------------------------- |
-| **ml-pipeline-workflow** | Build end-to-end MLOps pipelines from data preparation through deployment |
+| **ml-pipeline-workflow** | 构建从数据准备到部署的端到端 MLOps 管道 |
 
-### Security Scanning (5 skills)
+### 安全扫描 (5 个技能)
 
-| Skill                               | Description                                                                     |
+| 技能                               | 描述                                                                     |
 | ----------------------------------- | ------------------------------------------------------------------------------- |
-| **sast-configuration**              | Configure Static Application Security Testing tools for vulnerability detection |
-| **stride-analysis-patterns**        | Apply STRIDE methodology to identify spoofing, tampering, and other threats     |
-| **attack-tree-construction**        | Build attack trees mapping threat scenarios to vulnerabilities                  |
-| **security-requirement-extraction** | Derive security requirements from threat models with acceptance criteria        |
-| **threat-mitigation-mapping**       | Map threats to mitigations with prioritized remediation plans                   |
+| **sast-configuration**              | 配置静态应用安全测试工具以检测漏洞 |
+| **stride-analysis-patterns**        | 应用 STRIDE 方法论识别欺骗、篡改和其他威胁     |
+| **attack-tree-construction**        | 构建将威胁场景映射到漏洞的攻击树                  |
+| **security-requirement-extraction** | 从威胁模型导出安全需求及验收标准        |
+| **threat-mitigation-mapping**       | 将威胁映射到缓解措施及优先修复计划                   |
 
-### Accessibility Compliance (2 skills)
+### 可访问性合规 (2 个技能)
 
-| Skill                     | Description                                                             |
+| 技能                     | 描述                                                             |
 | ------------------------- | ----------------------------------------------------------------------- |
-| **wcag-audit-patterns**   | Conduct WCAG 2.2 accessibility audits with automated and manual testing |
-| **screen-reader-testing** | Test screen reader compatibility across NVDA, JAWS, and VoiceOver       |
+| **wcag-audit-patterns**   | 使用自动化和手动测试进行 WCAG 2.2 可访问性审计 |
+| **screen-reader-testing** | 在 NVDA、JAWS 和 VoiceOver 上测试屏幕阅读器兼容性       |
 
-### Business Analytics (2 skills)
+### 业务分析 (2 个技能)
 
-| Skill                    | Description                                                                  |
+| 技能                    | 描述                                                                  |
 | ------------------------ | ---------------------------------------------------------------------------- |
-| **kpi-dashboard-design** | Design executive dashboards with actionable KPIs and drill-down capabilities |
-| **data-storytelling**    | Transform data insights into compelling narratives for stakeholders          |
+| **kpi-dashboard-design** | 设计包含可操作 KPI 和下钻功能的高管仪表板 |
+| **data-storytelling**    | 将数据洞察转化为面向利益相关者的引人入胜的叙述          |
 
-### Data Engineering (4 skills)
+### 数据工程 (4 个技能)
 
-| Skill                           | Description                                                                 |
+| 技能                           | 描述                                                                 |
 | ------------------------------- | --------------------------------------------------------------------------- |
-| **spark-optimization**          | Optimize Apache Spark jobs with partitioning, caching, and broadcast joins  |
-| **dbt-transformation-patterns** | Build dbt models with incremental strategies and testing                    |
-| **airflow-dag-patterns**        | Design Airflow DAGs with proper dependencies and error handling             |
-| **data-quality-frameworks**     | Implement data quality checks with Great Expectations and custom validators |
+| **spark-optimization**          | 通过分区、缓存和广播连接优化 Apache Spark 作业  |
+| **dbt-transformation-patterns** | 使用增量策略和测试构建 dbt 模型                    |
+| **airflow-dag-patterns**        | 设计具有适当依赖和错误处理的 Airflow DAG             |
+| **data-quality-frameworks**     | 使用 Great Expectations 和自定义验证器实现数据质量检查     |
 
-### Documentation Generation (3 skills)
+### 文档生成 (3 个技能)
 
-| Skill                             | Description                                                         |
+| 技能                             | 描述                                                         |
 | --------------------------------- | ------------------------------------------------------------------- |
-| **openapi-spec-generation**       | Generate OpenAPI 3.1 specifications from code with complete schemas |
-| **changelog-automation**          | Automate changelog generation from conventional commits             |
-| **architecture-decision-records** | Write ADRs documenting architectural decisions and trade-offs       |
+| **openapi-spec-generation**       | 从代码生成包含完整模式的 OpenAPI 3.1 规范 |
+| **changelog-automation**          | 从约定提交自动生成变更日志             |
+| **architecture-decision-records** | 编写记录架构决策和权衡的 ADR       |
 
-### Frontend Mobile Development (4 skills)
+### 前端移动开发 (4 个技能)
 
-| Skill                          | Description                                                     |
+| 技能                          | 描述                                                     |
 | ------------------------------ | --------------------------------------------------------------- |
-| **react-state-management**     | Implement state management with Zustand, Jotai, and React Query |
-| **nextjs-app-router-patterns** | Build Next.js 14+ apps with App Router, RSC, and streaming      |
-| **tailwind-design-system**     | Create design systems with Tailwind CSS and component libraries |
-| **react-native-architecture**  | Architect React Native apps with navigation and native modules  |
+| **react-state-management**     | 使用 Zustand、Jotai 和 React Query 实现状态管理 |
+| **nextjs-app-router-patterns** | 使用 App Router、RSC 和流式构建 Next.js 14+ 应用      |
+| **tailwind-design-system**     | 使用 Tailwind CSS 和组件库创建设计系统     |
+| **react-native-architecture**  | 架构包含导航和原生模块的 React Native 应用  |
 
-### UI Design (9 skills)
+### UI 设计 (9 个技能)
 
-| Skill                         | Description                                                         |
+| 技能                         | 描述                                                         |
 | ----------------------------- | ------------------------------------------------------------------- |
-| **design-system-patterns**    | Build scalable design systems with tokens, components, and theming  |
-| **accessibility-compliance**  | Implement WCAG 2.1/2.2 compliance with proper ARIA and keyboard nav |
-| **responsive-design**         | Create fluid layouts with CSS Grid, Flexbox, and container queries  |
-| **mobile-ios-design**         | Design iOS apps following Human Interface Guidelines                |
-| **mobile-android-design**     | Design Android apps following Material Design 3 guidelines          |
-| **react-native-design**       | Cross-platform design patterns for React Native applications        |
-| **web-component-design**      | Build accessible, reusable web components with Shadow DOM           |
-| **interaction-design**        | Create micro-interactions, animations, and gesture-based interfaces |
-| **visual-design-foundations** | Apply typography, color theory, spacing, and visual hierarchy       |
+| **design-system-patterns**    | 使用令牌、组件和主题构建可扩展的设计系统  |
+| **accessibility-compliance**  | 使用适当的 ARIA 和键盘导航实现 WCAG 2.1/2.2 合规  |
+| **responsive-design**         | 使用 CSS Grid、Flexbox 和容器查询创建流体布局  |
+| **mobile-ios-design**         | 遵循人机界面指南设计 iOS 应用                |
+| **mobile-android-design**     | 遵循 Material Design 3 指南设计 Android 应用          |
+| **react-native-design**       | React Native 应用的跨平台设计模式        |
+| **web-component-design**      | 使用 Shadow DOM 构建可访问、可重用的 Web 组件           |
+| **interaction-design**        | 创建微交互、动画和基于手势的界面        |
+| **visual-design-foundations** | 应用排版、色彩理论、间距和视觉层次       |
 
-### Game Development (2 skills)
+### 游戏开发 (2 个技能)
 
-| Skill                       | Description                                                          |
+| 技能                       | 描述                                                          |
 | --------------------------- | -------------------------------------------------------------------- |
-| **unity-ecs-patterns**      | Implement Unity ECS for high-performance game systems                |
-| **godot-gdscript-patterns** | Build Godot games with GDScript best practices and scene composition |
+| **unity-ecs-patterns**      | 实现 Unity ECS 以构建高性能游戏系统                |
+| **godot-gdscript-patterns** | 使用 GDScript 最佳实践和场景组合构建 Godot 游戏 |
 
-### HR Legal Compliance (2 skills)
+### HR 法务合规 (2 个技能)
 
-| Skill                             | Description                                                      |
+| 技能                             | 描述                                                      |
 | --------------------------------- | ---------------------------------------------------------------- |
-| **gdpr-data-handling**            | Implement GDPR-compliant data processing with consent management |
-| **employment-contract-templates** | Generate employment contracts with jurisdiction-specific clauses |
+| **gdpr-data-handling**            | 实现符合 GDPR 的数据处理及同意管理 |
+| **employment-contract-templates** | 生成包含特定司法管辖区条款的雇佣合同 |
 
-### Incident Response (3 skills)
+### 事件响应 (3 个技能)
 
-| Skill                          | Description                                                           |
+| 技能                          | 描述                                                           |
 | ------------------------------ | --------------------------------------------------------------------- |
-| **postmortem-writing**         | Write blameless postmortems with root cause analysis and action items |
-| **incident-runbook-templates** | Create runbooks for common incident scenarios with escalation paths   |
-| **on-call-handoff-patterns**   | Design on-call handoffs with context preservation and alert routing   |
+| **postmortem-writing**         | 编写包含根本原因分析和行动项的无责事后回顾         |
+| **incident-runbook-templates** | 为常见事件场景创建包含升级路径的运行手册   |
+| **on-call-handoff-patterns**   | 设计包含上下文保留和告警路由的值班交接   |
 
-### Quantitative Trading (2 skills)
+### 量化交易 (2 个技能)
 
-| Skill                        | Description                                                             |
+| 技能                        | 描述                                                             |
 | ---------------------------- | ----------------------------------------------------------------------- |
-| **backtesting-frameworks**   | Build backtesting systems with realistic slippage and transaction costs |
-| **risk-metrics-calculation** | Calculate VaR, Sharpe ratio, and drawdown metrics for portfolios        |
+| **backtesting-frameworks**   | 构建包含真实滑点和交易成本的回测系统 |
+| **risk-metrics-calculation** | 计算投资组合的 VaR、夏普比率和回撤指标        |
 
-### Systems Programming (3 skills)
+### 系统编程 (3 个技能)
 
-| Skill                       | Description                                                                 |
+| 技能                       | 描述                                                                 |
 | --------------------------- | --------------------------------------------------------------------------- |
-| **rust-async-patterns**     | Implement async Rust with Tokio, futures, and proper error handling         |
-| **go-concurrency-patterns** | Design Go concurrency with channels, worker pools, and context cancellation |
-| **memory-safety-patterns**  | Write memory-safe code with ownership, bounds checking, and sanitizers      |
+| **rust-async-patterns**     | 使用 Tokio、futures 和适当的错误处理实现异步 Rust         |
+| **go-concurrency-patterns** | 使用 channel、工作池和上下文取消设计 Go 并发 |
+| **memory-safety-patterns**  | 使用所有权、边界检查和清理程序编写内存安全代码      |
 
-### Conductor - Project Management (3 skills)
+### Conductor - 项目管理 (3 个技能)
 
-| Skill                          | Description                                                                                             |
+| 技能                          | 描述                                                                                             |
 | ------------------------------ | ------------------------------------------------------------------------------------------------------- |
-| **context-driven-development** | Apply Context-Driven Development methodology with product context, specifications, and phased planning  |
-| **track-management**           | Manage development tracks for features, bugs, chores, and refactors with specs and implementation plans |
-| **workflow-patterns**          | Implement TDD workflows, commit strategies, and verification checkpoints for systematic development     |
+| **context-driven-development** | 应用上下文驱动开发方法论，包含产品上下文、规范和分阶段规划  |
+| **track-management**           | 管理功能、错误、杂项和重构的开发跟踪，包含规范和实施计划 |
+| **workflow-patterns**          | 实现 TDD 工作流、提交策略和验证检查点，实现系统化开发     |
 
-## How Skills Work
+## 技能工作原理
 
-### Activation
+### 激活
 
-Skills are automatically activated when Claude detects matching patterns in your request:
-
-```
-User: "Set up Kubernetes deployment with Helm chart"
-→ Activates: helm-chart-scaffolding, k8s-manifest-generator
-
-User: "Build a RAG system for document Q&A"
-→ Activates: rag-implementation, prompt-engineering-patterns
-
-User: "Optimize Python async performance"
-→ Activates: async-python-patterns, python-performance-optimization
-```
-
-### Progressive Disclosure
-
-Skills use a three-tier architecture for token efficiency:
-
-1. **Metadata** (Frontmatter): Name and activation criteria (always loaded)
-2. **Instructions**: Core guidance and patterns (loaded when activated)
-3. **Resources**: Examples and templates (loaded on demand)
-
-### Integration with Agents
-
-Skills work alongside agents to provide deep domain expertise:
-
-- **Agents**: High-level reasoning and orchestration
-- **Skills**: Specialized knowledge and implementation patterns
-
-Example workflow:
+当 Claude 在您的请求中检测到匹配模式时，技能会自动激活：
 
 ```
-backend-architect agent → Plans API architecture
+用户: "Set up Kubernetes deployment with Helm chart"
+→ 激活: helm-chart-scaffolding, k8s-manifest-generator
+
+用户: "Build a RAG system for document Q&A"
+→ 激活: rag-implementation, prompt-engineering-patterns
+
+用户: "Optimize Python async performance"
+→ 激活: async-python-patterns, python-performance-optimization
+```
+
+### 渐进式披露
+
+技能使用三层架构实现 token 效率：
+
+1. **元数据**（Frontmatter）：名称和激活标准（始终加载）
+2. **指令**：核心指导和模式（激活时加载）
+3. **资源**：示例和模板（按需加载）
+
+### 与 Agent 集成
+
+技能与 Agent 协同工作以提供深度领域专业知识：
+
+- **Agent**：高级推理和编排
+- **技能**：专业知识和实施模式
+
+示例工作流：
+
+```
+backend-architect agent → 规划 API 架构
   ↓
-api-design-principles skill → Provides REST/GraphQL best practices
+api-design-principles skill → 提供 REST/GraphQL 最佳实践
   ↓
-fastapi-templates skill → Supplies production-ready templates
+fastapi-templates skill → 提供生产就绪模板
 ```
 
-## Specification Compliance
+## 规范合规性
 
-All 107 skills follow the [Agent Skills Specification](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md):
+所有 107 个技能遵循 [Agent Skills Specification](https://github.com/anthropics/skills/blob/main/agent_skills_spec.md)：
 
-- ✓ Required `name` field (hyphen-case)
-- ✓ Required `description` field with "Use when" clause
-- ✓ Descriptions under 1024 characters
-- ✓ Complete, non-truncated descriptions
-- ✓ Proper YAML frontmatter formatting
+- ✓ 必需的 `name` 字段（连字符命名）
+- ✓ �必需的 `description` 字段，包含"适用于"子句
+- ✓ 描述少于 1024 个字符
+- ✓ 完整、非截断的描述
+- ✓ 正确的 YAML frontmatter 格式
 
-## Creating New Skills
+## 创建新技能
 
-To add a skill to a plugin:
+向插件添加技能：
 
-1. Create `plugins/{plugin-name}/skills/{skill-name}/SKILL.md`
-2. Add YAML frontmatter:
+1. 创建 `plugins/{plugin-name}/skills/{skill-name}/SKILL.md`
+2. 添加 YAML frontmatter：
    ```yaml
    ---
    name: skill-name
-   description: What the skill does. Use when [activation trigger].
+   description: 技能的功能。适用于 [激活触发器]。
    ---
    ```
-3. Write comprehensive skill content using progressive disclosure
-4. Add skill path to `marketplace.json`:
+3. 使用渐进式披露编写全面的技能内容
+4. 将技能路径添加到 `marketplace.json`：
    ```json
    {
      "name": "plugin-name",
@@ -335,24 +335,24 @@ To add a skill to a plugin:
    }
    ```
 
-### Skill Structure
+### 技能结构
 
 ```
 plugins/{plugin-name}/
 └── skills/
     └── {skill-name}/
-        └── SKILL.md        # Frontmatter + content
+        └── SKILL.md        # Frontmatter + 内容
 ```
 
-## Benefits
+## 优势
 
-- **Token Efficiency**: Load only relevant knowledge when needed
-- **Specialized Expertise**: Deep domain knowledge without bloat
-- **Clear Activation**: Explicit triggers prevent unwanted invocation
-- **Composability**: Mix and match skills across workflows
-- **Maintainability**: Isolated updates don't affect other skills
+- **Token 效率**：仅在需要时加载相关知识
+- **专业专业知识**：深度领域知识，无冗余
+- **清晰激活**：明确触发器防止意外调用
+- **可组合性**：跨工作流混合搭配技能
+- **可维护性**：隔离更新不影响其他技能
 
-## Resources
+## 资源
 
 - [Anthropic Skills Repository](https://github.com/anthropics/skills)
 - [Agent Skills Documentation](https://docs.claude.com/en/docs/claude-code/skills)

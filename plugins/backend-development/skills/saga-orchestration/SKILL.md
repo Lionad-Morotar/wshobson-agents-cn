@@ -1,51 +1,51 @@
 ---
 name: saga-orchestration
-description: Implement saga patterns for distributed transactions and cross-aggregate workflows. Use when coordinating multi-step business processes, handling compensating transactions, or managing long-running workflows.
+description: 实现分布式事务和跨聚合工作流的 Saga 模式。在协调多步骤业务流程、处理补偿事务或管理长时间运行的工作流时使用。
 ---
 
-# Saga Orchestration
+# Saga 编排
 
-Patterns for managing distributed transactions and long-running business processes.
+用于管理分布式事务和长时间运行的业务流程的模式。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Coordinating multi-service transactions
-- Implementing compensating transactions
-- Managing long-running business workflows
-- Handling failures in distributed systems
-- Building order fulfillment processes
-- Implementing approval workflows
+- 协调多服务事务
+- 实现补偿事务
+- 管理长时间运行的业务工作流
+- 处理分布式系统中的故障
+- 构建订单履约流程
+- 实现审批工作流
 
-## Core Concepts
+## 核心概念
 
-### 1. Saga Types
+### 1. Saga 类型
 
 ```
-Choreography                    Orchestration
+编排                            编排器
 ┌─────┐  ┌─────┐  ┌─────┐     ┌─────────────┐
-│Svc A│─►│Svc B│─►│Svc C│     │ Orchestrator│
+│服务A│─►│服务B│─►│服务C│     │  编排器     │
 └─────┘  └─────┘  └─────┘     └──────┬──────┘
    │        │        │               │
    ▼        ▼        ▼         ┌─────┼─────┐
- Event    Event    Event       ▼     ▼     ▼
+ 事件     事件     事件        ▼     ▼     ▼
                             ┌────┐┌────┐┌────┐
-                            │Svc1││Svc2││Svc3│
+                            │服务1││服务2││服务3│
                             └────┘└────┘└────┘
 ```
 
-### 2. Saga Execution States
+### 2. Saga 执行状态
 
-| State            | Description                    |
+| 状态            | 描述                    |
 | ---------------- | ------------------------------ |
-| **Started**      | Saga initiated                 |
-| **Pending**      | Waiting for step completion    |
-| **Compensating** | Rolling back due to failure    |
-| **Completed**    | All steps succeeded            |
-| **Failed**       | Saga failed after compensation |
+| **已开始**      | Saga 已启动                 |
+| **待处理**      | 等待步骤完成    |
+| **补偿中** | 因失败正在回滚    |
+| **已完成**    | 所有步骤成功            |
+| **失败**       | 补偿后 Saga 失败 |
 
-## Templates
+## 模板
 
-### Template 1: Saga Orchestrator Base
+### 模板 1：Saga 编排器基类
 
 ```python
 from abc import ABC, abstractmethod
@@ -88,7 +88,7 @@ class Saga:
 
 
 class SagaOrchestrator(ABC):
-    """Base class for saga orchestrators."""
+    """Saga 编排器基类。"""
 
     def __init__(self, saga_store, event_publisher):
         self.saga_store = saga_store
@@ -96,17 +96,17 @@ class SagaOrchestrator(ABC):
 
     @abstractmethod
     def define_steps(self, data: Dict) -> List[SagaStep]:
-        """Define the saga steps."""
+        """定义 Saga 步骤。"""
         pass
 
     @property
     @abstractmethod
     def saga_type(self) -> str:
-        """Unique saga type identifier."""
+        """唯一的 Saga 类型标识符。"""
         pass
 
     async def start(self, data: Dict) -> Saga:
-        """Start a new saga."""
+        """启动新的 Saga。"""
         saga = Saga(
             saga_id=str(uuid.uuid4()),
             saga_type=self.saga_type,
@@ -119,10 +119,10 @@ class SagaOrchestrator(ABC):
         return saga
 
     async def handle_step_completed(self, saga_id: str, step_name: str, result: Dict):
-        """Handle successful step completion."""
+        """处理步骤成功完成。"""
         saga = await self.saga_store.get(saga_id)
 
-        # Update step
+        # 更新步骤
         for step in saga.steps:
             if step.name == step_name:
                 step.status = "completed"
@@ -133,7 +133,7 @@ class SagaOrchestrator(ABC):
         saga.current_step += 1
         saga.updated_at = datetime.utcnow()
 
-        # Check if saga is complete
+        # 检查 Saga 是否完成
         if saga.current_step >= len(saga.steps):
             saga.state = SagaState.COMPLETED
             await self.saga_store.save(saga)
@@ -144,10 +144,10 @@ class SagaOrchestrator(ABC):
             await self._execute_next_step(saga)
 
     async def handle_step_failed(self, saga_id: str, step_name: str, error: str):
-        """Handle step failure - start compensation."""
+        """处理步骤失败 - 开始补偿。"""
         saga = await self.saga_store.get(saga_id)
 
-        # Mark step as failed
+        # 标记步骤为失败
         for step in saga.steps:
             if step.name == step_name:
                 step.status = "failed"
@@ -158,11 +158,11 @@ class SagaOrchestrator(ABC):
         saga.updated_at = datetime.utcnow()
         await self.saga_store.save(saga)
 
-        # Start compensation from current step backwards
+        # 从当前步骤开始向后补偿
         await self._compensate(saga)
 
     async def _execute_next_step(self, saga: Saga):
-        """Execute the next step in the saga."""
+        """执行 Saga 中的下一步。"""
         if saga.current_step >= len(saga.steps):
             return
 
@@ -170,7 +170,7 @@ class SagaOrchestrator(ABC):
         step.status = "executing"
         await self.saga_store.save(saga)
 
-        # Publish command to execute step
+        # 发布命令以执行步骤
         await self.event_publisher.publish(
             step.action,
             {
@@ -181,8 +181,8 @@ class SagaOrchestrator(ABC):
         )
 
     async def _compensate(self, saga: Saga):
-        """Execute compensation for completed steps."""
-        # Compensate in reverse order
+        """为已完成的步骤执行补偿。"""
+        # 按相反顺序补偿
         for i in range(saga.current_step - 1, -1, -1):
             step = saga.steps[i]
             if step.status == "completed":
@@ -200,7 +200,7 @@ class SagaOrchestrator(ABC):
                 )
 
     async def handle_compensation_completed(self, saga_id: str, step_name: str):
-        """Handle compensation completion."""
+        """处理补偿完成。"""
         saga = await self.saga_store.get(saga_id)
 
         for step in saga.steps:
@@ -209,7 +209,7 @@ class SagaOrchestrator(ABC):
                 step.compensated_at = datetime.utcnow()
                 break
 
-        # Check if all compensations complete
+        # 检查是否所有补偿完成
         all_compensated = all(
             s.status in ("compensated", "pending", "failed")
             for s in saga.steps
@@ -222,25 +222,25 @@ class SagaOrchestrator(ABC):
         await self.saga_store.save(saga)
 
     async def _on_saga_completed(self, saga: Saga):
-        """Called when saga completes successfully."""
+        """Saga 成功完成时调用。"""
         await self.event_publisher.publish(
             f"{self.saga_type}Completed",
             {"saga_id": saga.saga_id, **saga.data}
         )
 
     async def _on_saga_failed(self, saga: Saga):
-        """Called when saga fails after compensation."""
+        """Saga 补偿后失败时调用。"""
         await self.event_publisher.publish(
             f"{self.saga_type}Failed",
-            {"saga_id": saga.saga_id, "error": "Saga failed", **saga.data}
+            {"saga_id": saga.saga_id, "error": "Saga 失败", **saga.data}
         )
 ```
 
-### Template 2: Order Fulfillment Saga
+### 模板 2：订单履约 Saga
 
 ```python
 class OrderFulfillmentSaga(SagaOrchestrator):
-    """Orchestrates order fulfillment across services."""
+    """跨服务编排订单履约。"""
 
     @property
     def saga_type(self) -> str:
@@ -271,7 +271,7 @@ class OrderFulfillmentSaga(SagaOrchestrator):
         ]
 
 
-# Usage
+# 使用
 async def create_order(order_data: Dict):
     saga = OrderFulfillmentSaga(saga_store, event_publisher)
     return await saga.start({
@@ -283,16 +283,16 @@ async def create_order(order_data: Dict):
     })
 
 
-# Event handlers in each service
+# 每个服务中的事件处理器
 class InventoryService:
     async def handle_reserve_items(self, command: Dict):
         try:
-            # Reserve inventory
+            # 预留库存
             reservation = await self.reserve(
                 command["items"],
                 command["order_id"]
             )
-            # Report success
+            # 报告成功
             await self.event_publisher.publish(
                 "SagaStepCompleted",
                 {
@@ -312,7 +312,7 @@ class InventoryService:
             )
 
     async def handle_release_reservation(self, command: Dict):
-        # Compensating action
+        # 补偿操作
         await self.release_reservation(
             command["original_result"]["reservation_id"]
         )
@@ -325,7 +325,7 @@ class InventoryService:
         )
 ```
 
-### Template 3: Choreography-Based Saga
+### 模板 3：基于编排的 Saga
 
 ```python
 from dataclasses import dataclass
@@ -334,7 +334,7 @@ import asyncio
 
 @dataclass
 class SagaContext:
-    """Passed through choreographed saga events."""
+    """通过编排的 Saga 事件传递。"""
     saga_id: str
     step: int
     data: Dict[str, Any]
@@ -342,7 +342,7 @@ class SagaContext:
 
 
 class OrderChoreographySaga:
-    """Choreography-based saga using events."""
+    """使用事件的基于编排的 Saga。"""
 
     def __init__(self, event_bus):
         self.event_bus = event_bus
@@ -354,12 +354,12 @@ class OrderChoreographySaga:
         self.event_bus.subscribe("PaymentProcessed", self._on_payment_processed)
         self.event_bus.subscribe("ShipmentCreated", self._on_shipment_created)
 
-        # Compensation handlers
+        # 补偿处理器
         self.event_bus.subscribe("PaymentFailed", self._on_payment_failed)
         self.event_bus.subscribe("ShipmentFailed", self._on_shipment_failed)
 
     async def _on_order_created(self, event: Dict):
-        """Step 1: Order created, reserve inventory."""
+        """步骤 1：订单已创建，预留库存。"""
         await self.event_bus.publish("ReserveInventory", {
             "saga_id": event["order_id"],
             "order_id": event["order_id"],
@@ -367,7 +367,7 @@ class OrderChoreographySaga:
         })
 
     async def _on_inventory_reserved(self, event: Dict):
-        """Step 2: Inventory reserved, process payment."""
+        """步骤 2：库存已预留，处理支付。"""
         await self.event_bus.publish("ProcessPayment", {
             "saga_id": event["saga_id"],
             "order_id": event["order_id"],
@@ -376,7 +376,7 @@ class OrderChoreographySaga:
         })
 
     async def _on_payment_processed(self, event: Dict):
-        """Step 3: Payment done, create shipment."""
+        """步骤 3：支付完成，创建发货。"""
         await self.event_bus.publish("CreateShipment", {
             "saga_id": event["saga_id"],
             "order_id": event["order_id"],
@@ -384,27 +384,27 @@ class OrderChoreographySaga:
         })
 
     async def _on_shipment_created(self, event: Dict):
-        """Step 4: Complete - send confirmation."""
+        """步骤 4：完成 - 发送确认。"""
         await self.event_bus.publish("OrderFulfilled", {
             "saga_id": event["saga_id"],
             "order_id": event["order_id"],
             "tracking_number": event["tracking_number"]
         })
 
-    # Compensation handlers
+    # 补偿处理器
     async def _on_payment_failed(self, event: Dict):
-        """Payment failed - release inventory."""
+        """支付失败 - 释放库存。"""
         await self.event_bus.publish("ReleaseInventory", {
             "saga_id": event["saga_id"],
             "reservation_id": event["reservation_id"]
         })
         await self.event_bus.publish("OrderFailed", {
             "order_id": event["order_id"],
-            "reason": "Payment failed"
+            "reason": "支付失败"
         })
 
     async def _on_shipment_failed(self, event: Dict):
-        """Shipment failed - refund payment and release inventory."""
+        """发货失败 - 退款并释放库存。"""
         await self.event_bus.publish("RefundPayment", {
             "saga_id": event["saga_id"],
             "payment_id": event["payment_id"]
@@ -415,11 +415,11 @@ class OrderChoreographySaga:
         })
 ```
 
-### Template 4: Saga with Timeouts
+### 模板 4：带超时的 Saga
 
 ```python
 class TimeoutSagaOrchestrator(SagaOrchestrator):
-    """Saga orchestrator with step timeouts."""
+    """带步骤超时的 Saga 编排器。"""
 
     def __init__(self, saga_store, event_publisher, scheduler):
         super().__init__(saga_store, event_publisher)
@@ -434,7 +434,7 @@ class TimeoutSagaOrchestrator(SagaOrchestrator):
         step.timeout_at = datetime.utcnow() + timedelta(minutes=5)
         await self.saga_store.save(saga)
 
-        # Schedule timeout check
+        # 安排超时检查
         await self.scheduler.schedule(
             f"saga_timeout_{saga.saga_id}_{step.name}",
             self._check_timeout,
@@ -448,37 +448,37 @@ class TimeoutSagaOrchestrator(SagaOrchestrator):
         )
 
     async def _check_timeout(self, data: Dict):
-        """Check if step has timed out."""
+        """检查步骤是否超时。"""
         saga = await self.saga_store.get(data["saga_id"])
         step = next(s for s in saga.steps if s.name == data["step_name"])
 
         if step.status == "executing":
-            # Step timed out - fail it
+            # 步骤超时 - 使其失败
             await self.handle_step_failed(
                 data["saga_id"],
                 data["step_name"],
-                "Step timed out"
+                "步骤超时"
             )
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Make steps idempotent** - Safe to retry
-- **Design compensations carefully** - They must work
-- **Use correlation IDs** - For tracing across services
-- **Implement timeouts** - Don't wait forever
-- **Log everything** - For debugging failures
+- **使步骤幂等** - 可以安全地重试
+- **仔细设计补偿** - 它们必须工作
+- **使用关联 ID** - 用于跨服务追踪
+- **实现超时** - 不要永远等待
+- **记录所有内容** - 用于调试故障
 
-### Don'ts
+### 不应该做
 
-- **Don't assume instant completion** - Sagas take time
-- **Don't skip compensation testing** - Most critical part
-- **Don't couple services** - Use async messaging
-- **Don't ignore partial failures** - Handle gracefully
+- **不要假设即时完成** - Saga 需要时间
+- **不要跳过补偿测试** - 最关键的部分
+- **不要耦合服务** - 使用异步消息传递
+- **不要忽略部分故障** - 优雅地处理
 
-## Resources
+## 资源
 
-- [Saga Pattern](https://microservices.io/patterns/data/saga.html)
-- [Designing Data-Intensive Applications](https://dataintensive.net/)
+- [Saga 模式](https://microservices.io/patterns/data/saga.html)
+- [设计数据密集型应用程序](https://dataintensive.net/)

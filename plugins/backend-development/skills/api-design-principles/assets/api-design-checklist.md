@@ -1,155 +1,155 @@
-# API Design Checklist
+# API 设计检查清单
 
-## Pre-Implementation Review
+## 实施前审查
 
-### Resource Design
+### 资源设计
 
-- [ ] Resources are nouns, not verbs
-- [ ] Plural names for collections
-- [ ] Consistent naming across all endpoints
-- [ ] Clear resource hierarchy (avoid deep nesting >2 levels)
-- [ ] All CRUD operations properly mapped to HTTP methods
+- [ ] 资源是名词，而非动词
+- [ ] 集合使用复数名称
+- [ ] 所有端点命名一致
+- [ ] 清晰的资源层次结构（避免深度嵌套超过 2 层）
+- [ ] 所有 CRUD 操作正确映射到 HTTP 方法
 
-### HTTP Methods
+### HTTP 方法
 
-- [ ] GET for retrieval (safe, idempotent)
-- [ ] POST for creation
-- [ ] PUT for full replacement (idempotent)
-- [ ] PATCH for partial updates
-- [ ] DELETE for removal (idempotent)
+- [ ] GET 用于检索（安全、幂等）
+- [ ] POST 用于创建
+- [ ] PUT 用于完全替换（幂等）
+- [ ] PATCH 用于部分更新
+- [ ] DELETE 用于删除（幂等）
 
-### Status Codes
+### 状态码
 
-- [ ] 200 OK for successful GET/PATCH/PUT
-- [ ] 201 Created for POST
-- [ ] 204 No Content for DELETE
-- [ ] 400 Bad Request for malformed requests
-- [ ] 401 Unauthorized for missing auth
-- [ ] 403 Forbidden for insufficient permissions
-- [ ] 404 Not Found for missing resources
-- [ ] 422 Unprocessable Entity for validation errors
-- [ ] 429 Too Many Requests for rate limiting
-- [ ] 500 Internal Server Error for server issues
+- [ ] 200 OK 表示成功的 GET/PATCH/PUT
+- [ ] 201 Created 表示 POST
+- [ ] 204 No Content 表示 DELETE
+- [ ] 400 Bad Request 表示格式错误的请求
+- [ ] 401 Unauthorized 表示缺少身份验证
+- [ ] 403 Forbidden 表示权限不足
+- [ ] 404 Not Found 表示资源缺失
+- [ ] 422 Unprocessable Entity 表示验证错误
+- [ ] 429 Too Many Requests 表示速率限制
+- [ ] 500 Internal Server Error 表示服务器问题
 
-### Pagination
+### 分页
 
-- [ ] All collection endpoints paginated
-- [ ] Default page size defined (e.g., 20)
-- [ ] Maximum page size enforced (e.g., 100)
-- [ ] Pagination metadata included (total, pages, etc.)
-- [ ] Cursor-based or offset-based pattern chosen
+- [ ] 所有集合端点已分页
+- [ ] 定义了默认页面大小（例如，20）
+- [ ] 强制执行最大页面大小（例如，100）
+- [ ] 包含分页元数据（总数、页数等）
+- [ ] 选择了基于游标或基于偏移量的模式
 
-### Filtering & Sorting
+### 过滤和排序
 
-- [ ] Query parameters for filtering
-- [ ] Sort parameter supported
-- [ ] Search parameter for full-text search
-- [ ] Field selection supported (sparse fieldsets)
+- [ ] 用于过滤的查询参数
+- [ ] 支持排序参数
+- [ ] 用于全文搜索的搜索参数
+- [ ] 支持字段选择（稀疏字段集）
 
-### Versioning
+### 版本控制
 
-- [ ] Versioning strategy defined (URL/header/query)
-- [ ] Version included in all endpoints
-- [ ] Deprecation policy documented
+- [ ] 定义了版本控制策略（URL/标头/查询）
+- [ ] 所有端点包含版本
+- [ ] 记录了弃用策略
 
-### Error Handling
+### 错误处理
 
-- [ ] Consistent error response format
-- [ ] Detailed error messages
-- [ ] Field-level validation errors
-- [ ] Error codes for client handling
-- [ ] Timestamps in error responses
+- [ ] 一致的错误响应格式
+- [ ] 详细的错误消息
+- [ ] 字段级验证错误
+- [ ] 用于客户端处理的错误代码
+- [ ] 错误响应中的时间戳
 
-### Authentication & Authorization
+### 身份验证和授权
 
-- [ ] Authentication method defined (Bearer token, API key)
-- [ ] Authorization checks on all endpoints
-- [ ] 401 vs 403 used correctly
-- [ ] Token expiration handled
+- [ ] 定义了身份验证方法（Bearer 令牌、API 密钥）
+- [ ] 所有端点的授权检查
+- [ ] 正确使用 401 vs 403
+- [ ] 处理了令牌过期
 
-### Rate Limiting
+### 速率限制
 
-- [ ] Rate limits defined per endpoint/user
-- [ ] Rate limit headers included
-- [ ] 429 status code for exceeded limits
-- [ ] Retry-After header provided
+- [ ] 定义了每个端点/用户的速率限制
+- [ ] 包含速率限制标头
+- [ ] 429 状态码表示超出限制
+- [ ] 提供了 Retry-After 标头
 
-### Documentation
+### 文档
 
-- [ ] OpenAPI/Swagger spec generated
-- [ ] All endpoints documented
-- [ ] Request/response examples provided
-- [ ] Error responses documented
-- [ ] Authentication flow documented
+- [ ] 生成了 OpenAPI/Swagger 规范
+- [ ] 记录了所有端点
+- [ ] 提供了请求/响应示例
+- [ ] 记录了错误响应
+- [ ] 记录了身份验证流程
 
-### Testing
+### 测试
 
-- [ ] Unit tests for business logic
-- [ ] Integration tests for endpoints
-- [ ] Error scenarios tested
-- [ ] Edge cases covered
-- [ ] Performance tests for heavy endpoints
+- [ ] 业务逻辑的单元测试
+- [ ] 端点的集成测试
+- [ ] 测试了错误场景
+- [ ] 覆盖了边缘情况
+- [ ] 重型端点的性能测试
 
-### Security
+### 安全性
 
-- [ ] Input validation on all fields
-- [ ] SQL injection prevention
-- [ ] XSS prevention
-- [ ] CORS configured correctly
-- [ ] HTTPS enforced
-- [ ] Sensitive data not in URLs
-- [ ] No secrets in responses
+- [ ] 所有字段的输入验证
+- [ ] SQL 注入防护
+- [ ] XSS 防护
+- [ ] 正确配置 CORS
+- [ ] 强制使用 HTTPS
+- [ ] 敏感数据不在 URL 中
+- [ ] 响应中无秘密
 
-### Performance
+### 性能
 
-- [ ] Database queries optimized
-- [ ] N+1 queries prevented
-- [ ] Caching strategy defined
-- [ ] Cache headers set appropriately
-- [ ] Large responses paginated
+- [ ] 优化了数据库查询
+- [ ] 防止了 N+1 查询
+- [ ] 定义了缓存策略
+- [ ] 适当设置了缓存标头
+- [ ] 大响应已分页
 
-### Monitoring
+### 监控
 
-- [ ] Logging implemented
-- [ ] Error tracking configured
-- [ ] Performance metrics collected
-- [ ] Health check endpoint available
-- [ ] Alerts configured for errors
+- [ ] 实现了日志记录
+- [ ] 配置了错误跟踪
+- [ ] 收集了性能指标
+- [ ] 健康检查端点可用
+- [ ] 为错误配置了告警
 
-## GraphQL-Specific Checks
+## GraphQL 专用检查
 
-### Schema Design
+### Schema 设计
 
-- [ ] Schema-first approach used
-- [ ] Types properly defined
-- [ ] Non-null vs nullable decided
-- [ ] Interfaces/unions used appropriately
-- [ ] Custom scalars defined
+- [ ] 使用了 Schema 优先方法
+- [ ] 正确定义了类型
+- [ ] 确定了非空 vs 可空
+- [ ] 适当使用接口/联合
+- [ ] 定义了自定义标量
 
-### Queries
+### 查询
 
-- [ ] Query depth limiting
-- [ ] Query complexity analysis
-- [ ] DataLoaders prevent N+1
-- [ ] Pagination pattern chosen (Relay/offset)
+- [ ] 查询深度限制
+- [ ] 查询复杂度分析
+- [ ] DataLoaders 防止 N+1
+- [ ] 选择了分页模式（Relay/偏移）
 
-### Mutations
+### 变更
 
-- [ ] Input types defined
-- [ ] Payload types with errors
-- [ ] Optimistic response support
-- [ ] Idempotency considered
+- [ ] 定义了输入类型
+- [ ] 包含错误的负载类型
+- [ ] 乐观响应支持
+- [ ] 考虑了幂等性
 
-### Performance
+### 性能
 
-- [ ] DataLoader for all relationships
-- [ ] Query batching enabled
-- [ ] Persisted queries considered
-- [ ] Response caching implemented
+- [ ] 所有关联关系的 DataLoader
+- [ ] 启用了查询批处理
+- [ ] 考虑了持久化查询
+- [ ] 实现了响应缓存
 
-### Documentation
+### 文档
 
-- [ ] All fields documented
-- [ ] Deprecations marked
-- [ ] Examples provided
-- [ ] Schema introspection enabled
+- [ ] 记录了所有字段
+- [ ] 标记了弃用项
+- [ ] 提供了示例
+- [ ] 启用了 Schema 内省

@@ -3,40 +3,40 @@ name: istio-traffic-management
 description: Configure Istio traffic management including routing, load balancing, circuit breakers, and canary deployments. Use when implementing service mesh traffic policies, progressive delivery, or resilience patterns.
 ---
 
-# Istio Traffic Management
+# Istio 流量管理
 
-Comprehensive guide to Istio traffic management for production service mesh deployments.
+生产环境服务网格部署的 Istio 流量管理综合指南。
 
-## When to Use This Skill
+## 适用场景
 
-- Configuring service-to-service routing
-- Implementing canary or blue-green deployments
-- Setting up circuit breakers and retries
-- Load balancing configuration
-- Traffic mirroring for testing
-- Fault injection for chaos engineering
+- 配置服务间路由
+- 实现金丝雀或蓝绿部署
+- 设置熔断器和重试策略
+- 负载均衡配置
+- 用于测试的流量镜像
+- 混沌工程的故障注入
 
-## Core Concepts
+## 核心概念
 
-### 1. Traffic Management Resources
+### 1. 流量管理资源
 
-| Resource            | Purpose                       | Scope         |
-| ------------------- | ----------------------------- | ------------- |
-| **VirtualService**  | Route traffic to destinations | Host-based    |
-| **DestinationRule** | Define policies after routing | Service-based |
-| **Gateway**         | Configure ingress/egress      | Cluster edge  |
-| **ServiceEntry**    | Add external services         | Mesh-wide     |
+| 资源               | 用途                     | 作用域     |
+| ------------------ | ------------------------ | ---------- |
+| **VirtualService** | 将流量路由到目标服务     | 基于主机   |
+| **DestinationRule**| 定义路由后的策略         | 基于服务   |
+| **Gateway**        | 配置入口/出口流量        | 集群边缘   |
+| **ServiceEntry**   | 添加外部服务到网格       | 整个网格   |
 
-### 2. Traffic Flow
+### 2. 流量流向
 
 ```
 Client → Gateway → VirtualService → DestinationRule → Service
-                   (routing)        (policies)        (pods)
+                   (路由)           (策略)            (Pod)
 ```
 
-## Templates
+## 模板
 
-### Template 1: Basic Routing
+### 模板 1: 基础路由
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -80,7 +80,7 @@ spec:
         version: v3
 ```
 
-### Template 2: Canary Deployment
+### 模板 2: 金丝雀部署
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -124,7 +124,7 @@ spec:
         version: canary
 ```
 
-### Template 3: Circuit Breaker
+### 模板 3: 熔断器
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -150,7 +150,7 @@ spec:
       minHealthPercent: 30
 ```
 
-### Template 4: Retry and Timeout
+### 模板 4: 重试和超时
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -172,7 +172,7 @@ spec:
         retryRemoteLocalities: true
 ```
 
-### Template 5: Traffic Mirroring
+### 模板 5: 流量镜像
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -194,7 +194,7 @@ spec:
         value: 100.0
 ```
 
-### Template 6: Fault Injection
+### 模板 6: 故障注入
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -219,7 +219,7 @@ spec:
             host: ratings
 ```
 
-### Template 7: Ingress Gateway
+### 模板 7: 入口网关
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -260,7 +260,7 @@ spec:
               number: 8080
 ```
 
-## Load Balancing Strategies
+## 负载均衡策略
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -271,9 +271,9 @@ spec:
   host: my-service
   trafficPolicy:
     loadBalancer:
-      simple: ROUND_ROBIN # or LEAST_CONN, RANDOM, PASSTHROUGH
+      simple: ROUND_ROBIN # 或 LEAST_CONN, RANDOM, PASSTHROUGH
 ---
-# Consistent hashing for sticky sessions
+# 用于会话保持的一致性哈希
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
@@ -284,44 +284,44 @@ spec:
     loadBalancer:
       consistentHash:
         httpHeaderName: x-user-id
-        # or: httpCookie, useSourceIp, httpQueryParameterName
+        # 或: httpCookie, useSourceIp, httpQueryParameterName
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Start simple** - Add complexity incrementally
-- **Use subsets** - Version your services clearly
-- **Set timeouts** - Always configure reasonable timeouts
-- **Enable retries** - But with backoff and limits
-- **Monitor** - Use Kiali and Jaeger for visibility
+- **从简单开始** - 逐步增加复杂度
+- **使用子集** - 清晰地对服务进行版本管理
+- **设置超时** - 始终配置合理的超时时间
+- **启用重试** - 但要使用退避策略和限制
+- **监控** - 使用 Kiali 和 Jaeger 提高可观测性
 
-### Don'ts
+### 不应该做
 
-- **Don't over-retry** - Can cause cascading failures
-- **Don't ignore outlier detection** - Enable circuit breakers
-- **Don't mirror to production** - Mirror to test environments
-- **Don't skip canary** - Test with small traffic percentage first
+- **不要过度重试** - 可能导致级联故障
+- **不要忽略异常检测** - 启用熔断器
+- **不要镜像到生产环境** - 应镜像到测试环境
+- **不要跳过金丝雀** - 先用小流量百分比进行测试
 
-## Debugging Commands
+## 调试命令
 
 ```bash
-# Check VirtualService configuration
+# 检查 VirtualService 配置
 istioctl analyze
 
-# View effective routes
+# 查看生效的路由
 istioctl proxy-config routes deploy/my-app -o json
 
-# Check endpoint discovery
+# 检查端点发现
 istioctl proxy-config endpoints deploy/my-app
 
-# Debug traffic
+# 调试流量
 istioctl proxy-config log deploy/my-app --level debug
 ```
 
-## Resources
+## 参考资料
 
-- [Istio Traffic Management](https://istio.io/latest/docs/concepts/traffic-management/)
-- [Virtual Service Reference](https://istio.io/latest/docs/reference/config/networking/virtual-service/)
-- [Destination Rule Reference](https://istio.io/latest/docs/reference/config/networking/destination-rule/)
+- [Istio 流量管理](https://istio.io/latest/docs/concepts/traffic-management/)
+- [虚拟服务参考](https://istio.io/latest/docs/reference/config/networking/virtual-service/)
+- [目标规则参考](https://istio.io/latest/docs/reference/config/networking/destination-rule/)

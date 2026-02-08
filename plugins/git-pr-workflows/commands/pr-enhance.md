@@ -1,22 +1,22 @@
-# Pull Request Enhancement
+# Pull Request 增强
 
-You are a PR optimization expert specializing in creating high-quality pull requests that facilitate efficient code reviews. Generate comprehensive PR descriptions, automate review processes, and ensure PRs follow best practices for clarity, size, and reviewability.
+你是一位 PR 优化专家，专门创建高质量 pull request 以促进高效代码审查。生成全面的 PR 描述、自动化审查流程，并确保 PR 遵循清晰、大小和可审查性的最佳实践。
 
-## Context
+## 上下文
 
-The user needs to create or improve pull requests with detailed descriptions, proper documentation, test coverage analysis, and review facilitation. Focus on making PRs that are easy to review, well-documented, and include all necessary context.
+用户需要创建或改进 pull request，包含详细描述、适当文档、测试覆盖率分析和审查便利。专注于创建易于审查、文档完善且包含所有必要上下文的 PR。
 
-## Requirements
+## 要求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. PR Analysis
+### 1. PR 分析
 
-Analyze the changes and generate insights:
+分析变更并生成洞察：
 
-**Change Summary Generator**
+**变更摘要生成器**
 
 ```python
 import subprocess
@@ -26,7 +26,7 @@ from collections import defaultdict
 class PRAnalyzer:
     def analyze_changes(self, base_branch='main'):
         """
-        Analyze changes between current branch and base
+        分析当前分支与基础分支之间的变更
         """
         analysis = {
             'files_changed': self._get_changed_files(base_branch),
@@ -39,7 +39,7 @@ class PRAnalyzer:
         return analysis
 
     def _get_changed_files(self, base_branch):
-        """Get list of changed files with statistics"""
+        """获取变更文件列表及统计信息"""
         cmd = f"git diff --name-status {base_branch}...HEAD"
         result = subprocess.run(cmd.split(), capture_output=True, text=True)
 
@@ -56,11 +56,11 @@ class PRAnalyzer:
         return files
 
     def _get_change_stats(self, base_branch):
-        """Get detailed change statistics"""
+        """获取详细变更统计"""
         cmd = f"git diff --shortstat {base_branch}...HEAD"
         result = subprocess.run(cmd.split(), capture_output=True, text=True)
 
-        # Parse output like: "10 files changed, 450 insertions(+), 123 deletions(-)"
+        # 解析输出如："10 files changed, 450 insertions(+), 123 deletions(-)"
         stats_pattern = r'(\d+) files? changed(?:, (\d+) insertions?\(\+\))?(?:, (\d+) deletions?\(-\))?'
         match = re.search(stats_pattern, result.stdout)
 
@@ -76,7 +76,7 @@ class PRAnalyzer:
         return {'files_changed': 0, 'insertions': 0, 'deletions': 0, 'net_change': 0}
 
     def _categorize_file(self, filename):
-        """Categorize file by type"""
+        """按类型分类文件"""
         categories = {
             'source': ['.js', '.ts', '.py', '.java', '.go', '.rs'],
             'test': ['test', 'spec', '.test.', '.spec.'],
@@ -93,82 +93,82 @@ class PRAnalyzer:
         return 'other'
 ```
 
-### 2. PR Description Generation
+### 2. PR 描述生成
 
-Create comprehensive PR descriptions:
+创建全面的 PR 描述：
 
-**Description Template Generator**
+**描述模板生成器**
 
 ```python
 def generate_pr_description(analysis, commits):
     """
-    Generate detailed PR description from analysis
+    从分析生成详细 PR 描述
     """
     description = f"""
-## Summary
+## 摘要
 
 {generate_summary(analysis, commits)}
 
-## What Changed
+## 变更内容
 
 {generate_change_list(analysis)}
 
-## Why These Changes
+## 变更原因
 
 {extract_why_from_commits(commits)}
 
-## Type of Change
+## 变更类型
 
 {determine_change_types(analysis)}
 
-## How Has This Been Tested?
+## 测试方法
 
 {generate_test_section(analysis)}
 
-## Visual Changes
+## 视觉变更
 
 {generate_visual_section(analysis)}
 
-## Performance Impact
+## 性能影响
 
 {analyze_performance_impact(analysis)}
 
-## Breaking Changes
+## 重大变更
 
 {identify_breaking_changes(analysis)}
 
-## Dependencies
+## 依赖项
 
 {list_dependency_changes(analysis)}
 
-## Checklist
+## 检查清单
 
 {generate_review_checklist(analysis)}
 
-## Additional Notes
+## 附加说明
 
 {generate_additional_notes(analysis)}
 """
     return description
 
 def generate_summary(analysis, commits):
-    """Generate executive summary"""
+    """生成执行摘要"""
     stats = analysis['change_statistics']
 
-    # Extract main purpose from commits
+    # 从提交中提取主要目的
     main_purpose = extract_main_purpose(commits)
 
     summary = f"""
-This PR {main_purpose}.
+此 PR {main_purpose}。
 
-**Impact**: {stats['files_changed']} files changed ({stats['insertions']} additions, {stats['deletions']} deletions)
-**Risk Level**: {calculate_risk_level(analysis)}
-**Review Time**: ~{estimate_review_time(stats)} minutes
+**影响**: {stats['files_changed']} 个文件变更（{stats['insertions']} 次新增，{stats['deletions']} 次删除）
+**风险级别**: {calculate_risk_level(analysis)}
+**审查时间**: 约 {estimate_review_time(stats)} 分钟
 """
     return summary
 
 def generate_change_list(analysis):
-    """Generate categorized change list"""
+    """生成分类变更列表"""
     changes_by_category = defaultdict(list)
 
     for file in analysis['files_changed']:
@@ -186,114 +186,114 @@ def generate_change_list(analysis):
     }
 
     for category, files in changes_by_category.items():
-        change_list += f"\n### {icons.get(category, '📁')} {category.title()} Changes\n"
-        for file in files[:10]:  # Limit to 10 files per category
+        change_list += f"\n### {icons.get(category, '📁')} {category.title()} 变更\n"
+        for file in files[:10]:  # 每类限制 10 个文件
             change_list += f"- {file['status']}: `{file['filename']}`\n"
         if len(files) > 10:
-            change_list += f"- ...and {len(files) - 10} more\n"
+            change_list += f"- ...以及 {len(files) - 10} 个更多文件\n"
 
     return change_list
 ```
 
-### 3. Review Checklist Generation
+### 3. 审查检查清单生成
 
-Create automated review checklists:
+创建自动化审查检查清单：
 
-**Smart Checklist Generator**
+**智能检查清单生成器**
 
 ```python
 def generate_review_checklist(analysis):
     """
-    Generate context-aware review checklist
+    生成上下文感知的审查检查清单
     """
-    checklist = ["## Review Checklist\n"]
+    checklist = ["## 审查检查清单\n"]
 
-    # General items
+    # 通用项目
     general_items = [
-        "Code follows project style guidelines",
-        "Self-review completed",
-        "Comments added for complex logic",
-        "No debugging code left",
-        "No sensitive data exposed"
+        "代码遵循项目风格指南",
+        "已完成自我审查",
+        "为复杂逻辑添加了注释",
+        "无遗留调试代码",
+        "无暴露敏感数据"
     ]
 
-    # Add general items
-    checklist.append("### General")
+    # 添加通用项目
+    checklist.append("### 通用")
     for item in general_items:
         checklist.append(f"- [ ] {item}")
 
-    # File-specific checks
+    # 特定文件类型检查
     file_types = {file['category'] for file in analysis['files_changed']}
 
     if 'source' in file_types:
-        checklist.append("\n### Code Quality")
+        checklist.append("\n### 代码质量")
         checklist.extend([
-            "- [ ] No code duplication",
-            "- [ ] Functions are focused and small",
-            "- [ ] Variable names are descriptive",
-            "- [ ] Error handling is comprehensive",
-            "- [ ] No performance bottlenecks introduced"
+            "- [ ] 无代码重复",
+            "- [ ] 函数专注且简短",
+            "- [ ] 变量名具有描述性",
+            "- [ ] 错误处理全面",
+            "- [ ] 未引入性能瓶颈"
         ])
 
     if 'test' in file_types:
-        checklist.append("\n### Testing")
+        checklist.append("\n### 测试")
         checklist.extend([
-            "- [ ] All new code is covered by tests",
-            "- [ ] Tests are meaningful and not just for coverage",
-            "- [ ] Edge cases are tested",
-            "- [ ] Tests follow AAA pattern (Arrange, Act, Assert)",
-            "- [ ] No flaky tests introduced"
+            "- [ ] 所有新代码都有测试覆盖",
+            "- [ ] 测试有意义而非仅为了覆盖率",
+            "- [ ] 边缘情况已测试",
+            "- [ ] 测试遵循 AAA 模式（Arrange、Act、Assert）",
+            "- [ ] 未引入不稳定测试"
         ])
 
     if 'config' in file_types:
-        checklist.append("\n### Configuration")
+        checklist.append("\n### 配置")
         checklist.extend([
-            "- [ ] No hardcoded values",
-            "- [ ] Environment variables documented",
-            "- [ ] Backwards compatibility maintained",
-            "- [ ] Security implications reviewed",
-            "- [ ] Default values are sensible"
+            "- [ ] 无硬编码值",
+            "- [ ] 环境变量已记录",
+            "- [ ] 保持向后兼容",
+            "- [ ] 已审查安全影响",
+            "- [ ] 默认值合理"
         ])
 
     if 'docs' in file_types:
-        checklist.append("\n### Documentation")
+        checklist.append("\n### 文档")
         checklist.extend([
-            "- [ ] Documentation is clear and accurate",
-            "- [ ] Examples are provided where helpful",
-            "- [ ] API changes are documented",
-            "- [ ] README updated if necessary",
-            "- [ ] Changelog updated"
+            "- [ ] 文档清晰准确",
+            "- [ ] 在有帮助处提供示例",
+            "- [ ] API 变更已记录",
+            "- [ ] 如必要则更新 README",
+            "- [ ] 已更新 CHANGELOG"
         ])
 
-    # Security checks
+    # 安全检查
     if has_security_implications(analysis):
-        checklist.append("\n### Security")
+        checklist.append("\n### 安全")
         checklist.extend([
-            "- [ ] No SQL injection vulnerabilities",
-            "- [ ] Input validation implemented",
-            "- [ ] Authentication/authorization correct",
-            "- [ ] No sensitive data in logs",
-            "- [ ] Dependencies are secure"
+            "- [ ] 无 SQL 注入漏洞",
+            "- [ ] 已实现输入验证",
+            "- [ ] 认证/授权正确",
+            "- [ ] 日志中无敏感数据",
+            "- [ ] 依赖项安全"
         ])
 
     return '\n'.join(checklist)
 ```
 
-### 4. Code Review Automation
+### 4. 代码审查自动化
 
-Automate common review tasks:
+自动化常见审查任务：
 
-**Automated Review Bot**
+**自动化审查机器人**
 
 ```python
 class ReviewBot:
     def perform_automated_checks(self, pr_diff):
         """
-        Perform automated code review checks
+        执行自动化代码审查检查
         """
         findings = []
 
-        # Check for common issues
+        # 检查常见问题
         checks = [
             self._check_console_logs,
             self._check_commented_code,
@@ -310,7 +310,7 @@ class ReviewBot:
         return findings
 
     def _check_console_logs(self, diff):
-        """Check for console.log statements"""
+        """检查 console.log 语句"""
         findings = []
         pattern = r'\+.*console\.(log|debug|info|warn|error)'
 
@@ -321,17 +321,17 @@ class ReviewBot:
                     'type': 'warning',
                     'file': file,
                     'line': self._get_line_number(match, content),
-                    'message': 'Console statement found - remove before merging',
-                    'suggestion': 'Use proper logging framework instead'
+                    'message': '发现 console 语句 - 合并前移除',
+                    'suggestion': '改用适当的日志框架'
                 })
 
         return findings
 
     def _check_large_functions(self, diff):
-        """Check for functions that are too large"""
+        """检查过大的函数"""
         findings = []
 
-        # Simple heuristic: count lines between function start and end
+        # 简单启发式：计算函数开始和结束之间的行数
         for file, content in diff.items():
             if file.endswith(('.js', '.ts', '.py')):
                 functions = self._extract_functions(content)
@@ -341,58 +341,58 @@ class ReviewBot:
                             'type': 'suggestion',
                             'file': file,
                             'line': func['start_line'],
-                            'message': f"Function '{func['name']}' is {func['lines']} lines long",
-                            'suggestion': 'Consider breaking into smaller functions'
+                            'message': f"函数 '{func['name']}' 有 {func['lines']} 行",
+                            'suggestion': '考虑拆分为更小的函数'
                         })
 
         return findings
 ```
 
-### 5. PR Size Optimization
+### 5. PR 大小优化
 
-Help split large PRs:
+帮助拆分大型 PR：
 
-**PR Splitter Suggestions**
+**PR 拆分建议器**
 
 ````python
 def suggest_pr_splits(analysis):
     """
-    Suggest how to split large PRs
+    建议如何拆分大型 PR
     """
     stats = analysis['change_statistics']
 
-    # Check if PR is too large
+    # 检查 PR 是否过大
     if stats['files_changed'] > 20 or stats['insertions'] + stats['deletions'] > 1000:
         suggestions = analyze_split_opportunities(analysis)
 
         return f"""
-## ⚠️ Large PR Detected
+## ⚠️ 检测到大型 PR
 
-This PR changes {stats['files_changed']} files with {stats['insertions'] + stats['deletions']} total changes.
-Large PRs are harder to review and more likely to introduce bugs.
+此 PR 变更了 {stats['files_changed']} 个文件，总计 {stats['insertions'] + stats['deletions']} 次变更。
+大型 PR 更难审查，更可能引入错误。
 
-### Suggested Splits:
+### 建议的拆分方式：
 
 {format_split_suggestions(suggestions)}
 
-### How to Split:
+### 如何拆分：
 
-1. Create feature branch from current branch
-2. Cherry-pick commits for first logical unit
-3. Create PR for first unit
-4. Repeat for remaining units
+1. 从当前分支创建功能分支
+2. 为第一个逻辑单元挑选提交
+3. 为第一个单元创建 PR
+4. 对剩余单元重复
 
 ```bash
-# Example split workflow
+# 示例拆分工作流
 git checkout -b feature/part-1
-git cherry-pick <commit-hashes-for-part-1>
+git cherry-pick <part-1-的-commit-哈希>
 git push origin feature/part-1
-# Create PR for part 1
+# 为第 1 部分创建 PR
 
 git checkout -b feature/part-2
-git cherry-pick <commit-hashes-for-part-2>
+git cherry-pick <part-2-的-commit-哈希>
 git push origin feature/part-2
-# Create PR for part 2
+# 为第 2 部分创建 PR
 ````
 
 """
@@ -400,124 +400,126 @@ git push origin feature/part-2
     return ""
 
 def analyze_split_opportunities(analysis):
-"""Find logical units for splitting"""
-suggestions = []
+    """查找逻辑拆分单元"""
+    suggestions = []
 
-    # Group by feature areas
+    # 按功能区域分组
     feature_groups = defaultdict(list)
     for file in analysis['files_changed']:
         feature = extract_feature_area(file['filename'])
         feature_groups[feature].append(file)
 
-    # Suggest splits
+    # 建议拆分
     for feature, files in feature_groups.items():
         if len(files) >= 5:
             suggestions.append({
-                'name': f"{feature} changes",
+                'name': f"{feature} 变更",
                 'files': files,
-                'reason': f"Isolated changes to {feature} feature"
+                'reason': f"隔离的 {feature} 功能变更"
             })
 
     return suggestions
 
 ````
 
-### 6. Visual Diff Enhancement
+### 6. 视觉差异增强
 
-Generate visual representations:
+生成视觉表示：
 
-**Mermaid Diagram Generator**
+**Mermaid 图生成器**
 ```python
 def generate_architecture_diff(analysis):
     """
-    Generate diagram showing architectural changes
+    生成显示架构变更的图表
     """
     if has_architectural_changes(analysis):
         return f"""
-## Architecture Changes
+## 架构变更
 
 ```mermaid
 graph LR
-    subgraph "Before"
-        A1[Component A] --> B1[Component B]
-        B1 --> C1[Database]
+    subgraph "之前"
+        A1[组件 A] --> B1[组件 B]
+        B1 --> C1[数据库]
     end
 
-    subgraph "After"
-        A2[Component A] --> B2[Component B]
-        B2 --> C2[Database]
-        B2 --> D2[New Cache Layer]
-        A2 --> E2[New API Gateway]
+    subgraph "之后"
+        A2[组件 A] --> B2[组件 B]
+        B2 --> C2[数据库]
+        B2 --> D2[新缓存层]
+        A2 --> E2[新 API 网关]
     end
 
     style D2 fill:#90EE90
     style E2 fill:#90EE90
 ````
 
-### Key Changes:
+### 关键变更：
 
-1. Added caching layer for performance
-2. Introduced API gateway for better routing
-3. Refactored component communication
+1. 为性能添加缓存层
+2. 引入 API 网关以改进路由
+3. 重构组件通信
    """
    return ""
 
 ````
+```
 
-### 7. Test Coverage Report
+### 7. 测试覆盖率报告
 
-Include test coverage analysis:
+包含测试覆盖率分析：
 
-**Coverage Report Generator**
+**覆盖率报告生成器**
 ```python
 def generate_coverage_report(base_branch='main'):
     """
-    Generate test coverage comparison
+    生成测试覆盖率对比
     """
-    # Get coverage before and after
+    # 获取前后覆盖率
     before_coverage = get_coverage_for_branch(base_branch)
     after_coverage = get_coverage_for_branch('HEAD')
 
     coverage_diff = after_coverage - before_coverage
 
     report = f"""
-## Test Coverage
+## 测试覆盖率
 
-| Metric | Before | After | Change |
+| 指标 | 之前 | 之后 | 变更 |
 |--------|--------|-------|--------|
-| Lines | {before_coverage['lines']:.1f}% | {after_coverage['lines']:.1f}% | {format_diff(coverage_diff['lines'])} |
-| Functions | {before_coverage['functions']:.1f}% | {after_coverage['functions']:.1f}% | {format_diff(coverage_diff['functions'])} |
-| Branches | {before_coverage['branches']:.1f}% | {after_coverage['branches']:.1f}% | {format_diff(coverage_diff['branches'])} |
+| 行 | {before_coverage['lines']:.1f}% | {after_coverage['lines']:.1f}% | {format_diff(coverage_diff['lines'])} |
+| 函数 | {before_coverage['functions']:.1f}% | {after_coverage['functions']:.1f}% | {format_diff(coverage_diff['functions'])} |
+| 分支 | {before_coverage['branches']:.1f}% | {after_coverage['branches']:.1f}% | {format_diff(coverage_diff['branches'])} |
 
-### Uncovered Files
+### 未覆盖文件
 """
 
-    # List files with low coverage
+    # 列出低覆盖率文件
     for file in get_low_coverage_files():
-        report += f"- `{file['name']}`: {file['coverage']:.1f}% coverage\n"
+        report += f"- `{file['name']}`: {file['coverage']:.1f}% 覆盖率\n"
 
     return report
 
 def format_diff(value):
-    """Format coverage difference"""
+    """格式化覆盖率差异"""
     if value > 0:
         return f"<span style='color: green'>+{value:.1f}%</span> ✅"
     elif value < 0:
         return f"<span style='color: red'>{value:.1f}%</span> ⚠️"
     else:
-        return "No change"
+        return "无变化"
 ````
+```
 
-### 8. Risk Assessment
+### 8. 风险评估
 
-Evaluate PR risk:
+评估 PR 风险：
 
-**Risk Calculator**
+**风险计算器**
 
 ```python
 def calculate_pr_risk(analysis):
     """
-    Calculate risk score for PR
+    计算 PR 风险评分
     """
     risk_factors = {
         'size': calculate_size_risk(analysis),
@@ -530,21 +532,21 @@ def calculate_pr_risk(analysis):
     overall_risk = sum(risk_factors.values()) / len(risk_factors)
 
     risk_report = f"""
-## Risk Assessment
+## 风险评估
 
-**Overall Risk Level**: {get_risk_level(overall_risk)} ({overall_risk:.1f}/10)
+**整体风险级别**: {get_risk_level(overall_risk)} ({overall_risk:.1f}/10)
 
-### Risk Factors
+### 风险因素
 
-| Factor | Score | Details |
+| 因素 | 评分 | 详情 |
 |--------|-------|---------|
-| Size | {risk_factors['size']:.1f}/10 | {get_size_details(analysis)} |
-| Complexity | {risk_factors['complexity']:.1f}/10 | {get_complexity_details(analysis)} |
-| Test Coverage | {risk_factors['test_coverage']:.1f}/10 | {get_test_details(analysis)} |
-| Dependencies | {risk_factors['dependencies']:.1f}/10 | {get_dependency_details(analysis)} |
-| Security | {risk_factors['security']:.1f}/10 | {get_security_details(analysis)} |
+| 大小 | {risk_factors['size']:.1f}/10 | {get_size_details(analysis)} |
+| 复杂度 | {risk_factors['complexity']:.1f}/10 | {get_complexity_details(analysis)} |
+| 测试覆盖率 | {risk_factors['test_coverage']:.1f}/10 | {get_test_details(analysis)} |
+| 依赖项 | {risk_factors['dependencies']:.1f}/10 | {get_dependency_details(analysis)} |
+| 安全 | {risk_factors['security']:.1f}/10 | {get_security_details(analysis)} |
 
-### Mitigation Strategies
+### 缓解策略
 
 {generate_mitigation_strategies(risk_factors)}
 """
@@ -552,158 +554,158 @@ def calculate_pr_risk(analysis):
     return risk_report
 
 def get_risk_level(score):
-    """Convert score to risk level"""
+    """将评分转换为风险级别"""
     if score < 3:
-        return "🟢 Low"
+        return "🟢 低"
     elif score < 6:
-        return "🟡 Medium"
+        return "🟡 中"
     elif score < 8:
-        return "🟠 High"
+        return "🟠 高"
     else:
-        return "🔴 Critical"
+        return "🔴 严重"
 ```
 
-### 9. PR Templates
+### 9. PR 模板
 
-Generate context-specific templates:
+生成特定上下文的模板：
 
 ```python
 def generate_pr_template(pr_type, analysis):
     """
-    Generate PR template based on type
+    基于类型生成 PR 模板
     """
     templates = {
         'feature': f"""
-## Feature: {extract_feature_name(analysis)}
+## 功能: {extract_feature_name(analysis)}
 
-### Description
+### 描述
 {generate_feature_description(analysis)}
 
-### User Story
-As a [user type]
-I want [feature]
-So that [benefit]
+### 用户故事
+作为 [用户类型]
+我想要 [功能]
+以便 [好处]
 
-### Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
-- [ ] Criterion 3
+### 验收标准
+- [ ] 标准 1
+- [ ] 标准 2
+- [ ] 标准 3
 
-### Demo
-[Link to demo or screenshots]
+### 演示
+[演示或截图链接]
 
-### Technical Implementation
+### 技术实现
 {generate_technical_summary(analysis)}
 
-### Testing Strategy
+### 测试策略
 {generate_test_strategy(analysis)}
 """,
         'bugfix': f"""
-## Bug Fix: {extract_bug_description(analysis)}
+## Bug 修复: {extract_bug_description(analysis)}
 
-### Issue
-- **Reported in**: #[issue-number]
-- **Severity**: {determine_severity(analysis)}
-- **Affected versions**: {get_affected_versions(analysis)}
+### 问题
+- **报告于**: #[issue-number]
+- **严重性**: {determine_severity(analysis)}
+- **影响版本**: {get_affected_versions(analysis)}
 
-### Root Cause
+### 根本原因
 {analyze_root_cause(analysis)}
 
-### Solution
+### 解决方案
 {describe_solution(analysis)}
 
-### Testing
-- [ ] Bug is reproducible before fix
-- [ ] Bug is resolved after fix
-- [ ] No regressions introduced
-- [ ] Edge cases tested
+### 测试
+- [ ] 修复前可重现 bug
+- [ ] 修复后 bug 已解决
+- [ ] 未引入回归
+- [ ] 已测试边缘情况
 
-### Verification Steps
-1. Step to reproduce original issue
-2. Apply this fix
-3. Verify issue is resolved
+### 验证步骤
+1. 重现原始问题的步骤
+2. 应用此修复
+3. 验证问题已解决
 """,
         'refactor': f"""
-## Refactoring: {extract_refactor_scope(analysis)}
+## 重构: {extract_refactor_scope(analysis)}
 
-### Motivation
+### 动机
 {describe_refactor_motivation(analysis)}
 
-### Changes Made
+### 所做变更
 {list_refactor_changes(analysis)}
 
-### Benefits
-- Improved {list_improvements(analysis)}
-- Reduced {list_reductions(analysis)}
+### 好处
+- 改进了 {list_improvements(analysis)}
+- 减少了 {list_reductions(analysis)}
 
-### Compatibility
-- [ ] No breaking changes
-- [ ] API remains unchanged
-- [ ] Performance maintained or improved
+### 兼容性
+- [ ] 无重大变更
+- [ ] API 保持不变
+- [ ] 性能保持或改进
 
-### Metrics
-| Metric | Before | After |
+### 指标
+| 指标 | 之前 | 之后 |
 |--------|--------|-------|
-| Complexity | X | Y |
-| Test Coverage | X% | Y% |
-| Performance | Xms | Yms |
+| 复杂度 | X | Y |
+| 测试覆盖率 | X% | Y% |
+| 性能 | Xms | Yms |
 """
     }
 
     return templates.get(pr_type, templates['feature'])
 ```
 
-### 10. Review Response Templates
+### 10. 审查响应模板
 
-Help with review responses:
+帮助进行审查响应：
 
 ```python
 review_response_templates = {
     'acknowledge_feedback': """
-Thank you for the thorough review! I'll address these points.
+感谢您的详细审查！我将处理这些点。
 """,
 
     'explain_decision': """
-Great question! I chose this approach because:
-1. [Reason 1]
-2. [Reason 2]
+好问题！我选择这种方法是因为：
+1. [原因 1]
+2. [原因 2]
 
-Alternative approaches considered:
-- [Alternative 1]: [Why not chosen]
-- [Alternative 2]: [Why not chosen]
+考虑的替代方法：
+- [替代方案 1]：[未选择的原因]
+- [替代方案 2]：[未选择的原因]
 
-Happy to discuss further if you have concerns.
+如有疑虑，我很乐意进一步讨论。
 """,
 
     'request_clarification': """
-Thanks for the feedback. Could you clarify what you mean by [specific point]?
-I want to make sure I understand your concern correctly before making changes.
+感谢反馈。能否澄清您对 [具体点] 的意思？
+我想在进行更改之前确保正确理解您的问题。
 """,
 
     'disagree_respectfully': """
-I appreciate your perspective on this. I have a slightly different view:
+我感谢您对此的看法。我有稍微不同的观点：
 
-[Your reasoning]
+[你的推理]
 
-However, I'm open to discussing this further. What do you think about [compromise/middle ground]?
+不过，我愿意进一步讨论。您认为 [折衷/中间立场] 如何？
 """,
 
     'commit_to_change': """
-Good catch! I'll update this to [specific change].
-This should address [concern] while maintaining [other requirement].
+好发现！我将更新为 [具体更改]。
+这应该解决 [问题] 同时保持 [其他要求]。
 """
 }
 ```
 
-## Output Format
+## 输出格式
 
-1. **PR Summary**: Executive summary with key metrics
-2. **Detailed Description**: Comprehensive PR description
-3. **Review Checklist**: Context-aware review items
-4. **Risk Assessment**: Risk analysis with mitigation strategies
-5. **Test Coverage**: Before/after coverage comparison
-6. **Visual Aids**: Diagrams and visual diffs where applicable
-7. **Size Recommendations**: Suggestions for splitting large PRs
-8. **Review Automation**: Automated checks and findings
+1. **PR 摘要**: 包含关键指标的执行摘要
+2. **详细描述**: 全面的 PR 描述
+3. **审查检查清单**: 上下文感知的审查项目
+4. **风险评估**: 包含缓解策略的风险分析
+5. **测试覆盖率**: 前后覆盖率对比
+6. **视觉辅助**: 适用时的图表和视觉差异
+7. **大小建议**: 拆分大型 PR 的建议
+8. **审查自动化**: 自动化检查和发现
 
-Focus on creating PRs that are a pleasure to review, with all necessary context and documentation for efficient code review process.
+专注于创建令人愉悦审查的 PR，为高效代码审查流程提供所有必要的上下文和文档。

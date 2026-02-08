@@ -3,55 +3,55 @@ name: python-performance-optimization
 description: Profile and optimize Python code using cProfile, memory profilers, and performance best practices. Use when debugging slow Python code, optimizing bottlenecks, or improving application performance.
 ---
 
-# Python Performance Optimization
+# Python 性能优化
 
-Comprehensive guide to profiling, analyzing, and optimizing Python code for better performance, including CPU profiling, memory optimization, and implementation best practices.
+使用 cProfile、内存分析器和性能最佳实践来分析、优化 Python 代码的综合指南，包括 CPU 分析、内存优化和实现最佳实践。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Identifying performance bottlenecks in Python applications
-- Reducing application latency and response times
-- Optimizing CPU-intensive operations
-- Reducing memory consumption and memory leaks
-- Improving database query performance
-- Optimizing I/O operations
-- Speeding up data processing pipelines
-- Implementing high-performance algorithms
-- Profiling production applications
+- 识别 Python 应用程序中的性能瓶颈
+- 降低应用延迟和响应时间
+- 优化 CPU 密集型操作
+- 减少内存消耗和内存泄漏
+- 提升数据库查询性能
+- 优化 I/O 操作
+- 加速数据处理流水线
+- 实现高性能算法
+- 分析生产环境应用程序
 
-## Core Concepts
+## 核心概念
 
-### 1. Profiling Types
+### 1. 分析类型
 
-- **CPU Profiling**: Identify time-consuming functions
-- **Memory Profiling**: Track memory allocation and leaks
-- **Line Profiling**: Profile at line-by-line granularity
-- **Call Graph**: Visualize function call relationships
+- **CPU 分析**: 识别耗时的函数
+- **内存分析**: 跟踪内存分配和泄漏
+- **行分析**: 逐行级别的分析
+- **调用图**: 可视化函数调用关系
 
-### 2. Performance Metrics
+### 2. 性能指标
 
-- **Execution Time**: How long operations take
-- **Memory Usage**: Peak and average memory consumption
-- **CPU Utilization**: Processor usage patterns
-- **I/O Wait**: Time spent on I/O operations
+- **执行时间**: 操作耗时
+- **内存使用**: 峰值和平均内存消耗
+- **CPU 利用率**: 处理器使用模式
+- **I/O 等待**: I/O 操作耗时
 
-### 3. Optimization Strategies
+### 3. 优化策略
 
-- **Algorithmic**: Better algorithms and data structures
-- **Implementation**: More efficient code patterns
-- **Parallelization**: Multi-threading/processing
-- **Caching**: Avoid redundant computation
-- **Native Extensions**: C/Rust for critical paths
+- **算法层面**: 更好的算法和数据结构
+- **实现层面**: 更高效的代码模式
+- **并行化**: 多线程/多进程
+- **缓存**: 避免重复计算
+- **原生扩展**: 关键路径使用 C/Rust
 
-## Quick Start
+## 快速开始
 
-### Basic Timing
+### 基本计时
 
 ```python
 import time
 
 def measure_time():
-    """Simple timing measurement."""
+    """简单的计时测量。"""
     start = time.time()
 
     # Your code here
@@ -71,9 +71,9 @@ execution_time = timeit.timeit(
 print(f"Average time: {execution_time/100:.6f} seconds")
 ```
 
-## Profiling Tools
+## 分析工具
 
-### Pattern 1: cProfile - CPU Profiling
+### 模式 1: cProfile - CPU 分析
 
 ```python
 import cProfile
@@ -115,7 +115,7 @@ if __name__ == "__main__":
     stats.dump_stats("profile_output.prof")
 ```
 
-**Command-line profiling:**
+**命令行分析:**
 
 ```bash
 # Profile a script
@@ -128,7 +128,7 @@ python -m pstats output.prof
 # stats 10
 ```
 
-### Pattern 2: line_profiler - Line-by-Line Profiling
+### 模式 2: line_profiler - 逐行分析
 
 ```python
 # Install: pip install line-profiler
@@ -147,7 +147,7 @@ def process_data(data):
 # kernprof -l -v script.py
 ```
 
-**Manual line profiling:**
+**手动行分析:**
 
 ```python
 from line_profiler import LineProfiler
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     lp.print_stats()
 ```
 
-### Pattern 3: memory_profiler - Memory Usage
+### 模式 3: memory_profiler - 内存使用
 
 ```python
 # Install: pip install memory-profiler
@@ -200,7 +200,7 @@ if __name__ == "__main__":
 # python -m memory_profiler script.py
 ```
 
-### Pattern 4: py-spy - Production Profiling
+### 模式 4: py-spy - 生产环境分析
 
 ```bash
 # Install: pip install py-spy
@@ -218,9 +218,9 @@ py-spy record -o profile.svg -- python script.py
 py-spy dump --pid 12345
 ```
 
-## Optimization Patterns
+## 优化模式
 
-### Pattern 5: List Comprehensions vs Loops
+### 模式 5: 列表推导式 vs 循环
 
 ```python
 import timeit
@@ -254,7 +254,7 @@ def faster_squares(n):
     return list(map(lambda x: x**2, range(n)))
 ```
 
-### Pattern 6: Generator Expressions for Memory
+### 模式 6: 生成器表达式节省内存
 
 ```python
 import sys
@@ -279,7 +279,7 @@ print(f"Generator size: {sys.getsizeof(gen_data)} bytes")
 # Generators use constant memory regardless of size
 ```
 
-### Pattern 7: String Concatenation
+### 模式 7: 字符串拼接
 
 ```python
 import timeit
@@ -312,7 +312,7 @@ print(f"Join (generator): {fast:.4f}s")
 print(f"Join (list): {faster:.4f}s")
 ```
 
-### Pattern 8: Dictionary Lookups vs List Searches
+### 模式 8: 字典查找 vs 列表搜索
 
 ```python
 import timeit
@@ -347,7 +347,7 @@ print(f"Dict search: {dict_time:.6f}s")
 print(f"Speedup: {list_time/dict_time:.0f}x")
 ```
 
-### Pattern 9: Local Variable Access
+### 模式 9: 局部变量访问
 
 ```python
 import timeit
@@ -379,7 +379,7 @@ print(f"Local access: {local_time:.4f}s")
 print(f"Speedup: {global_time/local_time:.2f}x")
 ```
 
-### Pattern 10: Function Call Overhead
+### 模式 10: 函数调用开销
 
 ```python
 import timeit
@@ -410,9 +410,9 @@ print(f"Inline: {inline_time:.4f}s")
 print(f"Function calls: {function_time:.4f}s")
 ```
 
-## Advanced Optimization
+## 高级优化
 
-### Pattern 11: NumPy for Numerical Operations
+### 模式 11: NumPy 数值运算
 
 ```python
 import timeit
@@ -456,7 +456,7 @@ print(f"NumPy multiply: {np_time:.4f}s")
 print(f"Speedup: {py_time/np_time:.2f}x")
 ```
 
-### Pattern 12: Caching with functools.lru_cache
+### 模式 12: 使用 functools.lru_cache 缓存
 
 ```python
 from functools import lru_cache
@@ -488,7 +488,7 @@ print(f"With cache (1000 runs): {fast_time:.4f}s")
 print(f"Cache info: {fibonacci_fast.cache_info()}")
 ```
 
-### Pattern 13: Using **slots** for Memory
+### 模式 13: 使用 __slots__ 节省内存
 
 ```python
 import sys
@@ -524,7 +524,7 @@ print(f"\nMemory for 10000 regular objects: ~{sys.getsizeof(regular) * 10000} by
 print(f"Memory for 10000 slotted objects: ~{sys.getsizeof(slotted) * 10000} bytes")
 ```
 
-### Pattern 14: Multiprocessing for CPU-Bound Tasks
+### 模式 14: 多进程处理 CPU 密集型任务
 
 ```python
 import multiprocessing as mp
@@ -558,7 +558,7 @@ if __name__ == "__main__":
     print(f"Speedup: {seq_time/par_time:.2f}x")
 ```
 
-### Pattern 15: Async I/O for I/O-Bound Tasks
+### 模式 15: 异步 I/O 处理 I/O 密集型任务
 
 ```python
 import asyncio
@@ -606,9 +606,9 @@ print(f"Asynchronous: {async_time:.2f}s")
 print(f"Speedup: {sync_time/async_time:.2f}x")
 ```
 
-## Database Optimization
+## 数据库优化
 
-### Pattern 16: Batch Database Operations
+### 模式 16: 批量数据库操作
 
 ```python
 import sqlite3
@@ -652,7 +652,7 @@ print(f"Batch insert: {fast_time:.4f}s")
 print(f"Speedup: {slow_time/fast_time:.2f}x")
 ```
 
-### Pattern 17: Query Optimization
+### 模式 17: 查询优化
 
 ```python
 # Use indexes for frequently queried columns
@@ -680,9 +680,9 @@ print(cursor.fetchall())
 # Fast: SELECT id, name
 ```
 
-## Memory Optimization
+## 内存优化
 
-### Pattern 18: Detecting Memory Leaks
+### 模式 18: 检测内存泄漏
 
 ```python
 import tracemalloc
@@ -727,7 +727,7 @@ track_memory_usage()
 gc.collect()
 ```
 
-### Pattern 19: Iterators vs Lists
+### 模式 19: 迭代器 vs 列表
 
 ```python
 import sys
@@ -747,7 +747,7 @@ def process_file_iterator(filename):
 # List loads entire file into memory
 ```
 
-### Pattern 20: Weakref for Caches
+### 模式 20: 使用弱引用缓存
 
 ```python
 import weakref
@@ -780,9 +780,9 @@ def get_resource_weak(key):
 # When no strong references exist, objects can be GC'd
 ```
 
-## Benchmarking Tools
+## 基准测试工具
 
-### Custom Benchmark Decorator
+### 自定义基准测试装饰器
 
 ```python
 import time
@@ -808,7 +808,7 @@ def slow_function():
 result = slow_function()
 ```
 
-### Performance Testing with pytest-benchmark
+### 使用 pytest-benchmark 进行性能测试
 
 ```python
 # Install: pip install pytest-benchmark
@@ -826,49 +826,49 @@ def test_map_function(benchmark):
 # Run with: pytest test_performance.py --benchmark-compare
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Profile before optimizing** - Measure to find real bottlenecks
-2. **Focus on hot paths** - Optimize code that runs most frequently
-3. **Use appropriate data structures** - Dict for lookups, set for membership
-4. **Avoid premature optimization** - Clarity first, then optimize
-5. **Use built-in functions** - They're implemented in C
-6. **Cache expensive computations** - Use lru_cache
-7. **Batch I/O operations** - Reduce system calls
-8. **Use generators** for large datasets
-9. **Consider NumPy** for numerical operations
-10. **Profile production code** - Use py-spy for live systems
+1. **优化前先分析** - 测量以找到真正的瓶颈
+2. **关注热路径** - 优化最频繁执行的代码
+3. **使用合适的数据结构** - 字典用于查找,集合用于成员测试
+4. **避免过早优化** - 先保证清晰,再优化
+5. **使用内置函数** - 它们用 C 实现
+6. **缓存昂贵的计算** - 使用 lru_cache
+7. **批量 I/O 操作** - 减少系统调用
+8. **对大数据集使用生成器**
+9. **考虑使用 NumPy** 进行数值运算
+10. **分析生产环境代码** - 对运行中的系统使用 py-spy
 
-## Common Pitfalls
+## 常见陷阱
 
-- Optimizing without profiling
-- Using global variables unnecessarily
-- Not using appropriate data structures
-- Creating unnecessary copies of data
-- Not using connection pooling for databases
-- Ignoring algorithmic complexity
-- Over-optimizing rare code paths
-- Not considering memory usage
+- 未分析就优化
+- 不必要地使用全局变量
+- 未使用合适的数据结构
+- 创建不必要的数据副本
+- 数据库未使用连接池
+- 忽略算法复杂度
+- 过度优化罕见代码路径
+- 未考虑内存使用
 
-## Resources
+## 资源
 
-- **cProfile**: Built-in CPU profiler
-- **memory_profiler**: Memory usage profiling
-- **line_profiler**: Line-by-line profiling
-- **py-spy**: Sampling profiler for production
-- **NumPy**: High-performance numerical computing
-- **Cython**: Compile Python to C
-- **PyPy**: Alternative Python interpreter with JIT
+- **cProfile**: 内置 CPU 分析器
+- **memory_profiler**: 内存使用分析
+- **line_profiler**: 逐行分析
+- **py-spy**: 生产环境采样分析器
+- **NumPy**: 高性能数值计算
+- **Cython**: 将 Python 编译为 C
+- **PyPy**: 带 JIT 的替代 Python 解释器
 
-## Performance Checklist
+## 性能清单
 
-- [ ] Profiled code to identify bottlenecks
-- [ ] Used appropriate data structures
-- [ ] Implemented caching where beneficial
-- [ ] Optimized database queries
-- [ ] Used generators for large datasets
-- [ ] Considered multiprocessing for CPU-bound tasks
-- [ ] Used async I/O for I/O-bound tasks
-- [ ] Minimized function call overhead in hot loops
-- [ ] Checked for memory leaks
-- [ ] Benchmarked before and after optimization
+- [ ] 分析代码以识别瓶颈
+- [ ] 使用合适的数据结构
+- [ ] 在有益处的地方实现缓存
+- [ ] 优化数据库查询
+- [ ] 对大数据集使用生成器
+- [ ] 考虑对 CPU 密集型任务使用多进程
+- [ ] 对 I/O 密集型任务使用异步 I/O
+- [ ] 在热循环中最小化函数调用开销
+- [ ] 检查内存泄漏
+- [ ] 优化前后进行基准测试

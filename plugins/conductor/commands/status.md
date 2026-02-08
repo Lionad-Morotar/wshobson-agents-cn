@@ -1,301 +1,301 @@
 ---
-description: "Display project status, active tracks, and next actions"
+description: "显示项目状态、活跃 tracks 和下一步操作"
 argument-hint: "[track-id] [--detailed]"
 ---
 
-# Conductor Status
+# Conductor 状态
 
-Display the current status of the Conductor project, including overall progress, active tracks, and next actions.
+显示 Conductor 项目的当前状态，包括整体进度、活跃 tracks 和下一步操作。
 
-## Pre-flight Checks
+## 飞行前检查
 
-1. Verify Conductor is initialized:
-   - Check `conductor/product.md` exists
-   - Check `conductor/tracks.md` exists
-   - If missing: Display error and suggest running `/conductor:setup` first
+1. 验证 Conductor 已初始化：
+   - 检查 `conductor/product.md` 是否存在
+   - 检查 `conductor/tracks.md` 是否存在
+   - 如果缺失：显示错误并建议先运行 `/conductor:setup`
 
-2. Check for any tracks:
-   - Read `conductor/tracks.md`
-   - If no tracks registered: Display setup complete message with suggestion to create first track
+2. 检查是否有任何 tracks：
+   - 读取 `conductor/tracks.md`
+   - 如果没有注册的 tracks：显示设置完成消息并建议创建第一个 track
 
-## Data Collection
+## 数据收集
 
-### 1. Project Information
+### 1. 项目信息
 
-Read `conductor/product.md` and extract:
+读取 `conductor/product.md` 并提取：
 
-- Project name
-- Project description
+- 项目名称
+- 项目描述
 
-### 2. Tracks Overview
+### 2. Tracks 概览
 
-Read `conductor/tracks.md` and parse:
+读取 `conductor/tracks.md` 并解析：
 
-- Total tracks count
-- Completed tracks (marked `[x]`)
-- In-progress tracks (marked `[~]`)
-- Pending tracks (marked `[ ]`)
+- 总 track 数量
+- 已完成的 tracks（标记为 `[x]`）
+- 进行中的 tracks（标记为 `[~]`）
+- 待处理的 tracks（标记为 `[ ]`）
 
-### 3. Detailed Track Analysis
+### 3. 详细 Track 分析
 
-For each track in `conductor/tracks/`:
+对于 `conductor/tracks/` 中的每个 track：
 
-Read `conductor/tracks/{trackId}/plan.md`:
+读取 `conductor/tracks/{trackId}/plan.md`：
 
-- Count total tasks (lines matching `- [x]`, `- [~]`, `- [ ]` with Task prefix)
-- Count completed tasks (`[x]`)
-- Count in-progress tasks (`[~]`)
-- Count pending tasks (`[ ]`)
-- Identify current phase (first phase with incomplete tasks)
-- Identify next pending task
+- 统计总任务数（匹配 `- [x]`、`- [~]`、`- [ ]` 且带有 Task 前缀的行）
+- 统计已完成任务（`[x]`）
+- 统计进行中任务（`[~]`）
+- 统计待处理任务（`[ ]`）
+- 识别当前阶段（第一个有未完成任务的阶段）
+- 识别下一个待处理任务
 
-Read `conductor/tracks/{trackId}/metadata.json`:
+读取 `conductor/tracks/{trackId}/metadata.json`：
 
-- Track type (feature, bug, chore, refactor)
-- Created date
-- Last updated date
-- Status
+- Track 类型（feature、bug、chore、refactor）
+- 创建日期
+- 最后更新日期
+- 状态
 
-Read `conductor/tracks/{trackId}/spec.md`:
+读取 `conductor/tracks/{trackId}/spec.md`：
 
-- Check for any noted blockers or dependencies
+- 检查是否有任何标注的阻塞项或依赖项
 
-### 4. Blocker Detection
+### 4. 阻塞检测
 
-Scan for potential blockers:
+扫描潜在的阻塞项：
 
-- Tasks marked with `BLOCKED:` prefix
-- Dependencies on incomplete tracks
-- Failed verification tasks
+- 标记有 `BLOCKED:` 前缀的任务
+- 对未完成 tracks 的依赖
+- 失败的验证任务
 
-## Output Format
+## 输出格式
 
-### Full Project Status (no argument)
+### 完整项目状态（无参数）
 
 ```
 ================================================================================
-                        PROJECT STATUS: {Project Name}
+                        项目状态：{项目名称}
 ================================================================================
-Last Updated: {current timestamp}
+最后更新：{当前时间戳}
 
 --------------------------------------------------------------------------------
-                              OVERALL PROGRESS
+                              整体进度
 --------------------------------------------------------------------------------
 
-Tracks:     {completed}/{total} completed ({percentage}%)
-Tasks:      {completed}/{total} completed ({percentage}%)
+Tracks：     {已完成}/{总数} 已完成（{百分比}%）
+任务：      {已完成}/{总数} 已完成（{百分比}%）
 
-Progress:   [##########..........] {percentage}%
+进度：   [##########..........] {百分比}%
 
 --------------------------------------------------------------------------------
-                              TRACK SUMMARY
+                              Track 摘要
 --------------------------------------------------------------------------------
 
-| Status | Track ID          | Type    | Tasks      | Last Updated |
+| 状态 | Track ID          | 类型    | 任务      | 最后更新 |
 |--------|-------------------|---------|------------|--------------|
 | [x]    | auth_20250110     | feature | 12/12 (100%)| 2025-01-12  |
 | [~]    | dashboard_20250112| feature | 7/15 (47%) | 2025-01-15  |
 | [ ]    | nav-fix_20250114  | bug     | 0/4 (0%)   | 2025-01-14  |
 
 --------------------------------------------------------------------------------
-                              CURRENT FOCUS
+                              当前焦点
 --------------------------------------------------------------------------------
 
-Active Track:  dashboard_20250112 - Dashboard Feature
-Current Phase: Phase 2: Core Components
-Current Task:  [~] Task 2.3: Implement chart rendering
+活跃 Track：  dashboard_20250112 - Dashboard 功能
+当前阶段：阶段 2：核心组件
+当前任务：  [~] 任务 2.3：实现图表渲染
 
-Progress in Phase:
-  - [x] Task 2.1: Create dashboard layout
-  - [x] Task 2.2: Add data fetching hooks
-  - [~] Task 2.3: Implement chart rendering
-  - [ ] Task 2.4: Add filter controls
-
---------------------------------------------------------------------------------
-                              NEXT ACTIONS
---------------------------------------------------------------------------------
-
-1. Complete: Task 2.3 - Implement chart rendering (dashboard_20250112)
-2. Then: Task 2.4 - Add filter controls (dashboard_20250112)
-3. After Phase 2: Phase verification checkpoint
+阶段内进度：
+  - [x] 任务 2.1：创建 dashboard 布局
+  - [x] 任务 2.2：添加数据获取 hooks
+  - [~] 任务 2.3：实现图表渲染
+  - [ ] 任务 2.4：添加过滤控件
 
 --------------------------------------------------------------------------------
-                               BLOCKERS
+                              下一步操作
 --------------------------------------------------------------------------------
 
-{If blockers found:}
-! BLOCKED: Task 3.1 in dashboard_20250112 depends on api_20250111 (incomplete)
+1. 完成：任务 2.3 - 实现图表渲染 (dashboard_20250112)
+2. 然后：任务 2.4 - 添加过滤控件 (dashboard_20250112)
+3. 阶段 2 完成后：阶段验证检查点
 
-{If no blockers:}
-No blockers identified.
+--------------------------------------------------------------------------------
+                               阻塞项
+--------------------------------------------------------------------------------
+
+{如果发现阻塞项：}
+! 已阻塞：dashboard_20250112 中的任务 3.1 依赖于 api_20250111（未完成）
+
+{如果没有阻塞项：}
+未发现阻塞项。
 
 ================================================================================
-Commands: /conductor:implement {trackId} | /conductor:new-track | /conductor:revert
+命令：/conductor:implement {trackId} | /conductor:new-track | /conductor:revert
 ================================================================================
 ```
 
-### Single Track Status (with track-id argument)
+### 单个 Track 状态（带 track-id 参数）
 
 ```
 ================================================================================
-                    TRACK STATUS: {Track Title}
+                    Track 状态：{Track 标题}
 ================================================================================
-Track ID:    {trackId}
-Type:        {feature|bug|chore|refactor}
-Status:      {Pending|In Progress|Complete}
-Created:     {date}
-Updated:     {date}
+Track ID：    {trackId}
+类型：        {feature|bug|chore|refactor}
+状态：      {待处理|进行中|已完成}
+创建：     {日期}
+更新：     {日期}
 
 --------------------------------------------------------------------------------
-                              SPECIFICATION
+                              规范
 --------------------------------------------------------------------------------
 
-Summary: {brief summary from spec.md}
+摘要：{来自 spec.md 的简要摘要}
 
-Acceptance Criteria:
-  - [x] {Criterion 1}
-  - [ ] {Criterion 2}
-  - [ ] {Criterion 3}
-
---------------------------------------------------------------------------------
-                              IMPLEMENTATION
---------------------------------------------------------------------------------
-
-Overall:    {completed}/{total} tasks ({percentage}%)
-Progress:   [##########..........] {percentage}%
-
-## Phase 1: {Phase Name} [COMPLETE]
-  - [x] Task 1.1: {description}
-  - [x] Task 1.2: {description}
-  - [x] Verification: {description}
-
-## Phase 2: {Phase Name} [IN PROGRESS]
-  - [x] Task 2.1: {description}
-  - [~] Task 2.2: {description}  <-- CURRENT
-  - [ ] Task 2.3: {description}
-  - [ ] Verification: {description}
-
-## Phase 3: {Phase Name} [PENDING]
-  - [ ] Task 3.1: {description}
-  - [ ] Task 3.2: {description}
-  - [ ] Verification: {description}
+验收标准：
+  - [x] {标准 1}
+  - [ ] {标准 2}
+  - [ ] {标准 3}
 
 --------------------------------------------------------------------------------
-                              GIT HISTORY
+                              实施
 --------------------------------------------------------------------------------
 
-Related Commits:
+总体：    {已完成}/{总数} 任务（{百分比}%）
+进度：   [##########..........] {百分比}%
+
+## 阶段 1：{阶段名称} [已完成]
+  - [x] 任务 1.1：{描述}
+  - [x] 任务 1.2：{描述}
+  - [x] 验证：{描述}
+
+## 阶段 2：{阶段名称} [进行中]
+  - [x] 任务 2.1：{描述}
+  - [~] 任务 2.2：{描述}  <-- 当前
+  - [ ] 任务 2.3：{描述}
+  - [ ] 验证：{描述}
+
+## 阶段 3：{阶段名称} [待处理]
+  - [ ] 任务 3.1：{描述}
+  - [ ] 任务 3.2：{描述}
+  - [ ] 验证：{描述}
+
+--------------------------------------------------------------------------------
+                              Git 历史
+--------------------------------------------------------------------------------
+
+相关提交：
   abc1234 - feat: add login form ({trackId})
   def5678 - feat: add password validation ({trackId})
   ghi9012 - chore: mark task 1.2 complete ({trackId})
 
 --------------------------------------------------------------------------------
-                              NEXT STEPS
+                              下一步
 --------------------------------------------------------------------------------
 
-1. Current: Task 2.2 - {description}
-2. Next: Task 2.3 - {description}
-3. Phase 2 verification pending
+1. 当前：任务 2.2 - {描述}
+2. 下一步：任务 2.3 - {描述}
+3. 阶段 2 验证待处理
 
 ================================================================================
-Commands: /conductor:implement {trackId} | /conductor:revert {trackId}
-================================================================================
-```
-
-## Status Markers Legend
-
-Display at bottom if helpful:
-
-```
-Legend:
-  [x] = Complete
-  [~] = In Progress
-  [ ] = Pending
-  [!] = Blocked
-```
-
-## Error States
-
-### No Tracks Found
-
-```
-================================================================================
-                        PROJECT STATUS: {Project Name}
-================================================================================
-
-Conductor is set up but no tracks have been created yet.
-
-To get started:
-  /conductor:new-track "your feature description"
-
+命令：/conductor:implement {trackId} | /conductor:revert {trackId}
 ================================================================================
 ```
 
-### Conductor Not Initialized
+## 状态标记图例
+
+如果有帮助，在底部显示：
 
 ```
-ERROR: Conductor not initialized
-
-Could not find conductor/product.md
-
-Run /conductor:setup to initialize Conductor for this project.
+图例：
+  [x] = 已完成
+  [~] = 进行中
+  [ ] = 待处理
+  [!] = 已阻塞
 ```
 
-### Track Not Found (with argument)
+## 错误状态
+
+### 未找到 Tracks
 
 ```
-ERROR: Track not found: {argument}
+================================================================================
+                        项目状态：{项目名称}
+================================================================================
 
-Available tracks:
+Conductor 已设置但尚未创建任何 tracks。
+
+入门：
+  /conductor:new-track "您的功能描述"
+
+================================================================================
+```
+
+### Conductor 未初始化
+
+```
+错误：Conductor 未初始化
+
+找不到 conductor/product.md
+
+运行 /conductor:setup 为此项目初始化 Conductor。
+```
+
+### 未找到 Track（带参数）
+
+```
+错误：未找到 track：{参数}
+
+可用的 tracks：
   - auth_20250115
   - dashboard_20250112
   - nav-fix_20250114
 
-Usage: /conductor:status [track-id]
+用法：/conductor:status [track-id]
 ```
 
-## Calculation Logic
+## 计算逻辑
 
-### Task Counting
-
-```
-For each plan.md:
-  - Complete: count lines matching /^- \[x\] Task/
-  - In Progress: count lines matching /^- \[~\] Task/
-  - Pending: count lines matching /^- \[ \] Task/
-  - Total: Complete + In Progress + Pending
-```
-
-### Phase Detection
+### 任务计数
 
 ```
-Current phase = first phase header followed by any incomplete task ([ ] or [~])
+对于每个 plan.md：
+  - 已完成：统计匹配 /^- \[x\] Task/ 的行
+  - 进行中：统计匹配 /^- \[~\] Task/ 的行
+  - 待处理：统计匹配 /^- \[ \] Task/ 的行
+  - 总计：已完成 + 进行中 + 待处理
 ```
 
-### Progress Bar
+### 阶段检测
 
 ```
-filled = floor((completed / total) * 20)
+当前阶段 = 第一个后跟任何未完成任务（[ ] 或 [~]）的阶段标题
+```
+
+### 进度条
+
+```
+filled = floor((已完成 / 总计) * 20)
 empty = 20 - filled
 bar = "[" + "#".repeat(filled) + ".".repeat(empty) + "]"
 ```
 
-## Quick Mode
+## 快速模式
 
-If invoked with `--quick` or `-q`:
+如果使用 `--quick` 或 `-q` 调用：
 
 ```
-{Project Name}: {completed}/{total} tasks ({percentage}%)
-Active: {trackId} - Task {X.Y}
+{项目名称}：{已完成}/{总数} 任务（{百分比}%）
+活跃：{trackId} - 任务 {X.Y}
 ```
 
-## JSON Output
+## JSON 输出
 
-If invoked with `--json`:
+如果使用 `--json` 调用：
 
 ```json
 {
-  "project": "{name}",
+  "project": "{名称}",
   "timestamp": "ISO_TIMESTAMP",
   "tracks": {
     "total": N,

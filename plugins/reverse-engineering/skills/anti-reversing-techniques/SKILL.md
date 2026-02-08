@@ -1,25 +1,25 @@
 ---
 name: anti-reversing-techniques
-description: Understand anti-reversing, obfuscation, and protection techniques encountered during software analysis. Use when analyzing protected binaries, bypassing anti-debugging for authorized analysis, or understanding software protection mechanisms.
+description: 理解在软件分析过程中遇到的反逆向、混淆和保护技术。在分析受保护的二进制文件、为授权分析绕过反调试或理解软件保护机制时使用。
 ---
 
-> **AUTHORIZED USE ONLY**: This skill contains dual-use security techniques. Before proceeding with any bypass or analysis:
+> **仅限授权使用**：此技能包含双重用途的安全技术。在继续任何绕过或分析之前：
 >
-> 1. **Verify authorization**: Confirm you have explicit written permission from the software owner, or are operating within a legitimate security context (CTF, authorized pentest, malware analysis, security research)
-> 2. **Document scope**: Ensure your activities fall within the defined scope of your authorization
-> 3. **Legal compliance**: Understand that unauthorized bypassing of software protection may violate laws (CFAA, DMCA anti-circumvention, etc.)
+> 1. **验证授权**：确认您拥有软件所有者的明确书面许可，或者在合法的安全上下文中操作（CTF、授权渗透测试、恶意软件分析、安全研究）
+> 2. **记录范围**：确保您的活动在授权的明确定义范围内
+> 3. **法律合规**：理解未经授权绕过软件保护可能违反法律（CFAA、DMCA 反规避条款等）
 >
-> **Legitimate use cases**: Malware analysis, authorized penetration testing, CTF competitions, academic security research, analyzing software you own/have rights to
+> **合法用例**：恶意软件分析、授权渗透测试、CTF 竞赛、学术安全研究、分析您拥有/拥有权限的软件
 
-# Anti-Reversing Techniques
+# 反逆向技术
 
-Understanding protection mechanisms encountered during authorized software analysis, security research, and malware analysis. This knowledge helps analysts bypass protections to complete legitimate analysis tasks.
+理解在授权软件分析、安全研究和恶意软件分析过程中遇到的保护机制。这些知识帮助分析师绕过保护以完成合法的分析任务。
 
-## Anti-Debugging Techniques
+## 反调试技术
 
-### Windows Anti-Debugging
+### Windows 反调试
 
-#### API-Based Detection
+#### 基于 API 的检测
 
 ```c
 // IsDebuggerPresent
@@ -55,63 +55,63 @@ NtQueryInformationProcess(
     sizeof(debugFlags),
     NULL
 );
-if (debugFlags == 0) exit(1);  // 0 means being debugged
+if (debugFlags == 0) exit(1);  // 0 表示正在被调试
 ```
 
-**Bypass Approaches:**
+**绕过方法：**
 
 ```python
-# x64dbg: ScyllaHide plugin
-# Patches common anti-debug checks
+# x64dbg: ScyllaHide 插件
+# 修补常见的反调试检查
 
-# Manual patching in debugger:
-# - Set IsDebuggerPresent return to 0
-# - Patch PEB.BeingDebugged to 0
+# 调试器中的手动修补：
+# - 将 IsDebuggerPresent 返回值设置为 0
+# - 将 PEB.BeingDebugged 修补为 0
 # - Hook NtQueryInformationProcess
 
-# IDAPython: Patch checks
+# IDAPython: 修补检查
 ida_bytes.patch_byte(check_addr, 0x90)  # NOP
 ```
 
-#### PEB-Based Detection
+#### 基于 PEB 的检测
 
 ```c
-// Direct PEB access
+// 直接访问 PEB
 #ifdef _WIN64
     PPEB peb = (PPEB)__readgsqword(0x60);
 #else
     PPEB peb = (PPEB)__readfsdword(0x30);
 #endif
 
-// BeingDebugged flag
+// BeingDebugged 标志
 if (peb->BeingDebugged) exit(1);
 
 // NtGlobalFlag
-// Debugged: 0x70 (FLG_HEAP_ENABLE_TAIL_CHECK |
+// 被调试时: 0x70 (FLG_HEAP_ENABLE_TAIL_CHECK |
 //                 FLG_HEAP_ENABLE_FREE_CHECK |
 //                 FLG_HEAP_VALIDATE_PARAMETERS)
 if (peb->NtGlobalFlag & 0x70) exit(1);
 
-// Heap flags
+// 堆标志
 PDWORD heapFlags = (PDWORD)((PBYTE)peb->ProcessHeap + 0x70);
 if (*heapFlags & 0x50000062) exit(1);
 ```
 
-**Bypass Approaches:**
+**绕过方法：**
 
 ```assembly
-; In debugger, modify PEB directly
-; x64dbg: dump at gs:[60] (x64) or fs:[30] (x86)
-; Set BeingDebugged (offset 2) to 0
-; Clear NtGlobalFlag (offset 0xBC for x64)
+; 在调试器中，直接修改 PEB
+; x64dbg: 在 gs:[60] (x64) 或 fs:[30] (x86) 处导出
+; 将 BeingDebugged (偏移 2) 设置为 0
+; 清除 NtGlobalFlag (x64 偏移 0xBC)
 ```
 
-#### Timing-Based Detection
+#### 基于时序的检测
 
 ```c
-// RDTSC timing
+// RDTSC 计时
 uint64_t start = __rdtsc();
-// ... some code ...
+// ... 一些代码 ...
 uint64_t end = __rdtsc();
 if ((end - start) > THRESHOLD) exit(1);
 
@@ -119,56 +119,56 @@ if ((end - start) > THRESHOLD) exit(1);
 LARGE_INTEGER start, end, freq;
 QueryPerformanceFrequency(&freq);
 QueryPerformanceCounter(&start);
-// ... code ...
+// ... 代码 ...
 QueryPerformanceCounter(&end);
 double elapsed = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart;
-if (elapsed > 0.1) exit(1);  // Too slow = debugger
+if (elapsed > 0.1) exit(1);  // 太慢 = 调试器
 
 // GetTickCount
 DWORD start = GetTickCount();
-// ... code ...
+// ... 代码 ...
 if (GetTickCount() - start > 1000) exit(1);
 ```
 
-**Bypass Approaches:**
+**绕过方法：**
 
 ```
-- Use hardware breakpoints instead of software
-- Patch timing checks
-- Use VM with controlled time
-- Hook timing APIs to return consistent values
+- 使用硬件断点而不是软件断点
+- 修补时序检查
+- 使用时间可控的虚拟机
+- Hook 时序 API 以返回一致的值
 ```
 
-#### Exception-Based Detection
+#### 基于异常的检测
 
 ```c
-// SEH-based detection
+// 基于 SEH 的检测
 __try {
-    __asm { int 3 }  // Software breakpoint
+    __asm { int 3 }  // 软件断点
 }
 __except(EXCEPTION_EXECUTE_HANDLER) {
-    // Normal execution: exception caught
+    // 正常执行：捕获到异常
     return;
 }
-// Debugger ate the exception
+// 调试器吞噬了异常
 exit(1);
 
-// VEH-based detection
+// 基于 VEH 的检测
 LONG CALLBACK VectoredHandler(PEXCEPTION_POINTERS ep) {
     if (ep->ExceptionRecord->ExceptionCode == EXCEPTION_BREAKPOINT) {
-        ep->ContextRecord->Rip++;  // Skip INT3
+        ep->ContextRecord->Rip++;  // 跳过 INT3
         return EXCEPTION_CONTINUE_EXECUTION;
     }
     return EXCEPTION_CONTINUE_SEARCH;
 }
 ```
 
-### Linux Anti-Debugging
+### Linux 反调试
 
 ```c
-// ptrace self-trace
+// ptrace 自追踪
 if (ptrace(PTRACE_TRACEME, 0, NULL, NULL) == -1) {
-    // Already being traced
+    // 已被追踪
     exit(1);
 }
 
@@ -182,97 +182,97 @@ while (fgets(line, sizeof(line), f)) {
     }
 }
 
-// Parent process check
+// 父进程检查
 if (getppid() != 1 && strcmp(get_process_name(getppid()), "bash") != 0) {
-    // Unusual parent (might be debugger)
+    // 异常的父进程（可能是调试器）
 }
 ```
 
-**Bypass Approaches:**
+**绕过方法：**
 
 ```bash
-# LD_PRELOAD to hook ptrace
-# Compile: gcc -shared -fPIC -o hook.so hook.c
+# LD_PRELOAD 来 hook ptrace
+# 编译: gcc -shared -fPIC -o hook.so hook.c
 long ptrace(int request, ...) {
-    return 0;  // Always succeed
+    return 0;  // 始终成功
 }
 
-# Usage
+# 使用
 LD_PRELOAD=./hook.so ./target
 ```
 
-## Anti-VM Detection
+## 反虚拟机检测
 
-### Hardware Fingerprinting
+### 硬件指纹识别
 
 ```c
-// CPUID-based detection
+// 基于 CPUID 的检测
 int cpuid_info[4];
 __cpuid(cpuid_info, 1);
-// Check hypervisor bit (bit 31 of ECX)
+// 检查虚拟机管理程序位 (ECX 的第 31 位)
 if (cpuid_info[2] & (1 << 31)) {
-    // Running in hypervisor
+    // 在虚拟机管理程序中运行
 }
 
-// CPUID brand string
+// CPUID 品牌字符串
 __cpuid(cpuid_info, 0x40000000);
 char vendor[13] = {0};
 memcpy(vendor, &cpuid_info[1], 12);
 // "VMwareVMware", "Microsoft Hv", "KVMKVMKVM", "VBoxVBoxVBox"
 
-// MAC address prefix
+// MAC 地址前缀
 // VMware: 00:0C:29, 00:50:56
 // VirtualBox: 08:00:27
 // Hyper-V: 00:15:5D
 ```
 
-### Registry/File Detection
+### 注册表/文件检测
 
 ```c
-// Windows registry keys
+// Windows 注册表项
 // HKLM\SOFTWARE\VMware, Inc.\VMware Tools
 // HKLM\SOFTWARE\Oracle\VirtualBox Guest Additions
 // HKLM\HARDWARE\ACPI\DSDT\VBOX__
 
-// Files
+// 文件
 // C:\Windows\System32\drivers\vmmouse.sys
 // C:\Windows\System32\drivers\vmhgfs.sys
 // C:\Windows\System32\drivers\VBoxMouse.sys
 
-// Processes
+// 进程
 // vmtoolsd.exe, vmwaretray.exe
 // VBoxService.exe, VBoxTray.exe
 ```
 
-### Timing-Based VM Detection
+### 基于时序的虚拟机检测
 
 ```c
-// VM exits cause timing anomalies
+// VM 退出导致时序异常
 uint64_t start = __rdtsc();
-__cpuid(cpuid_info, 0);  // Causes VM exit
+__cpuid(cpuid_info, 0);  // 导致 VM 退出
 uint64_t end = __rdtsc();
 if ((end - start) > 500) {
-    // Likely in VM (CPUID takes longer)
+    // 可能在虚拟机中 (CPUID 耗时更长)
 }
 ```
 
-**Bypass Approaches:**
+**绕过方法：**
 
 ```
-- Use bare-metal analysis environment
-- Harden VM (remove guest tools, change MAC)
-- Patch detection code
-- Use specialized analysis VMs (FLARE-VM)
+- 使用裸机分析环境
+- 加固虚拟机（移除客户工具、更改 MAC）
+- 修补检测代码
+- 使用专用分析虚拟机 (FLARE-VM)
 ```
 
-## Code Obfuscation
+## 代码混淆
 
-### Control Flow Obfuscation
+### 控制流混淆
 
-#### Control Flow Flattening
+#### 控制流平坦化
 
 ```c
-// Original
+// 原始代码
 if (cond) {
     func_a();
 } else {
@@ -280,7 +280,7 @@ if (cond) {
 }
 func_c();
 
-// Flattened
+// 平坦化后
 int state = 0;
 while (1) {
     switch (state) {
@@ -302,42 +302,42 @@ while (1) {
 }
 ```
 
-**Analysis Approach:**
+**分析方法：**
 
-- Identify state variable
-- Map state transitions
-- Reconstruct original flow
-- Tools: D-810 (IDA), SATURN
+- 识别状态变量
+- 映射状态转换
+- 重建原始流程
+- 工具：D-810 (IDA), SATURN
 
-#### Opaque Predicates
+#### 不透明谓词
 
 ```c
-// Always true, but complex to analyze
+// 始终为真，但分析复杂
 int x = rand();
-if ((x * x) >= 0) {  // Always true
+if ((x * x) >= 0) {  // 始终为真
     real_code();
 } else {
-    junk_code();  // Dead code
+    junk_code();  // 死代码
 }
 
-// Always false
-if ((x * (x + 1)) % 2 == 1) {  // Product of consecutive = even
+// 始终为假
+if ((x * (x + 1)) % 2 == 1) {  // 连续数的乘积 = 偶数
     junk_code();
 }
 ```
 
-**Analysis Approach:**
+**分析方法：**
 
-- Identify constant expressions
-- Symbolic execution to prove predicates
-- Pattern matching for known opaque predicates
+- 识别常量表达式
+- 符号执行以证明谓词
+- 针对已知不透明谓词的模式匹配
 
-### Data Obfuscation
+### 数据混淆
 
-#### String Encryption
+#### 字符串加密
 
 ```c
-// XOR encryption
+// XOR 加密
 char decrypt_string(char *enc, int len, char key) {
     char *dec = malloc(len + 1);
     for (int i = 0; i < len; i++) {
@@ -347,20 +347,20 @@ char decrypt_string(char *enc, int len, char key) {
     return dec;
 }
 
-// Stack strings
+// 栈字符串
 char url[20];
 url[0] = 'h'; url[1] = 't'; url[2] = 't'; url[3] = 'p';
 url[4] = ':'; url[5] = '/'; url[6] = '/';
 // ...
 ```
 
-**Analysis Approach:**
+**分析方法：**
 
 ```python
-# FLOSS for automatic string deobfuscation
+# FLOSS 用于自动字符串反混淆
 floss malware.exe
 
-# IDAPython string decryption
+# IDAPython 字符串解密
 def decrypt_xor(ea, length, key):
     result = ""
     for i in range(length):
@@ -369,10 +369,10 @@ def decrypt_xor(ea, length, key):
     return result
 ```
 
-#### API Obfuscation
+#### API 混淆
 
 ```c
-// Dynamic API resolution
+// 动态 API 解析
 typedef HANDLE (WINAPI *pCreateFileW)(LPCWSTR, DWORD, DWORD,
     LPSECURITY_ATTRIBUTES, DWORD, DWORD, HANDLE);
 
@@ -380,7 +380,7 @@ HMODULE kernel32 = LoadLibraryA("kernel32.dll");
 pCreateFileW myCreateFile = (pCreateFileW)GetProcAddress(
     kernel32, "CreateFileW");
 
-// API hashing
+// API 哈希
 DWORD hash_api(char *name) {
     DWORD hash = 0;
     while (*name) {
@@ -388,44 +388,44 @@ DWORD hash_api(char *name) {
     }
     return hash;
 }
-// Resolve by hash comparison instead of string
+// 通过哈希比较而不是字符串来解析
 ```
 
-**Analysis Approach:**
+**分析方法：**
 
-- Identify hash algorithm
-- Build hash database of known APIs
-- Use HashDB plugin for IDA
-- Dynamic analysis to resolve at runtime
+- 识别哈希算法
+- 构建已知 API 的哈希数据库
+- 使用 IDA 的 HashDB 插件
+- 动态分析在运行时解析
 
-### Instruction-Level Obfuscation
+### 指令级混淆
 
-#### Dead Code Insertion
+#### 死代码插入
 
 ```asm
-; Original
+; 原始代码
 mov eax, 1
 
-; With dead code
-push ebx           ; Dead
+; 带死代码
+push ebx           ; 死代码
 mov eax, 1
-pop ebx            ; Dead
-xor ecx, ecx       ; Dead
-add ecx, ecx       ; Dead
+pop ebx            ; 死代码
+xor ecx, ecx       ; 死代码
+add ecx, ecx       ; 死代码
 ```
 
-#### Instruction Substitution
+#### 指令替换
 
 ```asm
-; Original: xor eax, eax (set to 0)
-; Substitutions:
+; 原始: xor eax, eax (设置为 0)
+; 替换方式:
 sub eax, eax
 mov eax, 0
 and eax, 0
 lea eax, [0]
 
-; Original: mov eax, 1
-; Substitutions:
+; 原始: mov eax, 1
+; 替换方式:
 xor eax, eax
 inc eax
 
@@ -433,127 +433,127 @@ push 1
 pop eax
 ```
 
-## Packing and Encryption
+## 加壳与加密
 
-### Common Packers
-
-```
-UPX          - Open source, easy to unpack
-Themida      - Commercial, VM-based protection
-VMProtect    - Commercial, code virtualization
-ASPack       - Compression packer
-PECompact    - Compression packer
-Enigma       - Commercial protector
-```
-
-### Unpacking Methodology
+### 常见壳
 
 ```
-1. Identify packer (DIE, Exeinfo PE, PEiD)
+UPX          - 开源，易于脱壳
+Themida      - 商业，基于虚拟机的保护
+VMProtect    - 商业，代码虚拟化
+ASPack       - 压缩壳
+PECompact    - 压缩壳
+Enigma       - 商业保护器
+```
 
-2. Static unpacking (if known packer):
+### 脱壳方法
+
+```
+1. 识别壳 (DIE, Exeinfo PE, PEiD)
+
+2. 静态脱壳（如果是已知壳）：
    - UPX: upx -d packed.exe
-   - Use existing unpackers
+   - 使用现有脱壳工具
 
-3. Dynamic unpacking:
-   a. Find Original Entry Point (OEP)
-   b. Set breakpoint on OEP
-   c. Dump memory when OEP reached
-   d. Fix import table (Scylla, ImpREC)
+3. 动态脱壳：
+   a. 查找原始入口点 (OEP)
+   b. 在 OEP 设置断点
+   c. 到达 OEP 时转储内存
+   d. 修复导入表 (Scylla, ImpREC)
 
-4. OEP finding techniques:
-   - Hardware breakpoint on stack (ESP trick)
-   - Break on common API calls (GetCommandLineA)
-   - Trace and look for typical entry patterns
+4. OEP 查找技术：
+   - 在栈上设置硬件断点 (ESP 技巧)
+   - 在常见 API 调用处断点 (GetCommandLineA)
+   - 跟踪并查找典型的入口模式
 ```
 
-### Manual Unpacking Example
+### 手动脱壳示例
 
 ```
-1. Load packed binary in x64dbg
-2. Note entry point (packer stub)
-3. Use ESP trick:
-   - Run to entry
-   - Set hardware breakpoint on [ESP]
-   - Run until breakpoint hits (after PUSHAD/POPAD)
-4. Look for JMP to OEP
-5. At OEP, use Scylla to:
-   - Dump process
-   - Find imports (IAT autosearch)
-   - Fix dump
+1. 在 x64dbg 中加载加壳的二进制文件
+2. 记录入口点（壳存根）
+3. 使用 ESP 技巧：
+   - 运行到入口点
+   - 在 [ESP] 上设置硬件断点
+   - 运行直到断点命中（在 PUSHAD/POPAD 之后）
+4. 查找跳转到 OEP
+5. 在 OEP 处，使用 Scylla：
+   - 转储进程
+   - 查找导入（IAT 自动搜索）
+   - 修复转储
 ```
 
-## Virtualization-Based Protection
+## 基于虚拟化的保护
 
-### Code Virtualization
+### 代码虚拟化
 
 ```
-Original x86 code is converted to custom bytecode
-interpreted by embedded VM at runtime.
+原始 x86 代码被转换为自定义字节码，
+由嵌入式虚拟机在运行时解释。
 
-Original:     VM Protected:
+原始代码:     VM 保护后:
 mov eax, 1    push vm_context
 add eax, 2    call vm_entry
-              ; VM interprets bytecode
-              ; equivalent to original
+              ; VM 解释字节码
+              ; 等同于原始代码
 ```
 
-### Analysis Approaches
+### 分析方法
 
 ```
-1. Identify VM components:
-   - VM entry (dispatcher)
-   - Handler table
-   - Bytecode location
-   - Virtual registers/stack
+1. 识别 VM 组件：
+   - VM 入口（调度器）
+   - 处理程序表
+   - 字节码位置
+   - 虚拟寄存器/栈
 
-2. Trace execution:
-   - Log handler calls
-   - Map bytecode to operations
-   - Understand instruction set
+2. 跟踪执行：
+   - 记录处理程序调用
+   - 将字节码映射到操作
+   - 理解指令集
 
-3. Lifting/devirtualization:
-   - Map VM instructions back to native
-   - Tools: VMAttack, SATURN, NoVmp
+3. 提升/去虚拟化：
+   - 将 VM 指令映射回原生代码
+   - 工具：VMAttack, SATURN, NoVmp
 
-4. Symbolic execution:
-   - Analyze VM semantically
+4. 符号执行：
+   - 语义分析 VM
    - angr, Triton
 ```
 
-## Bypass Strategies Summary
+## 绕过策略总结
 
-### General Principles
+### 一般原则
 
-1. **Understand the protection**: Identify what technique is used
-2. **Find the check**: Locate protection code in binary
-3. **Patch or hook**: Modify check to always pass
-4. **Use appropriate tools**: ScyllaHide, x64dbg plugins
-5. **Document findings**: Keep notes on bypassed protections
+1. **理解保护**：识别使用的技术
+2. **查找检查**：在二进制文件中定位保护代码
+3. **修补或 hook**：修改检查以始终通过
+4. **使用合适的工具**：ScyllaHide、x64dbg 插件
+5. **记录发现**：记录绕过的保护
 
-### Tool Recommendations
+### 工具推荐
 
 ```
-Anti-debug bypass:    ScyllaHide, TitanHide
-Unpacking:           x64dbg + Scylla, OllyDumpEx
-Deobfuscation:       D-810, SATURN, miasm
-VM analysis:         VMAttack, NoVmp, manual tracing
-String decryption:   FLOSS, custom scripts
-Symbolic execution:  angr, Triton
+反调试绕过:         ScyllaHide, TitanHide
+脱壳:               x64dbg + Scylla, OllyDumpEx
+反混淆:             D-810, SATURN, miasm
+VM 分析:            VMAttack, NoVmp, 手动跟踪
+字符串解密:         FLOSS, 自定义脚本
+符号执行:           angr, Triton
 ```
 
-### Ethical Considerations
+### 道德考虑
 
-This knowledge should only be used for:
+这些知识仅应用于：
 
-- Authorized security research
-- Malware analysis (defensive)
-- CTF competitions
-- Understanding protections for legitimate purposes
-- Educational purposes
+- 授权的安全研究
+- 恶意软件分析（防御性）
+- CTF 竞赛
+- 为合法目的理解保护
+- 教育目的
 
-Never use to bypass protections for:
+切勿用于绕过保护以进行：
 
-- Software piracy
-- Unauthorized access
-- Malicious purposes
+- 软件盗版
+- 未授权访问
+- 恶意目的

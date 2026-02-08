@@ -1,44 +1,44 @@
 ---
 name: godot-gdscript-patterns
-description: Master Godot 4 GDScript patterns including signals, scenes, state machines, and optimization. Use when building Godot games, implementing game systems, or learning GDScript best practices.
+description: 精通 Godot 4 GDScript 模式，包括信号、场景、状态机和优化。在构建 Godot 游戏、实现游戏系统或学习 GDScript 最佳实践时使用。
 ---
 
-# Godot GDScript Patterns
+# Godot GDScript 模式
 
-Production patterns for Godot 4.x game development with GDScript, covering architecture, signals, scenes, and optimization.
+使用 GDScript 进行 Godot 4.x 游戏开发的生产模式，涵盖架构、信号、场景和优化。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building games with Godot 4
-- Implementing game systems in GDScript
-- Designing scene architecture
-- Managing game state
-- Optimizing GDScript performance
-- Learning Godot best practices
+- 使用 Godot 4 构建游戏
+- 使用 GDScript 实现游戏系统
+- 设计场景架构
+- 管理游戏状态
+- 优化 GDScript 性能
+- 学习 Godot 最佳实践
 
-## Core Concepts
+## 核心概念
 
-### 1. Godot Architecture
+### 1. Godot 架构
 
 ```
-Node: Base building block
-├── Scene: Reusable node tree (saved as .tscn)
-├── Resource: Data container (saved as .tres)
-├── Signal: Event communication
-└── Group: Node categorization
+Node: 基本构建块
+├── Scene: 可重用的节点树（保存为 .tscn）
+├── Resource: 数据容器（保存为 .tres）
+├── Signal: 事件通信
+└── Group: 节点分类
 ```
 
-### 2. GDScript Basics
+### 2. GDScript 基础
 
 ```gdscript
 class_name Player
 extends CharacterBody2D
 
-# Signals
+# 信号
 signal health_changed(new_health: int)
 signal died
 
-# Exports (Inspector-editable)
+# 导出（检查器可编辑）
 @export var speed: float = 200.0
 @export var max_health: int = 100
 @export_range(0, 1) var damage_reduction: float = 0.0
@@ -46,12 +46,12 @@ signal died
 @export var attack_damage: int = 10
 @export var attack_cooldown: float = 0.5
 
-# Onready (initialized when ready)
+# Onready（在 ready 时初始化）
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var hitbox: Area2D = $Hitbox
 
-# Private variables (convention: underscore prefix)
+# 私有变量（约定：下划线前缀）
 var _health: int
 var _can_attack: bool = true
 
@@ -72,9 +72,9 @@ func take_damage(amount: int) -> void:
         died.emit()
 ```
 
-## Patterns
+## 模式
 
-### Pattern 1: State Machine
+### 模式 1：状态机
 
 ```gdscript
 # state_machine.gd
@@ -89,14 +89,14 @@ var current_state: State
 var states: Dictionary = {}
 
 func _ready() -> void:
-    # Register all State children
+    # 注册所有 State 子节点
     for child in get_children():
         if child is State:
             states[child.name] = child
             child.state_machine = self
             child.process_mode = Node.PROCESS_MODE_DISABLED
 
-    # Start initial state
+    # 启动初始状态
     if initial_state:
         current_state = initial_state
         current_state.process_mode = Node.PROCESS_MODE_INHERIT
@@ -176,10 +176,10 @@ func handle_input(event: InputEvent) -> void:
         state_machine.transition_to("Jump")
 ```
 
-### Pattern 2: Autoload Singletons
+### 模式 2：自动加载单例
 
 ```gdscript
-# game_manager.gd (Add to Project Settings > Autoload)
+# game_manager.gd（添加到项目设置 > 自动加载）
 extends Node
 
 signal game_started
@@ -245,29 +245,29 @@ func _save_high_score() -> void:
 ```
 
 ```gdscript
-# event_bus.gd (Global signal bus)
+# event_bus.gd（全局信号总线）
 extends Node
 
-# Player events
+# 玩家事件
 signal player_spawned(player: Node2D)
 signal player_died(player: Node2D)
 signal player_health_changed(health: int, max_health: int)
 
-# Enemy events
+# 敌人事件
 signal enemy_spawned(enemy: Node2D)
 signal enemy_died(enemy: Node2D, position: Vector2)
 
-# Item events
+# 物品事件
 signal item_collected(item_type: StringName, value: int)
 signal powerup_activated(powerup_type: StringName)
 
-# Level events
+# 关卡事件
 signal level_started(level_number: int)
 signal level_completed(level_number: int, time: float)
 signal checkpoint_reached(checkpoint_id: int)
 ```
 
-### Pattern 3: Resource-based Data
+### 模式 3：基于资源的数据
 
 ```gdscript
 # weapon_data.gd
@@ -296,7 +296,7 @@ signal stat_changed(stat_name: StringName, new_value: float)
 @export var defense: float = 5.0
 @export var speed: float = 200.0
 
-# Runtime values (not saved)
+# 运行时值（不保存）
 var _current_health: float
 
 func _init() -> void:
@@ -322,7 +322,7 @@ func duplicate_for_runtime() -> CharacterStats:
 ```
 
 ```gdscript
-# Using resources
+# 使用资源
 class_name Character
 extends CharacterBody2D
 
@@ -332,7 +332,7 @@ extends CharacterBody2D
 var stats: CharacterStats
 
 func _ready() -> void:
-    # Create runtime copy to avoid modifying the resource
+    # 创建运行时副本以避免修改资源
     stats = base_stats.duplicate_for_runtime()
     stats.stat_changed.connect(_on_stat_changed)
 
@@ -345,7 +345,7 @@ func _on_stat_changed(stat_name: StringName, value: float) -> void:
         die()
 ```
 
-### Pattern 4: Object Pooling
+### 模式 4：对象池
 
 ```gdscript
 # object_pool.gd
@@ -373,7 +373,7 @@ func _create_instance() -> Node:
     add_child(instance)
     _available.append(instance)
 
-    # Connect return signal if exists
+    # 如果存在返回信号则连接
     if instance.has_signal("returned_to_pool"):
         instance.returned_to_pool.connect(_return_to_pool.bind(instance))
 
@@ -456,7 +456,7 @@ func _on_body_entered(body: Node2D) -> void:
     returned_to_pool.emit()
 ```
 
-### Pattern 5: Component System
+### 模式 5：组件系统
 
 ```gdscript
 # health_component.gd
@@ -556,10 +556,10 @@ func receive_hit(hitbox: HitboxComponent) -> void:
         health_component.take_damage(hitbox.damage, hitbox.owner_node)
 ```
 
-### Pattern 6: Scene Management
+### 模式 6：场景管理
 
 ```gdscript
-# scene_manager.gd (Autoload)
+# scene_manager.gd（自动加载）
 extends Node
 
 signal scene_loading_started(scene_path: String)
@@ -598,13 +598,13 @@ func change_scene_packed(scene: PackedScene, with_transition: bool = true) -> vo
 func _load_scene(path: String) -> void:
     scene_loading_started.emit(path)
 
-    # Check if already loaded
+    # 检查是否已加载
     if ResourceLoader.has_cached(path):
         var scene := load(path) as PackedScene
         _swap_scene(scene.instantiate())
         return
 
-    # Async loading
+    # 异步加载
     ResourceLoader.load_threaded_request(path)
 
     while true:
@@ -660,10 +660,10 @@ func _play_transition_in() -> void:
     transition_finished.emit()
 ```
 
-### Pattern 7: Save System
+### 模式 7：存档系统
 
 ```gdscript
-# save_manager.gd (Autoload)
+# save_manager.gd（自动加载）
 extends Node
 
 const SAVE_PATH := "user://savegame.save"
@@ -724,7 +724,7 @@ func has_save() -> bool:
 ```
 
 ```gdscript
-# saveable.gd (Attach to saveable nodes)
+# saveable.gd（附加到可保存节点）
 class_name Saveable
 extends Node
 
@@ -756,52 +756,52 @@ func load_save_data(data: Dictionary) -> void:
         parent.load_custom_save_data(data)
 ```
 
-## Performance Tips
+## 性能技巧
 
 ```gdscript
-# 1. Cache node references
-@onready var sprite := $Sprite2D  # Good
-# $Sprite2D in _process()  # Bad - repeated lookup
+# 1. 缓存节点引用
+@onready var sprite := $Sprite2D  # 好
+# $Sprite2D in _process()  # 坏 - 重复查找
 
-# 2. Use object pooling for frequent spawning
-# See Pattern 4
+# 2. 对频繁生成使用对象池
+# 参见模式 4
 
-# 3. Avoid allocations in hot paths
+# 3. 避免在热路径中分配
 var _reusable_array: Array = []
 
 func _process(_delta: float) -> void:
-    _reusable_array.clear()  # Reuse instead of creating new
+    _reusable_array.clear()  # 重用而非创建新数组
 
-# 4. Use static typing
-func calculate(value: float) -> float:  # Good
+# 4. 使用静态类型
+func calculate(value: float) -> float:  # 好
     return value * 2.0
 
-# 5. Disable processing when not needed
+# 5. 不需要时禁用处理
 func _on_off_screen() -> void:
     set_process(false)
     set_physics_process(false)
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该
 
-- **Use signals for decoupling** - Avoid direct references
-- **Type everything** - Static typing catches errors
-- **Use resources for data** - Separate data from logic
-- **Pool frequently spawned objects** - Avoid GC hitches
-- **Use Autoloads sparingly** - Only for truly global systems
+- **使用信号解耦** - 避免直接引用
+- **类型化一切** - 静态类型捕获错误
+- **使用资源存储数据** - 将数据与逻辑分离
+- **池化频繁生成的对象** - 避免 GC 停顿
+- **谨慎使用自动加载** - 仅用于真正的全局系统
 
-### Don'ts
+### 不应该
 
-- **Don't use `get_node()` in loops** - Cache references
-- **Don't couple scenes tightly** - Use signals
-- **Don't put logic in resources** - Keep them data-only
-- **Don't ignore the Profiler** - Monitor performance
-- **Don't fight the scene tree** - Work with Godot's design
+- **不要在循环中使用 `get_node()`** - 缓存引用
+- **不要紧密耦合场景** - 使用信号
+- **不要在资源中放置逻辑** - 保持它们仅包含数据
+- **不要忽略性能分析器** - 监控性能
+- **不要与场景树对抗** - 配合 Godot 的设计工作
 
-## Resources
+## 资源
 
-- [Godot Documentation](https://docs.godotengine.org/en/stable/)
-- [GDQuest Tutorials](https://www.gdquest.com/)
+- [Godot 文档](https://docs.godotengine.org/en/stable/)
+- [GDQuest 教程](https://www.gdquest.com/)
 - [Godot Recipes](https://kidscancode.org/godot_recipes/)

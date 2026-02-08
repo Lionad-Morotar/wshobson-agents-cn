@@ -1,8 +1,8 @@
-# Microinteraction Patterns Reference
+# 微交互模式参考
 
-## Button States
+## 按钮状态
 
-### Loading Button
+### 加载按钮
 
 ```tsx
 import { motion, AnimatePresence } from "framer-motion";
@@ -30,7 +30,7 @@ function LoadingButton({ isLoading, children, onClick }: LoadingButtonProps) {
             className="flex items-center gap-2"
           >
             <Spinner className="w-4 h-4" />
-            Processing...
+            处理中...
           </motion.span>
         ) : (
           <motion.span
@@ -47,7 +47,7 @@ function LoadingButton({ isLoading, children, onClick }: LoadingButtonProps) {
   );
 }
 
-// Spinner component
+// Spinner 组件
 function Spinner({ className }: { className?: string }) {
   return (
     <svg className={`animate-spin ${className}`} viewBox="0 0 24 24">
@@ -67,7 +67,7 @@ function Spinner({ className }: { className?: string }) {
 }
 ```
 
-### Success/Error State
+### 成功/错误状态
 
 ```tsx
 function SubmitButton({ onSubmit }: { onSubmit: () => Promise<void> }) {
@@ -122,18 +122,18 @@ function SubmitButton({ onSubmit }: { onSubmit: () => Promise<void> }) {
           </motion.span>
         )}
       </AnimatePresence>
-      {state === "idle" && "Submit"}
-      {state === "loading" && "Submitting..."}
-      {state === "success" && "Done!"}
-      {state === "error" && "Failed"}
+      {state === "idle" && "提交"}
+      {state === "loading" && "提交中..."}
+      {state === "success" && "完成!"}
+      {state === "error" && "失败"}
     </motion.button>
   );
 }
 ```
 
-## Form Interactions
+## 表单交互
 
-### Floating Label Input
+### 浮动标签输入
 
 ```tsx
 import { useState, useId } from "react";
@@ -179,7 +179,7 @@ function FloatingInput({
 }
 ```
 
-### Shake on Error
+### 错误时抖动
 
 ```tsx
 import { motion, useAnimation } from "framer-motion";
@@ -218,7 +218,7 @@ function ShakeInput({ error, ...props }: InputProps & { error?: string }) {
 }
 ```
 
-### Character Count
+### 字符计数
 
 ```tsx
 function TextareaWithCount({ maxLength = 280 }: { maxLength?: number }) {
@@ -253,9 +253,9 @@ function TextareaWithCount({ maxLength = 280 }: { maxLength?: number }) {
 }
 ```
 
-## Feedback Patterns
+## 反馈模式
 
-### Toast Notifications
+### 消息提示
 
 ```tsx
 import { motion, AnimatePresence } from "framer-motion";
@@ -312,17 +312,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
 export function useToast() {
   const context = useContext(ToastContext);
-  if (!context) throw new Error("useToast must be within ToastProvider");
+  if (!context) throw new Error("useToast 必须在 ToastProvider 内使用");
   return context;
 }
 ```
 
-### Confirmation Dialog
+### 确认对话框
 
 ```tsx
 function ConfirmButton({
   onConfirm,
-  confirmText = "Click again to confirm",
+  confirmText = "再次点击确认",
   children,
 }: {
   onConfirm: () => void;
@@ -370,9 +370,9 @@ function ConfirmButton({
 }
 ```
 
-## Navigation Patterns
+## 导航模式
 
-### Active Link Indicator
+### 活动链接指示器
 
 ```tsx
 import { motion } from "framer-motion";
@@ -409,12 +409,12 @@ function Navigation({ items }: { items: { href: string; label: string }[] }) {
 }
 ```
 
-### Hamburger Menu Icon
+### 汉堡菜单图标
 
 ```tsx
 function MenuIcon({ isOpen }: { isOpen: boolean }) {
   return (
-    <button className="relative w-6 h-6" aria-label="Toggle menu">
+    <button className="relative w-6 h-6" aria-label="切换菜单">
       <motion.span
         className="absolute left-0 h-0.5 w-6 bg-current"
         animate={{
@@ -443,9 +443,9 @@ function MenuIcon({ isOpen }: { isOpen: boolean }) {
 }
 ```
 
-## Data Interactions
+## 数据交互
 
-### Optimistic Updates
+### 乐观更新
 
 ```tsx
 function LikeButton({ postId, initialLiked, initialCount }) {
@@ -453,7 +453,7 @@ function LikeButton({ postId, initialLiked, initialCount }) {
   const [count, setCount] = useState(initialCount);
 
   const handleLike = async () => {
-    // Optimistic update
+    // 乐观更新
     const newLiked = !liked;
     setLiked(newLiked);
     setCount((c) => c + (newLiked ? 1 : -1));
@@ -461,7 +461,7 @@ function LikeButton({ postId, initialLiked, initialCount }) {
     try {
       await api.toggleLike(postId);
     } catch {
-      // Rollback on error
+      // 错误时回滚
       setLiked(!newLiked);
       setCount((c) => c + (newLiked ? -1 : 1));
     }
@@ -494,7 +494,7 @@ function LikeButton({ postId, initialLiked, initialCount }) {
 }
 ```
 
-### Pull to Refresh
+### 下拉刷新
 
 ```tsx
 import { motion, useMotionValue, useTransform } from "framer-motion";

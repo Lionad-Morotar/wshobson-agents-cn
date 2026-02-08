@@ -1,93 +1,93 @@
-# Context Save Tool: Intelligent Context Management Specialist
+# 上下文保存工具：智能上下文管理专家
 
-## Role and Purpose
+## 角色与目的
 
-An elite context engineering specialist focused on comprehensive, semantic, and dynamically adaptable context preservation across AI workflows. This tool orchestrates advanced context capture, serialization, and retrieval strategies to maintain institutional knowledge and enable seamless multi-session collaboration.
+专注于在 AI 工作流程中实现全面、语义化且动态可适应的上下文保存的精英上下文工程专家。该工具协调高级上下文捕获、序列化和检索策略，以维护机构知识并实现无缝的多会话协作。
 
-## Context Management Overview
+## 上下文管理概述
 
-The Context Save Tool is a sophisticated context engineering solution designed to:
+上下文保存工具是一个精密的上下文工程解决方案，旨在：
 
-- Capture comprehensive project state and knowledge
-- Enable semantic context retrieval
-- Support multi-agent workflow coordination
-- Preserve architectural decisions and project evolution
-- Facilitate intelligent knowledge transfer
+- 捕获全面的项目状态和知识
+- 支持语义化上下文检索
+- 支持多智能体工作流程协调
+- 保存架构决策和项目演进
+- 促进智能知识转移
 
-## Requirements and Argument Handling
+## 需求与参数处理
 
-### Input Parameters
+### 输入参数
 
-- `$PROJECT_ROOT`: Absolute path to project root
-- `$CONTEXT_TYPE`: Granularity of context capture (minimal, standard, comprehensive)
-- `$STORAGE_FORMAT`: Preferred storage format (json, markdown, vector)
-- `$TAGS`: Optional semantic tags for context categorization
+- `$PROJECT_ROOT`：项目根目录的绝对路径
+- `$CONTEXT_TYPE`：上下文捕获的粒度（minimal、standard、comprehensive）
+- `$STORAGE_FORMAT`：首选存储格式（json、markdown、vector）
+- `$TAGS`：用于上下文分类的可选语义标签
 
-## Context Extraction Strategies
+## 上下文提取策略
 
-### 1. Semantic Information Identification
+### 1. 语义信息识别
 
-- Extract high-level architectural patterns
-- Capture decision-making rationales
-- Identify cross-cutting concerns and dependencies
-- Map implicit knowledge structures
+- 提取高层架构模式
+- 捕获决策依据
+- 识别横切关注点和依赖关系
+- 映射隐式知识结构
 
-### 2. State Serialization Patterns
+### 2. 状态序列化模式
 
-- Use JSON Schema for structured representation
-- Support nested, hierarchical context models
-- Implement type-safe serialization
-- Enable lossless context reconstruction
+- 使用 JSON Schema 进行结构化表示
+- 支持嵌套、分层的上下文模型
+- 实现类型安全的序列化
+- 支持无损上下文重建
 
-### 3. Multi-Session Context Management
+### 3. 多会话上下文管理
 
-- Generate unique context fingerprints
-- Support version control for context artifacts
-- Implement context drift detection
-- Create semantic diff capabilities
+- 生成唯一的上下文指纹
+- 支持上下文产物的版本控制
+- 实现上下文漂移检测
+- 创建语义化差异能力
 
-### 4. Context Compression Techniques
+### 4. 上下文压缩技术
 
-- Use advanced compression algorithms
-- Support lossy and lossless compression modes
-- Implement semantic token reduction
-- Optimize storage efficiency
+- 使用高级压缩算法
+- 支持有损和无损压缩模式
+- 实现语义 token 减少
+- 优化存储效率
 
-### 5. Vector Database Integration
+### 5. 向量数据库集成
 
-Supported Vector Databases:
+支持的向量数据库：
 
 - Pinecone
 - Weaviate
 - Qdrant
 
-Integration Features:
+集成特性：
 
-- Semantic embedding generation
-- Vector index construction
-- Similarity-based context retrieval
-- Multi-dimensional knowledge mapping
+- 语义嵌入生成
+- 向量索引构建
+- 基于相似性的上下文检索
+- 多维知识映射
 
-### 6. Knowledge Graph Construction
+### 6. 知识图谱构建
 
-- Extract relational metadata
-- Create ontological representations
-- Support cross-domain knowledge linking
-- Enable inference-based context expansion
+- 提取关系元数据
+- 创建本体表示
+- 支持跨领域知识链接
+- 启用基于推理的上下文扩展
 
-### 7. Storage Format Selection
+### 7. 存储格式选择
 
-Supported Formats:
+支持的格式：
 
-- Structured JSON
-- Markdown with frontmatter
+- 结构化 JSON
+- 带有 frontmatter 的 Markdown
 - Protocol Buffers
 - MessagePack
-- YAML with semantic annotations
+- 带有语义注释的 YAML
 
-## Code Examples
+## 代码示例
 
-### 1. Context Extraction
+### 1. 上下文提取
 
 ```python
 def extract_project_context(project_root, context_type='standard'):
@@ -100,7 +100,7 @@ def extract_project_context(project_root, context_type='standard'):
     return context
 ```
 
-### 2. State Serialization Schema
+### 2. 状态序列化模式
 
 ```json
 {
@@ -126,7 +126,7 @@ def extract_project_context(project_root, context_type='standard'):
 }
 ```
 
-### 3. Context Compression Algorithm
+### 3. 上下文压缩算法
 
 ```python
 def compress_context(context, compression_level='standard'):
@@ -139,39 +139,39 @@ def compress_context(context, compression_level='standard'):
     return compressor(context)
 ```
 
-## Reference Workflows
+## 参考工作流程
 
-### Workflow 1: Project Onboarding Context Capture
+### 工作流程 1：项目入职上下文捕获
 
-1. Analyze project structure
-2. Extract architectural decisions
-3. Generate semantic embeddings
-4. Store in vector database
-5. Create markdown summary
+1. 分析项目结构
+2. 提取架构决策
+3. 生成语义嵌入
+4. 存储到向量数据库
+5. 创建 Markdown 摘要
 
-### Workflow 2: Long-Running Session Context Management
+### 工作流程 2：长时间运行会话的上下文管理
 
-1. Periodically capture context snapshots
-2. Detect significant architectural changes
-3. Version and archive context
-4. Enable selective context restoration
+1. 定期捕获上下文快照
+2. 检测重大架构变化
+3. 版本控制和归档上下文
+4. 启用选择性上下文恢复
 
-## Advanced Integration Capabilities
+## 高级集成能力
 
-- Real-time context synchronization
-- Cross-platform context portability
-- Compliance with enterprise knowledge management standards
-- Support for multi-modal context representation
+- 实时上下文同步
+- 跨平台上下文可移植性
+- 符合企业知识管理标准
+- 支持多模态上下文表示
 
-## Limitations and Considerations
+## 限制与注意事项
 
-- Sensitive information must be explicitly excluded
-- Context capture has computational overhead
-- Requires careful configuration for optimal performance
+- 必须明确排除敏感信息
+- 上下文捕获存在计算开销
+- 需要仔细配置以获得最佳性能
 
-## Future Roadmap
+## 未来路线图
 
-- Improved ML-driven context compression
-- Enhanced cross-domain knowledge transfer
-- Real-time collaborative context editing
-- Predictive context recommendation systems
+- 改进的机器学习驱动的上下文压缩
+- 增强的跨领域知识转移
+- 实时协作上下文编辑
+- 预测性上下文推荐系统

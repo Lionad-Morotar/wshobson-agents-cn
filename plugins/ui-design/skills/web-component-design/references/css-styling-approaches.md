@@ -1,20 +1,20 @@
-# CSS Styling Approaches Reference
+# CSS 样式方法参考
 
-## Comparison Matrix
+## 对比矩阵
 
-| Approach          | Runtime | Bundle Size    | Learning Curve | Dynamic Styles | SSR   |
-| ----------------- | ------- | -------------- | -------------- | -------------- | ----- |
-| CSS Modules       | None    | Minimal        | Low            | Limited        | Yes   |
-| Tailwind          | None    | Small (purged) | Medium         | Via classes    | Yes   |
-| styled-components | Yes     | Medium         | Medium         | Full           | Yes\* |
-| Emotion           | Yes     | Medium         | Medium         | Full           | Yes   |
-| Vanilla Extract   | None    | Minimal        | High           | Limited        | Yes   |
+| 方法              | 运行时 | 打包体积      | 学习曲线 | 动态样式       | SSR   |
+| ----------------- | ------ | ------------- | -------- | -------------- | ----- |
+| CSS Modules       | 无     | 最小          | 低       | 有限           | 是    |
+| Tailwind          | 无     | 小（已清除）  | 中       | 通过类名       | 是    |
+| styled-components | 是     | 中            | 中       | 完全           | 是\*  |
+| Emotion           | 是     | 中            | 中       | 完全           | 是    |
+| Vanilla Extract   | 无     | 最小          | 高       | 有限           | 是    |
 
 ## CSS Modules
 
-Scoped CSS with zero runtime overhead.
+零运行时开销的作用域 CSS。
 
-### Setup
+### 设置
 
 ```tsx
 // Button.module.css
@@ -87,7 +87,7 @@ export function Button({
 }
 ```
 
-### Composition
+### 组合
 
 ```css
 /* base.module.css */
@@ -110,16 +110,16 @@ export function Button({
 
 ## Tailwind CSS
 
-Utility-first CSS with design system constraints.
+实用优先的 CSS，具有设计系统约束。
 
-### Class Variance Authority (CVA)
+### 类变体权威 (CVA)
 
 ```tsx
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  // Base styles
+  // 基础样式
   "inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
@@ -168,7 +168,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 ```
 
-### Tailwind Merge Utility
+### Tailwind 合并工具
 
 ```tsx
 // lib/utils.ts
@@ -179,12 +179,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Usage - handles conflicting classes
+// 使用示例 - 处理冲突的类名
 cn("px-4 py-2", "px-6"); // => 'py-2 px-6'
-cn("text-red-500", condition && "text-blue-500"); // => 'text-blue-500' if condition
+cn("text-red-500", condition && "text-blue-500"); // => 条件为真时返回 'text-blue-500'
 ```
 
-### Custom Plugin
+### 自定义插件
 
 ```js
 // tailwind.config.js
@@ -193,7 +193,7 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   plugins: [
     plugin(function ({ addUtilities, addComponents, theme }) {
-      // Add utilities
+      // 添加工具类
       addUtilities({
         ".text-balance": {
           "text-wrap": "balance",
@@ -207,7 +207,7 @@ module.exports = {
         },
       });
 
-      // Add components
+      // 添加组件
       addComponents({
         ".card": {
           backgroundColor: theme("colors.white"),
@@ -223,18 +223,18 @@ module.exports = {
 
 ## styled-components
 
-CSS-in-JS with template literals.
+使用模板字符串的 CSS-in-JS。
 
 ```tsx
 import styled, { css, keyframes } from "styled-components";
 
-// Keyframes
+// 关键帧动画
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-// Base button with variants
+// 带变体的基础按钮
 interface ButtonProps {
   $variant?: "primary" | "secondary" | "ghost";
   $size?: "sm" | "md" | "lg";
@@ -307,13 +307,13 @@ const Button = styled.button<ButtonProps>`
     `}
 `;
 
-// Extending components
+// 扩展组件
 const IconButton = styled(Button)`
   padding: 0.5rem;
   aspect-ratio: 1;
 `;
 
-// Theme provider
+// 主题提供者
 const theme = {
   colors: {
     primary: "#2563eb",
@@ -325,24 +325,24 @@ const theme = {
   },
 };
 
-// Usage
+// 使用示例
 <ThemeProvider theme={theme}>
   <Button $variant="primary" $size="lg">
-    Click me
+    点击我
   </Button>
 </ThemeProvider>;
 ```
 
 ## Emotion
 
-Flexible CSS-in-JS with object and template syntax.
+灵活的 CSS-in-JS，支持对象和模板语法。
 
 ```tsx
 /** @jsxImportSource @emotion/react */
 import { css, Theme, ThemeProvider, useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 
-// Theme typing
+// 主题类型定义
 declare module "@emotion/react" {
   export interface Theme {
     colors: {
@@ -363,7 +363,7 @@ const theme: Theme = {
   spacing: (factor: number) => `${factor * 0.25}rem`,
 };
 
-// Object syntax
+// 对象语法
 const cardStyles = (theme: Theme) =>
   css({
     backgroundColor: theme.colors.background,
@@ -372,7 +372,7 @@ const cardStyles = (theme: Theme) =>
     boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
   });
 
-// Template literal syntax
+// 模板字符串语法
 const buttonStyles = css`
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
@@ -383,14 +383,14 @@ const buttonStyles = css`
   }
 `;
 
-// Styled component with theme
+// 带主题的样式化组件
 const Card = styled.div`
   background-color: ${({ theme }) => theme.colors.background};
   padding: ${({ theme }) => theme.spacing(4)};
   border-radius: 0.5rem;
 `;
 
-// Component with css prop
+// 使用 css prop 的组件
 function Alert({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
 
@@ -407,24 +407,24 @@ function Alert({ children }: { children: React.ReactNode }) {
   );
 }
 
-// Usage
+// 使用示例
 <ThemeProvider theme={theme}>
   <Card>
-    <Alert>Important message</Alert>
+    <Alert>重要消息</Alert>
   </Card>
 </ThemeProvider>;
 ```
 
 ## Vanilla Extract
 
-Zero-runtime CSS-in-JS with full type safety.
+零运行时 CSS-in-JS，完全类型安全。
 
 ```tsx
 // styles.css.ts
 import { style, styleVariants, createTheme } from "@vanilla-extract/css";
 import { recipe, type RecipeVariants } from "@vanilla-extract/recipes";
 
-// Theme contract
+// 主题契约
 export const [themeClass, vars] = createTheme({
   color: {
     primary: "#2563eb",
@@ -444,20 +444,20 @@ export const [themeClass, vars] = createTheme({
   },
 });
 
-// Simple style
+// 简单样式
 export const container = style({
   padding: vars.space.medium,
   backgroundColor: vars.color.background,
 });
 
-// Style variants
+// 样式变体
 export const text = styleVariants({
   primary: { color: vars.color.text },
   secondary: { color: vars.color.secondary },
   accent: { color: vars.color.primary },
 });
 
-// Recipe (like CVA)
+// 配方（类似 CVA）
 export const button = recipe({
   base: {
     display: "inline-flex",
@@ -531,24 +531,24 @@ export function Button({ variant, size, children, onClick }: ButtonProps) {
   );
 }
 
-// App.tsx - wrap with theme
+// App.tsx - 用主题包装
 function App() {
   return (
     <div className={themeClass}>
       <Button variant="primary" size="large">
-        Click me
+        点击我
       </Button>
     </div>
   );
 }
 ```
 
-## Performance Considerations
+## 性能考虑
 
-### Critical CSS Extraction
+### 关键 CSS 提取
 
 ```tsx
-// Next.js with styled-components
+// Next.js 配合 styled-components
 // pages/_document.tsx
 import Document, { DocumentContext } from "next/document";
 import { ServerStyleSheet } from "styled-components";
@@ -577,10 +577,10 @@ export default class MyDocument extends Document {
 }
 ```
 
-### Code Splitting Styles
+### 代码分割样式
 
 ```tsx
-// Dynamically import heavy styled components
+// 动态导入重型样式化组件
 import dynamic from "next/dynamic";
 
 const HeavyChart = dynamic(() => import("./HeavyChart"), {

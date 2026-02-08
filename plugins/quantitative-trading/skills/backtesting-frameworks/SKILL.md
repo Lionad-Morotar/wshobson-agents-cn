@@ -3,32 +3,32 @@ name: backtesting-frameworks
 description: Build robust backtesting systems for trading strategies with proper handling of look-ahead bias, survivorship bias, and transaction costs. Use when developing trading algorithms, validating strategies, or building backtesting infrastructure.
 ---
 
-# Backtesting Frameworks
+# 回测框架
 
-Build robust, production-grade backtesting systems that avoid common pitfalls and produce reliable strategy performance estimates.
+构建健壮的、生产级别的回测系统,避免常见陷阱,生成可靠的策略性能评估。
 
-## When to Use This Skill
+## 何时使用本技能
 
-- Developing trading strategy backtests
-- Building backtesting infrastructure
-- Validating strategy performance
-- Avoiding common backtesting biases
-- Implementing walk-forward analysis
-- Comparing strategy alternatives
+- 开发交易策略回测
+- 构建回测基础设施
+- 验证策略性能
+- 避免常见回测偏差
+- 实施步进分析
+- 比较策略备选方案
 
-## Core Concepts
+## 核心概念
 
-### 1. Backtesting Biases
+### 1. 回测偏差
 
-| Bias             | Description               | Mitigation              |
+| 偏差             | 描述               | 缓解方法              |
 | ---------------- | ------------------------- | ----------------------- |
-| **Look-ahead**   | Using future information  | Point-in-time data      |
-| **Survivorship** | Only testing on survivors | Use delisted securities |
-| **Overfitting**  | Curve-fitting to history  | Out-of-sample testing   |
-| **Selection**    | Cherry-picking strategies | Pre-registration        |
-| **Transaction**  | Ignoring trading costs    | Realistic cost models   |
+| **前瞻偏差**   | 使用未来信息  | 使用时点数据      |
+| **幸存者偏差** | 仅在幸存者上测试 | 包含已退市证券 |
+| **过拟合**  | 对历史数据进行曲线拟合  | 样本外测试   |
+| **选择偏差**    | 精心挑选策略 | 预注册        |
+| **交易成本偏差**  | 忽略交易成本    | 现实的成本模型   |
 
-### 2. Proper Backtest Structure
+### 2. 正确的回测结构
 
 ```
 Historical Data
@@ -52,7 +52,7 @@ Historical Data
 └─────────────────────────────────────────┘
 ```
 
-### 3. Walk-Forward Analysis
+### 3. 步进分析
 
 ```
 Window 1: [Train──────][Test]
@@ -62,9 +62,9 @@ Window 4:             [Train──────][Test]
                                      ─────▶ Time
 ```
 
-## Implementation Patterns
+## 实现模式
 
-### Pattern 1: Event-Driven Backtester
+### 模式 1: 事件驱动回测器
 
 ```python
 from abc import ABC, abstractmethod
@@ -239,7 +239,7 @@ class Backtester:
         return equity_df
 ```
 
-### Pattern 2: Vectorized Backtester (Fast)
+### 模式 2: 向量化回测器 (快速)
 
 ```python
 import pandas as pd
@@ -341,7 +341,7 @@ def momentum_signal(prices: pd.DataFrame, lookback: int = 20) -> pd.Series:
 # results = backtester.run(price_data, lambda p: momentum_signal(p, 50))
 ```
 
-### Pattern 3: Walk-Forward Optimization
+### 模式 3: 步进优化
 
 ```python
 from typing import Callable, Dict, List, Tuple, Any
@@ -481,7 +481,7 @@ class WalkForwardOptimizer:
         return combined
 ```
 
-### Pattern 4: Monte Carlo Analysis
+### 模式 4: 蒙特卡洛分析
 
 ```python
 import numpy as np
@@ -590,7 +590,7 @@ class MonteCarloAnalyzer:
         }
 ```
 
-## Performance Metrics
+## 性能指标
 
 ```python
 def calculate_metrics(returns: pd.Series, rf_rate: float = 0.02) -> Dict[str, float]:
@@ -638,25 +638,25 @@ def calculate_metrics(returns: pd.Series, rf_rate: float = 0.02) -> Dict[str, fl
     }
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做的
 
-- **Use point-in-time data** - Avoid look-ahead bias
-- **Include transaction costs** - Realistic estimates
-- **Test out-of-sample** - Always reserve data
-- **Use walk-forward** - Not just train/test
-- **Monte Carlo analysis** - Understand uncertainty
+- **使用时点数据** - 避免前瞻偏差
+- **包含交易成本** - 现实的估算
+- **进行样本外测试** - 始终保留数据
+- **使用步进分析** - 不仅仅是训练/测试
+- **蒙特卡洛分析** - 理解不确定性
 
-### Don'ts
+### 不应该做的
 
-- **Don't overfit** - Limit parameters
-- **Don't ignore survivorship** - Include delisted
-- **Don't use adjusted data carelessly** - Understand adjustments
-- **Don't optimize on full history** - Reserve test set
-- **Don't ignore capacity** - Market impact matters
+- **不要过拟合** - 限制参数数量
+- **不要忽略幸存者偏差** - 包含已退市证券
+- **不要草率使用复权数据** - 理解复权方法
+- **不要在整个历史数据上优化** - 保留测试集
+- **不要忽略容量** - 市场影响很重要
 
-## Resources
+## 资源
 
 - [Advances in Financial Machine Learning (Marcos López de Prado)](https://www.amazon.com/Advances-Financial-Machine-Learning-Marcos/dp/1119482089)
 - [Quantitative Trading (Ernest Chan)](https://www.amazon.com/Quantitative-Trading-Build-Algorithmic-Business/dp/1119800064)

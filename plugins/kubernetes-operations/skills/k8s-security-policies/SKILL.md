@@ -1,28 +1,28 @@
 ---
 name: k8s-security-policies
-description: Implement Kubernetes security policies including NetworkPolicy, PodSecurityPolicy, and RBAC for production-grade security. Use when securing Kubernetes clusters, implementing network isolation, or enforcing pod security standards.
+description: 实现 Kubernetes 安全策略，包括 NetworkPolicy、PodSecurityPolicy 和 RBAC，用于生产级安全。在保护 Kubernetes 集群、实施网络隔离或强制执行 Pod 安全标准时使用。
 ---
 
-# Kubernetes Security Policies
+# Kubernetes 安全策略
 
-Comprehensive guide for implementing NetworkPolicy, PodSecurityPolicy, RBAC, and Pod Security Standards in Kubernetes.
+在 Kubernetes 中实施 NetworkPolicy、PodSecurityPolicy、RBAC 和 Pod Security Standards 的综合指南。
 
-## Purpose
+## 目的
 
-Implement defense-in-depth security for Kubernetes clusters using network policies, pod security standards, and RBAC.
+使用网络策略、Pod 安全标准和 RBAC 为 Kubernetes 集群实施纵深防御安全。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Implement network segmentation
-- Configure pod security standards
-- Set up RBAC for least-privilege access
-- Create security policies for compliance
-- Implement admission control
-- Secure multi-tenant clusters
+- 实施网络分段
+- 配置 Pod 安全标准
+- 设置 RBAC 实现最小权限访问
+- 创建符合性安全策略
+- 实施准入控制
+- 保护多租户集群
 
-## Pod Security Standards
+## Pod 安全标准
 
-### 1. Privileged (Unrestricted)
+### 1. 特权（无限制）
 
 ```yaml
 apiVersion: v1
@@ -35,7 +35,7 @@ metadata:
     pod-security.kubernetes.io/warn: privileged
 ```
 
-### 2. Baseline (Minimally restrictive)
+### 2. 基线（最小限制）
 
 ```yaml
 apiVersion: v1
@@ -48,7 +48,7 @@ metadata:
     pod-security.kubernetes.io/warn: baseline
 ```
 
-### 3. Restricted (Most restrictive)
+### 3. 受限（最严格）
 
 ```yaml
 apiVersion: v1
@@ -61,9 +61,9 @@ metadata:
     pod-security.kubernetes.io/warn: restricted
 ```
 
-## Network Policies
+## 网络策略
 
-### Default Deny All
+### 默认拒绝所有
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -78,7 +78,7 @@ spec:
     - Egress
 ```
 
-### Allow Frontend to Backend
+### 允许前端访问后端
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -102,7 +102,7 @@ spec:
           port: 8080
 ```
 
-### Allow DNS
+### 允许 DNS
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -124,11 +124,11 @@ spec:
           port: 53
 ```
 
-**Reference:** See `assets/network-policy-template.yaml`
+**参考：** 参见 `assets/network-policy-template.yaml`
 
-## RBAC Configuration
+## RBAC 配置
 
-### Role (Namespace-scoped)
+### Role（命名空间范围）
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -142,7 +142,7 @@ rules:
     verbs: ["get", "watch", "list"]
 ```
 
-### ClusterRole (Cluster-wide)
+### ClusterRole（集群范围）
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -176,11 +176,11 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
-**Reference:** See `references/rbac-patterns.md`
+**参考：** 参见 `references/rbac-patterns.md`
 
-## Pod Security Context
+## Pod 安全上下文
 
-### Restricted Pod
+### 受限 Pod
 
 ```yaml
 apiVersion: v1
@@ -205,7 +205,7 @@ spec:
             - ALL
 ```
 
-## Policy Enforcement with OPA Gatekeeper
+## 使用 OPA Gatekeeper 实施策略
 
 ### ConstraintTemplate
 
@@ -256,9 +256,9 @@ spec:
     labels: ["app", "environment"]
 ```
 
-## Service Mesh Security (Istio)
+## 服务网格安全（Istio）
 
-### PeerAuthentication (mTLS)
+### PeerAuthentication（mTLS）
 
 ```yaml
 apiVersion: security.istio.io/v1beta1
@@ -290,63 +290,63 @@ spec:
             principals: ["cluster.local/ns/production/sa/frontend"]
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Implement Pod Security Standards** at namespace level
-2. **Use Network Policies** for network segmentation
-3. **Apply least-privilege RBAC** for all service accounts
-4. **Enable admission control** (OPA Gatekeeper/Kyverno)
-5. **Run containers as non-root**
-6. **Use read-only root filesystem**
-7. **Drop all capabilities** unless needed
-8. **Implement resource quotas** and limit ranges
-9. **Enable audit logging** for security events
-10. **Regular security scanning** of images
+1. **在命名空间级别实施 Pod 安全标准**
+2. **使用网络策略进行网络分段**
+3. **为所有服务账户应用最小权限 RBAC**
+4. **启用准入控制**（OPA Gatekeeper/Kyverno）
+5. **以非 root 用户运行容器**
+6. **使用只读根文件系统**
+7. **删除所有能力**，除非需要
+8. **实施资源配额**和限制范围
+9. **为安全事件启用审计日志**
+10. **定期扫描镜像安全性**
 
-## Compliance Frameworks
+## 合规框架
 
 ### CIS Kubernetes Benchmark
 
-- Use RBAC authorization
-- Enable audit logging
-- Use Pod Security Standards
-- Configure network policies
-- Implement secrets encryption at rest
-- Enable node authentication
+- 使用 RBAC 授权
+- 启用审计日志
+- 使用 Pod 安全标准
+- 配置网络策略
+- 实施静态加密的密钥
+- 启用节点认证
 
-### NIST Cybersecurity Framework
+### NIST 网络安全框架
 
-- Implement defense in depth
-- Use network segmentation
-- Configure security monitoring
-- Implement access controls
-- Enable logging and monitoring
+- 实施纵深防御
+- 使用网络分段
+- 配置安全监控
+- 实施访问控制
+- 启用日志记录和监控
 
-## Troubleshooting
+## 故障排查
 
-**NetworkPolicy not working:**
+**NetworkPolicy 不工作：**
 
 ```bash
-# Check if CNI supports NetworkPolicy
+# 检查 CNI 是否支持 NetworkPolicy
 kubectl get nodes -o wide
 kubectl describe networkpolicy <name>
 ```
 
-**RBAC permission denied:**
+**RBAC 权限被拒绝：**
 
 ```bash
-# Check effective permissions
+# 检查有效权限
 kubectl auth can-i list pods --as system:serviceaccount:default:my-sa
 kubectl auth can-i '*' '*' --as system:serviceaccount:default:my-sa
 ```
 
-## Reference Files
+## 参考文件
 
-- `assets/network-policy-template.yaml` - Network policy examples
-- `assets/pod-security-template.yaml` - Pod security policies
-- `references/rbac-patterns.md` - RBAC configuration patterns
+- `assets/network-policy-template.yaml` - 网络策略示例
+- `assets/pod-security-template.yaml` - Pod 安全策略
+- `references/rbac-patterns.md` - RBAC 配置模式
 
-## Related Skills
+## 相关技能
 
-- `k8s-manifest-generator` - For creating secure manifests
-- `gitops-workflow` - For automated policy deployment
+- `k8s-manifest-generator` - 用于创建安全清单
+- `gitops-workflow` - 用于自动部署策略

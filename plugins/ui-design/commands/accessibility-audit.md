@@ -1,79 +1,79 @@
 ---
-description: "Audit UI code for WCAG compliance"
-argument-hint: "[file-path|component-name|--level AA|AAA]"
+description: "审核 UI 代码是否符合 WCAG 标准"
+argument-hint: "[文件路径|组件名称|--level AA|AAA]"
 ---
 
-# Accessibility Audit
+# 无障碍访问审核
 
-Comprehensive audit of UI code for WCAG 2.1/2.2 compliance. Identifies accessibility issues and provides actionable remediation guidance.
+对 UI 代码进行全面的 WCAG 2.1/2.2 标准合规性审核。识别无障碍访问问题并提供可执行的修复指导。
 
-## Pre-flight Checks
+## 预检查
 
-1. Check if `.ui-design/` directory exists:
-   - If not: Create `.ui-design/` directory
-   - Create `.ui-design/audits/` subdirectory for audit results
+1. 检查 `.ui-design/` 目录是否存在：
+   - 如果不存在：创建 `.ui-design/` 目录
+   - 创建 `.ui-design/audits/` 子目录用于存放审核结果
 
-2. Load project context:
-   - Check for `conductor/tech-stack.md` for framework info
-   - Check for `.ui-design/design-system.json` for color tokens
-   - Detect testing framework for a11y test suggestions
+2. 加载项目上下文：
+   - 检查 `conductor/tech-stack.md` 获取框架信息
+   - 检查 `.ui-design/design-system.json` 获取颜色令牌
+   - 检测测试框架以提供 a11y 测试建议
 
-## Target and Level Configuration
+## 审核目标和级别配置
 
-### If argument provided:
+### 如果提供了参数：
 
-- Parse for file path or component name
-- Parse for `--level` flag (AA or AAA)
-- Default to WCAG 2.1 Level AA if not specified
+- 解析文件路径或组件名称
+- 解析 `--level` 标志（AA 或 AAA）
+- 如果未指定，默认为 WCAG 2.1 AA 级别
 
-### If no argument:
+### 如果没有提供参数：
 
-**Q1: Audit Target**
-
-```
-What would you like to audit?
-
-1. A specific component (provide name or path)
-2. A page/route (provide path)
-3. All components in a directory
-4. The entire application
-5. Recent changes only (last commit)
-
-Enter number or provide a file path:
-```
-
-**Q2: Compliance Level**
+**Q1: 审核目标**
 
 ```
-What WCAG compliance level should I audit against?
+您想要审核什么内容？
 
-1. Level A   - Minimum accessibility (must-fix issues)
-2. Level AA  - Standard compliance (recommended, most common target)
-3. Level AAA - Enhanced accessibility (highest standard)
+1. 特定组件（提供名称或路径）
+2. 页面/路由（提供路径）
+3. 目录中的所有组件
+4. 整个应用程序
+5. 仅最近的更改（最后一次提交）
 
-Note: Each level includes all requirements from previous levels.
-
-Enter number:
+请输入数字或提供文件路径：
 ```
 
-**Q3: Focus Areas (optional)**
+**Q2: 合规级别**
 
 ```
-Any specific areas to focus on? (Press enter to audit all)
+我应该针对哪个 WCAG 合规级别进行审核？
 
-1. Color contrast and visual presentation
-2. Keyboard navigation and focus management
-3. Screen reader compatibility
-4. Forms and input validation
-5. Dynamic content and ARIA
-6. All areas
+1. A 级   - 最低无障碍访问要求（必须修复的问题）
+2. AA 级  - 标准合规（推荐，最常见的目标）
+3. AAA 级 - 增强无障碍访问（最高标准）
 
-Enter numbers (comma-separated) or press enter:
+注意：每个级别包含前面级别的所有要求。
+
+请输入数字：
 ```
 
-## State Management
+**Q3: 重点领域（可选）**
 
-Create `.ui-design/audits/audit_state.json`:
+```
+有任何特定领域需要重点关注吗？（按 Enter 键审核所有内容）
+
+1. 颜色对比度和视觉呈现
+2. 键盘导航和焦点管理
+3. 屏幕阅读器兼容性
+4. 表单和输入验证
+5. 动态内容和 ARIA
+6. 所有领域
+
+请输入数字（逗号分隔）或按 Enter 键：
+```
+
+## 状态管理
+
+创建 `.ui-design/audits/audit_state.json`：
 
 ```json
 {
@@ -95,293 +95,293 @@ Create `.ui-design/audits/audit_state.json`:
 }
 ```
 
-## Audit Execution
+## 审核执行
 
-### 1. File Discovery
+### 1. 文件发现
 
-Identify all files to audit:
+识别所有需要审核的文件：
 
-- If single file: Audit that file
-- If component: Find all related files (component, styles, tests)
-- If directory: Recursively find UI files (`.tsx`, `.vue`, `.svelte`, etc.)
-- If application: Audit all component and page files
+- 如果是单个文件：审核该文件
+- 如果是组件：查找所有相关文件（组件、样式、测试）
+- 如果是目录：递归查找所有 UI 文件（`.tsx`、`.vue`、`.svelte` 等）
+- 如果是应用程序：审核所有组件和页面文件
 
-### 2. Static Code Analysis
+### 2. 静态代码分析
 
-For each file, check against WCAG criteria:
+对每个文件按照 WCAG 标准进行检查：
 
-#### Perceivable (WCAG 1.x)
+#### 可感知性（WCAG 1.x）
 
-**1.1 Text Alternatives:**
+**1.1 文本替代：**
 
-- [ ] Images have `alt` attributes
-- [ ] Decorative images use `alt=""` or `role="presentation"`
-- [ ] Complex images have extended descriptions
-- [ ] Icon buttons have accessible names
+- [ ] 图片具有 `alt` 属性
+- [ ] 装饰性图片使用 `alt=""` 或 `role="presentation"`
+- [ ] 复杂图片有扩展描述
+- [ ] 图标按钮具有可访问的名称
 
-**1.2 Time-based Media:**
+**1.2 基于时间的媒体：**
 
-- [ ] Videos have captions
-- [ ] Audio has transcripts
-- [ ] Media players are keyboard accessible
+- [ ] 视频有字幕
+- [ ] 音频有文字稿
+- [ ] 媒体播放器可以通过键盘访问
 
-**1.3 Adaptable:**
+**1.3 适应性：**
 
-- [ ] Semantic HTML structure (headings, lists, landmarks)
-- [ ] Proper heading hierarchy (h1 > h2 > h3)
-- [ ] Form inputs have associated labels
-- [ ] Tables have proper headers
-- [ ] Reading order is logical
+- [ ] 语义化的 HTML 结构（标题、列表、地标）
+- [ ] 正确的标题层级（h1 > h2 > h3）
+- [ ] 表单输入有关联的标签
+- [ ] 表格有正确的表头
+- [ ] 阅读顺序符合逻辑
 
-**1.4 Distinguishable:**
+**1.4 可区分性：**
 
-- [ ] Color contrast meets requirements (4.5:1 normal, 3:1 large)
-- [ ] Color is not sole means of conveying information
-- [ ] Text can be resized to 200%
-- [ ] Focus indicators are visible
-- [ ] Content reflows at 320px width (AA)
+- [ ] 颜色对比度符合要求（常规文本 4.5:1，大文本 3:1）
+- [ ] 颜色不是传达信息的唯一方式
+- [ ] 文本可以放大到 200%
+- [ ] 焦点指示器可见
+- [ ] 内容在 320px 宽度下可以正常重排（AA 级）
 
-#### Operable (WCAG 2.x)
+#### 可操作性（WCAG 2.x）
 
-**2.1 Keyboard Accessible:**
+**2.1 键盘可访问：**
 
-- [ ] All interactive elements are keyboard accessible
-- [ ] No keyboard traps
-- [ ] Focus order is logical
-- [ ] Custom widgets follow ARIA patterns
+- [ ] 所有交互元素都可以通过键盘访问
+- [ ] 没有键盘陷阱
+- [ ] 焦点顺序符合逻辑
+- [ ] 自定义组件遵循 ARIA 模式
 
-**2.2 Enough Time:**
+**2.2 充足的时间：**
 
-- [ ] Time limits can be extended/disabled
-- [ ] Auto-updating content can be paused
-- [ ] No content times out unexpectedly
+- [ ] 时间限制可以延长/禁用
+- [ ] 自动更新的内容可以暂停
+- [ ] 没有内容意外超时
 
-**2.3 Seizures:**
+**2.3 癫痫发作：**
 
-- [ ] No content flashes more than 3 times/second
-- [ ] Animations can be disabled (prefers-reduced-motion)
+- [ ] 没有内容每秒闪烁超过 3 次
+- [ ] 动画可以禁用（prefers-reduced-motion）
 
-**2.4 Navigable:**
+**2.4 可导航：**
 
-- [ ] Skip links present
-- [ ] Page has descriptive title
-- [ ] Focus visible on all elements
-- [ ] Link purpose is clear
-- [ ] Multiple ways to find pages
+- [ ] 存在跳转链接
+- [ ] 页面具有描述性标题
+- [ ] 所有元素上的焦点可见
+- [ ] 链接目的明确
+- [ ] 有多种方式查找页面
 
-**2.5 Input Modalities:**
+**2.5 输入方式：**
 
-- [ ] Touch targets are at least 44x44px (AAA: 44px, AA: 24px)
-- [ ] Functionality not dependent on motion
-- [ ] Dragging has alternative
+- [ ] 触摸目标至少 44x44px（AAA：44px，AA：24px）
+- [ ] 功能不依赖于运动
+- [ ] 拖拽有替代方案
 
-#### Understandable (WCAG 3.x)
+#### 可理解性（WCAG 3.x）
 
-**3.1 Readable:**
+**3.1 可读性：**
 
-- [ ] Language is specified (`lang` attribute)
-- [ ] Unusual words are defined
-- [ ] Abbreviations are expanded
+- [ ] 指定了语言（`lang` 属性）
+- [ ] 定义了不常见的词汇
+- [ ] 缩写被展开
 
-**3.2 Predictable:**
+**3.2 可预测性：**
 
-- [ ] Focus doesn't trigger unexpected changes
-- [ ] Input doesn't trigger unexpected changes
-- [ ] Navigation is consistent
-- [ ] Components behave consistently
+- [ ] 焦点不会触发意外的更改
+- [ ] 输入不会触发意外的更改
+- [ ] 导航是一致的
+- [ ] 组件行为一致
 
-**3.3 Input Assistance:**
+**3.3 输入辅助：**
 
-- [ ] Error messages are descriptive
-- [ ] Labels or instructions provided
-- [ ] Error suggestions provided
-- [ ] Important submissions can be reviewed
+- [ ] 错误消息具有描述性
+- [ ] 提供了标签或说明
+- [ ] 提供了错误建议
+- [ ] 可以审查重要的提交
 
-#### Robust (WCAG 4.x)
+#### 健壮性（WCAG 4.x）
 
-**4.1 Compatible:**
+**4.1 兼容性：**
 
-- [ ] HTML validates (no duplicate IDs)
-- [ ] Custom components have proper ARIA
-- [ ] Status messages announced to screen readers
+- [ ] HTML 验证通过（没有重复的 ID）
+- [ ] 自定义组件具有正确的 ARIA
+- [ ] 状态消息向屏幕阅读器宣布
 
-### 3. Pattern Detection
+### 3. 模式检测
 
-Identify common accessibility anti-patterns:
+识别常见的无障碍访问反模式：
 
 ```javascript
-// Anti-patterns to detect
+// 要检测的反模式
 const antiPatterns = [
-  // Missing alt text
+  // 缺少 alt 文本
   /<img(?![^>]*alt=)[^>]*>/,
 
-  // onClick without keyboard handler
+  // onClick 没有键盘处理器
   /onClick={[^}]+}(?!.*onKeyDown)/,
 
-  // Div/span with click handlers (likely needs role)
+  // div/span 带有点击处理器（可能需要 role）
   /<(?:div|span)[^>]*onClick/,
 
-  // Non-semantic buttons
+  // 非语义化按钮
   /<(?:div|span)[^>]*role="button"/,
 
-  // Missing form labels
+  // 缺少表单标签
   /<input(?![^>]*(?:aria-label|aria-labelledby|id))[^>]*>/,
 
-  // Positive tabindex (disrupts natural order)
+  // 正 tabindex（打乱自然顺序）
   /tabIndex={[1-9]/,
 
-  // Empty links
+  // 空链接
   /<a[^>]*>[\s]*<\/a>/,
 
-  // Missing lang attribute
+  // 缺少 lang 属性
   /<html(?![^>]*lang=)/,
 
-  // Autofocus (usually bad for a11y)
+  // 自动聚焦（通常对 a11y 不利）
   /autoFocus/,
 ];
 ```
 
-### 4. Color Contrast Analysis
+### 4. 颜色对比度分析
 
-If design tokens or CSS available:
+如果设计令牌或 CSS 可用：
 
-- Extract color combinations used in text/background
-- Calculate contrast ratios using WCAG formula
-- Flag combinations that fail requirements:
-  - Normal text: 4.5:1 (AA), 7:1 (AAA)
-  - Large text (18pt+ or 14pt bold): 3:1 (AA), 4.5:1 (AAA)
-  - UI components: 3:1 (AA)
+- 提取文本/背景中使用的颜色组合
+- 使用 WCAG 公式计算对比度
+- 标记不符合要求的组合：
+  - 常规文本：4.5:1（AA），7:1（AAA）
+  - 大文本（18pt+ 或 14pt 粗体）：3:1（AA），4.5:1（AAA）
+  - UI 组件：3:1（AA）
 
-### 5. ARIA Validation
+### 5. ARIA 验证
 
-Check ARIA usage:
+检查 ARIA 使用情况：
 
-- Verify ARIA roles are valid
-- Check required ARIA attributes are present
-- Verify ARIA values are valid
-- Check for redundant ARIA (e.g., `role="button"` on `<button>`)
-- Validate ARIA references (aria-labelledby, aria-describedby)
+- 验证 ARIA 角色有效
+- 检查所需的 ARIA 属性存在
+- 验证 ARIA 值有效
+- 检查冗余 ARIA（例如，`<button>` 上的 `role="button"`）
+- 验证 ARIA 引用（aria-labelledby、aria-describedby）
 
-## Output Format
+## 输出格式
 
-Generate audit report in `.ui-design/audits/{audit_id}.md`:
+在 `.ui-design/audits/{audit_id}.md` 中生成审核报告：
 
 ````markdown
-# Accessibility Audit Report
+# 无障碍访问审核报告
 
-**Audit ID:** {audit_id}
-**Date:** {YYYY-MM-DD HH:MM}
-**Target:** {target}
-**WCAG Level:** {level}
-**Standard:** WCAG 2.1
+**审核 ID：** {audit_id}
+**日期：** {YYYY-MM-DD HH:MM}
+**目标：** {target}
+**WCAG 级别：** {level}
+**标准：** WCAG 2.1
 
-## Executive Summary
+## 执行摘要
 
-**Compliance Status:** {Passing | Needs Improvement | Failing}
+**合规状态：** {通过 | 需要改进 | 不通过}
 
-| Severity | Count | % of Issues |
-| -------- | ----- | ----------- |
-| Critical | {n}   | {%}         |
-| Serious  | {n}   | {%}         |
-| Moderate | {n}   | {%}         |
-| Minor    | {n}   | {%}         |
+| 严重程度 | 数量 | 问题百分比 |
+| -------- | ----- | ---------- |
+| 严重     | {n}   | {%}        |
+| 重要     | {n}   | {%}        |
+| 中等     | {n}   | {%}        |
+| 轻微     | {n}   | {%}        |
 
-**Criteria Checked:** {n}
-**Criteria Passed:** {n} ({%})
-**Files Audited:** {n}
+**已检查标准：** {n}
+**通过标准：** {n} ({%})
+**已审核文件：** {n}
 
-## Critical Issues (Must Fix)
+## 严重问题（必须修复）
 
-These issues prevent users with disabilities from using the interface.
+这些问题阻止残障用户使用界面。
 
-### Issue 1: {Title}
+### 问题 1：{标题}
 
-**WCAG Criterion:** {number} - {name} (Level {A|AA|AAA})
-**Severity:** Critical
-**Location:** `{file}:{line}`
-**Element:** `{element_snippet}`
+**WCAG 标准：** {number} - {name}（级别 {A|AA|AAA}）
+**严重程度：** 严重
+**位置：** `{file}:{line}`
+**元素：** `{element_snippet}`
 
-**Problem:**
-{Description of the issue}
+**问题：**
+{问题描述}
 
-**Impact:**
-{Who is affected and how}
+**影响：**
+{谁受到影响以及如何影响}
 
-**Remediation:**
-{Step-by-step fix instructions}
+**修复方案：**
+{逐步修复说明}
 
-**Code Fix:**
+**代码修复：**
 
 ```{language}
-// Before
+// 修复前
 {current_code}
 
-// After
+// 修复后
 {fixed_code}
 ```
 ````
 
-**Testing:**
+**测试：**
 
-- Manual: {how to manually verify}
-- Automated: {suggested test}
+- 手动：{如何手动验证}
+- 自动：{建议的测试}
 
 ---
 
-### Issue 2: ...
+### 问题 2：...
 
-## Serious Issues
+## 重要问题
 
-These issues create significant barriers for some users.
+这些问题为某些用户创建了重大障碍。
 
-### Issue 3: ...
+### 问题 3：...
 
-## Moderate Issues
+## 中等问题
 
-These issues may cause difficulty for some users.
+这些问题可能会给某些用户带来困难。
 
-### Issue 4: ...
+### 问题 4：...
 
-## Minor Issues
+## 轻微问题
 
-These are best practice improvements.
+这些是最佳实践改进。
 
-### Issue 5: ...
+### 问题 5：...
 
-## Passed Criteria
+## 通过的标准
 
-The following WCAG criteria passed:
+以下 WCAG 标准已通过：
 
-| Criterion | Name                   | Level |
-| --------- | ---------------------- | ----- |
-| 1.1.1     | Non-text Content       | A     |
-| 1.3.1     | Info and Relationships | A     |
-| ...       | ...                    | ...   |
+| 标准    | 名称                   | 级别 |
+| ------- | ---------------------- | ---- |
+| 1.1.1   | 非文本内容             | A    |
+| 1.3.1   | 信息和关系             | A    |
+| ...     | ...                    | ...  |
 
-## Recommendations
+## 建议
 
-### Quick Wins (< 1 hour each)
+### 快速修复（每个少于 1 小时）
 
-1. {Quick fix 1}
-2. {Quick fix 2}
+1. {快速修复 1}
+2. {快速修复 2}
 
-### Medium Effort (1-4 hours each)
+### 中等工作量（每个 1-4 小时）
 
-1. {Medium fix 1}
-2. {Medium fix 2}
+1. {中等修复 1}
+2. {中等修复 2}
 
-### Significant Effort (> 4 hours)
+### 重大工作量（超过 4 小时）
 
-1. {Larger fix 1}
+1. {大型修复 1}
 
-## Testing Resources
+## 测试资源
 
-### Automated Testing
+### 自动化测试
 
-Add these tests to catch regressions:
+添加这些测试以捕获回归：
 
 ```javascript
-// Example jest-axe test
+// jest-axe 测试示例
 import { axe, toHaveNoViolations } from "jest-axe";
 
 expect.extend(toHaveNoViolations);
@@ -393,32 +393,32 @@ test("component has no accessibility violations", async () => {
 });
 ```
 
-### Manual Testing Checklist
+### 手动测试清单
 
-- [ ] Navigate entire page using only keyboard
-- [ ] Test with screen reader (VoiceOver/NVDA)
-- [ ] Zoom to 200% and verify usability
-- [ ] Test with high contrast mode
-- [ ] Verify focus indicators are visible
-- [ ] Test with prefers-reduced-motion
+- [ ] 仅使用键盘导航整个页面
+- [ ] 使用屏幕阅读器测试（VoiceOver/NVDA）
+- [ ] 放大到 200% 并验证可用性
+- [ ] 在高对比度模式下测试
+- [ ] 验证焦点指示器可见
+- [ ] 使用 prefers-reduced-motion 测试
 
-### Recommended Tools
+### 推荐工具
 
-- axe DevTools browser extension
+- axe DevTools 浏览器扩展
 - WAVE Web Accessibility Evaluator
-- Lighthouse accessibility audit
-- Color contrast analyzers
+- Lighthouse 无障碍访问审核
+- 颜色对比度分析器
 
 ---
 
-_Generated by UI Design Accessibility Audit_
-_WCAG Reference: https://www.w3.org/WAI/WCAG21/quickref/_
+_由 UI Design 无障碍访问审核生成_
+_WCAG 参考：https://www.w3.org/WAI/WCAG21/quickref/_
 
 ````
 
-## Completion
+## 完成
 
-Update `audit_state.json`:
+更新 `audit_state.json`：
 
 ```json
 {
@@ -432,65 +432,65 @@ Update `audit_state.json`:
     "minor": 3
   }
 }
-````
-
-Display summary:
-
-```
-Accessibility Audit Complete!
-
-Target: {target}
-WCAG Level: {level}
-Compliance Status: {status}
-
-Issues Found:
-  - {n} Critical (must fix)
-  - {n} Serious
-  - {n} Moderate
-  - {n} Minor
-
-Full report: .ui-design/audits/{audit_id}.md
-
-What would you like to do next?
-1. View details for critical issues
-2. Start fixing issues (guided)
-3. Generate automated tests
-4. Export report for stakeholders
-5. Audit another component
-
-Enter number:
 ```
 
-## Guided Fix Mode
-
-If user selects "Start fixing issues":
+显示摘要：
 
 ```
-Let's fix accessibility issues starting with critical ones.
+无障碍访问审核完成！
 
-Issue 1 of {n}: {Issue Title}
-WCAG {criterion}: {criterion_name}
-Location: {file}:{line}
+目标：{target}
+WCAG 级别：{level}
+合规状态：{status}
 
-{Show current code}
+发现问题：
+  - {n} 个严重（必须修复）
+  - {n} 个重要
+  - {n} 个中等
+  - {n} 个轻微
 
-The fix is:
-{Explain the fix}
+完整报告：.ui-design/audits/{audit_id}.md
 
-Should I:
-1. Apply this fix automatically
-2. Show me the fixed code first
-3. Skip this issue
-4. Stop fixing
+您接下来想要做什么？
+1. 查看严重问题的详细信息
+2. 开始修复问题（引导式）
+3. 生成自动化测试
+4. 为利益相关者导出报告
+5. 审核另一个组件
 
-Enter number:
+请输入数字：
 ```
 
-Apply fixes one at a time, re-validating after each fix.
+## 引导修复模式
 
-## Error Handling
+如果用户选择"开始修复问题"：
 
-- If file not found: Suggest alternatives, offer to search
-- If not UI code: Explain limitation, suggest correct target
-- If color extraction fails: Note in report, suggest manual check
-- If audit incomplete: Save partial results, offer to resume
+```
+让我们从严重问题开始修复无障碍访问问题。
+
+问题 {n} 中的第 1 个：{问题标题}
+WCAG {标准}：{标准名称}
+位置：{file}:{line}
+
+{显示当前代码}
+
+修复方案是：
+{解释修复}
+
+我应该：
+1. 自动应用此修复
+2. 先显示修复后的代码
+3. 跳过此问题
+4. 停止修复
+
+请输入数字：
+```
+
+每次应用一个修复，并在每次修复后重新验证。
+
+## 错误处理
+
+- 如果找不到文件：建议替代方案，提供搜索选项
+- 如果不是 UI 代码：说明限制，建议正确的目标
+- 如果颜色提取失败：在报告中注明，建议手动检查
+- 如果审核未完成：保存部分结果，提供恢复选项

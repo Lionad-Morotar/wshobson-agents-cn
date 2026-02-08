@@ -1,291 +1,291 @@
 ---
-description: "Manage track lifecycle: archive, restore, delete, rename, and cleanup"
+description: "管理轨道生命周期：归档、恢复、删除、重命名和清理"
 argument-hint: "[--archive | --restore | --delete | --rename | --list | --cleanup]"
 ---
 
-# Track Manager
+# 轨道管理器
 
-Manage the complete track lifecycle including archiving, restoring, deleting, renaming, and cleaning up orphaned artifacts.
+管理完整的轨道生命周期，包括归档、恢复、删除、重命名和清理孤立工件。
 
-## Pre-flight Checks
+## 预检查
 
-1. Verify Conductor is initialized:
-   - Check `conductor/product.md` exists
-   - Check `conductor/tracks.md` exists
-   - Check `conductor/tracks/` directory exists
-   - If missing: Display error and suggest running `/conductor:setup` first
+1. 验证 Conductor 已初始化：
+   - 检查 `conductor/product.md` 存在
+   - 检查 `conductor/tracks.md` 存在
+   - 检查 `conductor/tracks/` 目录存在
+   - 如果缺失：显示错误并建议先运行 `/conductor:setup`
 
-2. Ensure archive directory exists (for archive/restore operations):
-   - Check if `conductor/tracks/_archive/` exists
-   - Create if needed when performing archive operation
+2. 确保归档目录存在（用于归档/恢复操作）：
+   - 检查 `conductor/tracks/_archive/` 是否存在
+   - 执行归档操作时如需要则创建
 
-## Mode Detection
+## 模式检测
 
-Parse arguments to determine operation mode:
+解析参数以确定操作模式：
 
-| Argument               | Mode         | Description                                             |
-| ---------------------- | ------------ | ------------------------------------------------------- |
-| `--list [filter]`      | List         | Show all tracks (optional: active, completed, archived) |
-| `--archive <id>`       | Archive      | Move completed track to archive                         |
-| `--archive --bulk`     | Bulk Archive | Multi-select completed tracks                           |
-| `--restore <id>`       | Restore      | Restore archived track to active                        |
-| `--delete <id>`        | Delete       | Permanently remove a track                              |
-| `--rename <old> <new>` | Rename       | Change track ID                                         |
-| `--cleanup`            | Cleanup      | Detect and fix orphaned artifacts                       |
-| (none)                 | Interactive  | Menu-driven operation selection                         |
-
----
-
-## Interactive Mode (no argument)
-
-When invoked without arguments, display the main menu:
-
-### 1. Gather Quick Stats
-
-Read `conductor/tracks.md` and scan directories:
-
-- Count active tracks (status `[ ]` or `[~]`)
-- Count completed tracks (status `[x]`, not archived)
-- Count archived tracks (in `_archive/` directory)
-
-### 2. Display Main Menu
-
-```
-================================================================================
-                          TRACK MANAGER
-================================================================================
-
-What would you like to do?
-
-1. List all tracks
-2. Archive a completed track
-3. Restore an archived track
-4. Delete a track permanently
-5. Rename a track
-6. Cleanup orphaned artifacts
-7. Exit
-
-Quick stats:
-- {N} active tracks
-- {M} completed (ready to archive)
-- {P} archived
-
-Select option:
-```
-
-### 3. Handle Selection
-
-- Option 1: Execute List Mode
-- Option 2: Execute Archive Mode (without argument)
-- Option 3: Execute Restore Mode (without argument)
-- Option 4: Execute Delete Mode (without argument)
-- Option 5: Execute Rename Mode (without argument)
-- Option 6: Execute Cleanup Mode
-- Option 7: Exit with "Track management cancelled."
+| 参数                   | 模式         | 描述                                       |
+| ---------------------- | ------------ | ----------------------------------------- |
+| `--list [filter]`      | 列表         | 显示所有轨道（可选：active、completed、archived） |
+| `--archive <id>`       | 归档         | 将已完成轨道移至归档                         |
+| `--archive --bulk`     | 批量归档     | 多选已完成轨道                             |
+| `--restore <id>`       | 恢复         | 将已归档轨道恢复为活动状态                   |
+| `--delete <id>`        | 删除         | 永久移除轨道                               |
+| `--rename <old> <new>` | 重命名       | 更改轨道 ID                               |
+| `--cleanup`            | 清理         | 检测并修复孤立工件                         |
+| (无)                   | 交互式       | 菜单驱动的操作选择                         |
 
 ---
 
-## List Mode (`--list`)
+## 交互式模式（无参数）
 
-Display comprehensive track overview with optional filtering.
+当不带参数调用时，显示主菜单：
 
-### 1. Data Collection
+### 1. 收集快速统计
 
-**For Active Tracks:**
+读取 `conductor/tracks.md` 并扫描目录：
 
-- Read `conductor/tracks.md`
-- For each track with status `[ ]` or `[~]`:
-  - Read `conductor/tracks/{trackId}/metadata.json` for type, dates
-  - Read `conductor/tracks/{trackId}/plan.md` for task counts
-  - Calculate progress percentage
+- 统计活动轨道（状态 `[ ]` 或 `[~]`）
+- 统计已完成轨道（状态 `[x]`，未归档）
+- 统计已归档轨道（在 `_archive/` 目录中）
 
-**For Completed Tracks:**
-
-- Find tracks with status `[x]` not in `_archive/`
-- Read metadata for completion dates
-
-**For Archived Tracks:**
-
-- Scan `conductor/tracks/_archive/` directory
-- Read each `metadata.json` for archive reason and date
-
-### 2. Output Format
-
-**Full list (no filter):**
+### 2. 显示主菜单
 
 ```
 ================================================================================
-                          TRACK MANAGER
+                          轨道管理器
 ================================================================================
 
-ACTIVE TRACKS ({count})
-| Status | Track ID           | Type    | Progress    | Updated    |
-|--------|-------------------|---------|-------------|------------|
-| [~]    | dashboard_20250112| feature | 7/15 (47%)  | 2025-01-15 |
-| [ ]    | nav-fix_20250114  | bug     | 0/4 (0%)    | 2025-01-14 |
+您想做什么？
 
-COMPLETED TRACKS ({count})
-| Track ID           | Type    | Completed  | Duration |
+1. 列出所有轨道
+2. 归档已完成轨道
+3. 恢复已归档轨道
+4. 永久删除轨道
+5. 重命名轨道
+6. 清理孤立工件
+7. 退出
+
+快速统计：
+- {N} 个活动轨道
+- {M} 个已完成（可归档）
+- {P} 个已归档
+
+选择选项：
+```
+
+### 3. 处理选择
+
+- 选项 1：执行列表模式
+- 选项 2：执行归档模式（无参数）
+- 选项 3：执行恢复模式（无参数）
+- 选项 4：执行删除模式（无参数）
+- 选项 5：执行重命名模式（无参数）
+- 选项 6：执行清理模式
+- 选项 7：退出并显示"轨道管理已取消。"
+
+---
+
+## 列表模式 (`--list`)
+
+显示全面的轨道概览，具有可选过滤。
+
+### 1. 数据收集
+
+**对于活动轨道：**
+
+- 读取 `conductor/tracks.md`
+- 对于每个状态为 `[ ]` 或 `[~]` 的轨道：
+  - 读取 `conductor/tracks/{trackId}/metadata.json` 以获取类型、日期
+  - 读取 `conductor/tracks/{trackId}/plan.md` 以获取任务计数
+  - 计算进度百分比
+
+**对于已完成轨道：**
+
+- 查找状态为 `[x]` 且不在 `_archive/` 中的轨道
+- 读取元数据以获取完成日期
+
+**对于已归档轨道：**
+
+- 扫描 `conductor/tracks/_archive/` 目录
+- 读取每个 `metadata.json` 以获取归档原因和日期
+
+### 2. 输出格式
+
+**完整列表（无过滤）：**
+
+```
+================================================================================
+                          轨道管理器
+================================================================================
+
+活动轨道 ({count})
+| 状态 | 轨道 ID           | 类型    | 进度       | 更新时间   |
+|--------|-------------------|---------|------------|------------|
+| [~]    | dashboard_20250112| 功能 | 7/15 (47%)  | 2025-01-15 |
+| [ ]    | nav-fix_20250114  | Bug   | 0/4 (0%)    | 2025-01-14 |
+
+已完成轨道 ({count})
+| 轨道 ID           | 类型    | 完成时间   | 时长 |
 |-------------------|---------|------------|----------|
-| auth_20250110     | feature | 2025-01-12 | 2 days   |
+| auth_20250110     | 功能 | 2025-01-12 | 2 天   |
 
-ARCHIVED TRACKS ({count})
-| Track ID              | Type    | Reason     | Archived   |
+已归档轨道 ({count})
+| 轨道 ID              | 类型    | 原因      | 归档时间   |
 |-----------------------|---------|------------|------------|
-| old-feature_20241201  | feature | Superseded | 2025-01-05 |
+| old-feature_20241201  | 功能 | 被取代   | 2025-01-05 |
 
 ================================================================================
-Commands: /conductor:manage --archive | --restore | --delete | --rename | --cleanup
-================================================================================
-```
-
-**Filtered list (`--list active`, `--list completed`, `--list archived`):**
-
-Show only the requested section with the same format.
-
-### 3. Empty States
-
-**No tracks at all:**
-
-```
-================================================================================
-                          TRACK MANAGER
-================================================================================
-
-No tracks found.
-
-To create your first track: /conductor:new-track
-
+命令：/conductor:manage --archive | --restore | --delete | --rename | --cleanup
 ================================================================================
 ```
 
-**No tracks in filter:**
+**过滤列表（`--list active`、`--list completed`、`--list archived`）：**
+
+仅显示请求的部分，格式相同。
+
+### 3. 空状态
+
+**完全没有轨道：**
 
 ```
 ================================================================================
-                          TRACK MANAGER
+                          轨道管理器
 ================================================================================
 
-No {filter} tracks found.
+未找到轨道。
+
+创建您的第一个轨道：/conductor:new-track
+
+================================================================================
+```
+
+**过滤中没有轨道：**
+
+```
+================================================================================
+                          轨道管理器
+================================================================================
+
+未找到 {filter} 轨道。
 
 ================================================================================
 ```
 
 ---
 
-## Archive Mode (`--archive`)
+## 归档模式 (`--archive`)
 
-Move completed tracks to the archive directory.
+将已完成轨道移至归档目录。
 
-### With Argument (`--archive <track-id>`)
+### 带参数 (`--archive <track-id>`)
 
-#### 1. Validate Track
+#### 1. 验证轨道
 
-- Check track exists in `conductor/tracks/{track-id}/`
-- If not found, display error with available tracks:
-
-  ```
-  ERROR: Track not found: {track-id}
-
-  Available tracks:
-  - auth_20250110 (completed)
-  - dashboard_20250112 (in progress)
-
-  Usage: /conductor:manage --archive <track-id>
-  ```
-
-- Check track is not already archived (not in `_archive/`)
-- If archived:
+- 检查轨道存在于 `conductor/tracks/{track-id}/`
+- 如果未找到，显示错误并列出可用轨道：
 
   ```
-  ERROR: Track '{track-id}' is already archived.
+  错误：未找到轨道：{track-id}
 
-  Archived: {archived_at}
-  Reason:   {archive_reason}
-  Location: conductor/tracks/_archive/{track-id}/
+  可用轨道：
+  - auth_20250110（已完成）
+  - dashboard_20250112（进行中）
 
-  To restore: /conductor:manage --restore {track-id}
+  用法：/conductor:manage --archive <track-id>
   ```
 
-#### 2. Verify Completion Status
-
-Read `conductor/tracks/{track-id}/metadata.json` and `plan.md`:
-
-- If status is not `completed` or `[x]`:
+- 检查轨道尚未归档（不在 `_archive/` 中）
+- 如果已归档：
 
   ```
-  Track '{track-id}' is not marked as complete.
+  错误：轨道 '{track-id}' 已归档。
 
-  Current status: {status}
-  Tasks: {completed}/{total} complete
+  归档时间：{archived_at}
+  原因：   {archive_reason}
+  位置：conductor/tracks/_archive/{track-id}/
 
-  Options:
-  1. Archive anyway (not recommended)
-  2. Cancel and complete the track first
-  3. View track status
-
-  Select option:
+  恢复：/conductor:manage --restore {track-id}
   ```
 
-- If option 1 selected, proceed with warning
-- If option 2 or 3 selected, exit or show status
+#### 2. 验证完成状态
 
-#### 3. Prompt for Archive Reason
+读取 `conductor/tracks/{track-id}/metadata.json` 和 `plan.md`：
+
+- 如果状态不是 `completed` 或 `[x]`：
+
+  ```
+  轨道 '{track-id}' 未标记为完成。
+
+  当前状态：{status}
+  任务：{completed}/{total} 完成
+
+  选项：
+  1. 无论如何归档（不推荐）
+  2. 取消并先完成轨道
+  3. 查看轨道状态
+
+  选择选项：
+  ```
+
+- 如果选择选项 1，继续并显示警告
+- 如果选择选项 2 或 3，退出或显示状态
+
+#### 3. 提示归档原因
 
 ```
-Why are you archiving this track?
+您为什么要归档此轨道？
 
-1. Completed - Work finished successfully
-2. Superseded - Replaced by another track
-3. Abandoned - No longer needed
-4. Other (specify)
+1. 已完成 - 工作成功完成
+2. 被取代 - 被另一个轨道替换
+3. 已放弃 - 不再需要
+4. 其他（指定）
 
-Select reason:
+选择原因：
 ```
 
-If "Other" selected, prompt for custom reason.
+如果选择"其他"，提示输入自定义原因。
 
-#### 4. Display Confirmation
+#### 4. 显示确认
 
 ```
 ================================================================================
-                          ARCHIVE CONFIRMATION
+                          归档确认
 ================================================================================
 
-Track:    {track-id} - {title}
-Type:     {type}
-Status:   {status}
-Tasks:    {completed}/{total} complete
-Reason:   {reason}
+轨道：    {track-id} - {title}
+类型：     {type}
+状态：   {status}
+任务：    {completed}/{total} 完成
+原因：   {reason}
 
-Actions:
-- Move conductor/tracks/{track-id}/ to conductor/tracks/_archive/{track-id}/
-- Update conductor/tracks.md (move to Archived Tracks section)
-- Update metadata.json with archive info
-- Create git commit: chore(conductor): Archive track '{title}'
+操作：
+- 将 conductor/tracks/{track-id}/ 移至 conductor/tracks/_archive/{track-id}/
+- 更新 conductor/tracks.md（移至已归档轨道部分）
+- 使用归档信息更新 metadata.json
+- 创建 git 提交：chore(conductor): 归档轨道 '{title}'
 
 ================================================================================
 
-Type 'YES' to proceed, or anything else to cancel:
+输入 'YES' 以继续，或输入任何其他内容取消：
 ```
 
-**CRITICAL: Require explicit 'YES' confirmation.**
+**关键：需要明确的 'YES' 确认。**
 
-#### 5. Execute Archive
+#### 5. 执行归档
 
-1. Create `conductor/tracks/_archive/` if not exists:
+1. 如果不存在则创建 `conductor/tracks/_archive/`：
 
    ```bash
    mkdir -p conductor/tracks/_archive
    ```
 
-2. Move track directory:
+2. 移动轨道目录：
 
    ```bash
    mv conductor/tracks/{track-id} conductor/tracks/_archive/
    ```
 
-3. Update `conductor/tracks/_archive/{track-id}/metadata.json`:
+3. 更新 `conductor/tracks/_archive/{track-id}/metadata.json`：
 
    ```json
    {
@@ -296,227 +296,227 @@ Type 'YES' to proceed, or anything else to cancel:
    }
    ```
 
-4. Update `conductor/tracks.md`:
-   - Remove entry from Active Tracks or Completed Tracks section
-   - Add entry to Archived Tracks section with format:
+4. 更新 `conductor/tracks.md`：
+   - 从活动轨道或已完成轨道部分移除条目
+   - 将条目添加到已归档轨道部分，格式为：
 
      ```markdown
      ### {track-id}: {title}
 
-     **Reason:** {reason}
-     **Archived:** YYYY-MM-DD
-     **Folder:** [./tracks/\_archive/{track-id}/](./tracks/_archive/{track-id}/)
+     **原因：** {reason}
+     **归档时间：** YYYY-MM-DD
+     **文件夹：** [./tracks/_archive/{track-id}/](./tracks/_archive/{track-id}/)
      ```
 
-5. Git commit:
+5. Git 提交：
    ```bash
    git add conductor/tracks/_archive/{track-id} conductor/tracks.md
-   git commit -m "chore(conductor): Archive track '{title}'"
+   git commit -m "chore(conductor): 归档轨道 '{title}'"
    ```
 
-#### 6. Success Output
+#### 6. 成功输出
 
 ```
 ================================================================================
-                          ARCHIVE COMPLETE
+                          归档完成
 ================================================================================
 
-Track archived: {track-id} - {title}
+轨道已归档：{track-id} - {title}
 
-Location:  conductor/tracks/_archive/{track-id}/
-Reason:    {reason}
-Commit:    {sha}
+位置：  conductor/tracks/_archive/{track-id}/
+原因：    {reason}
+提交：    {sha}
 
-To restore: /conductor:manage --restore {track-id}
-To list:    /conductor:manage --list archived
+恢复：/conductor:manage --restore {track-id}
+列表：    /conductor:manage --list archived
 
 ================================================================================
 ```
 
-### Without Argument (`--archive`)
+### 不带参数 (`--archive`)
 
-#### 1. Find Archivable Tracks
+#### 1. 查找可归档轨道
 
-Scan for completed tracks not yet archived:
+扫描尚未归档的已完成轨道：
 
-- Status `[x]` in tracks.md
-- Not in `_archive/` directory
+- tracks.md 中的状态 `[x]`
+- 不在 `_archive/` 目录中
 
-#### 2. Display Selection Menu
+#### 2. 显示选择菜单
 
 ```
 ================================================================================
-                          ARCHIVE TRACKS
+                          归档轨道
 ================================================================================
 
-Completed tracks available for archiving:
+可用于归档的已完成轨道：
 
-1. [x] auth_20250110 - User Authentication (completed 2025-01-12)
-2. [x] setup-ci_20250108 - CI Pipeline Setup (completed 2025-01-09)
+1. [x] auth_20250110 - 用户身份验证（完成于 2025-01-12）
+2. [x] setup-ci_20250108 - CI 流水线设置（完成于 2025-01-09）
 
-Already archived: {N} tracks
+已归档：{N} 个轨道
 
 --------------------------------------------------------------------------------
 
-Options:
-1-{N}. Select a track to archive
-A.     Archive all completed tracks
-C.     Cancel
+选项：
+1-{N}. 选择要归档的轨道
+A.     归档所有已完成轨道
+C.     取消
 
-Select option:
+选择选项：
 ```
 
-- If numeric, proceed with single archive flow
-- If 'A', proceed with bulk archive
-- If 'C', exit
+- 如果是数字，继续单个归档流程
+- 如果是 'A'，继续批量归档
+- 如果是 'C'，退出
 
-#### 3. No Archivable Tracks
-
-```
-================================================================================
-                          ARCHIVE TRACKS
-================================================================================
-
-No completed tracks available for archiving.
-
-Current tracks:
-- [~] nav-fix_20250114 - In progress
-- [ ] api-v2_20250115 - Pending
-
-Already archived: {N} tracks (use --list archived to view)
-
-================================================================================
-```
-
-### Bulk Archive (`--archive --bulk`)
-
-#### 1. Display Multi-Select
+#### 3. 无可归档轨道
 
 ```
 ================================================================================
-                       BULK ARCHIVE SELECTION
+                          归档轨道
 ================================================================================
 
-Select tracks to archive (comma-separated numbers, or 'all'):
+没有可用于归档的已完成轨道。
 
-Completed Tracks:
-[ ] 1. auth_20250110 - User Authentication (completed 2025-01-12)
-[ ] 2. setup-ci_20250108 - CI Pipeline Setup (completed 2025-01-09)
-[ ] 3. docs-update_20250105 - Documentation Update (completed 2025-01-06)
+当前轨道：
+- [~] nav-fix_20250114 - 进行中
+- [ ] api-v2_20250115 - 待处理
 
-Enter selection (e.g., "1,3" or "all"):
+已归档：{N} 个轨道（使用 --list archived 查看）
+
+================================================================================
 ```
 
-#### 2. Confirm Selection
+### 批量归档 (`--archive --bulk`)
+
+#### 1. 显示多选
 
 ```
 ================================================================================
-                       BULK ARCHIVE CONFIRMATION
+                       批量归档选择
 ================================================================================
 
-Tracks to archive:
+选择要归档的轨道（逗号分隔的数字，或 'all'）：
 
-1. auth_20250110 - User Authentication
-2. setup-ci_20250108 - CI Pipeline Setup
+已完成轨道：
+[ ] 1. auth_20250110 - 用户身份验证（完成于 2025-01-12）
+[ ] 2. setup-ci_20250108 - CI 流水线设置（完成于 2025-01-09）
+[ ] 3. docs-update_20250105 - 文档更新（完成于 2025-01-06）
 
-Archive reason for all: Completed
-
-Actions:
-- Move 2 track directories to conductor/tracks/_archive/
-- Update conductor/tracks.md
-- Create git commit: chore(conductor): Archive 2 completed tracks
-
-================================================================================
-
-Type 'YES' to proceed, or anything else to cancel:
+输入选择（例如，"1,3" 或 "all"）：
 ```
 
-#### 3. Execute Bulk Archive
+#### 2. 确认选择
 
-- Archive each track sequentially
-- Single git commit for all:
+```
+================================================================================
+                       批量归档确认
+================================================================================
+
+要归档的轨道：
+
+1. auth_20250110 - 用户身份验证
+2. setup-ci_20250108 - CI 流水线设置
+
+所有轨道的归档原因：已完成
+
+操作：
+- 将 2 个轨道目录移至 conductor/tracks/_archive/
+- 更新 conductor/tracks.md
+- 创建 git 提交：chore(conductor): 归档 2 个已完成轨道
+
+================================================================================
+
+输入 'YES' 以继续，或输入任何其他内容取消：
+```
+
+#### 3. 执行批量归档
+
+- 依次归档每个轨道
+- 所有轨道的单个 git 提交：
   ```bash
   git add conductor/tracks/_archive/ conductor/tracks.md
-  git commit -m "chore(conductor): Archive {N} completed tracks"
+  git commit -m "chore(conductor): 归档 {N} 个已完成轨道"
   ```
 
 ---
 
-## Restore Mode (`--restore`)
+## 恢复模式 (`--restore`)
 
-Restore archived tracks back to active status.
+将已归档轨道恢复为活动状态。
 
-### With Argument (`--restore <track-id>`)
+### 带参数 (`--restore <track-id>`)
 
-#### 1. Validate Track
+#### 1. 验证轨道
 
-- Check track exists in `conductor/tracks/_archive/{track-id}/`
-- If not found:
-
-  ```
-  ERROR: Archived track not found: {track-id}
-
-  Available archived tracks:
-  - old-feature_20241201 (archived 2025-01-05)
-
-  Usage: /conductor:manage --restore <track-id>
-  ```
-
-#### 2. Check for Conflicts
-
-- Verify no active track with same ID exists in `conductor/tracks/`
-- If conflict:
+- 检查轨道存在于 `conductor/tracks/_archive/{track-id}/`
+- 如果未找到：
 
   ```
-  ERROR: Cannot restore '{track-id}' - a track with this ID already exists.
+  错误：未找到已归档轨道：{track-id}
 
-  Active track: conductor/tracks/{track-id}/
+  可用的已归档轨道：
+  - old-feature_20241201（归档于 2025-01-05）
 
-  Options:
-  1. Delete existing track first
-  2. Restore with different ID (will prompt for new ID)
-  3. Cancel
-
-  Select option:
+  用法：/conductor:manage --restore <track-id>
   ```
 
-#### 3. Display Confirmation
+#### 2. 检查冲突
+
+- 验证 `conductor/tracks/` 中不存在具有相同 ID 的活动轨道
+- 如果冲突：
+
+  ```
+  错误：无法恢复 '{track-id}' - 具有此 ID 的轨道已存在。
+
+  活动轨道：conductor/tracks/{track-id}/
+
+  选项：
+  1. 先删除现有轨道
+  2. 使用不同 ID 恢复（将提示输入新 ID）
+  3. 取消
+
+  选择选项：
+  ```
+
+#### 3. 显示确认
 
 ```
 ================================================================================
-                          RESTORE CONFIRMATION
+                          恢复确认
 ================================================================================
 
-Restoring archived track:
+正在恢复已归档轨道：
 
-Track:    {track-id} - {title}
-Type:     {type}
-Archived: {archived_at}
-Reason:   {archive_reason}
+轨道：    {track-id} - {title}
+类型：     {type}
+归档时间： {archived_at}
+原因：   {archive_reason}
 
-Actions:
-- Move conductor/tracks/_archive/{track-id}/ to conductor/tracks/{track-id}/
-- Update conductor/tracks.md (move to Completed Tracks section)
-- Update metadata.json
-- Create git commit: chore(conductor): Restore track '{title}'
+操作：
+- 将 conductor/tracks/_archive/{track-id}/ 移至 conductor/tracks/{track-id}/
+- 更新 conductor/tracks.md（移至已完成轨道部分）
+- 更新 metadata.json
+- 创建 git 提交：chore(conductor): 恢复轨道 '{title}'
 
-Note: Track will be restored with status 'completed'. Use /conductor:implement
-to resume work if needed.
+注意：轨道将以"已完成"状态恢复。如需要，使用 /conductor:implement
+继续工作。
 
 ================================================================================
 
-Type 'YES' to proceed, or anything else to cancel:
+输入 'YES' 以继续，或输入任何其他内容取消：
 ```
 
-#### 4. Execute Restore
+#### 4. 执行恢复
 
-1. Move track directory:
+1. 移动轨道目录：
 
    ```bash
    mv conductor/tracks/_archive/{track-id} conductor/tracks/
    ```
 
-2. Update `conductor/tracks/{track-id}/metadata.json`:
+2. 更新 `conductor/tracks/{track-id}/metadata.json`：
 
    ```json
    {
@@ -526,290 +526,290 @@ Type 'YES' to proceed, or anything else to cancel:
    }
    ```
 
-3. Update `conductor/tracks.md`:
-   - Remove entry from Archived Tracks section
-   - Add entry to Completed Tracks section
+3. 更新 `conductor/tracks.md`：
+   - 从已归档轨道部分移除条目
+   - 将条目添加到已完成轨道部分
 
-4. Git commit:
+4. Git 提交：
    ```bash
    git add conductor/tracks/{track-id} conductor/tracks.md
-   git commit -m "chore(conductor): Restore track '{title}'"
+   git commit -m "chore(conductor): 恢复轨道 '{title}'"
    ```
 
-#### 5. Success Output
+#### 5. 成功输出
 
 ```
 ================================================================================
-                          RESTORE COMPLETE
+                          恢复完成
 ================================================================================
 
-Track restored: {track-id} - {title}
+轨道已恢复：{track-id} - {title}
 
-Location:  conductor/tracks/{track-id}/
-Status:    completed
+位置：  conductor/tracks/{track-id}/
+状态：    已完成
 
-Next steps:
-- Run /conductor:status {track-id} to see track details
-- Run /conductor:implement {track-id} to resume work (if needed)
+后续步骤：
+- 运行 /conductor:status {track-id} 查看轨道详情
+- 运行 /conductor:implement {track-id} 继续工作（如需要）
 
 ================================================================================
 ```
 
-### Without Argument (`--restore`)
+### 不带参数 (`--restore`)
 
-Display menu of archived tracks for selection:
+显示已归档轨道的选择菜单：
 
 ```
 ================================================================================
-                          RESTORE TRACKS
+                          恢复轨道
 ================================================================================
 
-Archived tracks available for restoration:
+可用于恢复的已归档轨道：
 
-1. old-feature_20241201 - Old Feature (archived 2025-01-05, reason: Superseded)
-2. cleanup-api_20241215 - API Cleanup (archived 2025-01-10, reason: Completed)
+1. old-feature_20241201 - 旧功能（归档于 2025-01-05，原因：被取代）
+2. cleanup-api_20241215 - API 清理（归档于 2025-01-10，原因：已完成）
 
 --------------------------------------------------------------------------------
 
-Options:
-1-{N}. Select a track to restore
-C.     Cancel
+选项：
+1-{N}. 选择要恢复的轨道
+C.     取消
 
-Select option:
+选择选项：
 ```
 
 ---
 
-## Delete Mode (`--delete`)
+## 删除模式 (`--delete`)
 
-Permanently remove tracks with safety confirmations.
+永久移除轨道，具有安全确认。
 
-### With Argument (`--delete <track-id>`)
+### 带参数 (`--delete <track-id>`)
 
-#### 1. Find Track
+#### 1. 查找轨道
 
-Search for track in:
+在以下位置搜索轨道：
 
-1. `conductor/tracks/{track-id}/` (active/completed)
-2. `conductor/tracks/_archive/{track-id}/` (archived)
+1. `conductor/tracks/{track-id}/`（活动/已完成）
+2. `conductor/tracks/_archive/{track-id}/`（已归档）
 
-If not found:
+如果未找到：
 
 ```
-ERROR: Track not found: {track-id}
+错误：未找到轨道：{track-id}
 
-Available tracks:
-Active:
+可用轨道：
+活动：
 - dashboard_20250112
 
-Archived:
+已归档：
 - old-feature_20241201
 
-Usage: /conductor:manage --delete <track-id>
+用法：/conductor:manage --delete <track-id>
 ```
 
-#### 2. Check In-Progress Status
+#### 2. 检查进行中状态
 
-If track status is `[~]` (in progress):
-
-```
-================================================================================
-                          !! WARNING !!
-================================================================================
-
-Track '{track-id}' is currently IN PROGRESS.
-
-Current task: Task 2.3 - {description}
-Progress:     7/15 tasks (47%)
-
-Deleting an in-progress track may result in lost work.
-
-Options:
-1. Delete anyway (use --force to skip this warning)
-2. Archive instead (recommended)
-3. Cancel
-
-Select option:
-```
-
-Without `--force` flag, require explicit selection.
-
-#### 3. Display Full Warning
+如果轨道状态为 `[~]`（进行中）：
 
 ```
 ================================================================================
-                     !! PERMANENT DELETION WARNING !!
+                          !! 警告 !!
 ================================================================================
 
-Track:    {track-id} - {title}
-Type:     {type}
-Status:   {status}
-Location: conductor/tracks/{track-id}/ (or _archive/)
-Created:  {created_date}
-Files:    {count} (spec.md, plan.md, metadata.json, index.md)
-Commits:  {count} related commits (will NOT be deleted)
+轨道 '{track-id}' 当前正在进行中。
 
-This action CANNOT be undone. The track directory and all contents
-will be permanently removed.
+当前任务：任务 2.3 - {description}
+进度：     7/15 任务 (47%)
 
-Consider archiving instead: /conductor:manage --archive {track-id}
+删除进行中的轨道可能导致工作丢失。
 
-================================================================================
+选项：
+1. 无论如何删除（使用 --force 跳过此警告）
+2. 改为归档（推荐）
+3. 取消
 
-Type 'DELETE' to permanently remove, or anything else to cancel:
+选择选项：
 ```
 
-**CRITICAL: Require exact 'DELETE' string, not 'yes' or 'y'.**
+没有 `--force` 标志，需要明确选择。
 
-#### 4. Execute Delete
+#### 3. 显示完整警告
 
-1. Remove track directory:
+```
+================================================================================
+                     !! 永久删除警告 !!
+================================================================================
+
+轨道：    {track-id} - {title}
+类型：     {type}
+状态：   {status}
+位置： conductor/tracks/{track-id}/（或 _archive/）
+创建时间：  {created_date}
+文件：    {count}（spec.md、plan.md、metadata.json、index.md）
+提交：  {count} 个相关提交（不会被删除）
+
+此操作无法撤消。轨道目录和所有内容
+将被永久移除。
+
+考虑改为归档：/conductor:manage --archive {track-id}
+
+================================================================================
+
+输入 'DELETE' 以永久移除，或输入任何其他内容取消：
+```
+
+**关键：需要确切的 'DELETE' 字符串，而不是 'yes' 或 'y'。**
+
+#### 4. 执行删除
+
+1. 移除轨道目录：
 
    ```bash
    rm -rf conductor/tracks/{track-id}
-   # or
+   # 或
    rm -rf conductor/tracks/_archive/{track-id}
    ```
 
-2. Update `conductor/tracks.md`:
-   - Remove entry from appropriate section (Active, Completed, or Archived)
+2. 更新 `conductor/tracks.md`：
+   - 从相应部分（活动、已完成或已归档）移除条目
 
-3. Git commit:
+3. Git 提交：
    ```bash
    git add conductor/tracks.md
-   git commit -m "chore(conductor): Delete track '{title}'"
+   git commit -m "chore(conductor): 删除轨道 '{title}'"
    ```
 
-Note: The git commit records the deletion but does not remove historical commits.
+注意：git 提交记录删除，但不移除历史提交。
 
-#### 5. Success Output
-
-```
-================================================================================
-                          DELETE COMPLETE
-================================================================================
-
-Track permanently deleted: {track-id} - {title}
-
-Note: Git history still contains commits referencing this track.
-      The track directory and registry entry have been removed.
-
-================================================================================
-```
-
-### Without Argument (`--delete`)
-
-Display menu of all tracks for selection:
+#### 5. 成功输出
 
 ```
 ================================================================================
-                          DELETE TRACKS
+                          删除完成
 ================================================================================
 
-!! This will PERMANENTLY delete a track !!
+轨道已永久删除：{track-id} - {title}
 
-Select a track to delete:
+注意：Git 历史仍包含引用此轨道的提交。
+      轨道目录和注册表条目已被移除。
 
-Active/Completed:
-1. [ ] nav-fix_20250114 - Navigation Bug Fix
-2. [x] auth_20250110 - User Authentication
+================================================================================
+```
 
-Archived:
-3. old-feature_20241201 - Old Feature
+### 不带参数 (`--delete`)
+
+显示所有轨道的选择菜单：
+
+```
+================================================================================
+                          删除轨道
+================================================================================
+
+!! 这将永久删除轨道 !!
+
+选择要删除的轨道：
+
+活动/已完成：
+1. [ ] nav-fix_20250114 - 导航 Bug 修复
+2. [x] auth_20250110 - 用户身份验证
+
+已归档：
+3. old-feature_20241201 - 旧功能
 
 --------------------------------------------------------------------------------
 
-Options:
-1-{N}. Select a track to delete
-C.     Cancel
+选项：
+1-{N}. 选择要删除的轨道
+C.     取消
 
-Select option:
+选择选项：
 ```
 
 ---
 
-## Rename Mode (`--rename`)
+## 重命名模式 (`--rename`)
 
-Change track IDs with full reference updates.
+更改轨道 ID，具有完整的引用更新。
 
-### With Arguments (`--rename <old-id> <new-id>`)
+### 带参数 (`--rename <old-id> <new-id>`)
 
-#### 1. Validate Old Track Exists
+#### 1. 验证旧轨道存在
 
-Check track exists in:
+检查轨道存在于：
 
 - `conductor/tracks/{old-id}/`
 - `conductor/tracks/_archive/{old-id}/`
 
-If not found:
+如果未找到：
 
 ```
-ERROR: Track not found: {old-id}
+错误：未找到轨道：{old-id}
 
-Available tracks:
+可用轨道：
 - auth_20250110
 - dashboard_20250112
 
-Usage: /conductor:manage --rename <old-id> <new-id>
+用法：/conductor:manage --rename <old-id> <new-id>
 ```
 
-#### 2. Validate New ID
+#### 2. 验证新 ID
 
-**Check format** (must match `{shortname}_{YYYYMMDD}`):
+**检查格式**（必须匹配 `{shortname}_{YYYYMMDD}`）：
 
 ```
-ERROR: Invalid track ID format: {new-id}
+错误：无效的轨道 ID 格式：{new-id}
 
-Track IDs must follow the pattern: {shortname}_{YYYYMMDD}
-Examples:
+轨道 ID 必须遵循模式：{shortname}_{YYYYMMDD}
+示例：
 - user-auth_20250115
 - fix-login_20250114
 - api-v2_20250110
 ```
 
-**Check no conflict:**
+**检查无冲突：**
 
 ```
-ERROR: Track '{new-id}' already exists.
+错误：轨道 '{new-id}' 已存在。
 
-Choose a different ID or delete the existing track first.
+选择不同的 ID 或先删除现有轨道。
 ```
 
-#### 3. Display Confirmation
+#### 3. 显示确认
 
 ```
 ================================================================================
-                          RENAME TRACK
+                          重命名轨道
 ================================================================================
 
-Current:  {old-id} - {title}
-New ID:   {new-id}
+当前：  {old-id} - {title}
+新 ID：   {new-id}
 
-Changes:
-- Rename conductor/tracks/{old-id}/ to {new-id}/
-- Update tracks.md entry
-- Update metadata.json id field
-- Update plan.md track ID header
+更改：
+- 将 conductor/tracks/{old-id}/ 重命名为 {new-id}/
+- 更新 tracks.md 条目
+- 更新 metadata.json id 字段
+- 更新 plan.md 轨道 ID 标题
 
-Note: Git commit history will retain original track ID references.
-      Related commits cannot be renamed.
+注意：Git 提交历史将保留原始轨道 ID 引用。
+      相关提交无法重命名。
 
 ================================================================================
 
-Type 'YES' to proceed, or anything else to cancel:
+输入 'YES' 以继续，或输入任何其他内容取消：
 ```
 
-#### 4. Execute Rename
+#### 4. 执行重命名
 
-1. Rename directory:
+1. 重命名目录：
 
    ```bash
    mv conductor/tracks/{old-id} conductor/tracks/{new-id}
-   # or for archived:
+   # 或对于已归档：
    mv conductor/tracks/_archive/{old-id} conductor/tracks/_archive/{new-id}
    ```
 
-2. Update `conductor/tracks/{new-id}/metadata.json`:
+2. 更新 `conductor/tracks/{new-id}/metadata.json`：
 
    ```json
    {
@@ -819,308 +819,308 @@ Type 'YES' to proceed, or anything else to cancel:
    }
    ```
 
-   If `previous_ids` already exists, append the old ID.
+   如果 `previous_ids` 已存在，则追加旧 ID。
 
-3. Update `conductor/tracks/{new-id}/plan.md`:
-   - Change track ID in header line
+3. 更新 `conductor/tracks/{new-id}/plan.md`：
+   - 更改标题行中的轨道 ID
 
-4. Update `conductor/tracks.md`:
-   - Update the track ID in the appropriate section
-   - Update folder link path
+4. 更新 `conductor/tracks.md`：
+   - 更新相应部分中的轨道 ID
+   - 更新文件夹链接路径
 
-5. Git commit:
+5. Git 提交：
    ```bash
    git add conductor/tracks/{new-id} conductor/tracks.md
-   git commit -m "chore(conductor): Rename track '{old-id}' to '{new-id}'"
+   git commit -m "chore(conductor): 将轨道 '{old-id}' 重命名为 '{new-id}'"
    ```
 
-#### 5. Success Output
+#### 5. 成功输出
 
 ```
 ================================================================================
-                          RENAME COMPLETE
+                          重命名完成
 ================================================================================
 
-Track renamed: {old-id} → {new-id}
+轨道已重命名：{old-id} → {new-id}
 
-New location: conductor/tracks/{new-id}/
+新位置：conductor/tracks/{new-id}/
 
-Note: Historical git commits still reference '{old-id}'.
+注意：历史 git 提交仍引用 '{old-id}'。
 
 ================================================================================
 ```
 
-### Without Arguments (`--rename`)
+### 不带参数 (`--rename`)
 
-Interactive mode:
+交互式模式：
 
 ```
 ================================================================================
-                          RENAME TRACK
+                          重命名轨道
 ================================================================================
 
-Select a track to rename:
+选择要重命名的轨道：
 
-1. auth_20250110 - User Authentication
-2. dashboard_20250112 - Dashboard Feature
-3. nav-fix_20250114 - Navigation Bug Fix
+1. auth_20250110 - 用户身份验证
+2. dashboard_20250112 - 仪表板功能
+3. nav-fix_20250114 - 导航 Bug 修复
 
 --------------------------------------------------------------------------------
 
-Options:
-1-{N}. Select a track
-C.     Cancel
+选项：
+1-{N}. 选择轨道
+C.     取消
 
-Select option:
+选择选项：
 ```
 
-After selection:
+选择后：
 
 ```
-Enter new track ID for '{old-id}':
+为 '{old-id}' 输入新轨道 ID：
 
-Format: {shortname}_{YYYYMMDD}
-Current: {old-id}
+格式：{shortname}_{YYYYMMDD}
+当前：{old-id}
 
-New ID:
+新 ID：
 ```
 
 ---
 
-## Cleanup Mode (`--cleanup`)
+## 清理模式 (`--cleanup`)
 
-Detect and fix orphaned track artifacts.
+检测并修复孤立的轨道工件。
 
-### 1. Scan for Issues
+### 1. 扫描问题
 
-**Directory Orphans:**
+**目录孤立：**
 
-- Scan `conductor/tracks/` for directories
-- Check each against tracks.md entries
-- Flag directories not in registry
+- 扫描 `conductor/tracks/` 查找目录
+- 对照 tracks.md 条目检查每个目录
+- 标记不在注册表中的目录
 
-**Registry Orphans:**
+**注册表孤立：**
 
-- Parse tracks.md for all track entries
-- Check each has a corresponding directory
-- Flag entries without directories
+- 解析 tracks.md 查找所有轨道条目
+- 检查每个条目是否具有相应的目录
+- 标记没有目录的条目
 
-**Incomplete Tracks:**
+**不完整的轨道：**
 
-- For each track directory, verify required files exist:
+- 对于每个轨道目录，验证必需文件是否存在：
   - `spec.md`
   - `plan.md`
   - `metadata.json`
-- Flag tracks missing required files
+- 标记缺少必需文件的轨道
 
-**Stale In-Progress:**
+**陈旧的进行中：**
 
-- Find tracks with status `[~]`
-- Check `metadata.json` `updated` timestamp
-- Flag if untouched for > 7 days
+- 查找状态为 `[~]` 的轨道
+- 检查 `metadata.json` `updated` 时间戳
+- 如果超过 7 天未修改则标记
 
-### 2. Display Results
+### 2. 显示结果
 
 ```
 ================================================================================
-                          TRACK CLEANUP
+                          轨道清理
 ================================================================================
 
-Scanning for issues...
+正在扫描问题...
 
-ORPHANED DIRECTORIES (not in tracks.md):
+孤立目录（不在 tracks.md 中）：
   1. conductor/tracks/test-feature_20241201/
   2. conductor/tracks/experiment_20241220/
 
-REGISTRY ORPHANS (no matching folder):
-  3. broken-track_20250101 (listed in tracks.md)
+注册表孤立（没有匹配的文件夹）：
+  3. broken-track_20250101（在 tracks.md 中列出）
 
-INCOMPLETE TRACKS (missing files):
-  4. partial_20250105/ - missing: metadata.json, index.md
+不完整的轨道（缺少文件）：
+  4. partial_20250105/ - 缺少：metadata.json、index.md
 
-STALE IN-PROGRESS (untouched >7 days):
-  5. old-work_20250101 - last updated: 2025-01-02
-
-================================================================================
-
-Found {N} issues.
-
-Actions:
-1. Add orphaned directories to tracks.md
-2. Remove registry orphans from tracks.md
-3. Create missing files from templates
-4. Archive stale tracks
-A. Fix all issues automatically
-S. Skip and review manually
-C. Cancel
-
-Select action:
-```
-
-### 3. Handle No Issues
-
-```
-================================================================================
-                          TRACK CLEANUP
-================================================================================
-
-Scanning for issues...
-
-No issues found.
-
-All tracks are properly registered and complete.
+陈旧的进行中（超过 7 天未修改）：
+  5. old-work_20250101 - 最后更新：2025-01-02
 
 ================================================================================
+
+发现 {N} 个问题。
+
+操作：
+1. 将孤立目录添加到 tracks.md
+2. 从 tracks.md 中移除注册表孤立
+3. 从模板创建缺少的文件
+4. 归档陈旧轨道
+A. 自动修复所有问题
+S. 跳过并手动审查
+C. 取消
+
+选择操作：
 ```
 
-### 4. Execute Fixes
-
-**For Directory Orphans (Action 1):**
+### 3. 处理无问题
 
 ```
-Adding orphaned directories to tracks.md...
+================================================================================
+                          轨道清理
+================================================================================
 
-For each directory:
-- Read metadata.json if exists for track info
-- If no metadata, prompt for track details:
+正在扫描问题...
 
-  Found: conductor/tracks/test-feature_20241201/
+未发现问题。
 
-  Enter track title (or 'skip' to ignore):
-  Enter track type (feature/bug/chore/refactor):
+所有轨道都已正确注册并完整。
 
-- Add entry to appropriate section in tracks.md
-- Create metadata.json if missing
+================================================================================
 ```
 
-**For Registry Orphans (Action 2):**
+### 4. 执行修复
+
+**对于目录孤立（操作 1）：**
 
 ```
-Removing registry orphans from tracks.md...
+正在将孤立目录添加到 tracks.md...
 
-Removed entries:
+对于每个目录：
+- 如果存在 metadata.json，读取它以获取轨道信息
+- 如果没有元数据，提示输入轨道详情：
+
+  找到：conductor/tracks/test-feature_20241201/
+
+  输入轨道标题（或 'skip' 忽略）：
+  输入轨道类型（feature/bug/chore/refactor）：
+
+- 将条目添加到 tracks.md 中的适当部分
+- 如果缺少则创建 metadata.json
+```
+
+**对于注册表孤立（操作 2）：**
+
+```
+正在从 tracks.md 中移除注册表孤立...
+
+已移除的条目：
 - broken-track_20250101
 
-Note: No files were deleted, only tracks.md was updated.
+注意：没有删除文件，仅更新了 tracks.md。
 ```
 
-**For Incomplete Tracks (Action 3):**
+**对于不完整的轨道（操作 3）：**
 
 ```
-Creating missing files from templates...
+正在从模板创建缺少的文件...
 
-partial_20250105/:
-- Created metadata.json from template
-- Created index.md from template
+partial_20250105/：
+- 已从模板创建 metadata.json
+- 已从模板创建 index.md
 
-Note: You may need to populate these files with actual content.
+注意：您可能需要用实际内容填充这些文件。
 ```
 
-**For Stale In-Progress (Action 4):**
+**对于陈旧的进行中（操作 4）：**
 
 ```
-Archiving stale tracks...
+正在归档陈旧轨道...
 
-old-work_20250101:
-- Archived with reason: Stale (untouched since 2025-01-02)
+old-work_20250101：
+- 已归档，原因：陈旧（自 2025-01-02 以来未修改）
 ```
 
-**For All Issues (Action A):**
+**对于所有问题（操作 A）：**
 
-Execute all applicable fixes in sequence, then:
+依次执行所有适用的修复，然后：
 
 ```bash
 git add conductor/
-git commit -m "chore(conductor): Clean up {N} orphaned track artifacts"
+git commit -m "chore(conductor): 清理 {N} 个孤立轨道工件"
 ```
 
-### 5. Completion Output
+### 5. 完成输出
 
 ```
 ================================================================================
-                          CLEANUP COMPLETE
+                          清理完成
 ================================================================================
 
-Fixed {N} issues:
-- Added {X} orphaned directories to tracks.md
-- Removed {Y} registry orphans
-- Created missing files for {Z} incomplete tracks
-- Archived {W} stale tracks
+已修复 {N} 个问题：
+- 将 {X} 个孤立目录添加到 tracks.md
+- 移除了 {Y} 个注册表孤立
+- 为 {Z} 个不完整轨道创建了缺少的文件
+- 归档了 {W} 个陈旧轨道
 
-Commit: {sha}
+提交：{sha}
 
 ================================================================================
 ```
 
 ---
 
-## Error Handling
+## 错误处理
 
-### Git Operation Failures
+### Git 操作失败
 
 ```
-GIT ERROR: {error message}
+GIT 错误：{error message}
 
-The operation partially completed:
-- Directory moved: Yes/No
-- tracks.md updated: Yes/No
-- Commit created: No
+操作部分完成：
+- 目录已移动：是/否
+- tracks.md 已更新：是/否
+- 已创建提交：否
 
-You may need to manually:
-1. Complete the git commit
-2. Restore files from their current locations
+您可能需要手动：
+1. 完成 git 提交
+2. 从当前位置恢复文件
 
-Current state:
-- Track location: {path}
-- tracks.md: {status}
+当前状态：
+- 轨道位置：{path}
+- tracks.md：{status}
 
-To retry the commit:
+重试提交：
   git add conductor/tracks.md conductor/tracks/{track-id}
-  git commit -m "{intended message}"
+  git commit -m "{预期消息}"
 ```
 
-### File System Errors
+### 文件系统错误
 
 ```
-ERROR: Failed to {operation}: {error}
+错误：无法 {operation}：{error}
 
-Possible causes:
-- Permission denied
-- Disk full
-- File in use
+可能原因：
+- 权限被拒绝
+- 磁盘已满
+- 文件正在使用
 
-No changes were made. Please resolve the issue and try again.
+未做任何更改。请解决问题后重试。
 ```
 
-### Invalid Arguments
+### 无效参数
 
 ```
-ERROR: Invalid argument: {argument}
+错误：无效参数：{argument}
 
-Usage: /conductor:manage [--archive | --restore | --delete | --rename | --list | --cleanup]
+用法：/conductor:manage [--archive | --restore | --delete | --rename | --list | --cleanup]
 
-Examples:
-  /conductor:manage                     # Interactive mode
-  /conductor:manage --list              # List all tracks
-  /conductor:manage --list archived     # List archived tracks only
-  /conductor:manage --archive track-id  # Archive specific track
-  /conductor:manage --restore track-id  # Restore archived track
-  /conductor:manage --delete track-id   # Delete track permanently
-  /conductor:manage --rename old new    # Rename track ID
-  /conductor:manage --cleanup           # Fix orphaned artifacts
+示例：
+  /conductor:manage                     # 交互式模式
+  /conductor:manage --list              # 列出所有轨道
+  /conductor:manage --list archived     # 仅列出已归档轨道
+  /conductor:manage --archive track-id  # 归档特定轨道
+  /conductor:manage --restore track-id  # 恢复已归档轨道
+  /conductor:manage --delete track-id   # 永久删除轨道
+  /conductor:manage --rename old new    # 重命名轨道 ID
+  /conductor:manage --cleanup           # 修复孤立工件
 ```
 
 ---
 
-## Critical Rules
+## 关键规则
 
-1. **ALWAYS verify track existence** before any operation
-2. **REQUIRE explicit confirmation** for destructive operations:
-   - 'YES' for archive, restore, rename
-   - 'DELETE' for permanent deletion
-3. **HALT on any error** - Do not attempt to continue past failures
-4. **UPDATE tracks.md** - Keep registry in sync with file system
-5. **COMMIT changes** - Create git commits for traceability
-6. **PRESERVE history** - Git commits are never modified or deleted
-7. **WARN for in-progress** - Extra caution when modifying active work
-8. **OFFER alternatives** - Suggest archive before delete
+1. **始终验证轨道存在** - 在任何操作之前
+2. **需要明确确认** - 对于破坏性操作：
+   - 'YES' 用于归档、恢复、重命名
+   - 'DELETE' 用于永久删除
+3. **任何错误时停止** - 不要尝试在失败后继续
+4. **更新 tracks.md** - 保持注册表与文件系统同步
+5. **提交更改** - 创建 git 提交以实现可追溯性
+6. **保留历史** - Git 提交永远不会被修改或删除
+7. **警告进行中** - 修改活动工作时需要格外小心
+8. **提供替代方案** - 在删除之前建议归档

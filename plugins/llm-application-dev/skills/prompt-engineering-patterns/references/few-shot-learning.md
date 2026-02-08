@@ -1,14 +1,14 @@
-# Few-Shot Learning Guide
+# 少样本学习指南
 
-## Overview
+## 概述
 
-Few-shot learning enables LLMs to perform tasks by providing a small number of examples (typically 1-10) within the prompt. This technique is highly effective for tasks requiring specific formats, styles, or domain knowledge.
+少样本学习通过在提示词中提供少量示例（通常 1-10 个）使 LLM 能够执行任务。该技术对于需要特定格式、风格或领域知识的任务非常有效。
 
-## Example Selection Strategies
+## 示例选择策略
 
-### 1. Semantic Similarity
+### 1. 语义相似度
 
-Select examples most similar to the input query using embedding-based retrieval.
+使用基于嵌入的检索选择与输入查询最相似的示例。
 
 ```python
 from sentence_transformers import SentenceTransformer
@@ -27,11 +27,11 @@ class SemanticExampleSelector:
         return [self.examples[i] for i in top_indices]
 ```
 
-**Best For**: Question answering, text classification, extraction tasks
+**最适用于**：问答、文本分类、信息抽取任务
 
-### 2. Diversity Sampling
+### 2. 多样性采样
 
-Maximize coverage of different patterns and edge cases.
+最大化对不同模式和边缘情况的覆盖。
 
 ```python
 from sklearn.cluster import KMeans
@@ -43,11 +43,11 @@ class DiversityExampleSelector:
         self.embeddings = self.model.encode([ex['input'] for ex in examples])
 
     def select(self, k=5):
-        # Use k-means to find diverse cluster centers
+        # 使用 k-means 找到多样化的聚类中心
         kmeans = KMeans(n_clusters=k, random_state=42)
         kmeans.fit(self.embeddings)
 
-        # Select example closest to each cluster center
+        # 选择最接近每个聚类中心的示例
         diverse_examples = []
         for center in kmeans.cluster_centers_:
             distances = np.linalg.norm(self.embeddings - center, axis=1)
@@ -57,38 +57,38 @@ class DiversityExampleSelector:
         return diverse_examples
 ```
 
-**Best For**: Demonstrating task variability, edge case handling
+**最适用于**：展示任务可变性、边缘情况处理
 
-### 3. Difficulty-Based Selection
+### 3. 基于难度的选择
 
-Gradually increase example complexity to scaffold learning.
+逐步增加示例复杂度以搭建学习支架。
 
 ```python
 class ProgressiveExampleSelector:
     def __init__(self, examples):
-        # Examples should have 'difficulty' scores (0-1)
+        # 示例应具有 'difficulty' 分数（0-1）
         self.examples = sorted(examples, key=lambda x: x['difficulty'])
 
     def select(self, k=3):
-        # Select examples with linearly increasing difficulty
+        # 选择线性递增难度的示例
         step = len(self.examples) // k
         return [self.examples[i * step] for i in range(k)]
 ```
 
-**Best For**: Complex reasoning tasks, code generation
+**最适用于**：复杂推理任务、代码生成
 
-### 4. Error-Based Selection
+### 4. 基于错误的选择
 
-Include examples that address common failure modes.
+包含解决常见失败模式的示例。
 
 ```python
 class ErrorGuidedSelector:
     def __init__(self, examples, error_patterns):
         self.examples = examples
-        self.error_patterns = error_patterns  # Common mistakes to avoid
+        self.error_patterns = error_patterns  # 需要避免的常见错误
 
     def select(self, query, k=3):
-        # Select examples demonstrating correct handling of error patterns
+        # 选择演示正确处理错误模式的示例
         selected = []
         for pattern in self.error_patterns[:k]:
             matching = [ex for ex in self.examples if pattern in ex['demonstrates']]
@@ -97,83 +97,83 @@ class ErrorGuidedSelector:
         return selected
 ```
 
-**Best For**: Tasks with known failure patterns, safety-critical applications
+**最适用于**：具有已知失败模式的任务、安全关键应用
 
-## Example Construction Best Practices
+## 示例构建最佳实践
 
-### Format Consistency
+### 格式一致性
 
-All examples should follow identical formatting:
+所有示例应遵循相同的格式：
 
 ```python
-# Good: Consistent format
+# 好的做法：格式一致
 examples = [
     {
-        "input": "What is the capital of France?",
-        "output": "Paris"
+        "input": "法国的首都是什么?",
+        "output": "巴黎"
     },
     {
-        "input": "What is the capital of Germany?",
-        "output": "Berlin"
+        "input": "德国的首都是什么?",
+        "output": "柏林"
     }
 ]
 
-# Bad: Inconsistent format
+# 坏的做法：格式不一致
 examples = [
-    "Q: What is the capital of France? A: Paris",
-    {"question": "What is the capital of Germany?", "answer": "Berlin"}
+    "Q: 法国的首都是什么? A: 巴黎",
+    {"question": "德国的首都是什么?", "answer": "柏林"}
 ]
 ```
 
-### Input-Output Alignment
+### 输入-输出对齐
 
-Ensure examples demonstrate the exact task you want the model to perform:
+确保示例演示了你希望模型执行的确切任务：
 
 ```python
-# Good: Clear input-output relationship
+# 好的做法：清晰的输入-输出关系
 example = {
-    "input": "Sentiment: The movie was terrible and boring.",
-    "output": "Negative"
+    "input": "情感: 这部电影很糟糕而且无聊.",
+    "output": "负面"
 }
 
-# Bad: Ambiguous relationship
+# 坏的做法：关系模糊
 example = {
-    "input": "The movie was terrible and boring.",
-    "output": "This review expresses negative sentiment toward the film."
+    "input": "这部电影很糟糕而且无聊.",
+    "output": "这条评论表达了对电影的负面情感."
 }
 ```
 
-### Complexity Balance
+### 复杂度平衡
 
-Include examples spanning the expected difficulty range:
+包含覆盖预期难度范围的示例：
 
 ```python
 examples = [
-    # Simple case
+    # 简单案例
     {"input": "2 + 2", "output": "4"},
 
-    # Moderate case
+    # 中等案例
     {"input": "15 * 3 + 8", "output": "53"},
 
-    # Complex case
+    # 复杂案例
     {"input": "(12 + 8) * 3 - 15 / 5", "output": "57"}
 ]
 ```
 
-## Context Window Management
+## 上下文窗口管理
 
-### Token Budget Allocation
+### Token 预算分配
 
-Typical distribution for a 4K context window:
+4K 上下文窗口的典型分布：
 
 ```
-System Prompt:        500 tokens  (12%)
-Few-Shot Examples:   1500 tokens  (38%)
-User Input:           500 tokens  (12%)
-Response:            1500 tokens  (38%)
+系统提示词:        500 tokens  (12%)
+少样本示例:       1500 tokens  (38%)
+用户输入:           500 tokens  (12%)
+模型响应:          1500 tokens  (38%)
 ```
 
-### Dynamic Example Truncation
+### 动态示例截断
 
 ```python
 class TokenAwareSelector:
@@ -186,7 +186,7 @@ class TokenAwareSelector:
         selected = []
         total_tokens = 0
 
-        # Start with most relevant examples
+        # 从最相关的示例开始
         candidates = self.rank_by_relevance(query)
 
         for example in candidates[:k]:
@@ -203,75 +203,75 @@ class TokenAwareSelector:
         return selected
 ```
 
-## Edge Case Handling
+## 边缘情况处理
 
-### Include Boundary Examples
+### 包含边界示例
 
 ```python
 edge_case_examples = [
-    # Empty input
-    {"input": "", "output": "Please provide input text."},
+    # 空输入
+    {"input": "", "output": "请提供输入文本。"},
 
-    # Very long input (truncated in example)
-    {"input": "..." + "word " * 1000, "output": "Input exceeds maximum length."},
+    # 超长输入（示例中截断）
+    {"input": "..." + "word " * 1000, "output": "输入超过最大长度。"},
 
-    # Ambiguous input
-    {"input": "bank", "output": "Ambiguous: Could refer to financial institution or river bank."},
+    # 歧义输入
+    {"input": "bank", "output": "歧义：可能指金融机构或河岸。"},
 
-    # Invalid input
-    {"input": "!@#$%", "output": "Invalid input format. Please provide valid text."}
+    # 无效输入
+    {"input": "!@#$%", "output": "无效的输入格式。请提供有效的文本。"}
 ]
 ```
 
-## Few-Shot Prompt Templates
+## 少样本提示词模板
 
-### Classification Template
+### 分类模板
 
 ```python
 def build_classification_prompt(examples, query, labels):
-    prompt = f"Classify the text into one of these categories: {', '.join(labels)}\n\n"
+    prompt = f"将文本分类为以下类别之一: {', '.join(labels)}\n\n"
 
     for ex in examples:
-        prompt += f"Text: {ex['input']}\nCategory: {ex['output']}\n\n"
+        prompt += f"文本: {ex['input']}\n类别: {ex['output']}\n\n"
 
-    prompt += f"Text: {query}\nCategory:"
+    prompt += f"文本: {query}\n类别:"
     return prompt
 ```
 
-### Extraction Template
+### 抽取模板
 
 ```python
 def build_extraction_prompt(examples, query):
-    prompt = "Extract structured information from the text.\n\n"
+    prompt = "从文本中抽取结构化信息。\n\n"
 
     for ex in examples:
-        prompt += f"Text: {ex['input']}\nExtracted: {json.dumps(ex['output'])}\n\n"
+        prompt += f"文本: {ex['input']}\n抽取结果: {json.dumps(ex['output'])}\n\n"
 
-    prompt += f"Text: {query}\nExtracted:"
+    prompt += f"文本: {query}\n抽取结果:"
     return prompt
 ```
 
-### Transformation Template
+### 转换模板
 
 ```python
 def build_transformation_prompt(examples, query):
-    prompt = "Transform the input according to the pattern shown in examples.\n\n"
+    prompt = "按照示例中显示的模式转换输入。\n\n"
 
     for ex in examples:
-        prompt += f"Input: {ex['input']}\nOutput: {ex['output']}\n\n"
+        prompt += f"输入: {ex['input']}\n输出: {ex['output']}\n\n"
 
-    prompt += f"Input: {query}\nOutput:"
+    prompt += f"输入: {query}\n输出:"
     return prompt
 ```
 
-## Evaluation and Optimization
+## 评估与优化
 
-### Example Quality Metrics
+### 示例质量指标
 
 ```python
 def evaluate_example_quality(example, validation_set):
     metrics = {
-        'clarity': rate_clarity(example),  # 0-1 score
+        'clarity': rate_clarity(example),  # 0-1 分数
         'representativeness': calculate_similarity_to_validation(example, validation_set),
         'difficulty': estimate_difficulty(example),
         'uniqueness': calculate_uniqueness(example, other_examples)
@@ -279,7 +279,7 @@ def evaluate_example_quality(example, validation_set):
     return metrics
 ```
 
-### A/B Testing Example Sets
+### 示例集 A/B 测试
 
 ```python
 class ExampleSetTester:
@@ -307,11 +307,11 @@ class ExampleSetTester:
         return {'accuracy': correct / len(test_queries)}
 ```
 
-## Advanced Techniques
+## 高级技巧
 
-### Meta-Learning (Learning to Select)
+### 元学习（学习选择）
 
-Train a small model to predict which examples will be most effective:
+训练一个小型模型来预测哪些示例最有效：
 
 ```python
 from sklearn.ensemble import RandomForestClassifier
@@ -321,7 +321,7 @@ class LearnedExampleSelector:
         self.selector_model = RandomForestClassifier()
 
     def train(self, training_data):
-        # training_data: list of (query, example, success) tuples
+        # training_data: (query, example, success) 元组列表
         features = []
         labels = []
 
@@ -349,9 +349,9 @@ class LearnedExampleSelector:
         return [ex for _, ex in sorted(scores, reverse=True)[:k]]
 ```
 
-### Adaptive Example Count
+### 自适应示例数量
 
-Dynamically adjust the number of examples based on task difficulty:
+根据任务难度动态调整示例数量：
 
 ```python
 class AdaptiveExampleSelector:
@@ -359,28 +359,28 @@ class AdaptiveExampleSelector:
         self.examples = examples
 
     def select(self, query, max_examples=5):
-        # Start with 1 example
+        # 从 1 个示例开始
         for k in range(1, max_examples + 1):
             selected = self.get_top_k(query, k)
 
-            # Quick confidence check (could use a lightweight model)
+            # 快速置信度检查（可以使用轻量级模型）
             if self.estimated_confidence(query, selected) > 0.9:
                 return selected
 
-        return selected  # Return max_examples if never confident enough
+        return selected  # 如果从未达到足够置信度，返回 max_examples
 ```
 
-## Common Mistakes
+## 常见错误
 
-1. **Too Many Examples**: More isn't always better; can dilute focus
-2. **Irrelevant Examples**: Examples should match the target task closely
-3. **Inconsistent Formatting**: Confuses the model about output format
-4. **Overfitting to Examples**: Model copies example patterns too literally
-5. **Ignoring Token Limits**: Running out of space for actual input/output
+1. **示例过多**：更多并不总是更好；可能会分散注意力
+2. **不相关示例**：示例应与目标任务紧密匹配
+3. **格式不一致**：使模型对输出格式感到困惑
+4. **过度拟合示例**：模型过于字面地复制示例模式
+5. **忽略 Token 限制**：实际输入/输出的空间不足
 
-## Resources
+## 资源
 
-- Example dataset repositories
-- Pre-built example selectors for common tasks
-- Evaluation frameworks for few-shot performance
-- Token counting utilities for different models
+- 示例数据集仓库
+- 常见任务的预构建示例选择器
+- 少样本性能评估框架
+- 不同模型的 token 计数工具

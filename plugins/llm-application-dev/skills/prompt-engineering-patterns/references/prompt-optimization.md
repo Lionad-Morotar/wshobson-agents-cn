@@ -1,8 +1,8 @@
-# Prompt Optimization Guide
+# 提示词优化指南
 
-## Systematic Refinement Process
+## 系统化优化流程
 
-### 1. Baseline Establishment
+### 1. 建立基线
 
 ```python
 def establish_baseline(prompt, test_cases):
@@ -21,15 +21,15 @@ def establish_baseline(prompt, test_cases):
         results['avg_latency'] += measure_latency(response)
         results['success_rate'] += is_valid_response(response)
 
-    # Average across test cases
+    # 计算测试用例的平均值
     n = len(test_cases)
     return {k: v/n for k, v in results.items()}
 ```
 
-### 2. Iterative Refinement Workflow
+### 2. 迭代优化工作流
 
 ```
-Initial Prompt → Test → Analyze Failures → Refine → Test → Repeat
+初始提示词 → 测试 → 分析失败 → 优化 → 测试 → 重复
 ```
 
 ```python
@@ -41,7 +41,7 @@ class PromptOptimizer:
 
     def optimize(self, max_iterations=10):
         for i in range(max_iterations):
-            # Test current prompt
+            # 测试当前提示词
             results = self.evaluate_prompt(self.prompt)
             self.history.append({
                 'iteration': i,
@@ -49,23 +49,23 @@ class PromptOptimizer:
                 'results': results
             })
 
-            # Stop if good enough
+            # 如果足够好则停止
             if results['accuracy'] > 0.95:
                 break
 
-            # Analyze failures
+            # 分析失败案例
             failures = self.analyze_failures(results)
 
-            # Generate refinement suggestions
+            # 生成优化建议
             refinements = self.generate_refinements(failures)
 
-            # Apply best refinement
+            # 应用最佳优化方案
             self.prompt = self.select_best_refinement(refinements)
 
         return self.get_best_prompt()
 ```
 
-### 3. A/B Testing Framework
+### 3. A/B 测试框架
 
 ```python
 class PromptABTest:
@@ -80,7 +80,7 @@ class PromptABTest:
         }
 
         for query in test_queries:
-            # Randomly assign variant (50/50 split)
+            # 随机分配变体（50/50 分配）
             variant = 'A' if random.random() < 0.5 else 'B'
             prompt = self.variant_a if variant == 'A' else self.variant_b
 
@@ -101,7 +101,7 @@ class PromptABTest:
             a_values = results['A'][metric]
             b_values = results['B'][metric]
 
-            # Statistical significance test
+            # 统计显著性检验
             t_stat, p_value = stats.ttest_ind(a_values, b_values)
 
             analysis[metric] = {
@@ -116,25 +116,25 @@ class PromptABTest:
         return analysis
 ```
 
-## Optimization Strategies
+## 优化策略
 
-### Token Reduction
+### Token 减少
 
 ```python
 def optimize_for_tokens(prompt):
     optimizations = [
-        # Remove redundant phrases
+        # 删除冗余短语
         ('in order to', 'to'),
         ('due to the fact that', 'because'),
         ('at this point in time', 'now'),
 
-        # Consolidate instructions
+        # 整合指令
         ('First, ...\\nThen, ...\\nFinally, ...', 'Steps: 1) ... 2) ... 3) ...'),
 
-        # Use abbreviations (after first definition)
+        # 使用缩写（首次定义后）
         ('Natural Language Processing (NLP)', 'NLP'),
 
-        # Remove filler words
+        # 删除填充词
         (' actually ', ' '),
         (' basically ', ' '),
         (' really ', ' ')
@@ -147,7 +147,7 @@ def optimize_for_tokens(prompt):
     return optimized
 ```
 
-### Latency Reduction
+### 延迟降低
 
 ```python
 def optimize_for_latency(prompt):
@@ -158,7 +158,7 @@ def optimize_for_latency(prompt):
         'early_stopping': add_stop_sequences(prompt)
     }
 
-    # Test each strategy
+    # 测试每种策略
     best_strategy = None
     best_latency = float('inf')
 
@@ -171,35 +171,35 @@ def optimize_for_latency(prompt):
     return best_strategy
 ```
 
-### Accuracy Improvement
+### 准确性提升
 
 ```python
 def improve_accuracy(prompt, failure_cases):
     improvements = []
 
-    # Add constraints for common failures
+    # 为常见失败添加约束
     if has_format_errors(failure_cases):
-        improvements.append("Output must be valid JSON with no additional text.")
+        improvements.append("输出必须是有效的 JSON，不包含额外文本。")
 
-    # Add examples for edge cases
+    # 为边缘情况添加示例
     edge_cases = identify_edge_cases(failure_cases)
     if edge_cases:
-        improvements.append(f"Examples of edge cases:\\n{format_examples(edge_cases)}")
+        improvements.append(f"边缘情况示例：\\n{format_examples(edge_cases)}")
 
-    # Add verification step
+    # 添加验证步骤
     if has_logical_errors(failure_cases):
-        improvements.append("Before responding, verify your answer is logically consistent.")
+        improvements.append("在回答之前，验证您的答案在逻辑上是一致的。")
 
-    # Strengthen instructions
+    # 加强指令
     if has_ambiguity_errors(failure_cases):
         improvements.append(clarify_ambiguous_instructions(prompt))
 
     return integrate_improvements(prompt, improvements)
 ```
 
-## Performance Metrics
+## 性能指标
 
-### Core Metrics
+### 核心指标
 
 ```python
 class PromptMetrics:
@@ -209,7 +209,7 @@ class PromptMetrics:
 
     @staticmethod
     def consistency(responses):
-        # Measure how often identical inputs produce identical outputs
+        # 测量相同输入产生相同输出的频率
         from collections import defaultdict
         input_responses = defaultdict(list)
 
@@ -219,7 +219,7 @@ class PromptMetrics:
         consistency_scores = []
         for inp, resps in input_responses.items():
             if len(resps) > 1:
-                # Percentage of responses that match the most common response
+                # 与最常见响应匹配的响应百分比
                 most_common_count = Counter(resps).most_common(1)[0][1]
                 consistency_scores.append(most_common_count / len(resps))
 
@@ -236,7 +236,7 @@ class PromptMetrics:
         return np.percentile(latencies, 95)
 ```
 
-### Automated Evaluation
+### 自动化评估
 
 ```python
 def evaluate_prompt_comprehensively(prompt, test_suite):
@@ -248,10 +248,10 @@ def evaluate_prompt_comprehensively(prompt, test_suite):
         'success_rate': []
     }
 
-    # Run each test case multiple times for consistency measurement
+    # 对每个测试用例运行多次以测量一致性
     for test_case in test_suite:
         runs = []
-        for _ in range(3):  # 3 runs per test case
+        for _ in range(3):  # 每个测试用例运行 3 次
             start = time.time()
             response = llm.complete(prompt.format(**test_case['input']))
             latency = time.time() - start
@@ -260,14 +260,14 @@ def evaluate_prompt_comprehensively(prompt, test_suite):
             results['latency'].append(latency)
             results['tokens'].append(count_tokens(prompt) + count_tokens(response))
 
-        # Accuracy (best of 3 runs)
+        # 准确性（3 次运行中的最佳值）
         accuracies = [evaluate_accuracy(r, test_case['expected']) for r in runs]
         results['accuracy'].append(max(accuracies))
 
-        # Consistency (how similar are the 3 runs?)
+        # 一致性（3 次运行有多相似？）
         results['consistency'].append(calculate_similarity(runs))
 
-        # Success rate (all runs successful?)
+        # 成功率（所有运行都成功了吗？）
         results['success_rate'].append(all(is_valid(r) for r in runs))
 
     return {
@@ -279,9 +279,9 @@ def evaluate_prompt_comprehensively(prompt, test_suite):
     }
 ```
 
-## Failure Analysis
+## 失败分析
 
-### Categorizing Failures
+### 失败分类
 
 ```python
 class FailureAnalyzer:
@@ -310,31 +310,31 @@ class FailureAnalyzer:
 
         if categorized_failures['format_errors']:
             fixes.append({
-                'issue': 'Format errors',
-                'fix': 'Add explicit format examples and constraints',
+                'issue': '格式错误',
+                'fix': '添加明确的格式示例和约束',
                 'priority': 'high'
             })
 
         if categorized_failures['hallucinations']:
             fixes.append({
-                'issue': 'Hallucinations',
-                'fix': 'Add grounding instruction: "Base your answer only on provided context"',
+                'issue': '幻觉',
+                'fix': '添加基础指令："仅基于提供的上下文回答"',
                 'priority': 'critical'
             })
 
         if categorized_failures['incomplete_responses']:
             fixes.append({
-                'issue': 'Incomplete responses',
-                'fix': 'Add: "Ensure your response fully addresses all parts of the question"',
+                'issue': '响应不完整',
+                'fix': '添加："确保您的响应完整地回答问题的所有部分"',
                 'priority': 'medium'
             })
 
         return fixes
 ```
 
-## Versioning and Rollback
+## 版本控制与回滚
 
-### Prompt Version Control
+### 提示词版本控制
 
 ```python
 class PromptVersionControl:
@@ -358,7 +358,7 @@ class PromptVersionControl:
     def rollback(self, version_id):
         if version_id < len(self.versions):
             return self.versions[version_id]['prompt']
-        raise ValueError(f"Version {version_id} not found")
+        raise ValueError(f"版本 {version_id} 未找到")
 
     def compare_versions(self, v1_id, v2_id):
         v1 = self.versions[v1_id]
@@ -369,7 +369,7 @@ class PromptVersionControl:
             'metrics_comparison': {
                 metric: {
                     'v1': v1['metrics'].get(metric),
-                    'v2': v2['metrics'].get(metric'),
+                    'v2': v2['metrics'].get(metric),
                     'change': v2['metrics'].get(metric, 0) - v1['metrics'].get(metric, 0)
                 }
                 for metric in set(v1['metrics'].keys()) | set(v2['metrics'].keys())
@@ -377,52 +377,52 @@ class PromptVersionControl:
         }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Establish Baseline**: Always measure initial performance
-2. **Change One Thing**: Isolate variables for clear attribution
-3. **Test Thoroughly**: Use diverse, representative test cases
-4. **Track Metrics**: Log all experiments and results
-5. **Validate Significance**: Use statistical tests for A/B comparisons
-6. **Document Changes**: Keep detailed notes on what and why
-7. **Version Everything**: Enable rollback to previous versions
-8. **Monitor Production**: Continuously evaluate deployed prompts
+1. **建立基线**：始终测量初始性能
+2. **一次改变一件事**：隔离变量以明确归因
+3. **充分测试**：使用多样化、有代表性的测试用例
+4. **跟踪指标**：记录所有实验和结果
+5. **验证显著性**：使用统计检验进行 A/B 比较
+6. **记录变更**：详细记录变更内容和原因
+7. **版本化一切**：启用回滚到以前版本的功能
+8. **监控生产环境**：持续评估已部署的提示词
 
-## Common Optimization Patterns
+## 常见优化模式
 
-### Pattern 1: Add Structure
-
-```
-Before: "Analyze this text"
-After: "Analyze this text for:\n1. Main topic\n2. Key arguments\n3. Conclusion"
-```
-
-### Pattern 2: Add Examples
+### 模式 1：添加结构
 
 ```
-Before: "Extract entities"
-After: "Extract entities\\n\\nExample:\\nText: Apple released iPhone\\nEntities: {company: Apple, product: iPhone}"
+优化前："分析这段文本"
+优化后："分析这段文本，找出：\n1. 主要主题\n2. 关键论点\n3. 结论"
 ```
 
-### Pattern 3: Add Constraints
+### 模式 2：添加示例
 
 ```
-Before: "Summarize this"
-After: "Summarize in exactly 3 bullet points, 15 words each"
+优化前："提取实体"
+优化后："提取实体\n\n示例：\n文本：Apple 发布了 iPhone\n实体：{company: Apple, product: iPhone}"
 ```
 
-### Pattern 4: Add Verification
+### 模式 3：添加约束
 
 ```
-Before: "Calculate..."
-After: "Calculate... Then verify your calculation is correct before responding."
+优化前："总结这段内容"
+优化后："用确切的 3 个要点总结，每个要点 15 个字"
 ```
 
-## Tools and Utilities
+### 模式 4：添加验证
 
-- Prompt diff tools for version comparison
-- Automated test runners
-- Metric dashboards
-- A/B testing frameworks
-- Token counting utilities
-- Latency profilers
+```
+优化前："计算..."
+优化后："计算...然后在回答之前验证您的计算是否正确。"
+```
+
+## 工具与实用程序
+
+- 用于版本比较的提示词差异工具
+- 自动化测试运行器
+- 指标仪表板
+- A/B 测试框架
+- Token 计数实用程序
+- 延迟分析器

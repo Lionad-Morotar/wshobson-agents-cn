@@ -1,45 +1,45 @@
 ---
 name: prometheus-configuration
-description: Set up Prometheus for comprehensive metric collection, storage, and monitoring of infrastructure and applications. Use when implementing metrics collection, setting up monitoring infrastructure, or configuring alerting systems.
+description: 设置 Prometheus 以实现基础设施和应用程序的全面指标采集、存储和监控。在实施指标采集、设置监控基础设施或配置告警系统时使用。
 ---
 
-# Prometheus Configuration
+# Prometheus 配置
 
-Complete guide to Prometheus setup, metric collection, scrape configuration, and recording rules.
+Prometheus 设置、指标采集、抓取配置和记录规则的完整指南。
 
-## Purpose
+## 目的
 
-Configure Prometheus for comprehensive metric collection, alerting, and monitoring of infrastructure and applications.
+配置 Prometheus 以实现对基础设施和应用程序的全面指标采集、告警和监控。
 
-## When to Use
+## 何时使用
 
-- Set up Prometheus monitoring
-- Configure metric scraping
-- Create recording rules
-- Design alert rules
-- Implement service discovery
+- 设置 Prometheus 监控
+- 配置指标抓取
+- 创建记录规则
+- 设计告警规则
+- 实现服务发现
 
-## Prometheus Architecture
+## Prometheus 架构
 
 ```
 ┌──────────────┐
-│ Applications │ ← Instrumented with client libraries
+│ 应用程序     │ ← 使用客户端库进行埋点
 └──────┬───────┘
-       │ /metrics endpoint
+       │ /metrics 端点
        ↓
 ┌──────────────┐
-│  Prometheus  │ ← Scrapes metrics periodically
-│    Server    │
+│  Prometheus  │ ← 定期抓取指标
+│    服务器    │
 └──────┬───────┘
        │
-       ├─→ AlertManager (alerts)
-       ├─→ Grafana (visualization)
-       └─→ Long-term storage (Thanos/Cortex)
+       ├─→ AlertManager (告警)
+       ├─→ Grafana (可视化)
+       └─→ 长期存储 (Thanos/Cortex)
 ```
 
-## Installation
+## 安装
 
-### Kubernetes with Helm
+### 使用 Helm 在 Kubernetes 上安装
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -52,7 +52,7 @@ helm install prometheus prometheus-community/kube-prometheus-stack \
   --set prometheus.prometheusSpec.storageVolumeSize=50Gi
 ```
 
-### Docker Compose
+### 使用 Docker Compose
 
 ```yaml
 version: "3.8"
@@ -73,7 +73,7 @@ volumes:
   prometheus-data:
 ```
 
-## Configuration File
+## 配置文件
 
 **prometheus.yml:**
 
@@ -85,20 +85,20 @@ global:
     cluster: "production"
     region: "us-west-2"
 
-# Alertmanager configuration
+# Alertmanager 配置
 alerting:
   alertmanagers:
     - static_configs:
         - targets:
             - alertmanager:9093
 
-# Load rules files
+# 加载规则文件
 rule_files:
   - /etc/prometheus/rules/*.yml
 
-# Scrape configurations
+# 抓取配置
 scrape_configs:
-  # Prometheus itself
+  # Prometheus 自身
   - job_name: "prometheus"
     static_configs:
       - targets: ["localhost:9090"]
@@ -116,7 +116,7 @@ scrape_configs:
         regex: "([^:]+)(:[0-9]+)?"
         replacement: "${1}"
 
-  # Kubernetes pods with annotations
+  # 带注解的 Kubernetes Pods
   - job_name: "kubernetes-pods"
     kubernetes_sd_configs:
       - role: pod
@@ -141,7 +141,7 @@ scrape_configs:
         action: replace
         target_label: pod
 
-  # Application metrics
+  # 应用程序指标
   - job_name: "my-app"
     static_configs:
       - targets:
@@ -155,11 +155,11 @@ scrape_configs:
       key_file: /etc/prometheus/client.key
 ```
 
-**Reference:** See `assets/prometheus.yml.template`
+**参考：** 参见 `assets/prometheus.yml.template`
 
-## Scrape Configurations
+## 抓取配置
 
-### Static Targets
+### 静态目标
 
 ```yaml
 scrape_configs:
@@ -171,7 +171,7 @@ scrape_configs:
           region: "us-west-2"
 ```
 
-### File-based Service Discovery
+### 基于文件的服务发现
 
 ```yaml
 scrape_configs:
@@ -197,7 +197,7 @@ scrape_configs:
 ]
 ```
 
-### Kubernetes Service Discovery
+### Kubernetes 服务发现
 
 ```yaml
 scrape_configs:
@@ -220,11 +220,11 @@ scrape_configs:
         regex: (.+)
 ```
 
-**Reference:** See `references/scrape-configs.md`
+**参考：** 参见 `references/scrape-configs.md`
 
-## Recording Rules
+## 记录规则
 
-Create pre-computed metrics for frequently queried expressions:
+为频繁查询的表达式创建预计算指标：
 
 ```yaml
 # /etc/prometheus/rules/recording_rules.yml
@@ -232,11 +232,11 @@ groups:
   - name: api_metrics
     interval: 15s
     rules:
-      # HTTP request rate per service
+      # 每个服务的 HTTP 请求速率
       - record: job:http_requests:rate5m
         expr: sum by (job) (rate(http_requests_total[5m]))
 
-      # Error rate percentage
+      # 错误率百分比
       - record: job:http_requests_errors:rate5m
         expr: sum by (job) (rate(http_requests_total{status=~"5.."}[5m]))
 
@@ -244,7 +244,7 @@ groups:
         expr: |
           (job:http_requests_errors:rate5m / job:http_requests:rate5m) * 100
 
-      # P95 latency
+      # P95 延迟
       - record: job:http_request_duration:p95
         expr: |
           histogram_quantile(0.95,
@@ -254,25 +254,25 @@ groups:
   - name: resource_metrics
     interval: 30s
     rules:
-      # CPU utilization percentage
+      # CPU 利用率百分比
       - record: instance:node_cpu:utilization
         expr: |
           100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
 
-      # Memory utilization percentage
+      # 内存利用率百分比
       - record: instance:node_memory:utilization
         expr: |
           100 - ((node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) * 100)
 
-      # Disk usage percentage
+      # 磁盘使用率百分比
       - record: instance:node_disk:utilization
         expr: |
           100 - ((node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100)
 ```
 
-**Reference:** See `references/recording-rules.md`
+**参考：** 参见 `references/recording-rules.md`
 
-## Alert Rules
+## 告警规则
 
 ```yaml
 # /etc/prometheus/rules/alert_rules.yml
@@ -286,8 +286,8 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Service {{ $labels.instance }} is down"
-          description: "{{ $labels.job }} has been down for more than 1 minute"
+          summary: "服务 {{ $labels.instance }} 已宕机"
+          description: "{{ $labels.job }} 已宕机超过 1 分钟"
 
       - alert: HighErrorRate
         expr: job:http_requests_error_rate:percentage > 5
@@ -295,8 +295,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "High error rate for {{ $labels.job }}"
-          description: "Error rate is {{ $value }}% (threshold: 5%)"
+          summary: "{{ $labels.job }} 错误率过高"
+          description: "错误率为 {{ $value }}%（阈值：5%）"
 
       - alert: HighLatency
         expr: job:http_request_duration:p95 > 1
@@ -304,8 +304,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "High latency for {{ $labels.job }}"
-          description: "P95 latency is {{ $value }}s (threshold: 1s)"
+          summary: "{{ $labels.job }} 延迟过高"
+          description: "P95 延迟为 {{ $value }}s（阈值：1s）"
 
   - name: resources
     interval: 1m
@@ -316,8 +316,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "High CPU usage on {{ $labels.instance }}"
-          description: "CPU usage is {{ $value }}%"
+          summary: "{{ $labels.instance }} CPU 使用率过高"
+          description: "CPU 使用率为 {{ $value }}%"
 
       - alert: HighMemoryUsage
         expr: instance:node_memory:utilization > 85
@@ -325,8 +325,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "High memory usage on {{ $labels.instance }}"
-          description: "Memory usage is {{ $value }}%"
+          summary: "{{ $labels.instance }} 内存使用率过高"
+          description: "内存使用率为 {{ $value }}%"
 
       - alert: DiskSpaceLow
         expr: instance:node_disk:utilization > 90
@@ -334,67 +334,67 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Low disk space on {{ $labels.instance }}"
-          description: "Disk usage is {{ $value }}%"
+          summary: "{{ $labels.instance }} 磁盘空间不足"
+          description: "磁盘使用率为 {{ $value }}%"
 ```
 
-## Validation
+## 验证
 
 ```bash
-# Validate configuration
+# 验证配置
 promtool check config prometheus.yml
 
-# Validate rules
+# 验证规则
 promtool check rules /etc/prometheus/rules/*.yml
 
-# Test query
+# 测试查询
 promtool query instant http://localhost:9090 'up'
 ```
 
-**Reference:** See `scripts/validate-prometheus.sh`
+**参考：** 参见 `scripts/validate-prometheus.sh`
 
-## Best Practices
+## 最佳实践
 
-1. **Use consistent naming** for metrics (prefix_name_unit)
-2. **Set appropriate scrape intervals** (15-60s typical)
-3. **Use recording rules** for expensive queries
-4. **Implement high availability** (multiple Prometheus instances)
-5. **Configure retention** based on storage capacity
-6. **Use relabeling** for metric cleanup
-7. **Monitor Prometheus itself**
-8. **Implement federation** for large deployments
-9. **Use Thanos/Cortex** for long-term storage
-10. **Document custom metrics**
+1. **使用一致的命名**规范（前缀_名称_单位）
+2. **设置适当的抓取间隔**（通常 15-60 秒）
+3. **对昂贵的查询使用记录规则**
+4. **实现高可用性**（多个 Prometheus 实例）
+5. **根据存储容量配置保留时间**
+6. **使用重标签**进行指标清理
+7. **监控 Prometheus 自身**
+8. **实现联邦**用于大规模部署
+9. **使用 Thanos/Cortex**进行长期存储
+10. **记录自定义指标**文档
 
-## Troubleshooting
+## 故障排查
 
-**Check scrape targets:**
+**检查抓取目标：**
 
 ```bash
 curl http://localhost:9090/api/v1/targets
 ```
 
-**Check configuration:**
+**检查配置：**
 
 ```bash
 curl http://localhost:9090/api/v1/status/config
 ```
 
-**Test query:**
+**测试查询：**
 
 ```bash
 curl 'http://localhost:9090/api/v1/query?query=up'
 ```
 
-## Reference Files
+## 参考文件
 
-- `assets/prometheus.yml.template` - Complete configuration template
-- `references/scrape-configs.md` - Scrape configuration patterns
-- `references/recording-rules.md` - Recording rule examples
-- `scripts/validate-prometheus.sh` - Validation script
+- `assets/prometheus.yml.template` - 完整配置模板
+- `references/scrape-configs.md` - 抓取配置模式
+- `references/recording-rules.md` - 记录规则示例
+- `scripts/validate-prometheus.sh` - 验证脚本
 
-## Related Skills
+## 相关技能
 
-- `grafana-dashboards` - For visualization
-- `slo-implementation` - For SLO monitoring
-- `distributed-tracing` - For request tracing
+- `grafana-dashboards` - 用于可视化
+- `slo-implementation` - 用于 SLO 监控
+- `distributed-tracing` - 用于请求追踪

@@ -1,50 +1,50 @@
-# Prompt Template Library
+# 提示模板库
 
-## Classification Templates
+## 分类模板
 
-### Sentiment Analysis
-
-```
-Classify the sentiment of the following text as Positive, Negative, or Neutral.
-
-Text: {text}
-
-Sentiment:
-```
-
-### Intent Detection
+### 情感分析
 
 ```
-Determine the user's intent from the following message.
+将以下文本的情感分类为 Positive（积极）、Negative（消极）或 Neutral（中性）。
 
-Possible intents: {intent_list}
+文本：{text}
 
-Message: {message}
-
-Intent:
+情感：
 ```
 
-### Topic Classification
+### 意图识别
 
 ```
-Classify the following article into one of these categories: {categories}
+从以下消息中确定用户的意图。
 
-Article:
+可能的意图：{intent_list}
+
+消息：{message}
+
+意图：
+```
+
+### 主题分类
+
+```
+将以下文章归类到以下类别之一：{categories}
+
+文章：
 {article}
 
-Category:
+类别：
 ```
 
-## Extraction Templates
+## 提取模板
 
-### Named Entity Recognition
+### 命名实体识别
 
 ```
-Extract all named entities from the text and categorize them.
+从文本中提取所有命名实体并进行分类。
 
-Text: {text}
+文本：{text}
 
-Entities (JSON format):
+实体（JSON 格式）：
 {
   "persons": [],
   "organizations": [],
@@ -53,15 +53,15 @@ Entities (JSON format):
 }
 ```
 
-### Structured Data Extraction
+### 结构化数据提取
 
 ```
-Extract structured information from the job posting.
+从招聘信息中提取结构化信息。
 
-Job Posting:
+招聘信息：
 {posting}
 
-Extracted Information (JSON):
+提取的信息（JSON）：
 {
   "title": "",
   "company": "",
@@ -72,193 +72,193 @@ Extracted Information (JSON):
 }
 ```
 
-## Generation Templates
+## 生成模板
 
-### Email Generation
+### 邮件生成
 
 ```
-Write a professional {email_type} email.
+写一封专业的 {email_type} 邮件。
 
-To: {recipient}
-Context: {context}
-Key points to include:
+收件人：{recipient}
+上下文：{context}
+需包含的关键点：
 {key_points}
 
-Email:
-Subject:
-Body:
+邮件：
+主题：
+正文：
 ```
 
-### Code Generation
+### 代码生成
 
 ```
-Generate {language} code for the following task:
+为以下任务生成 {language} 代码：
 
-Task: {task_description}
+任务：{task_description}
 
-Requirements:
+要求：
 {requirements}
 
-Include:
-- Error handling
-- Input validation
-- Inline comments
+需包含：
+- 错误处理
+- 输入验证
+- 内联注释
 
-Code:
+代码：
 ```
 
-### Creative Writing
+### 创意写作
 
 ```
-Write a {length}-word {style} story about {topic}.
+写一篇 {length} 词的 {style} 风格故事，主题为 {topic}。
 
-Include these elements:
+需包含以下元素：
 - {element_1}
 - {element_2}
 - {element_3}
 
-Story:
+故事：
 ```
 
-## Transformation Templates
+## 转换模板
 
-### Summarization
+### 摘要
 
 ```
-Summarize the following text in {num_sentences} sentences.
+用 {num_sentences} 句话总结以下文本。
 
-Text:
+文本：
 {text}
 
-Summary:
+摘要：
 ```
 
-### Translation with Context
+### 上下文翻译
 
 ```
-Translate the following {source_lang} text to {target_lang}.
+将以下 {source_lang} 文本翻译为 {target_lang}。
 
-Context: {context}
-Tone: {tone}
+上下文：{context}
+语气：{tone}
 
-Text: {text}
+文本：{text}
 
-Translation:
+译文：
 ```
 
-### Format Conversion
+### 格式转换
 
 ```
-Convert the following {source_format} to {target_format}.
+将以下 {source_format} 转换为 {target_format}。
 
-Input:
+输入：
 {input_data}
 
-Output ({target_format}):
+输出（{target_format}）：
 ```
 
-## Analysis Templates
+## 分析模板
 
-### Code Review
+### 代码审查
 
 ```
-Review the following code for:
-1. Bugs and errors
-2. Performance issues
-3. Security vulnerabilities
-4. Best practice violations
+审查以下代码的：
+1. Bug 和错误
+2. 性能问题
+3. 安全漏洞
+4. 最佳实践违规
 
-Code:
+代码：
 {code}
 
-Review:
+审查意见：
 ```
 
-### SWOT Analysis
+### SWOT 分析
 
 ```
-Conduct a SWOT analysis for: {subject}
+对以下主题进行 SWOT 分析：{subject}
 
-Context: {context}
+上下文：{context}
 
-Analysis:
-Strengths:
+分析：
+优势（Strengths）：
 -
 
-Weaknesses:
+劣势（Weaknesses）：
 -
 
-Opportunities:
+机会（Opportunities）：
 -
 
-Threats:
+威胁（Threats）：
 -
 ```
 
-## Question Answering Templates
+## 问答模板
 
-### RAG Template
+### RAG 模板
 
 ```
-Answer the question based on the provided context. If the context doesn't contain enough information, say so.
+根据提供的上下文回答问题。如果上下文信息不足，请说明。
 
-Context:
+上下文：
 {context}
 
-Question: {question}
+问题：{question}
 
-Answer:
+答案：
 ```
 
-### Multi-Turn Q&A
+### 多轮问答
 
 ```
-Previous conversation:
+之前的对话：
 {conversation_history}
 
-New question: {question}
+新问题：{question}
 
-Answer (continue naturally from conversation):
+答案（从对话自然延续）：
 ```
 
-## Specialized Templates
+## 专用模板
 
-### SQL Query Generation
+### SQL 查询生成
 
 ```
-Generate a SQL query for the following request.
+为以下请求生成 SQL 查询。
 
-Database schema:
+数据库架构：
 {schema}
 
-Request: {request}
+请求：{request}
 
-SQL Query:
+SQL 查询：
 ```
 
-### Regex Pattern Creation
+### 正则表达式创建
 
 ```
-Create a regex pattern to match: {requirement}
+创建一个正则表达式模式以匹配：{requirement}
 
-Test cases that should match:
+应该匹配的测试用例：
 {positive_examples}
 
-Test cases that should NOT match:
+不应匹配的测试用例：
 {negative_examples}
 
-Regex pattern:
+正则表达式模式：
 ```
 
-### API Documentation
+### API 文档
 
 ```
-Generate API documentation for this function:
+为此函数生成 API 文档：
 
-Code:
+代码：
 {function_code}
 
-Documentation (follow {doc_format} format):
+文档（遵循 {doc_format} 格式）：
 ```
 
-## Use these templates by filling in the {variables}
+## 通过填写 {variables} 来使用这些模板

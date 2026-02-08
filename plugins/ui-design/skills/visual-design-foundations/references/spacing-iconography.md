@@ -1,17 +1,17 @@
-# Spacing and Iconography Reference
+# 间距和图标参考
 
-## Spacing Systems
+## 间距系统
 
-### 8-Point Grid System
+### 8点网格系统
 
-The 8-point grid is the industry standard for consistent spacing.
+8点网格是一致间距的行业标准。
 
 ```css
 :root {
-  /* Base spacing unit */
+  /* 基础间距单位 */
   --space-unit: 0.25rem; /* 4px */
 
-  /* Spacing scale */
+  /* 间距比例 */
   --space-0: 0;
   --space-px: 1px;
   --space-0-5: calc(var(--space-unit) * 0.5); /* 2px */
@@ -39,32 +39,32 @@ The 8-point grid is the industry standard for consistent spacing.
 }
 ```
 
-### Semantic Spacing Tokens
+### 语义化间距令牌
 
 ```css
 :root {
-  /* Component-level spacing */
-  --spacing-xs: var(--space-1); /* 4px - tight spacing */
-  --spacing-sm: var(--space-2); /* 8px - compact spacing */
-  --spacing-md: var(--space-4); /* 16px - default spacing */
-  --spacing-lg: var(--space-6); /* 24px - comfortable spacing */
-  --spacing-xl: var(--space-8); /* 32px - loose spacing */
-  --spacing-2xl: var(--space-12); /* 48px - generous spacing */
-  --spacing-3xl: var(--space-16); /* 64px - section spacing */
+  /* 组件级间距 */
+  --spacing-xs: var(--space-1); /* 4px - 紧凑间距 */
+  --spacing-sm: var(--space-2); /* 8px - 小间距 */
+  --spacing-md: var(--space-4); /* 16px - 默认间距 */
+  --spacing-lg: var(--space-6); /* 24px - 舒适间距 */
+  --spacing-xl: var(--space-8); /* 32px - 宽松间距 */
+  --spacing-2xl: var(--space-12); /* 48px - 大间距 */
+  --spacing-3xl: var(--space-16); /* 64px - 区块间距 */
 
-  /* Specific use cases */
-  --spacing-inline: var(--space-2); /* Between inline elements */
-  --spacing-stack: var(--space-4); /* Between stacked elements */
-  --spacing-inset: var(--space-4); /* Padding inside containers */
-  --spacing-section: var(--space-16); /* Between major sections */
-  --spacing-page: var(--space-24); /* Page margins */
+  /* 特定用例 */
+  --spacing-inline: var(--space-2); /* 内联元素之间 */
+  --spacing-stack: var(--space-4); /* 堆叠元素之间 */
+  --spacing-inset: var(--space-4); /* 容器内边距 */
+  --spacing-section: var(--space-16); /* 主要区块之间 */
+  --spacing-page: var(--space-24); /* 页面边距 */
 }
 ```
 
-### Spacing Utility Functions
+### 间距工具函数
 
 ```tsx
-// Tailwind-like spacing scale generator
+// 类似 Tailwind 的间距比例生成器
 function createSpacingScale(baseUnit: number = 4): Record<string, string> {
   const scale: Record<string, string> = {
     "0": "0",
@@ -85,12 +85,12 @@ function createSpacingScale(baseUnit: number = 4): Record<string, string> {
 }
 ```
 
-## Layout Spacing Patterns
+## 布局间距模式
 
-### Container Queries for Spacing
+### 容器查询间距
 
 ```css
-/* Responsive spacing based on container size */
+/* 基于容器大小的响应式间距 */
 .card {
   container-type: inline-size;
   padding: var(--space-4);
@@ -109,16 +109,16 @@ function createSpacingScale(baseUnit: number = 4): Record<string, string> {
 }
 ```
 
-### Negative Space Patterns
+### 负空间模式
 
 ```css
-/* Asymmetric spacing for visual hierarchy */
+/* 用于视觉层次的非对称间距 */
 .hero-section {
   padding-top: var(--space-24);
   padding-bottom: var(--space-16);
 }
 
-/* Content breathing room */
+/* 内容呼吸空间 */
 .prose > * + * {
   margin-top: var(--space-4);
 }
@@ -132,27 +132,27 @@ function createSpacingScale(baseUnit: number = 4): Record<string, string> {
 }
 ```
 
-## Icon Systems
+## 图标系统
 
-### Icon Size Scale
+### 图标尺寸比例
 
 ```css
 :root {
-  /* Icon sizes aligned to spacing grid */
-  --icon-xs: 12px; /* Inline decorators */
-  --icon-sm: 16px; /* Small UI elements */
-  --icon-md: 20px; /* Default size */
-  --icon-lg: 24px; /* Emphasis */
-  --icon-xl: 32px; /* Large displays */
-  --icon-2xl: 48px; /* Hero icons */
+  /* 与间距网格对齐的图标尺寸 */
+  --icon-xs: 12px; /* 内联装饰 */
+  --icon-sm: 16px; /* 小 UI 元素 */
+  --icon-md: 20px; /* 默认尺寸 */
+  --icon-lg: 24px; /* 强调 */
+  --icon-xl: 32px; /* 大型显示 */
+  --icon-2xl: 48px; /* 英雄图标 */
 
-  /* Touch target sizes */
-  --touch-target-min: 44px; /* WCAG minimum */
+  /* 触摸目标尺寸 */
+  --touch-target-min: 44px; /* WCAG 最小值 */
   --touch-target-comfortable: 48px;
 }
 ```
 
-### SVG Icon Component
+### SVG 图标组件
 
 ```tsx
 import { forwardRef, type SVGProps } from "react";
@@ -196,7 +196,7 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(
 Icon.displayName = "Icon";
 ```
 
-### Icon Button Patterns
+### 图标按钮模式
 
 ```tsx
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -207,9 +207,9 @@ interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 }
 
 const sizeClasses = {
-  sm: "p-1.5" /* 32px total with 16px icon */,
-  md: "p-2" /* 40px total with 20px icon */,
-  lg: "p-2.5" /* 48px total with 24px icon */,
+  sm: "p-1.5" /* 32px 总计，16px 图标 */,
+  md: "p-2" /* 40px 总计，20px 图标 */,
+  lg: "p-2.5" /* 48px 总计，24px 图标 */,
 };
 
 const iconSizes = {
@@ -246,10 +246,10 @@ export function IconButton({
 }
 ```
 
-### Icon Sprite Generation
+### 图标精灵生成
 
 ```tsx
-// Build script for SVG sprite
+// SVG 精灵构建脚本
 import { readdir, readFile, writeFile } from "fs/promises";
 import { optimize } from "svgo";
 
@@ -262,7 +262,7 @@ async function buildIconSprite(iconDir: string, outputPath: string) {
       const content = await readFile(`${iconDir}/${file}`, "utf-8");
       const name = file.replace(".svg", "");
 
-      // Optimize SVG
+      // 优化 SVG
       const result = optimize(content, {
         plugins: [
           "removeDoctype",
@@ -294,7 +294,7 @@ async function buildIconSprite(iconDir: string, outputPath: string) {
         ],
       });
 
-      // Extract viewBox and content
+      // 提取 viewBox 和内容
       const viewBoxMatch = result.data.match(/viewBox="([^"]+)"/);
       const viewBox = viewBoxMatch ? viewBoxMatch[1] : "0 0 24 24";
       const innerContent = result.data
@@ -312,7 +312,7 @@ async function buildIconSprite(iconDir: string, outputPath: string) {
 }
 ```
 
-### Icon Libraries Integration
+### 图标库集成
 
 ```tsx
 // Lucide React
@@ -342,13 +342,13 @@ function ToggleIcon({ active }: { active: boolean }) {
 import { HomeIcon, GearIcon } from "@radix-ui/react-icons";
 ```
 
-## Sizing Systems
+## 尺寸系统
 
-### Element Sizing Scale
+### 元素尺寸比例
 
 ```css
 :root {
-  /* Fixed sizes */
+  /* 固定尺寸 */
   --size-4: 1rem; /* 16px */
   --size-5: 1.25rem; /* 20px */
   --size-6: 1.5rem; /* 24px */
@@ -361,12 +361,12 @@ import { HomeIcon, GearIcon } from "@radix-ui/react-icons";
   --size-24: 6rem; /* 96px */
   --size-32: 8rem; /* 128px */
 
-  /* Component heights */
+  /* 组件高度 */
   --height-input-sm: var(--size-8); /* 32px */
   --height-input-md: var(--size-10); /* 40px */
   --height-input-lg: var(--size-12); /* 48px */
 
-  /* Avatar sizes */
+  /* 头像尺寸 */
   --avatar-xs: var(--size-6); /* 24px */
   --avatar-sm: var(--size-8); /* 32px */
   --avatar-md: var(--size-10); /* 40px */
@@ -376,11 +376,11 @@ import { HomeIcon, GearIcon } from "@radix-ui/react-icons";
 }
 ```
 
-### Aspect Ratios
+### 宽高比
 
 ```css
 .aspect-ratios {
-  /* Standard ratios */
+  /* 标准比例 */
   --aspect-square: 1 / 1;
   --aspect-video: 16 / 9;
   --aspect-photo: 4 / 3;
@@ -389,7 +389,7 @@ import { HomeIcon, GearIcon } from "@radix-ui/react-icons";
   --aspect-golden: 1.618 / 1;
 }
 
-/* Usage */
+/* 使用示例 */
 .thumbnail {
   aspect-ratio: var(--aspect-video);
   object-fit: cover;
@@ -401,7 +401,7 @@ import { HomeIcon, GearIcon } from "@radix-ui/react-icons";
 }
 ```
 
-### Border Radius Scale
+### 圆角比例
 
 ```css
 :root {
@@ -415,7 +415,7 @@ import { HomeIcon, GearIcon } from "@radix-ui/react-icons";
   --radius-3xl: 1.5rem; /* 24px */
   --radius-full: 9999px;
 
-  /* Component-specific */
+  /* 组件特定 */
   --radius-button: var(--radius-md);
   --radius-input: var(--radius-md);
   --radius-card: var(--radius-lg);

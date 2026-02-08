@@ -1,109 +1,109 @@
 ---
-description: "Review existing UI for issues and improvements"
-argument-hint: "[file-path|component-name]"
+description: "审查现有 UI 以发现问题和改进点"
+argument-hint: "[文件路径|组件名称]"
 ---
 
-# Design Review
+# 设计审查
 
-Review existing UI code for design issues, usability problems, and improvement opportunities. Provides actionable recommendations.
+审查现有 UI 代码的设计问题、可用性问题和改进机会。提供可操作的建议。
 
-## Pre-flight Checks
+## 前置检查
 
-1. Check if `.ui-design/` directory exists:
-   - If not: Create `.ui-design/` directory
-   - Create `.ui-design/reviews/` subdirectory for storing review results
+1. 检查 `.ui-design/` 目录是否存在：
+   - 如果不存在：创建 `.ui-design/` 目录
+   - 创建 `.ui-design/reviews/` 子目录用于存储审查结果
 
-2. Load project context if available:
-   - Check for `conductor/product.md` for product context
-   - Check for `conductor/tech-stack.md` for framework info
-   - Check for `.ui-design/design-system.json` for design tokens
+2. 加载项目上下文（如果可用）：
+   - 检查 `conductor/product.md` 获取产品上下文
+   - 检查 `conductor/tech-stack.md` 获取框架信息
+   - 检查 `.ui-design/design-system.json` 获取设计令牌（design tokens）
 
-## Target Identification
+## 目标识别
 
-### If argument provided:
+### 如果提供了参数：
 
-- If file path: Validate file exists, read the file
-- If component name: Search codebase for matching component files
-- If not found: Display error with suggestions
+- 如果是文件路径：验证文件存在，读取文件
+- 如果是组件名称：在代码库中搜索匹配的组件文件
+- 如果未找到：显示错误并提供建议
 
-### If no argument:
+### 如果没有提供参数：
 
-Ask user to specify target:
-
-```
-What would you like me to review?
-
-1. A specific component (provide name or path)
-2. A page/route (provide path)
-3. The entire UI directory
-4. Recent changes (last commit)
-
-Enter number or provide a file path:
-```
-
-## Interactive Review Configuration
-
-**CRITICAL RULES:**
-
-- Ask ONE question per turn
-- Wait for user response before proceeding
-- Gather context to provide relevant feedback
-
-### Q1: Review Focus
+询问用户指定目标：
 
 ```
-What aspects should I focus on?
+您希望我审查什么？
 
-1. Visual design (spacing, alignment, typography, colors)
-2. Usability (interaction patterns, accessibility basics)
-3. Code quality (patterns, maintainability, reusability)
-4. Performance (render optimization, bundle size)
-5. Comprehensive (all of the above)
+1. 特定组件（提供名称或路径）
+2. 页面/路由（提供路径）
+3. 整个 UI 目录
+4. 最近的更改（最后一次提交）
 
-Enter number:
+输入数字或提供文件路径：
 ```
 
-### Q2: Design Context (if visual/usability selected)
+## 交互式审查配置
+
+**关键规则：**
+
+- 每次只问一个问题
+- 等待用户响应后再继续
+- 收集上下文以提供相关反馈
+
+### Q1：审查重点
 
 ```
-What is this UI's primary purpose?
+我应该重点关注哪些方面？
 
-1. Data display (dashboards, tables, reports)
-2. Data entry (forms, wizards, editors)
-3. Navigation (menus, sidebars, breadcrumbs)
-4. Content consumption (articles, media, feeds)
-5. E-commerce (product display, checkout)
-6. Other (describe)
+1. 视觉设计（间距、对齐、排版、颜色）
+2. 可用性（交互模式、无障碍基础）
+3. 代码质量（模式、可维护性、可复用性）
+4. 性能（渲染优化、打包大小）
+5. 全面审查（以上所有）
 
-Enter number or description:
+输入数字：
 ```
 
-### Q3: Target Platform
+### Q2：设计上下文（如果选择了视觉/可用性）
 
 ```
-What platform(s) should I consider?
+这个 UI 的主要用途是什么？
 
-1. Desktop only
-2. Mobile only
-3. Responsive (desktop + mobile)
-4. All platforms (desktop, tablet, mobile)
+1. 数据展示（仪表板、表格、报告）
+2. 数据录入（表单、向导、编辑器）
+3. 导航（菜单、侧边栏、面包屑）
+4. 内容消费（文章、媒体、信息流）
+5. 电子商务（产品展示、结账）
+6. 其他（请描述）
 
-Enter number:
+输入数字或描述：
 ```
 
-## State Management
+### Q3：目标平台
 
-Create/update `.ui-design/reviews/review_state.json`:
+```
+我应该考虑哪些平台？
+
+1. 仅桌面端
+2. 仅移动端
+3. 响应式（桌面端 + 移动端）
+4. 所有平台（桌面端、平板、移动端）
+
+输入数字：
+```
+
+## 状态管理
+
+创建/更新 `.ui-design/reviews/review_state.json`：
 
 ```json
 {
-  "review_id": "{target}_{YYYYMMDD_HHMMSS}",
-  "target": "{file_path_or_component}",
+  "review_id": "{目标}_{YYYYMMDD_HHMMSS}",
+  "target": "{文件路径或组件}",
   "focus_areas": ["visual", "usability", "code", "performance"],
-  "context": "{purpose}",
-  "platform": "{platform}",
+  "context": "{用途}",
+  "platform": "{平台}",
   "status": "in_progress",
-  "started_at": "ISO_TIMESTAMP",
+  "started_at": "ISO时间戳",
   "issues_found": 0,
   "severity_counts": {
     "critical": 0,
@@ -114,262 +114,261 @@ Create/update `.ui-design/reviews/review_state.json`:
 }
 ```
 
-## Review Execution
+## 审查执行
 
-### 1. Code Analysis
+### 1. 代码分析
 
-Read and analyze the target files:
+读取并分析目标文件：
 
-- Parse component structure
-- Identify styling approach (CSS, Tailwind, styled-components, etc.)
-- Detect framework (React, Vue, Svelte, etc.)
-- Note component composition patterns
+- 解析组件结构
+- 识别样式方法（CSS、Tailwind、styled-components 等）
+- 检测框架（React、Vue、Svelte 等）
+- 记录组件组合模式
 
-### 2. Visual Design Review
+### 2. 视觉设计审查
 
-Check for:
+检查：
 
-**Spacing & Layout:**
+**间距与布局：**
 
-- Inconsistent margins/padding
-- Misaligned elements
-- Unbalanced whitespace
-- Magic numbers vs. design tokens
+- 不一致的边距/内边距
+- 未对齐的元素
+- 不平衡的空白
+- 魔法数字 vs 设计令牌
 
-**Typography:**
+**排版：**
 
-- Font size consistency
-- Line height appropriateness
-- Text contrast ratios
-- Font weight usage
+- 字体大小一致性
+- 行高适当性
+- 文本对比度比例
+- 字重使用
 
-**Colors:**
+**颜色：**
 
-- Color contrast accessibility
-- Consistent color usage
-- Semantic color application
-- Dark mode support (if applicable)
+- 颜色对比度无障碍性
+- 一致的颜色使用
+- 语义化颜色应用
+- 深色模式支持（如适用）
 
-**Visual Hierarchy:**
+**视觉层级：**
 
-- Clear primary actions
-- Appropriate emphasis
-- Scannable content structure
+- 清晰的主要操作
+- 适当的强调
+- 可扫描的内容结构
 
-### 3. Usability Review
+### 3. 可用性审查
 
-Check for:
+检查：
 
-**Interaction Patterns:**
+**交互模式：**
 
-- Clear clickable/tappable areas
-- Appropriate hover/focus states
-- Loading state indicators
-- Error state handling
-- Empty state handling
+- 清晰的可点击/可点击区域
+- 适当的悬停/焦点状态
+- 加载状态指示器
+- 错误状态处理
+- 空状态处理
 
-**User Flow:**
+**用户流程：**
 
-- Logical tab order
-- Clear call-to-action
-- Predictable behavior
-- Feedback on actions
+- 逻辑标签顺序
+- 清晰的行动号召
+- 可预测的行为
+- 操作反馈
 
-**Cognitive Load:**
+**认知负荷：**
 
-- Information density
-- Progressive disclosure
-- Clear labels and instructions
-- Consistent patterns
+- 信息密度
+- 渐进式披露
+- 清晰的标签和说明
+- 一致的模式
 
-### 4. Code Quality Review
+### 4. 代码质量审查
 
-Check for:
+检查：
 
-**Component Patterns:**
+**组件模式：**
 
-- Single responsibility
-- Prop drilling depth
-- State management appropriateness
-- Component reusability
+- 单一职责
+- 属性钻取深度
+- 状态管理适当性
+- 组件可复用性
 
-**Styling Patterns:**
+**样式模式：**
 
-- Consistent naming conventions
-- Reusable style definitions
-- Media query organization
-- CSS specificity issues
+- 一致的命名约定
+- 可复用的样式定义
+- 媒体查询组织
+- CSS 特异性问题
 
-**Maintainability:**
+**可维护性：**
 
-- Clear component boundaries
-- Documentation/comments
-- Test coverage
-- Accessibility attributes
+- 清晰的组件边界
+- 文档/注释
+- 测试覆盖率
+- 无障碍属性
 
-### 5. Performance Review
+### 5. 性能审查
 
-Check for:
+检查：
 
-**Render Optimization:**
+**渲染优化：**
 
-- Unnecessary re-renders
-- Missing memoization
-- Large component trees
-- Expensive computations in render
+- 不必要的重新渲染
+- 缺少记忆化
+- 大型组件树
+- 渲染中的昂贵计算
 
-**Asset Optimization:**
+**资源优化：**
 
-- Image sizes and formats
-- Icon implementation
-- Font loading strategy
-- Code splitting opportunities
+- 图片大小和格式
+- 图标实现
+- 字体加载策略
+- 代码分割机会
 
-## Output Format
+## 输出格式
 
-Generate review report in `.ui-design/reviews/{review_id}.md`:
+在 `.ui-design/reviews/{review_id}.md` 中生成审查报告：
 
 ````markdown
-# Design Review: {Component/File Name}
+# 设计审查：{组件/文件名称}
 
-**Review ID:** {review_id}
-**Reviewed:** {YYYY-MM-DD HH:MM}
-**Target:** {file_path}
-**Focus:** {focus_areas}
+**审查 ID：** {review_id}
+**审查时间：** {YYYY-MM-DD HH:MM}
+**目标：** {文件路径}
+**重点：** {重点领域}
 
-## Summary
+## 摘要
 
-{2-3 sentence overview of findings}
+{2-3 句话概述发现的问题}
 
-**Issues Found:** {total_count}
+**发现的问题数：** {总数}
 
-- Critical: {count}
-- Major: {count}
-- Minor: {count}
-- Suggestions: {count}
+- 严重：{数量}
+- 主要：{数量}
+- 次要：{数量}
+- 建议：{数量}
 
-## Critical Issues
+## 严重问题
 
-### Issue 1: {Title}
+### 问题 1：{标题}
 
-**Severity:** Critical
-**Location:** {file}:{line}
-**Category:** {Visual|Usability|Code|Performance}
+**严重程度：** 严重
+**位置：** {文件}:{行号}
+**类别：** {视觉|可用性|代码|性能}
 
-**Problem:**
-{Description of the issue}
+**问题：**
+{问题描述}
 
-**Impact:**
-{Why this matters for users/maintainability}
+**影响：**
+{为什么这对用户/可维护性很重要}
 
-**Recommendation:**
-{Specific fix suggestion}
+**建议：**
+{具体的修复建议}
 
-**Code Example:**
+**代码示例：**
 
-```{language}
-// Before
-{current_code}
+```{语言}
+// 修复前
+{当前代码}
 
-// After
-{suggested_code}
+// 修复后
+{建议代码}
 ```
 ````
 
 ---
 
-## Major Issues
+## 主要问题
 
-### Issue 2: {Title}
-
-...
-
-## Minor Issues
-
-### Issue 3: {Title}
+### 问题 2：{标题}
 
 ...
 
-## Suggestions
+## 次要问题
 
-### Suggestion 1: {Title}
+### 问题 3：{标题}
 
 ...
 
-## Positive Observations
+## 建议
 
-{List things done well to reinforce good patterns}
+### 建议 1：{标题}
 
-- {Positive observation 1}
-- {Positive observation 2}
+...
 
-## Next Steps
+## 优秀观察
 
-1. {Prioritized action 1}
-2. {Prioritized action 2}
-3. {Prioritized action 3}
+{列出做得好的地方以强化良好模式}
+
+- {优秀观察 1}
+- {优秀观察 2}
+
+## 后续步骤
+
+1. {优先操作 1}
+2. {优先操作 2}
+3. {优先操作 3}
 
 ---
 
-_Generated by UI Design Review. Run `/ui-design:design-review` again after fixes._
+_由 UI 设计审查生成。修复后再次运行 `/ui-design:design-review`。_
 
 ```
 
-## Completion
+## 完成
 
-After generating report:
+生成报告后：
 
-1. Update `review_state.json`:
-   - Set `status: "complete"`
-   - Update issue counts
+1. 更新 `review_state.json`：
+   - 设置 `status: "complete"`
+   - 更新问题计数
 
-2. Display summary:
-
-```
-
-Design Review Complete!
-
-Target: {component/file}
-Issues Found: {total}
-
-- {critical} Critical
-- {major} Major
-- {minor} Minor
-- {suggestions} Suggestions
-
-Full report: .ui-design/reviews/{review_id}.md
-
-What would you like to do next?
-
-1. View detailed findings for a specific issue
-2. Start implementing fixes
-3. Export report (markdown/JSON)
-4. Review another component
+2. 显示摘要：
 
 ```
 
-## Follow-up Actions
+设计审查完成！
 
-If user selects "Start implementing fixes":
+目标：{组件/文件}
+发现问题数：{总数}
+
+- {严重} 个严重
+- {主要} 个主要
+- {次要} 个次要
+- {建议} 条建议
+
+完整报告：.ui-design/reviews/{review_id}.md
+
+您接下来想做什么？
+
+1. 查看特定问题的详细发现
+2. 开始实施修复
+3. 导出报告（markdown/JSON）
+4. 审查另一个组件
 
 ```
 
-Which issues would you like to address?
+## 后续操作
 
-1. All critical issues first
-2. All issues in current file
-3. Specific issue (enter number)
-4. Generate a fix plan for all issues
-
-Enter choice:
+如果用户选择"开始实施修复"：
 
 ```
 
-Guide user through fixes one at a time, updating the review report as issues are resolved.
+您想解决哪些问题？
 
-## Error Handling
+1. 首先解决所有严重问题
+2. 当前文件中的所有问题
+3. 特定问题（输入数字）
+4. 为所有问题生成修复计划
 
-- If target file not found: Suggest similar files, offer to search
-- If file is not UI code: Explain and ask for correct target
-- If review fails mid-way: Save partial results, offer to resume
+输入选择：
+```
+
+引导用户逐一修复，并在问题解决时更新审查报告。
+
+## 错误处理
+
+- 如果找不到目标文件：建议类似文件，提供搜索选项
+- 如果文件不是 UI 代码：说明并请求正确的目标
+- 如果审查中途失败：保存部分结果，提供恢复选项
 ```

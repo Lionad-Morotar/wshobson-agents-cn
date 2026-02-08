@@ -1,22 +1,22 @@
-# Debug and Trace Configuration
+# 调试和追踪配置
 
-You are a debugging expert specializing in setting up comprehensive debugging environments, distributed tracing, and diagnostic tools. Configure debugging workflows, implement tracing solutions, and establish troubleshooting practices for development and production environments.
+你是一位专注于设置综合调试环境、分布式追踪和诊断工具的调试专家。配置调试工作流、实现追踪解决方案，并建立开发和生产环境的故障排除实践。
 
-## Context
+## 上下文
 
-The user needs to set up debugging and tracing capabilities to efficiently diagnose issues, track down bugs, and understand system behavior. Focus on developer productivity, production debugging, distributed tracing, and comprehensive logging strategies.
+用户需要设置调试和追踪功能以高效诊断问题、定位错误并理解系统行为。专注于开发者生产力、生产调试、分布式追踪和综合日志策略。
 
-## Requirements
+## 需求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. Development Environment Debugging
+### 1. 开发环境调试
 
-Set up comprehensive debugging environments:
+设置综合调试环境：
 
-**VS Code Debug Configuration**
+**VS Code 调试配置**
 
 ```json
 // .vscode/launch.json
@@ -92,7 +92,7 @@ Set up comprehensive debugging environments:
 }
 ```
 
-**Chrome DevTools Configuration**
+**Chrome DevTools 配置**
 
 ```javascript
 // debug-helpers.js
@@ -105,15 +105,15 @@ class DebugHelper {
 
   setupDevTools() {
     if (typeof window !== "undefined") {
-      // Add debug namespace
+      // 添加调试命名空间
       window.DEBUG = window.DEBUG || {};
 
-      // Store references to important objects
+      // 存储重要对象的引用
       window.DEBUG.store = () => window.__REDUX_STORE__;
       window.DEBUG.router = () => window.__ROUTER__;
       window.DEBUG.components = new Map();
 
-      // Performance debugging
+      // 性能调试
       window.DEBUG.measureRender = (componentName) => {
         performance.mark(`${componentName}-start`);
         return () => {
@@ -126,7 +126,7 @@ class DebugHelper {
         };
       };
 
-      // Memory debugging
+      // 内存调试
       window.DEBUG.heapSnapshot = async () => {
         if ("memory" in performance) {
           const snapshot = await performance.measureUserAgentSpecificMemory();
@@ -138,7 +138,7 @@ class DebugHelper {
   }
 
   setupConsoleHelpers() {
-    // Enhanced console logging
+    // 增强的控制台日志
     const styles = {
       error: "color: #ff0000; font-weight: bold;",
       warn: "color: #ff9800; font-weight: bold;",
@@ -164,24 +164,24 @@ class DebugHelper {
   }
 }
 
-// React DevTools integration
+// React DevTools 集成
 if (process.env.NODE_ENV === "development") {
-  // Expose React internals
+  // 暴露 React 内部
   window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = {
     ...window.__REACT_DEVTOOLS_GLOBAL_HOOK__,
     onCommitFiberRoot: (id, root) => {
-      // Custom commit logging
+      // 自定义提交日志
       console.debug("React commit:", root);
     },
   };
 }
 ```
 
-### 2. Remote Debugging Setup
+### 2. 远程调试设置
 
-Configure remote debugging capabilities:
+配置远程调试功能：
 
-**Remote Debug Server**
+**远程调试服务器**
 
 ```javascript
 // remote-debug-server.js
@@ -198,10 +198,10 @@ class RemoteDebugServer {
     }
 
     start() {
-        // Open inspector
+        // 打开检查器
         inspector.open(this.port, this.host, true);
 
-        // Create WebSocket server for remote connections
+        // 为远程连接创建 WebSocket 服务器
         this.wss = new WebSocket.Server({ port: this.wsPort });
 
         this.wss.on('connection', (ws) => {
@@ -216,7 +216,7 @@ class RemoteDebugServer {
                 this.sessions.delete(sessionId);
             });
 
-            // Send initial session info
+            // 发送初始会话信息
             ws.send(JSON.stringify({
                 type: 'session',
                 sessionId,
@@ -268,7 +268,7 @@ class RemoteDebugServer {
     }
 }
 
-// Docker remote debugging setup
+// Docker 远程调试设置
 FROM node:18
 RUN apt-get update && apt-get install -y \
     chromium \
@@ -282,11 +282,11 @@ ENV NODE_OPTIONS="--inspect=0.0.0.0:9229"
 CMD ["node", "--inspect-brk=0.0.0.0:9229", "index.js"]
 ```
 
-### 3. Distributed Tracing
+### 3. 分布式追踪
 
-Implement comprehensive distributed tracing:
+实现综合的分布式追踪：
 
-**OpenTelemetry Setup**
+**OpenTelemetry 设置**
 
 ```javascript
 // tracing.js
@@ -329,7 +329,7 @@ class TracingSystem {
       instrumentations: [
         getNodeAutoInstrumentations({
           "@opentelemetry/instrumentation-fs": {
-            enabled: false, // Too noisy
+            enabled: false, // 太嘈杂
           },
           "@opentelemetry/instrumentation-http": {
             requestHook: (span, request) => {
@@ -354,7 +354,7 @@ class TracingSystem {
 
     this.sdk.start();
 
-    // Graceful shutdown
+    // 优雅关闭
     process.on("SIGTERM", () => {
       this.sdk
         .shutdown()
@@ -364,17 +364,17 @@ class TracingSystem {
     });
   }
 
-  // Custom span creation
+  // 自定义 span 创建
   createSpan(name, fn, attributes = {}) {
     const tracer = trace.getTracer(this.serviceName);
     return tracer.startActiveSpan(name, async (span) => {
       try {
-        // Add custom attributes
+        // 添加自定义属性
         Object.entries(attributes).forEach(([key, value]) => {
           span.setAttribute(key, value);
         });
 
-        // Execute function
+        // 执行函数
         const result = await fn(span);
 
         span.setStatus({ code: SpanStatusCode.OK });
@@ -393,7 +393,7 @@ class TracingSystem {
   }
 }
 
-// Distributed tracing middleware
+// 分布式追踪中间件
 class TracingMiddleware {
   constructor() {
     this.tracer = trace.getTracer("http-middleware");
@@ -414,14 +414,14 @@ class TracingMiddleware {
         },
       });
 
-      // Inject trace context into request
+      // 将追踪上下文注入请求
       req.span = span;
       req.traceId = span.spanContext().traceId;
 
-      // Add trace ID to response headers
+      // 将追踪 ID 添加到响应头
       res.setHeader("X-Trace-Id", req.traceId);
 
-      // Override res.end to capture response data
+      // 覆盖 res.end 以捕获响应数据
       const originalEnd = res.end;
       res.end = function (...args) {
         span.setAttribute("http.status_code", res.statusCode);
@@ -447,11 +447,11 @@ class TracingMiddleware {
 }
 ```
 
-### 4. Debug Logging Framework
+### 4. 调试日志框架
 
-Implement structured debug logging:
+实现结构化调试日志：
 
-**Advanced Logger**
+**高级日志记录器**
 
 ```javascript
 // debug-logger.js
@@ -486,7 +486,7 @@ class DebugLogger {
       }),
     ];
 
-    // Add file transport for debugging
+    // 为调试添加文件传输
     if (process.env.DEBUG_LOG_FILE) {
       transports.push(
         new winston.transports.File({
@@ -498,7 +498,7 @@ class DebugLogger {
       );
     }
 
-    // Add Elasticsearch for production
+    // 为生产添加 Elasticsearch
     if (process.env.ELASTICSEARCH_URL) {
       transports.push(
         new ElasticsearchTransport({
@@ -533,7 +533,7 @@ class DebugLogger {
     return `${timestamp} [${level}]: ${message}${metaString}`;
   }
 
-  // Debug-specific methods
+  // 调试专用方法
   trace(message, meta = {}) {
     const stack = new Error().stack;
     this.logger.debug(message, {
@@ -547,7 +547,7 @@ class DebugLogger {
     const start = process.hrtime.bigint();
     const result = fn();
     const end = process.hrtime.bigint();
-    const duration = Number(end - start) / 1000000; // Convert to ms
+    const duration = Number(end - start) / 1000000; // 转换为毫秒
 
     this.logger.debug(`Timing: ${label}`, {
       duration,
@@ -568,7 +568,7 @@ class DebugLogger {
   }
 }
 
-// Debug context manager
+// 调试上下文管理器
 class DebugContext {
   constructor() {
     this.contexts = new Map();
@@ -612,17 +612,17 @@ class DebugContext {
 }
 ```
 
-### 5. Source Map Configuration
+### 5. Source Map 配置
 
-Set up source map support for production debugging:
+设置生产调试的 source map 支持：
 
-**Source Map Setup**
+**Source Map 设置**
 
 ```javascript
 // webpack.config.js
 module.exports = {
   mode: "production",
-  devtool: "hidden-source-map", // Generate source maps but don't reference them
+  devtool: "hidden-source-map", // 生成 source maps 但不引用它们
 
   output: {
     filename: "[name].[contenthash].js",
@@ -630,7 +630,7 @@ module.exports = {
   },
 
   plugins: [
-    // Upload source maps to error tracking service
+    // 上传 source maps 到错误跟踪服务
     new SentryWebpackPlugin({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "your-org",
@@ -644,12 +644,12 @@ module.exports = {
   ],
 };
 
-// Runtime source map support
+// 运行时 source map 支持
 require("source-map-support").install({
   environment: "node",
   handleUncaughtExceptions: false,
   retrieveSourceMap(source) {
-    // Custom source map retrieval for production
+    // 生产环境的自定义 source map 检索
     if (process.env.NODE_ENV === "production") {
       const sourceMapUrl = getSourceMapUrl(source);
       if (sourceMapUrl) {
@@ -664,14 +664,14 @@ require("source-map-support").install({
   },
 });
 
-// Stack trace enhancement
+// 堆栈跟踪增强
 Error.prepareStackTrace = (error, stack) => {
   const mapped = stack.map((frame) => {
     const fileName = frame.getFileName();
     const lineNumber = frame.getLineNumber();
     const columnNumber = frame.getColumnNumber();
 
-    // Try to get original position
+    // 尝试获取原始位置
     const original = getOriginalPosition(fileName, lineNumber, columnNumber);
 
     return {
@@ -691,11 +691,11 @@ Error.prepareStackTrace = (error, stack) => {
 };
 ```
 
-### 6. Performance Profiling
+### 6. 性能分析
 
-Implement performance profiling tools:
+实现性能分析工具：
 
-**Performance Profiler**
+**性能分析器**
 
 ```javascript
 // performance-profiler.js
@@ -708,7 +708,7 @@ class PerformanceProfiler {
     this.outputDir = options.outputDir || "./profiles";
     this.profiles = new Map();
 
-    // Ensure output directory exists
+    // 确保输出目录存在
     if (!fs.existsSync(this.outputDir)) {
       fs.mkdirSync(this.outputDir, { recursive: true });
     }
@@ -736,7 +736,7 @@ class PerformanceProfiler {
     const profile = v8Profiler.stopProfiling(profileInfo.title);
     const duration = Date.now() - profileInfo.startTime;
 
-    // Export profile
+    // 导出 profile
     const fileName = `${profileInfo.title}-${Date.now()}.cpuprofile`;
     const filePath = path.join(this.outputDir, fileName);
 
@@ -763,7 +763,7 @@ class PerformanceProfiler {
 
     const snapshot = v8Profiler.takeSnapshot();
 
-    // Export snapshot
+    // 导出 snapshot
     snapshot.export((error, result) => {
       if (!error) {
         fs.writeFileSync(filePath, result);
@@ -809,7 +809,7 @@ class PerformanceProfiler {
 
       recordExecution(start) {
         const end = process.hrtime.bigint();
-        const duration = Number(end - start) / 1000000; // Convert to ms
+        const duration = Number(end - start) / 1000000; // 转换为毫秒
 
         measurements.executions++;
         measurements.totalTime += duration;
@@ -818,7 +818,7 @@ class PerformanceProfiler {
         measurements.avgTime = measurements.totalTime / measurements.executions;
         measurements.lastExecution = new Date();
 
-        // Log slow executions
+        // 记录慢执行
         if (duration > 100) {
           console.warn(`Slow function execution: ${name} took ${duration}ms`);
         }
@@ -834,7 +834,7 @@ class PerformanceProfiler {
   }
 }
 
-// Memory leak detector
+// 内存泄漏检测器
 class MemoryLeakDetector {
   constructor() {
     this.snapshots = [];
@@ -858,12 +858,12 @@ class MemoryLeakDetector {
 
     this.snapshots.push(snapshot);
 
-    // Keep only last 10 snapshots
+    // 只保留最近 10 个快照
     if (this.snapshots.length > 10) {
       this.snapshots.shift();
     }
 
-    // Check for memory leak pattern
+    // 检查内存泄漏模式
     if (this.snapshots.length >= 5) {
       const trend = this.calculateTrend();
       if (trend.increasing && trend.delta > this.threshold) {
@@ -872,7 +872,7 @@ class MemoryLeakDetector {
           current: snapshot,
         });
 
-        // Take heap snapshot for analysis
+        // 获取堆快照进行分析
         const profiler = new PerformanceProfiler();
         profiler.takeHeapSnapshot("leak-detection");
       }
@@ -892,24 +892,24 @@ class MemoryLeakDetector {
     return {
       increasing,
       delta,
-      rate: (delta / (last.timestamp - first.timestamp)) * 1000 * 60, // MB per minute
+      rate: (delta / (last.timestamp - first.timestamp)) * 1000 * 60, // 每分钟 MB
     };
   }
 }
 ```
 
-### 7. Debug Configuration Management
+### 7. 调试配置管理
 
-Centralize debug configurations:
+集中化调试配置：
 
-**Debug Configuration**
+**调试配置**
 
 ```javascript
 // debug-config.js
 class DebugConfiguration {
   constructor() {
     this.config = {
-      // Debug levels
+      // 调试级别
       levels: {
         error: 0,
         warn: 1,
@@ -918,7 +918,7 @@ class DebugConfiguration {
         trace: 4,
       },
 
-      // Feature flags
+      // 功能开关
       features: {
         remoteDebugging: process.env.ENABLE_REMOTE_DEBUG === "true",
         tracing: process.env.ENABLE_TRACING === "true",
@@ -926,14 +926,14 @@ class DebugConfiguration {
         memoryMonitoring: process.env.ENABLE_MEMORY_MONITORING === "true",
       },
 
-      // Debug endpoints
+      // 调试端点
       endpoints: {
         jaeger: process.env.JAEGER_ENDPOINT || "http://localhost:14268",
         elasticsearch: process.env.ELASTICSEARCH_URL || "http://localhost:9200",
         sentry: process.env.SENTRY_DSN,
       },
 
-      // Sampling rates
+      // 采样率
       sampling: {
         traces: parseFloat(process.env.TRACE_SAMPLING_RATE || "0.1"),
         profiles: parseFloat(process.env.PROFILE_SAMPLING_RATE || "0.01"),
@@ -957,7 +957,7 @@ class DebugConfiguration {
   }
 }
 
-// Debug middleware factory
+// 调试中间件工厂
 class DebugMiddlewareFactory {
   static create(app, config) {
     const middlewares = [];
@@ -976,7 +976,7 @@ class DebugMiddlewareFactory {
       detector.start();
     }
 
-    // Debug routes
+    // 调试路由
     if (process.env.NODE_ENV === "development") {
       app.get("/debug/heap", (req, res) => {
         const profiler = new PerformanceProfiler();
@@ -1011,7 +1011,7 @@ class DebugMiddlewareFactory {
 
     return (req, res, next) => {
       if (Math.random() < 0.01) {
-        // 1% sampling
+        // 1% 采样
         const id = profiler.startCPUProfile(`request-${Date.now()}`);
 
         res.on("finish", () => {
@@ -1025,11 +1025,11 @@ class DebugMiddlewareFactory {
 }
 ```
 
-### 8. Production Debugging
+### 8. 生产调试
 
-Enable safe production debugging:
+启用安全的生产调试：
 
-**Production Debug Tools**
+**生产调试工具**
 
 ```javascript
 // production-debug.js
@@ -1046,7 +1046,7 @@ class ProductionDebugger {
         return next();
       }
 
-      // Check authorization
+      // 检查授权
       const token = req.headers["x-debug-token"];
       const ip = req.ip || req.connection.remoteAddress;
 
@@ -1054,14 +1054,14 @@ class ProductionDebugger {
         return next();
       }
 
-      // Add debug headers
+      // 添加调试头
       res.setHeader("X-Debug-Enabled", "true");
 
-      // Enable debug mode for this request
+      // 为此请求启用调试模式
       req.debugMode = true;
       req.debugContext = new DebugContext().create(req.id);
 
-      // Override console for this request
+      // 覆盖此请求的 console
       const originalConsole = { ...console };
       ["log", "debug", "info", "warn", "error"].forEach((method) => {
         console[method] = (...args) => {
@@ -1070,11 +1070,11 @@ class ProductionDebugger {
         };
       });
 
-      // Restore console on response
+      // 在响应时恢复 console
       res.on("finish", () => {
         Object.assign(console, originalConsole);
 
-        // Send debug info if requested
+        // 如果请求则发送调试信息
         if (req.headers["x-debug-response"] === "true") {
           const debugInfo = req.debugContext.export(req.id);
           res.setHeader("X-Debug-Info", JSON.stringify(debugInfo));
@@ -1086,7 +1086,7 @@ class ProductionDebugger {
   }
 }
 
-// Conditional breakpoints in production
+// 生产中的条件断点
 class ConditionalBreakpoint {
   constructor(condition, callback) {
     this.condition = condition;
@@ -1098,48 +1098,48 @@ class ConditionalBreakpoint {
     if (this.condition(context)) {
       this.hits++;
 
-      // Log breakpoint hit
+      // 记录断点命中
       console.debug("Conditional breakpoint hit", {
         condition: this.condition.toString(),
         hits: this.hits,
         context,
       });
 
-      // Execute callback
+      // 执行回调
       if (this.callback) {
         this.callback(context);
       }
 
-      // In production, don't actually break
+      // 在生产中，不要真正中断
       if (process.env.NODE_ENV === "production") {
-        // Take snapshot instead
+        // 而是获取快照
         const profiler = new PerformanceProfiler();
         profiler.takeHeapSnapshot(`breakpoint-${Date.now()}`);
       } else {
-        // In development, use debugger
+        // 在开发中，使用 debugger
         debugger;
       }
     }
   }
 }
 
-// Usage
+// 使用
 const breakpoints = new Map();
 
-// Set conditional breakpoint
+// 设置条件断点
 breakpoints.set(
   "high-memory",
   new ConditionalBreakpoint(
     (context) => context.memoryUsage > 500 * 1024 * 1024, // 500MB
     (context) => {
       console.error("High memory usage detected", context);
-      // Send alert
+      // 发送警报
       alerting.send("high-memory", context);
     },
   ),
 );
 
-// Check breakpoints in code
+// 在代码中检查断点
 function checkBreakpoints(context) {
   breakpoints.forEach((breakpoint) => {
     breakpoint.check(context);
@@ -1147,11 +1147,11 @@ function checkBreakpoints(context) {
 }
 ```
 
-### 9. Debug Dashboard
+### 9. 调试仪表板
 
-Create a debug dashboard for monitoring:
+创建用于监控的调试仪表板：
 
-**Debug Dashboard**
+**调试仪表板**
 
 ```html
 <!-- debug-dashboard.html -->
@@ -1229,7 +1229,7 @@ Create a debug dashboard for monitoring:
     </div>
 
     <script>
-      // WebSocket connection for real-time updates
+      // 用于实时更新的 WebSocket 连接
       const ws = new WebSocket("ws://localhost:9231/debug");
 
       ws.onmessage = (event) => {
@@ -1282,13 +1282,13 @@ Create a debug dashboard for monitoring:
             `;
         container.insertBefore(entry, container.firstChild);
 
-        // Keep only last 100 logs
+        // 只保留最近 100 条日志
         while (container.children.length > 100) {
           container.removeChild(container.lastChild);
         }
       }
 
-      // Memory usage chart
+      // 内存使用图表
       const memoryChart = document
         .getElementById("memoryChart")
         .getContext("2d");
@@ -1300,24 +1300,24 @@ Create a debug dashboard for monitoring:
           value: usage,
         });
 
-        // Keep last 50 points
+        // 保留最近 50 个点
         if (memoryData.length > 50) {
           memoryData.shift();
         }
 
-        // Draw chart
-        // ... chart drawing logic
+        // 绘制图表
+        // ... 图表绘制逻辑
       }
     </script>
   </body>
 </html>
 ```
 
-### 10. IDE Integration
+### 10. IDE 集成
 
-Configure IDE debugging features:
+配置 IDE 调试功能：
 
-**IDE Debug Extensions**
+**IDE 调试扩展**
 
 ```json
 // .vscode/extensions.json
@@ -1366,15 +1366,15 @@ Configure IDE debugging features:
 }
 ```
 
-## Output Format
+## 输出格式
 
-1. **Debug Configuration**: Complete setup for all debugging tools
-2. **Integration Guide**: Step-by-step integration instructions
-3. **Troubleshooting Playbook**: Common debugging scenarios and solutions
-4. **Performance Baselines**: Metrics for comparison
-5. **Debug Scripts**: Automated debugging utilities
-6. **Dashboard Setup**: Real-time debugging interface
-7. **Documentation**: Team debugging guidelines
-8. **Emergency Procedures**: Production debugging protocols
+1. **调试配置**：所有调试工具的完整设置
+2. **集成指南**：分步集成说明
+3. **故障排除手册**：常见调试场景和解决方案
+4. **性能基准**：用于比较的指标
+5. **调试脚本**：自动化调试实用程序
+6. **仪表板设置**：实时调试界面
+7. **文档**：团队调试指南
+8. **紧急程序**：生产调试协议
 
-Focus on creating a comprehensive debugging environment that enhances developer productivity and enables rapid issue resolution in all environments.
+专注于创建一个全面的调试环境，以增强开发者生产力并能够在所有环境中快速解决问题。

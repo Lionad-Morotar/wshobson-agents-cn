@@ -1,27 +1,27 @@
 ---
-description: "Build AI assistant application with NLU, dialog management, and integrations"
-argument-hint: "<assistant-type> [options]"
+description: "构建具有 NLU、对话管理和集成功能的 AI 助手应用"
+argument-hint: "<助手类型> [选项]"
 ---
 
-# AI Assistant Development
+# AI 助手开发
 
-You are an AI assistant development expert specializing in creating intelligent conversational interfaces, chatbots, and AI-powered applications. Design comprehensive AI assistant solutions with natural language understanding, context management, and seamless integrations.
+你是一位 AI 助手开发专家，专注于创建智能对话界面、聊天机器人和 AI 驱动的应用。设计全面的 AI 助手解决方案，具备自然语言理解、上下文管理和无缝集成功能。
 
-## Context
+## 上下文
 
-The user needs to develop an AI assistant or chatbot with natural language capabilities, intelligent responses, and practical functionality. Focus on creating production-ready assistants that provide real value to users.
+用户需要开发一个具有自然语言能力、智能响应和实用功能的 AI 助手或聊天机器人。专注于创建能为用户提供真实价值的生产级助手。
 
-## Requirements
+## 需求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. AI Assistant Architecture
+### 1. AI 助手架构
 
-Design comprehensive assistant architecture:
+设计全面的助手架构：
 
-**Assistant Architecture Framework**
+**助手架构框架**
 
 ```python
 from typing import Dict, List, Optional, Any
@@ -31,7 +31,7 @@ import asyncio
 
 @dataclass
 class ConversationContext:
-    """Maintains conversation state and context"""
+    """维护对话状态和上下文"""
     user_id: str
     session_id: str
     messages: List[Dict[str, Any]]
@@ -45,7 +45,7 @@ class AIAssistantArchitecture:
         self.components = self._initialize_components()
 
     def design_architecture(self):
-        """Design comprehensive AI assistant architecture"""
+        """设计全面的 AI 助手架构"""
         return {
             'core_components': {
                 'nlu': self._design_nlu_component(),
@@ -60,7 +60,7 @@ class AIAssistantArchitecture:
         }
 
     def _design_nlu_component(self):
-        """Natural Language Understanding component"""
+        """自然语言理解组件"""
         return {
             'intent_recognition': {
                 'model': 'transformer-based classifier',
@@ -78,13 +78,13 @@ class IntentClassifier:
         self.config = {**default_config, **(config or {})}
 
     async def classify(self, text: str) -> Dict[str, Any]:
-        # Preprocess text
+        # 预处理文本
         processed = self.preprocess(text)
 
-        # Get model predictions
+        # 获取模型预测
         predictions = await self.model.predict(processed)
 
-        # Extract intents with confidence
+        # 提取意图及置信度
         intents = []
         for intent, confidence in predictions:
             if confidence > self.config['threshold']:
@@ -120,10 +120,10 @@ class IntentClassifier:
         }
 
     def _design_dialog_manager(self):
-        """Dialog management system"""
+        """对话管理系统"""
         return '''
 class DialogManager:
-    """Manages conversation flow and state"""
+    """管理对话流程和状态"""
 
     def __init__(self):
         self.state_machine = ConversationStateMachine()
@@ -132,20 +132,20 @@ class DialogManager:
     async def process_turn(self,
                           context: ConversationContext,
                           nlu_result: Dict[str, Any]) -> Dict[str, Any]:
-        # Determine current state
+        # 确定当前状态
         current_state = self.state_machine.get_state(context)
 
-        # Apply dialog policy
+        # 应用对话策略
         action = await self.policy_network.select_action(
             current_state,
             nlu_result,
             context
         )
 
-        # Execute action
+        # 执行动作
         result = await self.execute_action(action, context)
 
-        # Update state
+        # 更新状态
         new_state = self.state_machine.transition(
             current_state,
             action,
@@ -159,7 +159,7 @@ class DialogManager:
         }
 
     async def execute_action(self, action: str, context: ConversationContext):
-        """Execute dialog action"""
+        """执行对话动作"""
         action_handlers = {
             'greet': self.handle_greeting,
             'provide_info': self.handle_information_request,
@@ -174,11 +174,11 @@ class DialogManager:
 '''
 ```
 
-### 2. Natural Language Processing
+### 2. 自然语言处理
 
-Implement advanced NLP capabilities:
+实现高级 NLP 功能：
 
-**NLP Pipeline Implementation**
+**NLP 流水线实现**
 
 ```python
 class NLPPipeline:
@@ -188,14 +188,14 @@ class NLPPipeline:
         self.models = self._load_models()
 
     async def process_message(self, message: str, context: ConversationContext):
-        """Process user message through NLP pipeline"""
-        # Tokenization and preprocessing
+        """通过 NLP 流水线处理用户消息"""
+        # 分词和预处理
         tokens = self.tokenizer.tokenize(message)
 
-        # Generate embeddings
+        # 生成嵌入
         embeddings = await self.embedder.embed(tokens)
 
-        # Parallel processing of NLP tasks
+        # 并行处理 NLP 任务
         tasks = [
             self.detect_intent(embeddings),
             self.extract_entities(tokens, embeddings),
@@ -217,11 +217,11 @@ class NLPPipeline:
         }
 
     async def detect_intent(self, embeddings):
-        """Advanced intent detection"""
-        # Multi-label classification
+        """高级意图检测"""
+        # 多标签分类
         intent_scores = await self.models['intent_classifier'].predict(embeddings)
 
-        # Hierarchical intent detection
+        # 层次化意图检测
         primary_intent = self.get_primary_intent(intent_scores)
         sub_intents = self.get_sub_intents(primary_intent, embeddings)
 
@@ -233,11 +233,11 @@ class NLPPipeline:
         }
 
     def extract_entities(self, tokens, embeddings):
-        """Extract and resolve entities"""
-        # Named Entity Recognition
+        """提取和解析实体"""
+        # 命名实体识别
         entities = self.models['ner'].extract(tokens, embeddings)
 
-        # Entity linking and resolution
+        # 实体链接和解析
         resolved_entities = []
         for entity in entities:
             resolved = self.resolve_entity(entity)
@@ -252,7 +252,7 @@ class NLPPipeline:
         return resolved_entities
 
     def build_semantic_understanding(self, nlu_result, context):
-        """Build semantic representation of user intent"""
+        """构建用户意图的语义表示"""
         return {
             'user_goal': self.infer_user_goal(nlu_result, context),
             'required_information': self.identify_missing_info(nlu_result),
@@ -261,11 +261,11 @@ class NLPPipeline:
         }
 ```
 
-### 3. Conversation Flow Design
+### 3. 对话流程设计
 
-Design intelligent conversation flows:
+设计智能对话流程：
 
-**Conversation Flow Engine**
+**对话流程引擎**
 
 ```python
 class ConversationFlowEngine:
@@ -274,7 +274,7 @@ class ConversationFlowEngine:
         self.state_tracker = StateTracker()
 
     def design_conversation_flow(self):
-        """Design multi-turn conversation flows"""
+        """设计多轮对话流程"""
         return {
             'greeting_flow': {
                 'triggers': ['hello', 'hi', 'greetings'],
@@ -288,7 +288,7 @@ class ConversationFlowEngine:
                     {
                         'id': 'ask_how_to_help',
                         'type': 'question',
-                        'content': "How can I assist you today?",
+                        'content': "今天我能为您做什么？",
                         'expected_intents': ['request_help', 'ask_question'],
                         'timeout': 30,
                         'timeout_action': 'offer_suggestions'
@@ -330,14 +330,14 @@ class ConversationFlowEngine:
         }
 
     async def execute_flow(self, flow_id: str, context: ConversationContext):
-        """Execute a conversation flow"""
+        """执行对话流程"""
         flow = self.flows[flow_id]
         current_node = flow['nodes'][0]
 
         while current_node:
             result = await self.execute_node(current_node, context)
 
-            # Determine next node
+            # 确定下一个节点
             if result.get('user_input'):
                 next_node_id = self.determine_next_node(
                     current_node,
@@ -349,17 +349,17 @@ class ConversationFlowEngine:
 
             current_node = self.get_node(flow, next_node_id)
 
-            # Update context
+            # 更新上下文
             context.conversation_state.update(result.get('state_updates', {}))
 
         return context
 ```
 
-### 4. Response Generation
+### 4. 响应生成
 
-Create intelligent response generation:
+创建智能响应生成：
 
-**Response Generator**
+**响应生成器**
 
 ```python
 class ResponseGenerator:
@@ -372,9 +372,9 @@ class ResponseGenerator:
                                intent: str,
                                context: ConversationContext,
                                data: Dict[str, Any]) -> str:
-        """Generate contextual responses"""
+        """生成上下文相关的响应"""
 
-        # Select response strategy
+        # 选择响应策略
         if self.should_use_template(intent):
             response = self.generate_from_template(intent, data)
         elif self.should_use_llm(intent, context):
@@ -382,62 +382,62 @@ class ResponseGenerator:
         else:
             response = self.generate_hybrid_response(intent, context, data)
 
-        # Apply personality and tone
+        # 应用个性和语气
         response = self.apply_personality(response, context)
 
-        # Ensure response appropriateness
+        # 确保响应适当性
         response = self.validate_response(response, context)
 
         return response
 
     async def generate_with_llm(self, intent, context, data):
-        """Generate response using LLM"""
-        # Construct prompt
+        """使用 LLM 生成响应"""
+        # 构建提示词
         prompt = self.build_llm_prompt(intent, context, data)
 
-        # Set generation parameters
+        # 设置生成参数
         params = {
             'temperature': self.get_temperature(intent),
             'max_tokens': 150,
             'stop_sequences': ['\n\n', 'User:', 'Human:']
         }
 
-        # Generate response
+        # 生成响应
         response = await self.llm.generate(prompt, **params)
 
-        # Post-process response
+        # 后处理响应
         return self.post_process_llm_response(response)
 
     def build_llm_prompt(self, intent, context, data):
-        """Build context-aware prompt for LLM"""
+        """为 LLM 构建上下文感知的提示词"""
         return f"""
-You are a helpful AI assistant with the following characteristics:
+你是一个有益的 AI 助手，具有以下特征：
 {self.personality.description}
 
-Conversation history:
+对话历史：
 {self.format_conversation_history(context.messages[-5:])}
 
-User intent: {intent}
-Relevant data: {json.dumps(data, indent=2)}
+用户意图：{intent}
+相关数据：{json.dumps(data, indent=2)}
 
-Generate a helpful, concise response that:
-1. Addresses the user's intent
-2. Uses the provided data appropriately
-3. Maintains conversation continuity
-4. Follows the personality guidelines
+生成一个有益、简洁的响应，该响应应：
+1. 回应用户的意图
+2. 适当地使用提供的数据
+3. 保持对话连续性
+4. 遵循个性指南
 
-Response:"""
+响应："""
 
     def generate_from_template(self, intent, data):
-        """Generate response from templates"""
+        """从模板生成响应"""
         template = self.templates.get(intent)
         if not template:
             return self.get_fallback_response()
 
-        # Select template variant
+        # 选择模板变体
         variant = self.select_template_variant(template, data)
 
-        # Fill template slots
+        # 填充模板槽
         response = variant
         for key, value in data.items():
             response = response.replace(f"{{{key}}}", str(value))
@@ -445,26 +445,26 @@ Response:"""
         return response
 
     def apply_personality(self, response, context):
-        """Apply personality traits to response"""
-        # Add personality markers
+        """将个性特征应用于响应"""
+        # 添加个性标记
         if self.personality.get('friendly'):
             response = self.add_friendly_markers(response)
 
         if self.personality.get('professional'):
             response = self.ensure_professional_tone(response)
 
-        # Adjust based on user preferences
+        # 根据用户偏好调整
         if context.user_profile.get('prefers_brief'):
             response = self.make_concise(response)
 
         return response
 ```
 
-### 5. Context Management
+### 5. 上下文管理
 
-Implement sophisticated context management:
+实现复杂的上下文管理：
 
-**Context Management System**
+**上下文管理系统**
 
 ```python
 class ContextManager:
@@ -476,9 +476,9 @@ class ContextManager:
     async def manage_context(self,
                             new_input: Dict[str, Any],
                             current_context: ConversationContext) -> ConversationContext:
-        """Manage conversation context"""
+        """管理对话上下文"""
 
-        # Update conversation history
+        # 更新对话历史
         current_context.messages.append({
             'role': 'user',
             'content': new_input['message'],
@@ -486,38 +486,38 @@ class ContextManager:
             'metadata': new_input.get('metadata', {})
         })
 
-        # Resolve references
+        # 解析引用
         resolved_input = await self.resolve_references(new_input, current_context)
 
-        # Update working memory
+        # 更新工作记忆
         self.working_memory.update(resolved_input, current_context)
 
-        # Detect topic changes
+        # 检测主题变化
         topic_shift = self.detect_topic_shift(resolved_input, current_context)
         if topic_shift:
             current_context = self.handle_topic_shift(topic_shift, current_context)
 
-        # Maintain entity state
+        # 维护实体状态
         current_context = self.update_entity_state(resolved_input, current_context)
 
-        # Prune old context if needed
+        # 如果需要，修剪旧上下文
         if len(current_context.messages) > self.config['max_context_length']:
             current_context = self.prune_context(current_context)
 
         return current_context
 
     async def resolve_references(self, input_data, context):
-        """Resolve pronouns and references"""
+        """解析代词和引用"""
         text = input_data['message']
 
-        # Pronoun resolution
+        # 代词解析
         pronouns = self.extract_pronouns(text)
         for pronoun in pronouns:
             referent = self.find_referent(pronoun, context)
             if referent:
                 text = text.replace(pronoun['text'], referent['resolved'])
 
-        # Temporal reference resolution
+        # 时间引用解析
         temporal_refs = self.extract_temporal_references(text)
         for ref in temporal_refs:
             resolved_time = self.resolve_temporal_reference(ref, context)
@@ -527,14 +527,14 @@ class ContextManager:
         return input_data
 
     def maintain_entity_state(self):
-        """Track entity states across conversation"""
+        """跨对话跟踪实体状态"""
         return '''
 class EntityStateTracker:
     def __init__(self):
         self.entities = {}
 
     def update_entity(self, entity_id: str, updates: Dict[str, Any]):
-        """Update entity state"""
+        """更新实体状态"""
         if entity_id not in self.entities:
             self.entities[entity_id] = {
                 'id': entity_id,
@@ -543,21 +543,21 @@ class EntityStateTracker:
                 'history': []
             }
 
-        # Record history
+        # 记录历史
         self.entities[entity_id]['history'].append({
             'timestamp': datetime.now(),
             'updates': updates
         })
 
-        # Apply updates
+        # 应用更新
         self.entities[entity_id]['attributes'].update(updates)
 
     def get_entity_state(self, entity_id: str) -> Optional[Dict[str, Any]]:
-        """Get current entity state"""
+        """获取当前实体状态"""
         return self.entities.get(entity_id)
 
     def query_entities(self, entity_type: str = None, **filters):
-        """Query entities by type and attributes"""
+        """按类型和属性查询实体"""
         results = []
         for entity in self.entities.values():
             if entity_type and entity['type'] != entity_type:
@@ -576,11 +576,11 @@ class EntityStateTracker:
 '''
 ```
 
-### 6. Integration with LLMs
+### 6. 与 LLM 集成
 
-Integrate with various LLM providers:
+与各种 LLM 提供商集成：
 
-**LLM Integration Layer**
+**LLM 集成层**
 
 ```python
 class LLMIntegrationLayer:
@@ -593,7 +593,7 @@ class LLMIntegrationLayer:
         self.current_provider = None
 
     async def setup_llm_integration(self, provider: str, config: Dict[str, Any]):
-        """Setup LLM integration"""
+        """设置 LLM 集成"""
         self.current_provider = self.providers[provider]
         await self.current_provider.initialize(config)
 
@@ -607,30 +607,30 @@ class LLMIntegrationLayer:
                                  prompt: str,
                                  system_prompt: str = None,
                                  **kwargs):
-        """Generate completion with fallback handling"""
+        """生成带有回退处理的补全"""
         try:
-            # Primary attempt
+            # 首次尝试
             response = await self.current_provider.complete(
                 prompt=prompt,
                 system_prompt=system_prompt,
                 **kwargs
             )
 
-            # Validate response
+            # 验证响应
             if self.is_valid_response(response):
                 return response
             else:
                 return await self.handle_invalid_response(prompt, response)
 
         except RateLimitError:
-            # Switch to fallback provider
+            # 切换到回退提供商
             return await self.use_fallback_provider(prompt, system_prompt, **kwargs)
         except Exception as e:
-            # Log error and use cached response if available
+            # 记录错误并在可用时使用缓存响应
             return self.get_cached_response(prompt) or self.get_default_response()
 
     def create_function_calling_interface(self):
-        """Create function calling interface for LLMs"""
+        """为 LLM 创建函数调用接口"""
         return '''
 class FunctionCallingInterface:
     def __init__(self):
@@ -641,7 +641,7 @@ class FunctionCallingInterface:
                          func: callable,
                          description: str,
                          parameters: Dict[str, Any]):
-        """Register a function for LLM to call"""
+        """注册供 LLM 调用的函数"""
         self.functions[name] = {
             'function': func,
             'description': description,
@@ -649,7 +649,7 @@ class FunctionCallingInterface:
         }
 
     async def process_function_call(self, llm_response):
-        """Process function calls from LLM"""
+        """处理来自 LLM 的函数调用"""
         if 'function_call' not in llm_response:
             return llm_response
 
@@ -657,18 +657,18 @@ class FunctionCallingInterface:
         arguments = llm_response['function_call']['arguments']
 
         if function_name not in self.functions:
-            return {'error': f'Unknown function: {function_name}'}
+            return {'error': f'未知函数：{function_name}'}
 
-        # Validate arguments
+        # 验证参数
         validated_args = self.validate_arguments(
             function_name,
             arguments
         )
 
-        # Execute function
+        # 执行函数
         result = await self.functions[function_name]['function'](**validated_args)
 
-        # Return result for LLM to process
+        # 返回结果供 LLM 处理
         return {
             'function_result': result,
             'function_name': function_name
@@ -676,11 +676,11 @@ class FunctionCallingInterface:
 '''
 ```
 
-### 7. Testing Conversational AI
+### 7. 测试对话式 AI
 
-Implement comprehensive testing:
+实现全面测试：
 
-**Conversation Testing Framework**
+**对话测试框架**
 
 ```python
 class ConversationTestFramework:
@@ -689,7 +689,7 @@ class ConversationTestFramework:
         self.metrics = ConversationMetrics()
 
     def create_test_suite(self):
-        """Create comprehensive test suite"""
+        """创建全面的测试套件"""
         return {
             'unit_tests': self._create_unit_tests(),
             'integration_tests': self._create_integration_tests(),
@@ -699,57 +699,57 @@ class ConversationTestFramework:
         }
 
     def _create_conversation_tests(self):
-        """Test multi-turn conversations"""
+        """测试多轮对话"""
         return '''
 class ConversationTest:
     async def test_multi_turn_conversation(self):
-        """Test complete conversation flow"""
+        """测试完整的对话流程"""
         assistant = AIAssistant()
         context = ConversationContext(user_id="test_user")
 
-        # Conversation script
+        # 对话脚本
         conversation = [
             {
-                'user': "Hello, I need help with my order",
+                'user': "你好，我需要帮助处理订单",
                 'expected_intent': 'order_help',
                 'expected_action': 'ask_order_details'
             },
             {
-                'user': "My order number is 12345",
+                'user': "我的订单号是 12345",
                 'expected_entities': [{'type': 'order_id', 'value': '12345'}],
                 'expected_action': 'retrieve_order'
             },
             {
-                'user': "When will it arrive?",
+                'user': "什么时候能送到？",
                 'expected_intent': 'delivery_inquiry',
                 'should_use_context': True
             }
         ]
 
         for turn in conversation:
-            # Send user message
+            # 发送用户消息
             response = await assistant.process_message(
                 turn['user'],
                 context
             )
 
-            # Validate intent detection
+            # 验证意图检测
             if 'expected_intent' in turn:
                 assert response['intent'] == turn['expected_intent']
 
-            # Validate entity extraction
+            # 验证实体提取
             if 'expected_entities' in turn:
                 self.validate_entities(
                     response['entities'],
                     turn['expected_entities']
                 )
 
-            # Validate context usage
+            # 验证上下文使用
             if turn.get('should_use_context'):
                 assert 'order_id' in response['context_used']
 
     def test_error_handling(self):
-        """Test error scenarios"""
+        """测试错误场景"""
         error_cases = [
             {
                 'input': "askdjfkajsdf",
@@ -771,7 +771,7 @@ class ConversationTest:
 '''
 
     def create_automated_testing(self):
-        """Automated conversation testing"""
+        """自动化对话测试"""
         return '''
 class AutomatedConversationTester:
     def __init__(self):
@@ -779,7 +779,7 @@ class AutomatedConversationTester:
         self.evaluator = ResponseEvaluator()
 
     async def run_automated_tests(self, num_tests: int = 100):
-        """Run automated conversation tests"""
+        """运行自动化对话测试"""
         results = {
             'total_tests': num_tests,
             'passed': 0,
@@ -788,13 +788,13 @@ class AutomatedConversationTester:
         }
 
         for i in range(num_tests):
-            # Generate test case
+            # 生成测试用例
             test_case = self.test_generator.generate()
 
-            # Run conversation
+            # 运行对话
             conversation_log = await self.run_conversation(test_case)
 
-            # Evaluate results
+            # 评估结果
             evaluation = self.evaluator.evaluate(
                 conversation_log,
                 test_case['expectations']
@@ -805,67 +805,67 @@ class AutomatedConversationTester:
             else:
                 results['failed'] += 1
 
-            # Collect metrics
+            # 收集指标
             self.update_metrics(results['metrics'], evaluation['metrics'])
 
         return results
 
     def generate_adversarial_tests(self):
-        """Generate adversarial test cases"""
+        """生成对抗性测试用例"""
         return [
-            # Ambiguous inputs
+            # 模糊输入
             "I want that thing we discussed",
 
-            # Context switching
+            # 上下文切换
             "Actually, forget that. Tell me about the weather",
 
-            # Multiple intents
+            # 多意图
             "Cancel my order and also update my address",
 
-            # Incomplete information
+            # 信息不完整
             "Book a flight",
 
-            # Contradictions
+            # 矛盾
             "I want a vegetarian meal with bacon"
         ]
 '''
 ```
 
-### 8. Deployment and Scaling
+### 8. 部署和扩展
 
-Deploy and scale AI assistants:
+部署和扩展 AI 助手：
 
-**Deployment Architecture**
+**部署架构**
 
 ```python
 class AssistantDeployment:
     def create_deployment_architecture(self):
-        """Create scalable deployment architecture"""
+        """创建可扩展的部署架构"""
         return {
             'containerization': '''
-# Dockerfile for AI Assistant
+# AI 助手的 Dockerfile
 FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install dependencies
+# 安装依赖
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application
+# 复制应用
 COPY . .
 
-# Load models at build time
+# 在构建时加载模型
 RUN python -m app.model_loader
 
-# Expose port
+# 暴露端口
 EXPOSE 8080
 
-# Health check
+# 健康检查
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
   CMD python -m app.health_check
 
-# Run application
+# 运行应用
 CMD ["gunicorn", "--worker-class", "uvicorn.workers.UvicornWorker", \
      "--workers", "4", "--bind", "0.0.0.0:8080", "app.main:app"]
 ''',
@@ -954,7 +954,7 @@ spec:
         }
 
     def _design_caching_strategy(self):
-        """Design caching for performance"""
+        """设计缓存以提高性能"""
         return '''
 class AssistantCache:
     def __init__(self):
@@ -965,10 +965,10 @@ class AssistantCache:
     async def get_cached_response(self,
                                  message: str,
                                  context_hash: str) -> Optional[str]:
-        """Get cached response if available"""
+        """如果可用，获取缓存的响应"""
         cache_key = self.generate_cache_key(message, context_hash)
 
-        # Check response cache
+        # 检查响应缓存
         cached = await self.response_cache.get(cache_key)
         if cached and not self.is_expired(cached):
             return cached['response']
@@ -980,7 +980,7 @@ class AssistantCache:
                       context_hash: str,
                       response: str,
                       ttl: int = 3600):
-        """Cache response with TTL"""
+        """缓存带有 TTL 的响应"""
         cache_key = self.generate_cache_key(message, context_hash)
 
         self.response_cache.set(
@@ -993,7 +993,7 @@ class AssistantCache:
         )
 
     def preload_model_cache(self):
-        """Preload frequently used models"""
+        """预加载常用模型"""
         models_to_cache = [
             'intent_classifier',
             'entity_extractor',
@@ -1006,11 +1006,11 @@ class AssistantCache:
 '''
 ```
 
-### 9. Monitoring and Analytics
+### 9. 监控和分析
 
-Monitor assistant performance:
+监控助手性能：
 
-**Assistant Analytics System**
+**助手分析系统**
 
 ```python
 class AssistantAnalytics:
@@ -1019,7 +1019,7 @@ class AssistantAnalytics:
         self.analytics_engine = AnalyticsEngine()
 
     def create_monitoring_dashboard(self):
-        """Create monitoring dashboard configuration"""
+        """创建监控仪表板配置"""
         return {
             'real_time_metrics': {
                 'active_sessions': 'gauge',
@@ -1055,11 +1055,11 @@ class AssistantAnalytics:
         }
 
     def analyze_conversation_quality(self):
-        """Analyze conversation quality metrics"""
+        """分析对话质量指标"""
         return '''
 class ConversationQualityAnalyzer:
     def analyze_conversations(self, time_range: str):
-        """Analyze conversation quality"""
+        """分析对话质量"""
         conversations = self.fetch_conversations(time_range)
 
         metrics = {
@@ -1073,24 +1073,24 @@ class ConversationQualityAnalyzer:
         return self.generate_quality_report(metrics)
 
     def identify_improvement_areas(self, analysis):
-        """Identify areas for improvement"""
+        """识别需要改进的领域"""
         improvements = []
 
-        # Low intent accuracy
+        # 意图准确率低
         if analysis['intent_recognition']['accuracy'] < 0.85:
             improvements.append({
                 'area': 'Intent Recognition',
-                'issue': 'Low accuracy in intent detection',
-                'recommendation': 'Retrain intent classifier with more examples',
+                'issue': '意图检测准确率低',
+                'recommendation': '使用更多示例重新训练意图分类器',
                 'priority': 'high'
             })
 
-        # High fallback rate
+        # 回退率高
         if analysis['conversation_flow']['fallback_rate'] > 0.15:
             improvements.append({
                 'area': 'Coverage',
-                'issue': 'High fallback rate',
-                'recommendation': 'Expand training data for uncovered intents',
+                'issue': '回退率高',
+                'recommendation': '为未覆盖的意图扩展训练数据',
                 'priority': 'medium'
             })
 
@@ -1098,25 +1098,25 @@ class ConversationQualityAnalyzer:
 '''
 ```
 
-### 10. Continuous Improvement
+### 10. 持续改进
 
-Implement continuous improvement cycle:
+实施持续改进循环：
 
-**Improvement Pipeline**
+**改进流水线**
 
 ```python
 class ContinuousImprovement:
     def create_improvement_pipeline(self):
-        """Create continuous improvement pipeline"""
+        """创建持续改进流水线"""
         return {
             'data_collection': '''
 class ConversationDataCollector:
     async def collect_feedback(self, session_id: str):
-        """Collect user feedback"""
+        """收集用户反馈"""
         feedback_prompt = {
-            'satisfaction': 'How satisfied were you with this conversation? (1-5)',
-            'resolved': 'Was your issue resolved?',
-            'improvements': 'How could we improve?'
+            'satisfaction': '您对本次对话的满意程度如何？（1-5）',
+            'resolved': '您的问题解决了吗？',
+            'improvements': '我们如何改进？'
         }
 
         feedback = await self.prompt_user_feedback(
@@ -1124,7 +1124,7 @@ class ConversationDataCollector:
             feedback_prompt
         )
 
-        # Store feedback
+        # 存储反馈
         await self.store_feedback({
             'session_id': session_id,
             'timestamp': datetime.now(),
@@ -1135,14 +1135,14 @@ class ConversationDataCollector:
         return feedback
 
     def identify_training_opportunities(self):
-        """Identify conversations for training"""
-        # Find low-confidence interactions
+        """识别用于训练的对话"""
+        # 查找低置信度交互
         low_confidence = self.find_low_confidence_interactions()
 
-        # Find failed conversations
+        # 查找失败的对话
         failed = self.find_failed_conversations()
 
-        # Find highly-rated conversations
+        # 查找高评分对话
         exemplary = self.find_exemplary_conversations()
 
         return {
@@ -1153,36 +1153,36 @@ class ConversationDataCollector:
             'model_retraining': '''
 class ModelRetrainer:
     async def retrain_models(self, new_data):
-        """Retrain models with new data"""
-        # Prepare training data
+        """使用新数据重新训练模型"""
+        # 准备训练数据
         training_data = self.prepare_training_data(new_data)
 
-        # Validate data quality
+        # 验证数据质量
         validation_result = self.validate_training_data(training_data)
         if not validation_result['passed']:
-            return {'error': 'Data quality check failed', 'issues': validation_result['issues']}
+            return {'error': '数据质量检查失败', 'issues': validation_result['issues']}
 
-        # Retrain models
+        # 重新训练模型
         models_to_retrain = ['intent_classifier', 'entity_extractor']
 
         for model_name in models_to_retrain:
-            # Load current model
+            # 加载当前模型
             current_model = self.load_model(model_name)
 
-            # Create new version
+            # 创建新版本
             new_model = await self.train_model(
                 model_name,
                 training_data,
                 base_model=current_model
             )
 
-            # Evaluate new model
+            # 评估新模型
             evaluation = await self.evaluate_model(
                 new_model,
                 self.get_test_set()
             )
 
-            # Deploy if improved
+            # 如果改进则部署
             if evaluation['performance'] > current_model.performance:
                 await self.deploy_model(new_model, model_name)
 
@@ -1194,7 +1194,7 @@ class ABTestingFramework:
                       test_name: str,
                       variants: List[Dict[str, Any]],
                       metrics: List[str]):
-        """Create A/B test for assistant improvements"""
+        """为助手改进创建 A/B 测试"""
         test = {
             'id': generate_test_id(),
             'name': test_name,
@@ -1204,18 +1204,18 @@ class ABTestingFramework:
             'duration': self.estimate_test_duration(metrics)
         }
 
-        # Deploy test
+        # 部署测试
         self.deploy_test(test)
 
         return test
 
     async def analyze_test_results(self, test_id: str):
-        """Analyze A/B test results"""
+        """分析 A/B 测试结果"""
         data = await self.collect_test_data(test_id)
 
         results = {}
         for metric in data['metrics']:
-            # Statistical analysis
+            # 统计分析
             analysis = self.statistical_analysis(
                 data['control'][metric],
                 data['variant'][metric]
@@ -1234,16 +1234,16 @@ class ABTestingFramework:
         }
 ```
 
-## Output Format
+## 输出格式
 
-1. **Architecture Design**: Complete AI assistant architecture with components
-2. **NLP Implementation**: Natural language processing pipeline and models
-3. **Conversation Flows**: Dialog management and flow design
-4. **Response Generation**: Intelligent response creation with LLM integration
-5. **Context Management**: Sophisticated context and state management
-6. **Testing Framework**: Comprehensive testing for conversational AI
-7. **Deployment Guide**: Scalable deployment architecture
-8. **Monitoring Setup**: Analytics and performance monitoring
-9. **Improvement Pipeline**: Continuous improvement processes
+1. **架构设计**：包含组件的完整 AI 助手架构
+2. **NLP 实现**：自然语言处理流水线和模型
+3. **对话流程**：对话管理和流程设计
+4. **响应生成**：带有 LLM 集成的智能响应创建
+5. **上下文管理**：复杂的上下文和状态管理
+6. **测试框架**：对话式 AI 的全面测试
+7. **部署指南**：可扩展的部署架构
+8. **监控设置**：分析和性能监控
+9. **改进流水线**：持续改进流程
 
-Focus on creating production-ready AI assistants that provide real value through natural conversations, intelligent responses, and continuous learning from user interactions.
+专注于创建生产级 AI 助手，通过自然对话、智能响应和从用户交互中持续学习来提供真正的价值。

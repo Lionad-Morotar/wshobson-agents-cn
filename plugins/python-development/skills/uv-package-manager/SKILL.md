@@ -1,57 +1,57 @@
 ---
 name: uv-package-manager
-description: Master the uv package manager for fast Python dependency management, virtual environments, and modern Python project workflows. Use when setting up Python projects, managing dependencies, or optimizing Python development workflows with uv.
+description: 精通 uv 包管理器,实现快速的 Python 依赖管理、虚拟环境和现代 Python 项目工作流。在设置 Python 项目、管理依赖或使用 uv 优化 Python 开发工作流时使用。
 ---
 
-# UV Package Manager
+# UV 包管理器
 
-Comprehensive guide to using uv, an extremely fast Python package installer and resolver written in Rust, for modern Python project management and dependency workflows.
+使用 uv 的全面指南,这是一款用 Rust 编写的极快 Python 包安装器和解析器,用于现代 Python 项目管理和依赖工作流。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Setting up new Python projects quickly
-- Managing Python dependencies faster than pip
-- Creating and managing virtual environments
-- Installing Python interpreters
-- Resolving dependency conflicts efficiently
-- Migrating from pip/pip-tools/poetry
-- Speeding up CI/CD pipelines
-- Managing monorepo Python projects
-- Working with lockfiles for reproducible builds
-- Optimizing Docker builds with Python dependencies
+- 快速设置新的 Python 项目
+- 比 pip 更快地管理 Python 依赖
+- 创建和管理虚拟环境
+- 安装 Python 解释器
+- 高效解决依赖冲突
+- 从 pip/pip-tools/poetry 迁移
+- 加速 CI/CD 流水线
+- 管理单体仓库 Python 项目
+- 使用锁文件实现可重现构建
+- 优化包含 Python 依赖的 Docker 构建
 
-## Core Concepts
+## 核心概念
 
-### 1. What is uv?
+### 1. 什么是 uv?
 
-- **Ultra-fast package installer**: 10-100x faster than pip
-- **Written in Rust**: Leverages Rust's performance
-- **Drop-in pip replacement**: Compatible with pip workflows
-- **Virtual environment manager**: Create and manage venvs
-- **Python installer**: Download and manage Python versions
-- **Resolver**: Advanced dependency resolution
-- **Lockfile support**: Reproducible installations
+- **超快包安装器**:比 pip 快 10-100 倍
+- **用 Rust 编写**:利用 Rust 的性能优势
+- **pip 即插即用替代品**:兼容 pip 工作流
+- **虚拟环境管理器**:创建和管理虚拟环境
+- **Python 安装器**:下载和管理 Python 版本
+- **解析器**:高级依赖解析
+- **锁文件支持**:可重现的安装
 
-### 2. Key Features
+### 2. 主要特性
 
-- Blazing fast installation speeds
-- Disk space efficient with global cache
-- Compatible with pip, pip-tools, poetry
-- Comprehensive dependency resolution
-- Cross-platform support (Linux, macOS, Windows)
-- No Python required for installation
-- Built-in virtual environment support
+- 极快的安装速度
+- 通过全局缓存节省磁盘空间
+- 兼容 pip、pip-tools、poetry
+- 全面的依赖解析
+- 跨平台支持(Linux、macOS、Windows)
+- 安装时无需 Python
+- 内置虚拟环境支持
 
-### 3. UV vs Traditional Tools
+### 3. UV 与传统工具对比
 
-- **vs pip**: 10-100x faster, better resolver
-- **vs pip-tools**: Faster, simpler, better UX
-- **vs poetry**: Faster, less opinionated, lighter
-- **vs conda**: Faster, Python-focused
+- **vs pip**:快 10-100 倍,更好的解析器
+- **vs pip-tools**:更快、更简单、更好的用户体验
+- **vs poetry**:更快、更少约束、更轻量
+- **vs conda**:更快、专注于 Python
 
-## Installation
+## 安装
 
-### Quick Install
+### 快速安装
 
 ```bash
 # macOS/Linux
@@ -60,230 +60,230 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # Windows (PowerShell)
 powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 
-# Using pip (if you already have Python)
+# 使用 pip (如果你已有 Python)
 pip install uv
 
-# Using Homebrew (macOS)
+# 使用 Homebrew (macOS)
 brew install uv
 
-# Using cargo (if you have Rust)
+# 使用 cargo (如果你有 Rust)
 cargo install --git https://github.com/astral-sh/uv uv
 ```
 
-### Verify Installation
+### 验证安装
 
 ```bash
 uv --version
 # uv 0.x.x
 ```
 
-## Quick Start
+## 快速开始
 
-### Create a New Project
+### 创建新项目
 
 ```bash
-# Create new project with virtual environment
+# 创建包含虚拟环境的新项目
 uv init my-project
 cd my-project
 
-# Or create in current directory
+# 或在当前目录创建
 uv init .
 
-# Initialize creates:
-# - .python-version (Python version)
-# - pyproject.toml (project config)
+# init 会创建:
+# - .python-version (Python 版本)
+# - pyproject.toml (项目配置)
 # - README.md
 # - .gitignore
 ```
 
-### Install Dependencies
+### 安装依赖
 
 ```bash
-# Install packages (creates venv if needed)
+# 安装包(如需要会创建虚拟环境)
 uv add requests pandas
 
-# Install dev dependencies
+# 安装开发依赖
 uv add --dev pytest black ruff
 
-# Install from requirements.txt
+# 从 requirements.txt 安装
 uv pip install -r requirements.txt
 
-# Install from pyproject.toml
+# 从 pyproject.toml 安装
 uv sync
 ```
 
-## Virtual Environment Management
+## 虚拟环境管理
 
-### Pattern 1: Creating Virtual Environments
+### 模式 1: 创建虚拟环境
 
 ```bash
-# Create virtual environment with uv
+# 使用 uv 创建虚拟环境
 uv venv
 
-# Create with specific Python version
+# 使用特定 Python 版本创建
 uv venv --python 3.12
 
-# Create with custom name
+# 使用自定义名称创建
 uv venv my-env
 
-# Create with system site packages
+# 创建包含系统站点包的环境
 uv venv --system-site-packages
 
-# Specify location
+# 指定位置
 uv venv /path/to/venv
 ```
 
-### Pattern 2: Activating Virtual Environments
+### 模式 2: 激活虚拟环境
 
 ```bash
 # Linux/macOS
 source .venv/bin/activate
 
-# Windows (Command Prompt)
+# Windows (命令提示符)
 .venv\Scripts\activate.bat
 
 # Windows (PowerShell)
 .venv\Scripts\Activate.ps1
 
-# Or use uv run (no activation needed)
+# 或使用 uv run(无需激活)
 uv run python script.py
 uv run pytest
 ```
 
-### Pattern 3: Using uv run
+### 模式 3: 使用 uv run
 
 ```bash
-# Run Python script (auto-activates venv)
+# 运行 Python 脚本(自动激活虚拟环境)
 uv run python app.py
 
-# Run installed CLI tool
+# 运行已安装的 CLI 工具
 uv run black .
 uv run pytest
 
-# Run with specific Python version
+# 使用特定 Python 版本运行
 uv run --python 3.11 python script.py
 
-# Pass arguments
+# 传递参数
 uv run python script.py --arg value
 ```
 
-## Package Management
+## 包管理
 
-### Pattern 4: Adding Dependencies
+### 模式 4: 添加依赖
 
 ```bash
-# Add package (adds to pyproject.toml)
+# 添加包(添加到 pyproject.toml)
 uv add requests
 
-# Add with version constraint
+# 添加带版本约束的包
 uv add "django>=4.0,<5.0"
 
-# Add multiple packages
+# 添加多个包
 uv add numpy pandas matplotlib
 
-# Add dev dependency
+# 添加开发依赖
 uv add --dev pytest pytest-cov
 
-# Add optional dependency group
+# 添加可选依赖组
 uv add --optional docs sphinx
 
-# Add from git
+# 从 git 添加
 uv add git+https://github.com/user/repo.git
 
-# Add from git with specific ref
+# 从 git 添加特定引用
 uv add git+https://github.com/user/repo.git@v1.0.0
 
-# Add from local path
+# 从本地路径添加
 uv add ./local-package
 
-# Add editable local package
+# 添加可编辑的本地包
 uv add -e ./local-package
 ```
 
-### Pattern 5: Removing Dependencies
+### 模式 5: 移除依赖
 
 ```bash
-# Remove package
+# 移除包
 uv remove requests
 
-# Remove dev dependency
+# 移除开发依赖
 uv remove --dev pytest
 
-# Remove multiple packages
+# 移除多个包
 uv remove numpy pandas matplotlib
 ```
 
-### Pattern 6: Upgrading Dependencies
+### 模式 6: 升级依赖
 
 ```bash
-# Upgrade specific package
+# 升级特定包
 uv add --upgrade requests
 
-# Upgrade all packages
+# 升级所有包
 uv sync --upgrade
 
-# Upgrade package to latest
+# 升级包到最新版本
 uv add --upgrade requests
 
-# Show what would be upgraded
+# 显示将要升级的内容
 uv tree --outdated
 ```
 
-### Pattern 7: Locking Dependencies
+### 模式 7: 锁定依赖
 
 ```bash
-# Generate uv.lock file
+# 生成 uv.lock 文件
 uv lock
 
-# Update lock file
+# 更新锁文件
 uv lock --upgrade
 
-# Lock without installing
+# 锁定但不安装
 uv lock --no-install
 
-# Lock specific package
+# 锁定特定包
 uv lock --upgrade-package requests
 ```
 
-## Python Version Management
+## Python 版本管理
 
-### Pattern 8: Installing Python Versions
+### 模式 8: 安装 Python 版本
 
 ```bash
-# Install Python version
+# 安装 Python 版本
 uv python install 3.12
 
-# Install multiple versions
+# 安装多个版本
 uv python install 3.11 3.12 3.13
 
-# Install latest version
+# 安装最新版本
 uv python install
 
-# List installed versions
+# 列出已安装版本
 uv python list
 
-# Find available versions
+# 查找可用版本
 uv python list --all-versions
 ```
 
-### Pattern 9: Setting Python Version
+### 模式 9: 设置 Python 版本
 
 ```bash
-# Set Python version for project
+# 为项目设置 Python 版本
 uv python pin 3.12
 
-# This creates/updates .python-version file
+# 这会创建/更新 .python-version 文件
 
-# Use specific Python version for command
+# 为命令使用特定 Python 版本
 uv --python 3.11 run python script.py
 
-# Create venv with specific version
+# 使用特定版本创建虚拟环境
 uv venv --python 3.12
 ```
 
-## Project Configuration
+## 项目配置
 
-### Pattern 10: pyproject.toml with uv
+### 模式 10: pyproject.toml 与 uv
 
 ```toml
 [project]
@@ -317,57 +317,57 @@ build-backend = "hatchling.build"
 
 [tool.uv]
 dev-dependencies = [
-    # Additional dev dependencies managed by uv
+    # 由 uv 管理的额外开发依赖
 ]
 
 [tool.uv.sources]
-# Custom package sources
+# 自定义包源
 my-package = { git = "https://github.com/user/repo.git" }
 ```
 
-### Pattern 11: Using uv with Existing Projects
+### 模式 11: 将 uv 与现有项目配合使用
 
 ```bash
-# Migrate from requirements.txt
+# 从 requirements.txt 迁移
 uv add -r requirements.txt
 
-# Migrate from poetry
-# Already have pyproject.toml, just use:
+# 从 poetry 迁移
+# 已有 pyproject.toml,只需使用:
 uv sync
 
-# Export to requirements.txt
+# 导出到 requirements.txt
 uv pip freeze > requirements.txt
 
-# Export with hashes
+# 导出带哈希的版本
 uv pip freeze --require-hashes > requirements.txt
 ```
 
-## Advanced Workflows
+## 高级工作流
 
-### Pattern 12: Monorepo Support
+### 模式 12: 单体仓库支持
 
 ```bash
-# Project structure
+# 项目结构
 # monorepo/
 #   packages/
 #     package-a/
 #       pyproject.toml
 #     package-b/
 #       pyproject.toml
-#   pyproject.toml (root)
+#   pyproject.toml (根)
 
-# Root pyproject.toml
+# 根 pyproject.toml
 [tool.uv.workspace]
 members = ["packages/*"]
 
-# Install all workspace packages
+# 安装所有工作空间包
 uv sync
 
-# Add workspace dependency
+# 添加工作空间依赖
 uv add --path ./packages/package-a
 ```
 
-### Pattern 13: CI/CD Integration
+### 模式 13: CI/CD 集成
 
 ```yaml
 # .github/workflows/test.yml
@@ -402,126 +402,126 @@ jobs:
           uv run black --check .
 ```
 
-### Pattern 14: Docker Integration
+### 模式 14: Docker 集成
 
 ```dockerfile
 # Dockerfile
 FROM python:3.12-slim
 
-# Install uv
+# 安装 uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
-# Set working directory
+# 设置工作目录
 WORKDIR /app
 
-# Copy dependency files
+# 复制依赖文件
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies
+# 安装依赖
 RUN uv sync --frozen --no-dev
 
-# Copy application code
+# 复制应用代码
 COPY . .
 
-# Run application
+# 运行应用
 CMD ["uv", "run", "python", "app.py"]
 ```
 
-**Optimized multi-stage build:**
+**优化的多阶段构建:**
 
 ```dockerfile
-# Multi-stage Dockerfile
+# 多阶段 Dockerfile
 FROM python:3.12-slim AS builder
 
-# Install uv
+# 安装 uv
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 WORKDIR /app
 
-# Install dependencies to venv
+# 安装依赖到虚拟环境
 COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-editable
 
-# Runtime stage
+# 运行时阶段
 FROM python:3.12-slim
 
 WORKDIR /app
 
-# Copy venv from builder
+# 从构建器复制虚拟环境
 COPY --from=builder /app/.venv .venv
 COPY . .
 
-# Use venv
+# 使用虚拟环境
 ENV PATH="/app/.venv/bin:$PATH"
 
 CMD ["python", "app.py"]
 ```
 
-### Pattern 15: Lockfile Workflows
+### 模式 15: 锁文件工作流
 
 ```bash
-# Create lockfile (uv.lock)
+# 创建锁文件(uv.lock)
 uv lock
 
-# Install from lockfile (exact versions)
+# 从锁文件安装(精确版本)
 uv sync --frozen
 
-# Update lockfile without installing
+# 更新锁文件但不安装
 uv lock --no-install
 
-# Upgrade specific package in lock
+# 升级锁文件中的特定包
 uv lock --upgrade-package requests
 
-# Check if lockfile is up to date
+# 检查锁文件是否最新
 uv lock --check
 
-# Export lockfile to requirements.txt
+# 导出锁文件到 requirements.txt
 uv export --format requirements-txt > requirements.txt
 
-# Export with hashes for security
+# 导出带哈希的版本以增强安全性
 uv export --format requirements-txt --hash > requirements.txt
 ```
 
-## Performance Optimization
+## 性能优化
 
-### Pattern 16: Using Global Cache
+### 模式 16: 使用全局缓存
 
 ```bash
-# UV automatically uses global cache at:
+# UV 自动使用以下位置的全局缓存:
 # Linux: ~/.cache/uv
 # macOS: ~/Library/Caches/uv
 # Windows: %LOCALAPPDATA%\uv\cache
 
-# Clear cache
+# 清除缓存
 uv cache clean
 
-# Check cache size
+# 检查缓存大小
 uv cache dir
 ```
 
-### Pattern 17: Parallel Installation
+### 模式 17: 并行安装
 
 ```bash
-# UV installs packages in parallel by default
+# UV 默认并行安装包
 
-# Control parallelism
+# 控制并行度
 uv pip install --jobs 4 package1 package2
 
-# No parallel (sequential)
+# 无并行(顺序)
 uv pip install --jobs 1 package
 ```
 
-### Pattern 18: Offline Mode
+### 模式 18: 离线模式
 
 ```bash
-# Install from cache only (no network)
+# 仅从缓存安装(无网络)
 uv pip install --offline package
 
-# Sync from lockfile offline
+# 从锁文件离线同步
 uv sync --frozen --offline
 ```
 
-## Comparison with Other Tools
+## 与其他工具对比
 
 ### uv vs pip
 
@@ -530,12 +530,12 @@ uv sync --frozen --offline
 python -m venv .venv
 source .venv/bin/activate
 pip install requests pandas numpy
-# ~30 seconds
+# ~30 秒
 
 # uv
 uv venv
 uv add requests pandas numpy
-# ~2 seconds (10-15x faster)
+# ~2 秒(快 10-15 倍)
 ```
 
 ### uv vs poetry
@@ -545,13 +545,13 @@ uv add requests pandas numpy
 poetry init
 poetry add requests pandas
 poetry install
-# ~20 seconds
+# ~20 秒
 
 # uv
 uv init
 uv add requests pandas
 uv sync
-# ~3 seconds (6-7x faster)
+# ~3 秒(快 6-7 倍)
 ```
 
 ### uv vs pip-tools
@@ -560,76 +560,76 @@ uv sync
 # pip-tools
 pip-compile requirements.in
 pip-sync requirements.txt
-# ~15 seconds
+# ~15 秒
 
 # uv
 uv lock
 uv sync --frozen
-# ~2 seconds (7-8x faster)
+# ~2 秒(快 7-8 倍)
 ```
 
-## Common Workflows
+## 常见工作流
 
-### Pattern 19: Starting a New Project
+### 模式 19: 启动新项目
 
 ```bash
-# Complete workflow
+# 完整工作流
 uv init my-project
 cd my-project
 
-# Set Python version
+# 设置 Python 版本
 uv python pin 3.12
 
-# Add dependencies
+# 添加依赖
 uv add fastapi uvicorn pydantic
 
-# Add dev dependencies
+# 添加开发依赖
 uv add --dev pytest black ruff mypy
 
-# Create structure
+# 创建结构
 mkdir -p src/my_project tests
 
-# Run tests
+# 运行测试
 uv run pytest
 
-# Format code
+# 格式化代码
 uv run black .
 uv run ruff check .
 ```
 
-### Pattern 20: Maintaining Existing Project
+### 模式 20: 维护现有项目
 
 ```bash
-# Clone repository
+# 克隆仓库
 git clone https://github.com/user/project.git
 cd project
 
-# Install dependencies (creates venv automatically)
+# 安装依赖(自动创建虚拟环境)
 uv sync
 
-# Install with dev dependencies
+# 安装包含开发依赖
 uv sync --all-extras
 
-# Update dependencies
+# 更新依赖
 uv lock --upgrade
 
-# Run application
+# 运行应用
 uv run python app.py
 
-# Run tests
+# 运行测试
 uv run pytest
 
-# Add new dependency
+# 添加新依赖
 uv add new-package
 
-# Commit updated files
+# 提交更新的文件
 git add pyproject.toml uv.lock
 git commit -m "Add new-package dependency"
 ```
 
-## Tool Integration
+## 工具集成
 
-### Pattern 21: Pre-commit Hooks
+### 模式 21: Pre-commit 钩子
 
 ```yaml
 # .pre-commit-config.yaml
@@ -655,7 +655,7 @@ repos:
         types: [python]
 ```
 
-### Pattern 22: VS Code Integration
+### 模式 22: VS Code 集成
 
 ```json
 // .vscode/settings.json
@@ -673,162 +673,162 @@ repos:
 }
 ```
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
 ```bash
-# Issue: uv not found
-# Solution: Add to PATH or reinstall
+# 问题:找不到 uv
+# 解决方案:添加到 PATH 或重新安装
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
 
-# Issue: Wrong Python version
-# Solution: Pin version explicitly
+# 问题:Python 版本错误
+# 解决方案:显式锁定版本
 uv python pin 3.12
 uv venv --python 3.12
 
-# Issue: Dependency conflict
-# Solution: Check resolution
+# 问题:依赖冲突
+# 解决方案:检查解析过程
 uv lock --verbose
 
-# Issue: Cache issues
-# Solution: Clear cache
+# 问题:缓存问题
+# 解决方案:清除缓存
 uv cache clean
 
-# Issue: Lockfile out of sync
-# Solution: Regenerate
+# 问题:锁文件不同步
+# 解决方案:重新生成
 uv lock --upgrade
 ```
 
-## Best Practices
+## 最佳实践
 
-### Project Setup
+### 项目设置
 
-1. **Always use lockfiles** for reproducibility
-2. **Pin Python version** with .python-version
-3. **Separate dev dependencies** from production
-4. **Use uv run** instead of activating venv
-5. **Commit uv.lock** to version control
-6. **Use --frozen in CI** for consistent builds
-7. **Leverage global cache** for speed
-8. **Use workspace** for monorepos
-9. **Export requirements.txt** for compatibility
-10. **Keep uv updated** for latest features
+1. **始终使用锁文件**以确保可重现性
+2. **使用 .python-version 锁定 Python 版本**
+3. **将开发依赖与生产依赖分离**
+4. **使用 uv run** 而不是激活虚拟环境
+5. **将 uv.lock 提交到版本控制**
+6. **在 CI 中使用 --frozen** 以实现一致构建
+7. **利用全局缓存**以提高速度
+8. **使用工作空间**管理单体仓库
+9. **导出 requirements.txt** 以保持兼容性
+10. **保持 uv 更新**以获取最新功能
 
-### Performance Tips
+### 性能提示
 
 ```bash
-# Use frozen installs in CI
+# 在 CI 中使用冻结安装
 uv sync --frozen
 
-# Use offline mode when possible
+# 尽可能使用离线模式
 uv sync --offline
 
-# Parallel operations (automatic)
-# uv does this by default
+# 并行操作(自动)
+# uv 默认执行此操作
 
-# Reuse cache across environments
-# uv shares cache globally
+# 跨环境重用缓存
+# uv 全局共享缓存
 
-# Use lockfiles to skip resolution
-uv sync --frozen  # skips resolution
+# 使用锁文件跳过解析
+uv sync --frozen  # 跳过解析
 ```
 
-## Migration Guide
+## 迁移指南
 
-### From pip + requirements.txt
+### 从 pip + requirements.txt 迁移
 
 ```bash
-# Before
+# 之前
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 
-# After
+# 之后
 uv venv
 uv pip install -r requirements.txt
-# Or better:
+# 或更好:
 uv init
 uv add -r requirements.txt
 ```
 
-### From Poetry
+### 从 Poetry 迁移
 
 ```bash
-# Before
+# 之前
 poetry install
 poetry add requests
 
-# After
+# 之后
 uv sync
 uv add requests
 
-# Keep existing pyproject.toml
-# uv reads [project] and [tool.poetry] sections
+# 保留现有 pyproject.toml
+# uv 读取 [project] 和 [tool.poetry] 部分
 ```
 
-### From pip-tools
+### 从 pip-tools 迁移
 
 ```bash
-# Before
+# 之前
 pip-compile requirements.in
 pip-sync requirements.txt
 
-# After
+# 之后
 uv lock
 uv sync --frozen
 ```
 
-## Command Reference
+## 命令参考
 
-### Essential Commands
+### 基本命令
 
 ```bash
-# Project management
-uv init [PATH]              # Initialize project
-uv add PACKAGE              # Add dependency
-uv remove PACKAGE           # Remove dependency
-uv sync                     # Install dependencies
-uv lock                     # Create/update lockfile
+# 项目管理
+uv init [PATH]              # 初始化项目
+uv add PACKAGE              # 添加依赖
+uv remove PACKAGE           # 移除依赖
+uv sync                     # 安装依赖
+uv lock                     # 创建/更新锁文件
 
-# Virtual environments
-uv venv [PATH]              # Create venv
-uv run COMMAND              # Run in venv
+# 虚拟环境
+uv venv [PATH]              # 创建虚拟环境
+uv run COMMAND              # 在虚拟环境中运行
 
-# Python management
-uv python install VERSION   # Install Python
-uv python list              # List installed Pythons
-uv python pin VERSION       # Pin Python version
+# Python 管理
+uv python install VERSION   # 安装 Python
+uv python list              # 列出已安装的 Python
+uv python pin VERSION       # 锁定 Python 版本
 
-# Package installation (pip-compatible)
-uv pip install PACKAGE      # Install package
-uv pip uninstall PACKAGE    # Uninstall package
-uv pip freeze               # List installed
-uv pip list                 # List packages
+# 包安装(pip 兼容)
+uv pip install PACKAGE      # 安装包
+uv pip uninstall PACKAGE    # 卸载包
+uv pip freeze               # 列出已安装的包
+uv pip list                 # 列出包
 
-# Utility
-uv cache clean              # Clear cache
-uv cache dir                # Show cache location
-uv --version                # Show version
+# 工具
+uv cache clean              # 清除缓存
+uv cache dir                # 显示缓存位置
+uv --version                # 显示版本
 ```
 
-## Resources
+## 资源
 
-- **Official documentation**: https://docs.astral.sh/uv/
-- **GitHub repository**: https://github.com/astral-sh/uv
-- **Astral blog**: https://astral.sh/blog
-- **Migration guides**: https://docs.astral.sh/uv/guides/
-- **Comparison with other tools**: https://docs.astral.sh/uv/pip/compatibility/
+- **官方文档**: https://docs.astral.sh/uv/
+- **GitHub 仓库**: https://github.com/astral-sh/uv
+- **Astral 博客**: https://astral.sh/blog
+- **迁移指南**: https://docs.astral.sh/uv/guides/
+- **与其他工具的对比**: https://docs.astral.sh/uv/pip/compatibility/
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Use uv for all new projects** - Start with `uv init`
-2. **Commit lockfiles** - Ensure reproducible builds
-3. **Pin Python versions** - Use .python-version
-4. **Use uv run** - Avoid manual venv activation
-5. **Leverage caching** - Let uv manage global cache
-6. **Use --frozen in CI** - Exact reproduction
-7. **Keep uv updated** - Fast-moving project
-8. **Use workspaces** - For monorepo projects
-9. **Export for compatibility** - Generate requirements.txt when needed
-10. **Read the docs** - uv is feature-rich and evolving
+1. **所有新项目使用 uv** - 从 `uv init` 开始
+2. **提交锁文件** - 确保可重现构建
+3. **锁定 Python 版本** - 使用 .python-version
+4. **使用 uv run** - 避免手动激活虚拟环境
+5. **利用缓存** - 让 uv 管理全局缓存
+6. **在 CI 中使用 --frozen** - 精确重现
+7. **保持 uv 更新** - 快速发展的项目
+8. **使用工作空间** - 用于单体仓库项目
+9. **导出以兼容** - 需要时生成 requirements.txt
+10. **阅读文档** - uv 功能丰富且不断演进

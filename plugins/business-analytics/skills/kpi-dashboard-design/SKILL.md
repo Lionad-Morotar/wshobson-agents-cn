@@ -1,162 +1,162 @@
 ---
 name: kpi-dashboard-design
-description: Design effective KPI dashboards with metrics selection, visualization best practices, and real-time monitoring patterns. Use when building business dashboards, selecting metrics, or designing data visualization layouts.
+description: 设计有效的 KPI 仪表板，包括指标选择、可视化最佳实践和实时监控模式。在构建业务仪表板、选择指标或设计数据可视化布局时使用。
 ---
 
-# KPI Dashboard Design
+# KPI 仪表板设计
 
-Comprehensive patterns for designing effective Key Performance Indicator (KPI) dashboards that drive business decisions.
+设计有效的关键绩效指标（KPI）仪表板以推动业务决策的综合模式。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Designing executive dashboards
-- Selecting meaningful KPIs
-- Building real-time monitoring displays
-- Creating department-specific metrics views
-- Improving existing dashboard layouts
-- Establishing metric governance
+- 设计高管仪表板
+- 选择有意义的 KPI
+- 构建实时监控显示
+- 创建特定部门的指标视图
+- 改进现有仪表板布局
+- 建立指标治理
 
-## Core Concepts
+## 核心概念
 
-### 1. KPI Framework
+### 1. KPI 框架
 
-| Level           | Focus            | Update Frequency  | Audience   |
-| --------------- | ---------------- | ----------------- | ---------- |
-| **Strategic**   | Long-term goals  | Monthly/Quarterly | Executives |
-| **Tactical**    | Department goals | Weekly/Monthly    | Managers   |
-| **Operational** | Day-to-day       | Real-time/Daily   | Teams      |
+| 级别         | 关注点           | 更新频率        | 受众     |
+| ------------ | ---------------- | --------------- | -------- |
+| **战略**     | 长期目标         | 月度/季度       | 高管     |
+| **战术**     | 部门目标         | 每周/月度       | 管理者   |
+| **运营**     | 日常工作         | 实时/每日       | 团队     |
 
-### 2. SMART KPIs
-
-```
-Specific: Clear definition
-Measurable: Quantifiable
-Achievable: Realistic targets
-Relevant: Aligned to goals
-Time-bound: Defined period
-```
-
-### 3. Dashboard Hierarchy
+### 2. SMART KPI
 
 ```
-├── Executive Summary (1 page)
-│   ├── 4-6 headline KPIs
-│   ├── Trend indicators
-│   └── Key alerts
-├── Department Views
-│   ├── Sales Dashboard
-│   ├── Marketing Dashboard
-│   ├── Operations Dashboard
-│   └── Finance Dashboard
-└── Detailed Drilldowns
-    ├── Individual metrics
-    └── Root cause analysis
+Specific：明确的定义
+Measurable：可量化
+Achievable：现实的目标
+Relevant：与目标一致
+Time-bound：定义的期间
 ```
 
-## Common KPIs by Department
+### 3. 仪表板层级
 
-### Sales KPIs
+```
+├── 高管摘要（1 页）
+│   ├── 4-6 个核心 KPI
+│   ├── 趋势指标
+│   └── 关键警报
+├── 部门视图
+│   ├── 销售仪表板
+│   ├── 营销仪表板
+│   ├── 运营仪表板
+│   └── 财务仪表板
+└── 详细钻取
+    ├── 单个指标
+    └── 根本原因分析
+```
+
+## 按部门的常见 KPI
+
+### 销售 KPI
 
 ```yaml
-Revenue Metrics:
-  - Monthly Recurring Revenue (MRR)
-  - Annual Recurring Revenue (ARR)
-  - Average Revenue Per User (ARPU)
-  - Revenue Growth Rate
+收入指标：
+  - 月度经常性收入（MRR）
+  - 年度经常性收入（ARR）
+  - 每用户平均收入（ARPU）
+  - 收入增长率
 
-Pipeline Metrics:
-  - Sales Pipeline Value
-  - Win Rate
-  - Average Deal Size
-  - Sales Cycle Length
+管道指标：
+  - 销售管道价值
+  - 赢率
+  - 平均交易规模
+  - 销售周期长度
 
-Activity Metrics:
-  - Calls/Emails per Rep
-  - Demos Scheduled
-  - Proposals Sent
-  - Close Rate
+活动指标：
+  - 每位代表的通话/邮件数
+  - 预定的演示
+  - 发送的提案
+  - 成交率
 ```
 
-### Marketing KPIs
+### 营销 KPI
 
 ```yaml
-Acquisition:
-  - Cost Per Acquisition (CPA)
-  - Customer Acquisition Cost (CAC)
-  - Lead Volume
-  - Marketing Qualified Leads (MQL)
+获客：
+  - 获客成本（CPA）
+  - 客户获取成本（CAC）
+  - 线索量
+  - 营销合格线索（MQL）
 
-Engagement:
-  - Website Traffic
-  - Conversion Rate
-  - Email Open/Click Rate
-  - Social Engagement
+参与度：
+  - 网站流量
+  - 转化率
+  - 邮件打开/点击率
+  - 社交参与度
 
-ROI:
-  - Marketing ROI
-  - Campaign Performance
-  - Channel Attribution
-  - CAC Payback Period
+ROI：
+  - 营销 ROI
+  - 活动表现
+  - 渠道归因
+  - CAC 回收期
 ```
 
-### Product KPIs
+### 产品 KPI
 
 ```yaml
-Usage:
-  - Daily/Monthly Active Users (DAU/MAU)
-  - Session Duration
-  - Feature Adoption Rate
-  - Stickiness (DAU/MAU)
+使用：
+  - 日/月活跃用户（DAU/MAU）
+  - 会话时长
+  - 功能采用率
+  - 黏性（DAU/MAU）
 
-Quality:
-  - Net Promoter Score (NPS)
-  - Customer Satisfaction (CSAT)
-  - Bug/Issue Count
-  - Time to Resolution
+质量：
+  - 净推荐值（NPS）
+  - 客户满意度（CSAT）
+  - 缺陷/问题数
+  - 解决时间
 
-Growth:
-  - User Growth Rate
-  - Activation Rate
-  - Retention Rate
-  - Churn Rate
+增长：
+  - 用户增长率
+  - 激活率
+  - 留存率
+  - 流失率
 ```
 
-### Finance KPIs
+### 财务 KPI
 
 ```yaml
-Profitability:
-  - Gross Margin
-  - Net Profit Margin
-  - EBITDA
-  - Operating Margin
+盈利能力：
+  - 毛利率
+  - 净利润率
+  - 息税折旧摊销前利润（EBITDA）
+  - 营业利润率
 
-Liquidity:
-  - Current Ratio
-  - Quick Ratio
-  - Cash Flow
-  - Working Capital
+流动性：
+  - 流动比率
+  - 速动比率
+  - 现金流
+  - 营运资本
 
-Efficiency:
-  - Revenue per Employee
-  - Operating Expense Ratio
-  - Days Sales Outstanding
-  - Inventory Turnover
+效率：
+  - 每员工收入
+  - 营业费用比率
+  - 应收账款周转天数
+  - 库存周转率
 ```
 
-## Dashboard Layout Patterns
+## 仪表板布局模式
 
-### Pattern 1: Executive Summary
+### 模式 1：高管摘要
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  EXECUTIVE DASHBOARD                        [Date Range ▼]  │
+│  高管仪表板                                [日期范围 ▼]  │
 ├─────────────┬─────────────┬─────────────┬─────────────────┤
-│   REVENUE   │   PROFIT    │  CUSTOMERS  │    NPS SCORE    │
+│   收入      │   利润      │  客户       │    NPS 分数     │
 │   $2.4M     │    $450K    │    12,450   │       72        │
 │   ▲ 12%     │    ▲ 8%     │    ▲ 15%    │     ▲ 5pts     │
 ├─────────────┴─────────────┴─────────────┴─────────────────┤
 │                                                             │
-│  Revenue Trend                    │  Revenue by Product     │
+│  收入趋势                      │  按产品的收入            │
 │  ┌───────────────────────┐       │  ┌──────────────────┐   │
 │  │    /\    /\          │       │  │ ████████ 45%     │   │
 │  │   /  \  /  \    /\   │       │  │ ██████   32%     │   │
@@ -165,18 +165,18 @@ Efficiency:
 │  └───────────────────────┘       │  └──────────────────┘   │
 │                                                             │
 ├─────────────────────────────────────────────────────────────┤
-│  🔴 Alert: Churn rate exceeded threshold (>5%)              │
-│  🟡 Warning: Support ticket volume 20% above average        │
+│  🔴 警报：流失率超过阈值（>5%）                              │
+│  🟡 警告：支持工单量高于平均值 20%                           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Pattern 2: SaaS Metrics Dashboard
+### 模式 2：SaaS 指标仪表板
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  SAAS METRICS                     Jan 2024  [Monthly ▼]     │
+│  SAAS 指标                       2024年1月  [月度 ▼]       │
 ├──────────────────────┬──────────────────────────────────────┤
-│  ┌────────────────┐  │  MRR GROWTH                          │
+│  ┌────────────────┐  │  MRR 增长                            │
 │  │      MRR       │  │  ┌────────────────────────────────┐  │
 │  │    $125,000    │  │  │                          /──   │  │
 │  │     ▲ 8%       │  │  │                    /────/      │  │
@@ -184,60 +184,60 @@ Efficiency:
 │  ┌────────────────┐  │  │        /────/                  │  │
 │  │      ARR       │  │  │   /────/                       │  │
 │  │   $1,500,000   │  │  └────────────────────────────────┘  │
-│  │     ▲ 15%      │  │  J  F  M  A  M  J  J  A  S  O  N  D  │
+│  │     ▲ 15%      │  │  1月 2月 3月 4月 5月 6月 7月 8月... │
 │  └────────────────┘  │                                      │
 ├──────────────────────┼──────────────────────────────────────┤
-│  UNIT ECONOMICS      │  COHORT RETENTION                    │
+│  单位经济            │  队列留存                            │
 │                      │                                      │
-│  CAC:     $450       │  Month 1: ████████████████████ 100%  │
-│  LTV:     $2,700     │  Month 3: █████████████████    85%   │
-│  LTV/CAC: 6.0x       │  Month 6: ████████████████     80%   │
-│                      │  Month 12: ██████████████      72%   │
-│  Payback: 4 months   │                                      │
+│  CAC:     $450       │  第1个月：████████████████████ 100%  │
+│  LTV:     $2,700     │  第3个月：████████████████    85%   │
+│  LTV/CAC: 6.0x       │  第6个月：███████████████     80%   │
+│                      │  第12个月：████████████      72%   │
+│  回收期：4 个月      │                                      │
 ├──────────────────────┴──────────────────────────────────────┤
-│  CHURN ANALYSIS                                             │
+│  流失分析                                                   │
 │  ┌──────────┬──────────┬──────────┬──────────────────────┐ │
-│  │ Gross    │ Net      │ Logo     │ Expansion            │ │
+│  │ 总流失    │ 净流失    │ 客户流失  │ 扩展                 │ │
 │  │ 4.2%     │ 1.8%     │ 3.1%     │ 2.4%                 │ │
 │  └──────────┴──────────┴──────────┴──────────────────────┘ │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Pattern 3: Real-time Operations
+### 模式 3：实时运营
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  OPERATIONS CENTER                    Live ● Last: 10:42:15 │
+│  运营中心                            实时 ● 最后：10:42:15 │
 ├────────────────────────────┬────────────────────────────────┤
-│  SYSTEM HEALTH             │  SERVICE STATUS                │
+│  系统健康                   │  服务状态                      │
 │  ┌──────────────────────┐  │                                │
-│  │   CPU    MEM    DISK │  │  ● API Gateway      Healthy    │
-│  │   45%    72%    58%  │  │  ● User Service     Healthy    │
-│  │   ███    ████   ███  │  │  ● Payment Service  Degraded   │
-│  │   ███    ████   ███  │  │  ● Database         Healthy    │
-│  │   ███    ████   ███  │  │  ● Cache            Healthy    │
+│  │   CPU    内存   磁盘 │  │  ● API 网关        健康        │
+│  │   45%    72%    58%  │  │  ● 用户服务        健康        │
+│  │   ███    ████   ███  │  │  ● 支付服务        降级        │
+│  │   ███    ████   ███  │  │  ● 数据库          健康        │
+│  │   ███    ████   ███  │  │  ● 缓存            健康        │
 │  └──────────────────────┘  │                                │
 ├────────────────────────────┼────────────────────────────────┤
-│  REQUEST THROUGHPUT        │  ERROR RATE                    │
+│  请求吞吐量                 │  错误率                        │
 │  ┌──────────────────────┐  │  ┌──────────────────────────┐  │
 │  │ ▁▂▃▄▅▆▇█▇▆▅▄▃▂▁▂▃▄▅ │  │  │ ▁▁▁▁▁▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁  │  │
 │  └──────────────────────┘  │  └──────────────────────────┘  │
-│  Current: 12,450 req/s     │  Current: 0.02%                │
-│  Peak: 18,200 req/s        │  Threshold: 1.0%               │
+│  当前：12,450 请求/秒      │  当前：0.02%                    │
+│  峰值：18,200 请求/秒      │  阈值：1.0%                     │
 ├────────────────────────────┴────────────────────────────────┤
-│  RECENT ALERTS                                              │
-│  10:40  🟡 High latency on payment-service (p99 > 500ms)    │
-│  10:35  🟢 Resolved: Database connection pool recovered     │
-│  10:22  🔴 Payment service circuit breaker tripped          │
+│  最近警报                                                   │
+│  10:40  🟡 支付服务高延迟（p99 > 500ms）                     │
+│  10:35  🟢 已解决：数据库连接池恢复                          │
+│  10:22  🔴 支付服务熔断器触发                                │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Implementation Patterns
+## 实现模式
 
-### SQL for KPI Calculations
+### KPI 计算的 SQL
 
 ```sql
--- Monthly Recurring Revenue (MRR)
+-- 月度经常性收入（MRR）
 WITH mrr_calculation AS (
     SELECT
         DATE_TRUNC('month', billing_date) AS month,
@@ -259,7 +259,7 @@ SELECT
     (mrr - LAG(mrr) OVER (ORDER BY month)) / LAG(mrr) OVER (ORDER BY month) * 100 AS growth_pct
 FROM mrr_calculation;
 
--- Cohort Retention
+-- 队列留存
 WITH cohorts AS (
     SELECT
         user_id,
@@ -284,7 +284,7 @@ LEFT JOIN activity a ON c.user_id = a.user_id
 GROUP BY c.cohort_month, EXTRACT(MONTH FROM age(a.activity_month, c.cohort_month))
 ORDER BY c.cohort_month, months_since_signup;
 
--- Customer Acquisition Cost (CAC)
+-- 客户获取成本（CAC）
 SELECT
     DATE_TRUNC('month', acquired_date) AS month,
     SUM(marketing_spend) / NULLIF(COUNT(new_customers), 0) AS cac,
@@ -302,7 +302,7 @@ FROM (
 GROUP BY DATE_TRUNC('month', acquired_date);
 ```
 
-### Python Dashboard Code (Streamlit)
+### Python 仪表板代码（Streamlit）
 
 ```python
 import streamlit as st
@@ -310,19 +310,19 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-st.set_page_config(page_title="KPI Dashboard", layout="wide")
+st.set_page_config(page_title="KPI 仪表板", layout="wide")
 
-# Header with date filter
+# 带日期过滤器的页眉
 col1, col2 = st.columns([3, 1])
 with col1:
-    st.title("Executive Dashboard")
+    st.title("高管仪表板")
 with col2:
     date_range = st.selectbox(
-        "Period",
-        ["Last 7 Days", "Last 30 Days", "Last Quarter", "YTD"]
+        "期间",
+        ["最近 7 天", "最近 30 天", "上季度", "年初至今"]
     )
 
-# KPI Cards
+# KPI 卡片
 def metric_card(label, value, delta, prefix="", suffix=""):
     delta_color = "green" if delta >= 0 else "red"
     delta_arrow = "▲" if delta >= 0 else "▼"
@@ -334,44 +334,44 @@ def metric_card(label, value, delta, prefix="", suffix=""):
 
 col1, col2, col3, col4 = st.columns(4)
 with col1:
-    metric_card("Revenue", 2400000, 12.5, prefix="$")
+    metric_card("收入", 2400000, 12.5, prefix="$")
 with col2:
-    metric_card("Customers", 12450, 15.2)
+    metric_card("客户", 12450, 15.2)
 with col3:
-    metric_card("NPS Score", 72, 5.0)
+    metric_card("NPS 分数", 72, 5.0)
 with col4:
-    metric_card("Churn Rate", 4.2, -0.8, suffix="%")
+    metric_card("流失率", 4.2, -0.8, suffix="%")
 
-# Charts
+# 图表
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("Revenue Trend")
+    st.subheader("收入趋势")
     revenue_data = pd.DataFrame({
-        'Month': pd.date_range('2024-01-01', periods=12, freq='M'),
-        'Revenue': [180000, 195000, 210000, 225000, 240000, 255000,
+        '月份': pd.date_range('2024-01-01', periods=12, freq='M'),
+        '收入': [180000, 195000, 210000, 225000, 240000, 255000,
                     270000, 285000, 300000, 315000, 330000, 345000]
     })
-    fig = px.line(revenue_data, x='Month', y='Revenue',
+    fig = px.line(revenue_data, x='月份', y='收入',
                   line_shape='spline', markers=True)
     fig.update_layout(height=300)
     st.plotly_chart(fig, use_container_width=True)
 
 with col2:
-    st.subheader("Revenue by Product")
+    st.subheader("按产品的收入")
     product_data = pd.DataFrame({
-        'Product': ['Enterprise', 'Professional', 'Starter', 'Other'],
-        'Revenue': [45, 32, 18, 5]
+        '产品': ['企业版', '专业版', '入门版', '其他'],
+        '收入': [45, 32, 18, 5]
     })
-    fig = px.pie(product_data, values='Revenue', names='Product',
+    fig = px.pie(product_data, values='收入', names='产品',
                  hole=0.4)
     fig.update_layout(height=300)
     st.plotly_chart(fig, use_container_width=True)
 
-# Cohort Heatmap
-st.subheader("Cohort Retention")
+# 队列热图
+st.subheader("队列留存")
 cohort_data = pd.DataFrame({
-    'Cohort': ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+    '队列': ['1月', '2月', '3月', '4月', '5月'],
     'M0': [100, 100, 100, 100, 100],
     'M1': [85, 87, 84, 86, 88],
     'M2': [78, 80, 76, 79, None],
@@ -381,7 +381,7 @@ cohort_data = pd.DataFrame({
 fig = go.Figure(data=go.Heatmap(
     z=cohort_data.iloc[:, 1:].values,
     x=['M0', 'M1', 'M2', 'M3', 'M4'],
-    y=cohort_data['Cohort'],
+    y=cohort_data['队列'],
     colorscale='Blues',
     text=cohort_data.iloc[:, 1:].values,
     texttemplate='%{text}%',
@@ -390,11 +390,11 @@ fig = go.Figure(data=go.Heatmap(
 fig.update_layout(height=250)
 st.plotly_chart(fig, use_container_width=True)
 
-# Alerts Section
-st.subheader("Alerts")
+# 警报部分
+st.subheader("警报")
 alerts = [
-    {"level": "error", "message": "Churn rate exceeded threshold (>5%)"},
-    {"level": "warning", "message": "Support ticket volume 20% above average"},
+    {"level": "error", "message": "流失率超过阈值（>5%）"},
+    {"level": "warning", "message": "支持工单量高于平均值 20%"},
 ]
 for alert in alerts:
     if alert["level"] == "error":
@@ -403,26 +403,26 @@ for alert in alerts:
         st.warning(f"🟡 {alert['message']}")
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Limit to 5-7 KPIs** - Focus on what matters
-- **Show context** - Comparisons, trends, targets
-- **Use consistent colors** - Red=bad, green=good
-- **Enable drilldown** - From summary to detail
-- **Update appropriately** - Match metric frequency
+- **限制为 5-7 个 KPI** - 关注重要的事情
+- **显示上下文** - 比较、趋势、目标
+- **使用一致的颜色** - 红色=坏，绿色=好
+- **启用钻取** - 从摘要到详细
+- **适当更新** - 匹配指标频率
 
-### Don'ts
+### 不应该做
 
-- **Don't show vanity metrics** - Focus on actionable data
-- **Don't overcrowd** - White space aids comprehension
-- **Don't use 3D charts** - They distort perception
-- **Don't hide methodology** - Document calculations
-- **Don't ignore mobile** - Ensure responsive design
+- **不要显示虚荣指标** - 关注可操作的数据
+- **不要过度拥挤** - 空白有助于理解
+- **不要使用 3D 图表** - 它们扭曲感知
+- **不要隐藏方法论** - 记录计算方法
+- **不要忽略移动端** - 确保响应式设计
 
-## Resources
+## 资源
 
-- [Stephen Few's Dashboard Design](https://www.perceptualedge.com/articles/visual_business_intelligence/rules_for_using_color.pdf)
-- [Edward Tufte's Principles](https://www.edwardtufte.com/tufte/)
-- [Google Data Studio Gallery](https://datastudio.google.com/gallery)
+- [Stephen Few 的仪表板设计](https://www.perceptualedge.com/articles/visual_business_intelligence/rules_for_using_color.pdf)
+- [Edward Tufte 的原则](https://www.edwardtufte.com/tufte/)
+- [Google Data Studio 画廊](https://datastudio.google.com/gallery)

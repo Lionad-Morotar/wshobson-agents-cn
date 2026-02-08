@@ -1,146 +1,146 @@
-# Development Workflow
+# 开发工作流
 
-## Core Principles
+## 核心原则
 
-1. **plan.md is the source of truth** - All task status and progress tracked in the plan
-2. **Test-Driven Development** - Red → Green → Refactor cycle with 80% coverage target
-3. **CI/CD Compatibility** - All changes must pass automated pipelines before merge
-4. **Incremental Progress** - Small, verifiable commits with clear purpose
+1. **plan.md 是唯一真实来源** - 所有任务状态和进度在计划中跟踪
+2. **测试驱动开发** - 红 → 绿 → 重构循环,目标覆盖率为 80%
+3. **CI/CD 兼容性** - 所有变更在合并前必须通过自动化流水线
+4. **渐进式进展** - 小型、可验证的提交,目的明确
 
-## Task Lifecycle
+## 任务生命周期
 
-### Step 1: Task Selection
+### 步骤 1:任务选择
 
-- Review plan.md for next pending task
-- Verify dependencies are complete
-- Confirm understanding of acceptance criteria
+- 查阅 plan.md 确定下一个待处理任务
+- 验证所有依赖关系已完成
+- 确认对验收标准的理解
 
-### Step 2: Progress Marking
+### 步骤 2:进度标记
 
-- Update task status in plan.md from `[ ]` to `[~]`
-- Note start time if tracking velocity
+- 在 plan.md 中将任务状态从 `[ ]` 更新为 `[~]`
+- 如果跟踪开发速度,记录开始时间
 
-### Step 3: Red Phase (Write Failing Tests)
+### 步骤 3:红阶段(编写失败的测试)
 
-- Write test(s) that define expected behavior
-- Verify test fails for the right reason
-- Keep tests focused and minimal
+- 编写定义预期行为的测试
+- 验证测试因正确原因而失败
+- 保持测试聚焦且最小化
 
-### Step 4: Green Phase (Make Tests Pass)
+### 步骤 4:绿阶段(使测试通过)
 
-- Write minimum code to pass tests
-- Avoid premature optimization
-- Focus on correctness over elegance
+- 编写通过测试的最小化代码
+- 避免过早优化
+- 优先保证正确性而非优雅性
 
-### Step 5: Refactor Phase
+### 步骤 5:重构阶段
 
-- Improve code structure without changing behavior
-- Apply relevant style guide conventions
-- Remove duplication and clarify intent
+- 在不改变行为的前提下改进代码结构
+- 应用相关的风格指南规范
+- 消除重复并阐明意图
 
-### Step 6: Coverage Verification
+### 步骤 6:覆盖率验证
 
-- Run coverage report
-- Ensure new code meets 80% threshold
-- Add edge case tests if coverage gaps exist
+- 运行覆盖率报告
+- 确保新代码达到 80% 阈值
+- 如果存在覆盖率缺口,添加边缘用例测试
 
-### Step 7: Deviation Documentation
+### 步骤 7:偏差文档
 
-- If implementation differs from spec, document why
-- Update spec if change is permanent
-- Flag for review if uncertain
+- 如果实现与规格不同,记录原因
+- 如果变更是永久性的,更新规格
+- 如果不确定,标记以供审查
 
-### Step 8: Code Commit
+### 步骤 8:代码提交
 
-- Stage related changes only
-- Write clear commit message referencing task
-- Format: `[track-id] task: description`
+- 仅暂存相关变更
+- 编写清晰的提交信息,引用任务
+- 格式:`[track-id] task: description`
 
-### Step 9: Git Notes (Optional)
+### 步骤 9:Git 备注(可选)
 
-- Add implementation notes for complex changes
-- Reference relevant decisions or trade-offs
+- 为复杂变更添加实现说明
+- 引用相关决策或权衡
 
-### Step 10: Plan Update
+### 步骤 10:计划更新
 
-- Mark task as `[x]` completed in plan.md
-- Update any affected downstream tasks
-- Note blockers or follow-up items
+- 在 plan.md 中将任务标记为 `[x]` 已完成
+- 更新任何受影响的下游任务
+- 记录阻塞项或后续事项
 
-### Step 11: Plan Commit
+### 步骤 11:计划提交
 
-- Commit plan.md changes separately
-- Format: `[track-id] plan: mark task X complete`
+- 单独提交 plan.md 的变更
+- 格式:`[track-id] plan: mark task X complete`
 
-## Phase Completion Protocol
+## 阶段完成协议
 
-### Checkpoint Commits
+### 检查点提交
 
-At the end of each phase:
+在每个阶段结束时:
 
-1. Ensure all phase tasks are `[x]` complete
-2. Run full test suite
-3. Verify coverage meets threshold
-4. Create checkpoint commit: `[track-id] checkpoint: phase N complete`
+1. 确保所有阶段任务为 `[x]` 已完成
+2. 运行完整测试套件
+3. 验证覆盖率达标
+4. 创建检查点提交:`[track-id] checkpoint: phase N complete`
 
-### Test Verification
+### 测试验证
 
 ```bash
 {{TEST_COMMAND}}
 {{COVERAGE_COMMAND}}
 ```
 
-### Manual Approval Gates
+### 手动审批关卡
 
-Phases requiring approval before proceeding:
+需要批准才能继续的阶段:
 
-- Architecture changes
-- API contract modifications
-- Database schema changes
-- Security-sensitive implementations
+- 架构变更
+- API 契约修改
+- 数据库模式变更
+- 安全敏感实现
 
-## Quality Assurance Gates
+## 质量保证关卡
 
-All code must pass these criteria before merge:
+所有代码在合并前必须通过以下标准:
 
-| Gate        | Requirement              | Command                  |
+| 关卡        | 要求              | 命令                  |
 | ----------- | ------------------------ | ------------------------ |
-| 1. Tests    | All tests passing        | `{{TEST_COMMAND}}`       |
-| 2. Coverage | Minimum 80%              | `{{COVERAGE_COMMAND}}`   |
-| 3. Style    | Follows style guide      | `{{LINT_COMMAND}}`       |
-| 4. Docs     | Public APIs documented   | Manual review            |
-| 5. Types    | No type errors           | `{{TYPE_CHECK_COMMAND}}` |
-| 6. Linting  | No lint errors           | `{{LINT_COMMAND}}`       |
-| 7. Mobile   | Responsive if applicable | Manual review            |
-| 8. Security | No known vulnerabilities | `{{SECURITY_COMMAND}}`   |
+| 1. 测试    | 所有测试通过        | `{{TEST_COMMAND}}`       |
+| 2. 覆盖率 | 最低 80%              | `{{COVERAGE_COMMAND}}`   |
+| 3. 风格    | 遵循风格指南      | `{{LINT_COMMAND}}`       |
+| 4. 文档     | 公共 API 已文档化   | 人工审查            |
+| 5. 类型    | 无类型错误           | `{{TYPE_CHECK_COMMAND}}` |
+| 6. Linting  | 无 lint 错误           | `{{LINT_COMMAND}}`       |
+| 7. 移动端   | 如适用则响应式 | 人工审查            |
+| 8. 安全 | 无已知漏洞 | `{{SECURITY_COMMAND}}`   |
 
-## Development Commands
+## 开发命令
 
-### Environment Setup
+### 环境设置
 
 ```bash
 {{SETUP_COMMAND}}
 ```
 
-### Development Server
+### 开发服务器
 
 ```bash
 {{DEV_COMMAND}}
 ```
 
-### Pre-Commit Checks
+### 提交前检查
 
 ```bash
 {{PRE_COMMIT_COMMAND}}
 ```
 
-### Full Validation
+### 完整验证
 
 ```bash
 {{VALIDATE_COMMAND}}
 ```
 
-## Workflow Diagram
+## 工作流程图
 
 ```
 ┌─────────────┐

@@ -1,88 +1,88 @@
-# Technology Stack
+# 技术栈
 
-## Frontend
+## 前端
 
-### Framework
+### 框架
 
-**Choice:** {{FRONTEND_FRAMEWORK}}
-**Version:** {{FRONTEND_VERSION}}
+**选择：** {{FRONTEND_FRAMEWORK}}
+**版本：** {{FRONTEND_VERSION}}
 
-**Rationale:**
+**理由：**
 {{FRONTEND_RATIONALE}}
 
-### State Management
+### 状态管理
 
-**Choice:** {{STATE_MANAGEMENT}}
-**Version:** {{STATE_VERSION}}
+**选择：** {{STATE_MANAGEMENT}}
+**版本：** {{STATE_VERSION}}
 
-**Rationale:**
+**理由：**
 {{STATE_RATIONALE}}
 
-### Styling
+### 样式
 
-**Choice:** {{STYLING_SOLUTION}}
-**Version:** {{STYLING_VERSION}}
+**选择：** {{STYLING_SOLUTION}}
+**版本：** {{STYLING_VERSION}}
 
-**Rationale:**
+**理由：**
 {{STYLING_RATIONALE}}
 
-### Additional Frontend Libraries
+### 其他前端库
 
-| Library      | Purpose              | Version              |
+| 库      | 用途              | 版本              |
 | ------------ | -------------------- | -------------------- |
 | {{FE_LIB_1}} | {{FE_LIB_1_PURPOSE}} | {{FE_LIB_1_VERSION}} |
 | {{FE_LIB_2}} | {{FE_LIB_2_PURPOSE}} | {{FE_LIB_2_VERSION}} |
 | {{FE_LIB_3}} | {{FE_LIB_3_PURPOSE}} | {{FE_LIB_3_VERSION}} |
 
-## Backend
+## 后端
 
-### Language
+### 语言
 
-**Choice:** {{BACKEND_LANGUAGE}}
-**Version:** {{BACKEND_LANGUAGE_VERSION}}
+**选择：** {{BACKEND_LANGUAGE}}
+**版本：** {{BACKEND_LANGUAGE_VERSION}}
 
-**Rationale:**
+**理由：**
 {{BACKEND_LANGUAGE_RATIONALE}}
 
-### Framework
+### 框架
 
-**Choice:** {{BACKEND_FRAMEWORK}}
-**Version:** {{BACKEND_FRAMEWORK_VERSION}}
+**选择：** {{BACKEND_FRAMEWORK}}
+**版本：** {{BACKEND_FRAMEWORK_VERSION}}
 
-**Rationale:**
+**理由：**
 {{BACKEND_FRAMEWORK_RATIONALE}}
 
-### Database
+### 数据库
 
-#### Primary Database
+#### 主数据库
 
-**Choice:** {{PRIMARY_DATABASE}}
-**Version:** {{PRIMARY_DB_VERSION}}
+**选择：** {{PRIMARY_DATABASE}}
+**版本：** {{PRIMARY_DB_VERSION}}
 
-**Rationale:**
+**理由：**
 {{PRIMARY_DB_RATIONALE}}
 
-#### Secondary Database (if applicable)
+#### 次要数据库（如适用）
 
-**Choice:** {{SECONDARY_DATABASE}}
-**Purpose:** {{SECONDARY_DB_PURPOSE}}
+**选择：** {{SECONDARY_DATABASE}}
+**用途：** {{SECONDARY_DB_PURPOSE}}
 
-### Additional Backend Libraries
+### 其他后端库
 
-| Library      | Purpose              | Version              |
+| 库      | 用途              | 版本              |
 | ------------ | -------------------- | -------------------- |
 | {{BE_LIB_1}} | {{BE_LIB_1_PURPOSE}} | {{BE_LIB_1_VERSION}} |
 | {{BE_LIB_2}} | {{BE_LIB_2_PURPOSE}} | {{BE_LIB_2_VERSION}} |
 | {{BE_LIB_3}} | {{BE_LIB_3_PURPOSE}} | {{BE_LIB_3_VERSION}} |
 
-## Infrastructure
+## 基础设施
 
-### Hosting
+### 托管
 
-**Provider:** {{HOSTING_PROVIDER}}
-**Environment:** {{HOSTING_ENVIRONMENT}}
+**提供商：** {{HOSTING_PROVIDER}}
+**环境：** {{HOSTING_ENVIRONMENT}}
 
-**Services Used:**
+**使用的服务：**
 
 - {{HOSTING_SERVICE_1}}
 - {{HOSTING_SERVICE_2}}
@@ -90,71 +90,71 @@
 
 ### CI/CD
 
-**Platform:** {{CICD_PLATFORM}}
+**平台：** {{CICD_PLATFORM}}
 
-**Pipeline Stages:**
+**管道阶段：**
 
 1. {{PIPELINE_STAGE_1}}
 2. {{PIPELINE_STAGE_2}}
 3. {{PIPELINE_STAGE_3}}
 4. {{PIPELINE_STAGE_4}}
 
-### Monitoring
+### 监控
 
-**APM:** {{APM_TOOL}}
-**Logging:** {{LOGGING_TOOL}}
-**Alerting:** {{ALERTING_TOOL}}
+**APM：** {{APM_TOOL}}
+**日志记录：** {{LOGGING_TOOL}}
+**告警：** {{ALERTING_TOOL}}
 
-### Additional Infrastructure
+### 其他基础设施
 
-| Service     | Purpose             | Provider             |
+| 服务     | 用途             | 提供商             |
 | ----------- | ------------------- | -------------------- |
 | {{INFRA_1}} | {{INFRA_1_PURPOSE}} | {{INFRA_1_PROVIDER}} |
 | {{INFRA_2}} | {{INFRA_2_PURPOSE}} | {{INFRA_2_PROVIDER}} |
 
-## Development Tools
+## 开发工具
 
-### Package Manager
+### 包管理器
 
-**Choice:** {{PACKAGE_MANAGER}}
-**Version:** {{PACKAGE_MANAGER_VERSION}}
+**选择：** {{PACKAGE_MANAGER}}
+**版本：** {{PACKAGE_MANAGER_VERSION}}
 
-### Testing
+### 测试
 
-| Type        | Tool                      | Coverage Target           |
+| 类型        | 工具                      | 覆盖率目标           |
 | ----------- | ------------------------- | ------------------------- |
-| Unit        | {{UNIT_TEST_TOOL}}        | {{UNIT_COVERAGE}}%        |
-| Integration | {{INTEGRATION_TEST_TOOL}} | {{INTEGRATION_COVERAGE}}% |
-| E2E         | {{E2E_TEST_TOOL}}         | Critical paths            |
+| 单元        | {{UNIT_TEST_TOOL}}        | {{UNIT_COVERAGE}}%        |
+| 集成 | {{INTEGRATION_TEST_TOOL}} | {{INTEGRATION_COVERAGE}}% |
+| 端到端         | {{E2E_TEST_TOOL}}         | 关键路径            |
 
-### Linting & Formatting
+### Linting 和格式化
 
-**Linter:** {{LINTER}}
-**Formatter:** {{FORMATTER}}
-**Config:** {{LINT_CONFIG}}
+**Linter：** {{LINTER}}
+**Formatter：** {{FORMATTER}}
+**配置：** {{LINT_CONFIG}}
 
-### Additional Dev Tools
+### 其他开发工具
 
-| Tool           | Purpose                |
+| 工具           | 用途                |
 | -------------- | ---------------------- |
 | {{DEV_TOOL_1}} | {{DEV_TOOL_1_PURPOSE}} |
 | {{DEV_TOOL_2}} | {{DEV_TOOL_2_PURPOSE}} |
 | {{DEV_TOOL_3}} | {{DEV_TOOL_3_PURPOSE}} |
 
-## Decision Log
+## 决策日志
 
 ### {{DECISION_1_TITLE}}
 
-**Date:** {{DECISION_1_DATE}}
-**Status:** {{DECISION_1_STATUS}}
+**日期：** {{DECISION_1_DATE}}
+**状态：** {{DECISION_1_STATUS}}
 
-**Context:**
+**上下文：**
 {{DECISION_1_CONTEXT}}
 
-**Decision:**
+**决策：**
 {{DECISION_1_DECISION}}
 
-**Consequences:**
+**后果：**
 
 - {{DECISION_1_CONSEQUENCE_1}}
 - {{DECISION_1_CONSEQUENCE_2}}
@@ -163,16 +163,16 @@
 
 ### {{DECISION_2_TITLE}}
 
-**Date:** {{DECISION_2_DATE}}
-**Status:** {{DECISION_2_STATUS}}
+**日期：** {{DECISION_2_DATE}}
+**状态：** {{DECISION_2_STATUS}}
 
-**Context:**
+**上下文：**
 {{DECISION_2_CONTEXT}}
 
-**Decision:**
+**决策：**
 {{DECISION_2_DECISION}}
 
-**Consequences:**
+**后果：**
 
 - {{DECISION_2_CONSEQUENCE_1}}
 - {{DECISION_2_CONSEQUENCE_2}}
@@ -181,23 +181,23 @@
 
 ### {{DECISION_3_TITLE}}
 
-**Date:** {{DECISION_3_DATE}}
-**Status:** {{DECISION_3_STATUS}}
+**日期：** {{DECISION_3_DATE}}
+**状态：** {{DECISION_3_STATUS}}
 
-**Context:**
+**上下文：**
 {{DECISION_3_CONTEXT}}
 
-**Decision:**
+**决策：**
 {{DECISION_3_DECISION}}
 
-**Consequences:**
+**后果：**
 
 - {{DECISION_3_CONSEQUENCE_1}}
 - {{DECISION_3_CONSEQUENCE_2}}
 
-## Version Compatibility Matrix
+## 版本兼容性矩阵
 
-| Component       | Min Version | Max Version | Notes       |
+| 组件       | 最低版本 | 最高版本 | 备注       |
 | --------------- | ----------- | ----------- | ----------- |
 | {{COMPONENT_1}} | {{MIN_1}}   | {{MAX_1}}   | {{NOTES_1}} |
 | {{COMPONENT_2}} | {{MIN_2}}   | {{MAX_2}}   | {{NOTES_2}} |

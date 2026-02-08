@@ -4,524 +4,524 @@ description: This skill should be used when the user asks to "analyze competitor
 version: 1.0.0
 ---
 
-# Competitive Landscape Analysis
+# 竞争格局分析
 
-Comprehensive frameworks for analyzing competition, identifying differentiation opportunities, and developing winning market positioning strategies.
+用于分析竞争、识别差异化机会以及制定制胜市场定位策略的综合框架。
 
-## Overview
+## 概述
 
-Understand competitive dynamics using proven frameworks (Porter's Five Forces, Blue Ocean Strategy, positioning maps) to identify opportunities and craft defensible competitive advantages.
+利用经过验证的框架（波特五力模型、蓝海战略、定位图）理解竞争动态，识别机会并打造可持续的竞争优势。
 
-## Porter's Five Forces
+## 波特五力模型
 
-Analyze industry attractiveness and competitive intensity.
+分析行业吸引力和竞争强度。
 
-### Force 1: Threat of New Entrants
+### 力量 1：新进入者威胁
 
-**Barriers to Entry:**
+**进入壁垒：**
 
-- Capital requirements
-- Economies of scale
-- Switching costs
-- Brand loyalty
-- Regulatory barriers
-- Access to distribution
-- Network effects
+- 资本需求
+- 规模经济
+- 转换成本
+- 品牌忠诚度
+- 监管壁垒
+- 渠道准入
+- 网络效应
 
-**High Threat:** Low barriers, easy to enter (e.g., simple SaaS tools)
-**Low Threat:** High barriers (e.g., regulated industries, hardware)
+**高威胁：** 壁垒低，易于进入（例如：简单的 SaaS 工具）
+**低威胁：** 壁垒高（例如：受监管行业、硬件）
 
-**Analysis Questions:**
+**分析问题：**
 
-- How easy is it for new competitors to enter?
-- What would it cost to launch a competing product?
-- Are there network effects or switching costs protecting incumbents?
+- 新竞争对手进入有多容易？
+- 推出竞争产品需要多少成本？
+- 是否有网络效应或转换成本保护现有企业？
 
-### Force 2: Bargaining Power of Suppliers
+### 力量 2：供应商议价能力
 
-**Supplier Power Factors:**
+**供应商权力因素：**
 
-- Supplier concentration
-- Availability of substitutes
-- Importance to supplier
-- Switching costs
-- Forward integration threat
+- 供应商集中度
+- 替代品可获得性
+- 对供应商的重要性
+- 转换成本
+- 前向整合威胁
 
-**High Power:** Few suppliers, critical inputs (e.g., cloud infrastructure providers)
-**Low Power:** Many alternatives, commoditized (e.g., generic services)
+**高权力：** 供应商少、关键投入（例如：云基础设施提供商）
+**低权力：** 替代品多、商品化（例如：通用服务）
 
-**Analysis Questions:**
+**分析问题：**
 
-- Who are our critical suppliers?
-- Could they raise prices or reduce quality?
-- Can we switch suppliers easily?
+- 谁是我们的关键供应商？
+- 他们能否提价或降低质量？
+- 我们能否轻松更换供应商？
 
-### Force 3: Bargaining Power of Buyers
+### 力量 3：买方议价能力
 
-**Buyer Power Factors:**
+**买方权力因素：**
 
-- Buyer concentration
-- Volume purchased
-- Product differentiation
-- Price sensitivity
-- Backward integration threat
+- 买方集中度
+- 采购量
+- 产品差异化
+- 价格敏感度
+- 后向整合威胁
 
-**High Power:** Few large customers, standardized products (e.g., enterprise deals)
-**Low Power:** Many small customers, differentiated product (e.g., consumer subscriptions)
+**高权力：** 少数大客户、标准化产品（例如：企业交易）
+**低权力：** 众多小客户、差异化产品（例如：消费者订阅）
 
-**Analysis Questions:**
+**分析问题：**
 
-- Can customers easily switch to competitors?
-- Do few customers generate most revenue?
-- How price-sensitive are buyers?
+- 客户能否轻松转向竞争对手？
+- 少数客户是否产生大部分收入？
+- 买方的价格敏感度如何？
 
-### Force 4: Threat of Substitutes
+### 力量 4：替代品威胁
 
-**Substitute Considerations:**
+**替代品考量：**
 
-- Alternative solutions
-- Price-performance tradeoff
-- Switching costs
-- Buyer propensity to substitute
+- 替代解决方案
+- 价格-性能权衡
+- 转换成本
+- 买方替代倾向
 
-**High Threat:** Many alternatives, low switching cost (e.g., productivity software)
-**Low Threat:** Unique solution, high switching cost (e.g., ERP systems)
+**高威胁：** 替代品多、转换成本低（例如：生产力软件）
+**低威胁：** 独特解决方案、转换成本高（例如：ERP 系统）
 
-**Analysis Questions:**
+**分析问题：**
 
-- What alternative ways can customers solve this problem?
-- How do substitutes compare on price and performance?
-- What's the cost to switch to a substitute?
+- 客户有哪些替代方式可以解决此问题？
+- 替代品在价格和性能上如何比较？
+- 转向替代品的成本是多少？
 
-### Force 5: Competitive Rivalry
+### 力量 5：竞争对抗
 
-**Rivalry Intensity Factors:**
+**对抗强度因素：**
 
-- Number of competitors
-- Industry growth rate
-- Product differentiation
-- Exit barriers
-- Strategic stakes
+- 竞争对手数量
+- 行业增长率
+- 产品差异化
+- 退出壁垒
+- 战略利害关系
 
-**High Rivalry:** Many competitors, slow growth, commoditized (e.g., email marketing)
-**Low Rivalry:** Few competitors, fast growth, differentiated (e.g., emerging AI tools)
+**高对抗：** 竞争对手多、增长缓慢、商品化（例如：邮件营销）
+**低对抗：** 竞争对手少、快速增长、差异化（例如：新兴 AI 工具）
 
-**Analysis Questions:**
+**分析问题：**
 
-- How many direct competitors exist?
-- Is the market growing or stagnant?
-- How differentiated are offerings?
-- Are competitors competing on price or value?
+- 存在多少直接竞争对手？
+- 市场是在增长还是停滞？
+- 产品差异化程度如何？
+- 竞争对手是在价格还是价值上竞争？
 
-### Forces Analysis Summary
+### 五力分析总结
 
-Create a scorecard:
+创建计分卡：
 
-| Force          | Intensity (1-5) | Impact | Key Factors                       |
+| 力量          | 强度 (1-5) | 影响 | 关键因素                       |
 | -------------- | --------------- | ------ | --------------------------------- |
-| New Entrants   | 3               | Medium | Low barriers but network effects  |
-| Supplier Power | 2               | Low    | Many cloud providers              |
-| Buyer Power    | 4               | High   | Enterprise customers concentrated |
-| Substitutes    | 3               | Medium | Manual processes alternative      |
-| Rivalry        | 4               | High   | 10+ direct competitors            |
+| 新进入者   | 3               | 中等 | 壁垒低但具有网络效应  |
+| 供应商权力 | 2               | 低    | 众多云提供商              |
+| 买方权力    | 4               | 高   | 企业客户集中 |
+| 替代品    | 3               | 中等 | 手动流程是替代方案      |
+| 竞争        | 4               | 高   | 10+ 直接竞争对手            |
 
-**Overall Assessment:** Moderate industry attractiveness with high rivalry and buyer power
+**总体评估：** 行业吸引力中等，竞争和买方权力较高
 
-## Blue Ocean Strategy
+## 蓝海战略
 
-Identify uncontested market space through value innovation.
+通过价值创新识别无争的市场空间。
 
-### Four Actions Framework
+### 四步行动框架
 
-**Eliminate:**
-What factors can be eliminated that the industry takes for granted?
+**消除：**
+哪些行业认为是理所当然的因素可以被消除？
 
-**Reduce:**
-What factors can be reduced well below industry standard?
+**减少：**
+哪些因素可以减少到远低于行业标准？
 
-**Raise:**
-What factors can be raised well above industry standard?
+**提高：**
+哪些因素可以提高到远高于行业标准？
 
-**Create:**
-What factors can be created that the industry never offered?
+**创造：**
+哪些因素可以创造，而行业从未提供过？
 
-### Strategy Canvas
+### 战略画布
 
-Map your offering vs. competitors on key factors.
+在关键因素上绘制您的产品与竞争对手的对比。
 
-**Example: Budget Hotels**
+**示例：经济型酒店**
 
 ```
-High |                    ★ Traditional Hotels
-     |          ★ Budget Hotels (new)
+高 |                    ★ 传统酒店
+     |          ★ 经济型酒店（新）
      |
-Low  |___________________________________
-     Price  Luxury  Convenience  Cleanliness
+低  |___________________________________
+     价格  豪华  便利性  清洁度
 
-Budget Hotel Strategy:
-- Eliminate: Luxury amenities, room service
-- Reduce: Lobby size, staff
-- Raise: Cleanliness, online booking
-- Create: Self-service kiosks, mobile app
+经济型酒店战略：
+- 消除：豪华设施、客房服务
+- 减少：大堂面积、人员
+- 提高：清洁度、在线预订
+- 创造：自助服务终端、移动应用
 ```
 
-### Value Innovation
+### 价值创新
 
-Find the sweet spot: Lower cost + higher value
+找到最佳结合点：更低的成本 + 更高的价值
 
-**Steps:**
+**步骤：**
 
-1. Map industry competing factors
-2. Identify factors to eliminate/reduce (cost savings)
-3. Identify factors to raise/create (differentiation)
-4. Validate that combination creates new market space
+1. 绘制行业竞争因素
+2. 识别要消除/减少的因素（成本节约）
+3. 识别要提高/创造的因素（差异化）
+4. 验证该组合是否创造新的市场空间
 
-## Competitive Positioning
+## 竞争定位
 
-### Positioning Map
+### 定位图
 
-Plot competitors on 2-3 key dimensions.
+在 2-3 个关键维度上绘制竞争对手。
 
-**Example Dimensions:**
+**示例维度：**
 
-- Price vs. Features
-- Complexity vs. Ease of Use
-- Enterprise vs. SMB Focus
-- Self-Service vs. High-Touch
-- Generalist vs. Specialist
+- 价格 vs. 功能
+- 复杂度 vs. 易用性
+- 企业 vs. 中小企业焦点
+- 自助服务 vs. 高接触服务
+- 通才 vs. 专家
 
-**How to Create:**
+**如何创建：**
 
-1. Choose 2 dimensions most important to customers
-2. Plot all competitors
-3. Identify gaps (white space)
-4. Validate gap represents real customer need
+1. 选择对客户最重要的 2 个维度
+2. 绘制所有竞争对手
+3. 识别空白区域（空白空间）
+4. 验证空白区域代表真正的客户需求
 
-**Example:**
+**示例：**
 
 ```
-High Price
+高价格
     |
-    |  ★ Enterprise A      ★ Enterprise B
+    |  ★ 企业 A      ★ 企业 B
     |
-    |          ● Our Position (gap)
+    |          ● 我们的位置（空白）
     |
-    |  ★ Competitor C      ★ Competitor D
+    |  ★ 竞争对手 C      ★ 竞争对手 D
     |
-Low Price |____________________________________________
-        Simple                           Complex
+低价格 |____________________________________________
+        简单                           复杂
 ```
 
-### Differentiation Strategy
+### 差异化战略
 
-**How to Differentiate:**
+**如何差异化：**
 
-1. **Product Differentiation**
-   - Unique features
-   - Superior performance
-   - Better design/UX
-   - Integration ecosystem
+1. **产品差异化**
+   - 独特功能
+   - 卓越性能
+   - 更好的设计/用户体验
+   - 集成生态系统
 
-2. **Service Differentiation**
-   - Customer support quality
-   - Onboarding experience
-   - Response time
-   - Success programs
+2. **服务差异化**
+   - 客户支持质量
+   - 入职体验
+   - 响应时间
+   - 成功计划
 
-3. **Brand Differentiation**
-   - Trust and reputation
-   - Thought leadership
-   - Community
-   - Values alignment
+3. **品牌差异化**
+   - 信任和声誉
+   - 思想领导力
+   - 社区
+   - 价值观一致性
 
-4. **Price Differentiation**
-   - Premium positioning
-   - Value positioning
-   - Transparent pricing
-   - Flexible packaging
+4. **价格差异化**
+   - 高端定位
+   - 价值定位
+   - 透明定价
+   - 灵活包装
 
-### Positioning Statement Framework
-
-```
-For [target customer]
-Who [statement of need or opportunity]
-Our product is [product category]
-That [statement of key benefit]
-Unlike [primary competitive alternative]
-Our product [statement of primary differentiation]
-```
-
-**Example:**
+### 定位陈述框架
 
 ```
-For e-commerce companies
-Who struggle with email marketing automation
-Our product is an AI-powered email platform
-That increases conversion rates by 40%
-Unlike Klaviyo and Mailchimp
-Our product uses AI to personalize at scale
+针对[目标客户]
+谁[需要或机会陈述]
+我们的产品是[产品类别]
+提供[关键利益陈述]
+不同于[主要竞争替代方案]
+我们的产品[主要差异化陈述]
 ```
 
-## Competitive Intelligence
+**示例：**
 
-### Information Gathering
+```
+针对电商公司
+谁在邮件营销自动化方面遇到困难
+我们的产品是 AI 驱动的邮件平台
+将转化率提高 40%
+不同于 Klaviyo 和 Mailchimp
+我们的产品使用 AI 实现大规模个性化
+```
 
-**Public Sources:**
+## 竞争情报
 
-- Company websites and blogs
-- Press releases and news
-- Job postings (hint at strategy)
-- Customer reviews (G2, Capterra)
-- Social media and forums
-- Glassdoor (employee insights)
-- SEC filings (public companies)
-- Patent filings
+### 信息收集
 
-**Direct Research:**
+**公开来源：**
 
-- Customer interviews
-- Win/loss analysis
-- Sales team feedback
-- Product demos and trials
-- Conference attendance
+- 公司网站和博客
+- 新闻稿和新闻
+- 招聘信息（暗示战略）
+- 客户评论（G2、Capterra）
+- 社交媒体和论坛
+- Glassdoor（员工洞察）
+- SEC 文件（上市公司）
+- 专利申请
 
-### Competitor Profile Template
+**直接研究：**
 
-For each key competitor, document:
+- 客户访谈
+- 赢/失分析
+- 销售团队反馈
+- 产品演示和试用
+- 参加会议
 
-**Company Overview:**
+### 竞争对手档案模板
 
-- Founded, HQ, funding, size
-- Leadership team
-- Company stage and trajectory
+为每个主要竞争对手记录：
 
-**Product:**
+**公司概况：**
 
-- Core features
-- Target customers
-- Pricing and packaging
-- Technology stack
-- Recent launches
+- 成立时间、总部、融资、规模
+- 领导团队
+- 公司阶段和轨迹
 
-**Go-to-Market:**
+**产品：**
 
-- Sales model (self-serve, sales-led)
-- Marketing strategy
-- Distribution channels
-- Partnerships
+- 核心功能
+- 目标客户
+- 定价和包装
+- 技术栈
+- 最近的发布
 
-**Strengths:**
+**市场进入：**
 
-- What they do better than anyone
-- Key competitive advantages
-- Market position
+- 销售模式（自助服务、销售驱动）
+- 营销策略
+- 分销渠道
+- 合作伙伴关系
 
-**Weaknesses:**
+**优势：**
 
-- Gaps in product
-- Customer complaints
-- Operational challenges
+- 他们比任何人做得更好的地方
+- 关键竞争优势
+- 市场地位
 
-**Strategy:**
+**劣势：**
 
-- Stated direction
-- Inferred priorities
-- Likely next moves
+- 产品差距
+- 客户投诉
+- 运营挑战
 
-## Competitive Pricing Analysis
+**战略：**
 
-### Price Positioning
+- 明确的方向
+- 推断的优先事项
+- 可能的下一步行动
 
-**Premium (Top 25%):**
+## 竞争定价分析
 
-- Superior product/service
-- Strong brand
-- High-touch sales
-- Enterprise focus
+### 价格定位
 
-**Mid-Market (Middle 50%):**
+**高端（前 25%）：**
 
-- Balanced value
-- Standard features
-- Mixed sales model
-- Broad market
+- 卓越的产品/服务
+- 强大的品牌
+- 高接触销售
+- 企业焦点
 
-**Value (Bottom 25%):**
+**中端市场（中间 50%）：**
 
-- Basic functionality
-- Self-service
-- Cost leadership
-- High volume, low margin
+- 平衡的价值
+- 标准功能
+- 混合销售模式
+- 广泛的市场
 
-### Pricing Comparison Matrix
+**价值（后 25%）：**
 
-| Competitor   | Entry Price | Mid Tier | Enterprise | Model        |
+- 基本功能
+- 自助服务
+- 成本领先
+- 高销量、低利润
+
+### 定价比较矩阵
+
+| 竞争对手   | 入门价格 | 中级 | 企业 | 模式        |
 | ------------ | ----------- | -------- | ---------- | ------------ |
-| Competitor A | $29/mo      | $99/mo   | Custom     | Subscription |
-| Competitor B | $49/mo      | $199/mo  | $499/mo    | Subscription |
-| Us           | $39/mo      | $129/mo  | Custom     | Subscription |
+| 竞争对手 A | $29/月      | $99/月   | 定制     | 订阅 |
+| 竞争对手 B | $49/月      | $199/月  | $499/月    | 订阅 |
+| 我们           | $39/月      | $129/月  | 定制     | 订阅 |
 
-**Analysis:**
+**分析：**
 
-- Are we priced competitively?
-- What does our pricing signal?
-- Are there gaps in our packaging?
+- 我们的定价是否有竞争力？
+- 我们的定价传递什么信号？
+- 我们的包装中是否有差距？
 
-## Go-to-Market Strategy
+## 市场进入战略
 
-### Market Entry Strategies
+### 市场进入策略
 
-**Direct Competition:**
+**直接竞争：**
 
-- Head-to-head against established players
-- Requires differentiation and resources
-- Example: Better features at lower price
+- 与既有玩家正面交锋
+- 需要差异化和资源
+- 示例：以更低的价格提供更好的功能
 
-**Niche Focus:**
+**细分焦点：**
 
-- Target underserved segment
-- Become specialist vs. generalist
-- Example: "Salesforce for real estate"
+- 针对服务不足的细分市场
+- 成为专家而非通才
+- 示例："房地产领域的 Salesforce"
 
-**Disruptive Innovation:**
+**颠覆性创新：**
 
-- Target non-consumers or low end
-- Improve over time to move upmarket
-- Example: Freemium model disrupting enterprise
+- 针对非消费者或低端市场
+- 随着时间改进向高端市场发展
+- 示例：免费增值模式颠覆企业市场
 
-**Platform Play:**
+**平台战略：**
 
-- Build ecosystem and network effects
-- Aggregate complementary services
-- Example: Marketplace or API platform
+- 构建生态系统和网络效应
+- 聚合互补服务
+- 示例：市场或 API 平台
 
-### Beachhead Market
+### 滩头市场
 
-**Characteristics of Good Beachhead:**
+**优秀滩头市场的特征：**
 
-- Specific, reachable segment
-- Acute pain you solve well
-- Limited competition
-- Willing to pay
-- Can lead to expansion
+- 具体、可触达的细分市场
+- 您能很好解决的急迫痛点
+- 竞争有限
+- 愿意付费
+- 可以带动扩张
 
-**Example:**
-Instead of "project management software", target "project management for construction teams"
+**示例：**
+不是"项目管理软件"，而是针对"建筑团队的项目管理"
 
-## Competitive Advantage
+## 竞争优势
 
-### Sustainable Advantages
+### 可持续优势
 
-**Network Effects:**
+**网络效应：**
 
-- Value increases with users
-- Example: Slack, marketplaces
+- 价值随用户增加
+- 示例：Slack、市场平台
 
-**Switching Costs:**
+**转换成本：**
 
-- High cost to change
-- Example: CRM systems with data
+- 更改成本高
+- 示例：包含数据的 CRM 系统
 
-**Economies of Scale:**
+**规模经济：**
 
-- Unit costs decrease with volume
-- Example: Cloud infrastructure
+- 单位成本随数量下降
+- 示例：云基础设施
 
-**Brand:**
+**品牌：**
 
-- Trust and reputation
-- Example: Security software
+- 信任和声誉
+- 示例：安全软件
 
-**Proprietary Technology:**
+**专有技术：**
 
-- Patents or trade secrets
-- Example: Algorithms, data
+- 专利或商业秘密
+- 示例：算法、数据
 
-**Regulatory:**
+**监管：**
 
-- Licenses or approvals
-- Example: Fintech, healthcare
+- 许可或批准
+- 示例：金融科技、医疗保健
 
-### Testing Your Advantage
+### 测试您的优势
 
-Ask:
+询问：
 
-- Can competitors copy this in < 2 years?
-- Does this matter to customers?
-- Do we execute this better than anyone?
-- Is this advantage durable?
+- 竞争对手能否在 < 2 年内复制这个？
+- 这对客户重要吗？
+- 我们是否比任何人都能更好地执行这一点？
+- 这个优势是否持久？
 
-If "no" to any, it's not a sustainable advantage.
+如果任何一项为"否"，则不是可持续优势。
 
-## Competitive Monitoring
+## 竞争监控
 
-### What to Track
+### 监控内容
 
-**Product Changes:**
+**产品变更：**
 
-- New features
-- Pricing changes
-- Packaging adjustments
+- 新功能
+- 定价变化
+- 包装调整
 
-**Market Signals:**
+**市场信号：**
 
-- Funding announcements
-- Key hires (especially leadership)
-- Customer wins/losses
-- Partnerships
+- 融资公告
+- 关键招聘（特别是领导层）
+- 客户赢/失
+- 合作伙伴关系
 
-**Performance Metrics:**
+**绩效指标：**
 
-- Revenue (if public or disclosed)
-- Customer count
-- Growth rate
-- Market share estimates
+- 收入（如果是公开或披露的）
+- 客户数量
+- 增长率
+- 市场份额估计
 
-### Monitoring Cadence
+### 监控节奏
 
-**Weekly:**
+**每周：**
 
-- Product release notes
-- News mentions
+- 产品发布说明
+- 新闻提及
 
-**Monthly:**
+**每月：**
 
-- Win/loss analysis review
-- Positioning map updates
+- 赢/失分析审查
+- 定位图更新
 
-**Quarterly:**
+**每季度：**
 
-- Deep competitive review
-- Strategy adjustment
+- 深度竞争审查
+- 战略调整
 
-**Annually:**
+**每年：**
 
-- Major strategy reassessment
-- Market trends analysis
+- 重大战略重新评估
+- 市场趋势分析
 
-## Additional Resources
+## 额外资源
 
-### Reference Files
+### 参考文件
 
-- **`references/frameworks-deep-dive.md`** - Detailed application of each framework with worksheets
-- **`references/intel-sources.md`** - Comprehensive list of competitive intelligence sources
+- **`references/frameworks-deep-dive.md`** - 每个框架的详细应用和工作表
+- **`references/intel-sources.md`** - 竞争情报来源的综合列表
 
-### Example Files
+### 示例文件
 
-- **`examples/competitor-analysis.md`** - Complete competitive analysis for a SaaS startup
-- **`examples/positioning-workshop.md`** - Step-by-step positioning development process
+- **`examples/competitor-analysis.md`** - SaaS 初创公司的完整竞争分析
+- **`examples/positioning-workshop.md`** - 分步定位开发流程
 
-## Quick Start
+## 快速开始
 
-To analyze competitive landscape:
+分析竞争格局：
 
-1. **Identify competitors** - Direct, indirect, and future threats
-2. **Apply Porter's Five Forces** - Assess industry attractiveness
-3. **Create positioning map** - Visualize competitive space
-4. **Profile top 3-5 competitors** - Deep dive on key rivals
-5. **Identify differentiation** - What makes you unique
-6. **Analyze pricing** - Where do you fit?
-7. **Assess advantages** - What's defensible?
-8. **Develop strategy** - How to win
+1. **识别竞争对手** - 直接、间接和未来威胁
+2. **应用波特五力模型** - 评估行业吸引力
+3. **创建定位图** - 可视化竞争空间
+4. **分析前 3-5 个竞争对手** - 深入研究主要竞争对手
+5. **识别差异化** - 您的独特之处
+6. **分析定价** - 您的位置？
+7. **评估优势** - 什么是可防御的？
+8. **制定战略** - 如何获胜
 
-For detailed frameworks and examples, see `references/` and `examples/`.
+有关详细框架和示例，请参阅 `references/` 和 `examples/`。

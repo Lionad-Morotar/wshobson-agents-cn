@@ -3,40 +3,40 @@ name: python-background-jobs
 description: Python background job patterns including task queues, workers, and event-driven architecture. Use when implementing async task processing, job queues, long-running operations, or decoupling work from request/response cycles.
 ---
 
-# Python Background Jobs & Task Queues
+# Python 后台任务与任务队列
 
-Decouple long-running or unreliable work from request/response cycles. Return immediately to the user while background workers handle the heavy lifting asynchronously.
+将长时间运行或不可靠的工作从请求/响应周期中解耦。立即向用户返回响应，同时后台工作器异步处理繁重的工作。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Processing tasks that take longer than a few seconds
-- Sending emails, notifications, or webhooks
-- Generating reports or exporting data
-- Processing uploads or media transformations
-- Integrating with unreliable external services
-- Building event-driven architectures
+- 处理耗时超过几秒的任务
+- 发送电子邮件、通知或 Webhook
+- 生成报告或导出数据
+- 处理上传或媒体转换
+- 与不可靠的外部服务集成
+- 构建事件驱动架构
 
-## Core Concepts
+## 核心概念
 
-### 1. Task Queue Pattern
+### 1. 任务队列模式
 
-API accepts request, enqueues a job, returns immediately with a job ID. Workers process jobs asynchronously.
+API 接受请求，将任务加入队列，并立即返回任务 ID。工作器异步处理任务。
 
-### 2. Idempotency
+### 2. 幂等性
 
-Tasks may be retried on failure. Design for safe re-execution.
+任务失败时可能会重试。设计时需考虑安全重执行。
 
-### 3. Job State Machine
+### 3. 任务状态机
 
-Jobs transition through states: pending → running → succeeded/failed.
+任务在状态之间转换：pending（待处理）→ running（运行中）→ succeeded/failed（成功/失败）。
 
-### 4. At-Least-Once Delivery
+### 4. 至少一次投递
 
-Most queues guarantee at-least-once delivery. Your code must handle duplicates.
+大多数队列保证至少一次投递。你的代码必须处理重复。
 
-## Quick Start
+## 快速开始
 
-This skill uses Celery for examples, a widely adopted task queue. Alternatives like RQ, Dramatiq, and cloud-native solutions (AWS SQS, GCP Tasks) are equally valid choices.
+此技能使用 Celery 作为示例，它是一个广泛采用的任务队列。RQ、Dramatiq 和云原生解决方案（AWS SQS、GCP Tasks）同样是合理的选择。
 
 ```python
 from celery import Celery
@@ -45,18 +45,18 @@ app = Celery("tasks", broker="redis://localhost:6379")
 
 @app.task
 def send_email(to: str, subject: str, body: str) -> None:
-    # This runs in a background worker
+    # 这在后台工作器中运行
     email_client.send(to, subject, body)
 
-# In your API handler
+# 在你的 API 处理器中
 send_email.delay("user@example.com", "Welcome!", "Thanks for signing up")
 ```
 
-## Fundamental Patterns
+## 基础模式
 
-### Pattern 1: Return Job ID Immediately
+### 模式 1：立即返回任务 ID
 
-For operations exceeding a few seconds, return a job ID and process asynchronously.
+对于超过几秒的操作，返回任务 ID 并异步处理。
 
 ```python
 from uuid import uuid4
@@ -80,26 +80,26 @@ class Job:
     result: dict | None = None
     error: str | None = None
 
-# API endpoint
+# API 端点
 async def start_export(request: ExportRequest) -> JobResponse:
-    """Start export job and return job ID."""
+    """启动导出任务并返回任务 ID。"""
     job_id = str(uuid4())
 
-    # Persist job record
+    # 持久化任务记录
     await jobs_repo.create(Job(
         id=job_id,
         status=JobStatus.PENDING,
         created_at=datetime.utcnow(),
     ))
 
-    # Enqueue task for background processing
+    # 将任务加入队列以进行后台处理
     await task_queue.enqueue(
         "export_data",
         job_id=job_id,
         params=request.model_dump(),
     )
 
-    # Return immediately with job ID
+    # 立即返回任务 ID
     return JobResponse(
         job_id=job_id,
         status="pending",
@@ -107,22 +107,22 @@ async def start_export(request: ExportRequest) -> JobResponse:
     )
 ```
 
-### Pattern 2: Celery Task Configuration
+### 模式 2：Celery 任务配置
 
-Configure Celery tasks with proper retry and timeout settings.
+配置 Celery 任务的重试和超时设置。
 
 ```python
 from celery import Celery
 
 app = Celery("tasks", broker="redis://localhost:6379")
 
-# Global configuration
+# 全局配置
 app.conf.update(
-    task_time_limit=3600,          # Hard limit: 1 hour
-    task_soft_time_limit=3000,      # Soft limit: 50 minutes
-    task_acks_late=True,            # Acknowledge after completion
+    task_time_limit=3600,          # 硬限制：1 小时
+    task_soft_time_limit=3000,      # 软限制：50 分钟
+    task_acks_late=True,            # 完成后确认
     task_reject_on_worker_lost=True,
-    worker_prefetch_multiplier=1,   # Don't prefetch too many tasks
+    worker_prefetch_multiplier=1,   # 不要预取太多任务
 )
 
 @app.task(
@@ -132,64 +132,64 @@ app.conf.update(
     autoretry_for=(ConnectionError, TimeoutError),
 )
 def process_payment(self, payment_id: str) -> dict:
-    """Process payment with automatic retry on transient errors."""
+    """处理支付，在瞬态错误时自动重试。"""
     try:
         result = payment_gateway.charge(payment_id)
         return {"status": "success", "transaction_id": result.id}
     except PaymentDeclinedError as e:
-        # Don't retry permanent failures
+        # 不要重试永久性失败
         return {"status": "declined", "reason": str(e)}
     except TransientError as e:
-        # Retry with exponential backoff
+        # 使用指数退避重试
         raise self.retry(exc=e, countdown=2 ** self.request.retries * 60)
 ```
 
-### Pattern 3: Make Tasks Idempotent
+### 模式 3：使任务具有幂等性
 
-Workers may retry on crash or timeout. Design for safe re-execution.
+工作器可能在崩溃或超时时重试。设计时需考虑安全重执行。
 
 ```python
 @app.task(bind=True)
 def process_order(self, order_id: str) -> None:
-    """Process order idempotently."""
+    """幂等地处理订单。"""
     order = orders_repo.get(order_id)
 
-    # Already processed? Return early
+    # 已处理？提前返回
     if order.status == OrderStatus.COMPLETED:
         logger.info("Order already processed", order_id=order_id)
         return
 
-    # Already in progress? Check if we should continue
+    # 正在处理？检查是否应该继续
     if order.status == OrderStatus.PROCESSING:
-        # Use idempotency key to avoid double-charging
+        # 使用幂等键避免重复收费
         pass
 
-    # Process with idempotency key
+    # 使用幂等键处理
     result = payment_provider.charge(
         amount=order.total,
-        idempotency_key=f"order-{order_id}",  # Critical!
+        idempotency_key=f"order-{order_id}",  # 关键！
     )
 
     orders_repo.update(order_id, status=OrderStatus.COMPLETED)
 ```
 
-**Idempotency Strategies:**
+**幂等性策略：**
 
-1. **Check-before-write**: Verify state before action
-2. **Idempotency keys**: Use unique tokens with external services
-3. **Upsert patterns**: `INSERT ... ON CONFLICT UPDATE`
-4. **Deduplication window**: Track processed IDs for N hours
+1. **写入前检查**：在操作前验证状态
+2. **幂等键**：与外部服务使用唯一令牌
+3. **Upsert 模式**：`INSERT ... ON CONFLICT UPDATE`
+4. **去重窗口**：跟踪已处理的 ID N 小时
 
-### Pattern 4: Job State Management
+### 模式 4：任务状态管理
 
-Persist job state transitions for visibility and debugging.
+持久化任务状态转换以实现可见性和调试。
 
 ```python
 class JobRepository:
-    """Repository for managing job state."""
+    """用于管理任务状态的仓库。"""
 
     async def create(self, job: Job) -> Job:
-        """Create new job record."""
+        """创建新任务记录。"""
         await self._db.execute(
             """INSERT INTO jobs (id, status, created_at)
                VALUES ($1, $2, $3)""",
@@ -203,7 +203,7 @@ class JobRepository:
         status: JobStatus,
         **fields,
     ) -> None:
-        """Update job status with timestamp."""
+        """更新任务状态并带时间戳。"""
         updates = {"status": status.value, **fields}
 
         if status == JobStatus.RUNNING:
@@ -223,23 +223,23 @@ class JobRepository:
         )
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 5: Dead Letter Queue
+### 模式 5：死信队列
 
-Handle permanently failed tasks for manual inspection.
+处理永久失败的任务以供人工检查。
 
 ```python
 @app.task(bind=True, max_retries=3)
 def process_webhook(self, webhook_id: str, payload: dict) -> None:
-    """Process webhook with DLQ for failures."""
+    """处理 webhook，失败时使用 DLQ。"""
     try:
         result = send_webhook(payload)
         if not result.success:
             raise WebhookFailedError(result.error)
     except Exception as e:
         if self.request.retries >= self.max_retries:
-            # Move to dead letter queue for manual inspection
+            # 移至死信队列以供人工检查
             dead_letter_queue.send({
                 "task": "process_webhook",
                 "webhook_id": webhook_id,
@@ -255,13 +255,13 @@ def process_webhook(self, webhook_id: str, payload: dict) -> None:
             )
             return
 
-        # Exponential backoff retry
+        # 指数退避重试
         raise self.retry(exc=e, countdown=2 ** self.request.retries * 60)
 ```
 
-### Pattern 6: Status Polling Endpoint
+### 模式 6：状态轮询端点
 
-Provide an endpoint for clients to check job status.
+为客户端提供检查任务状态的端点。
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -270,7 +270,7 @@ app = FastAPI()
 
 @app.get("/jobs/{job_id}")
 async def get_job_status(job_id: str) -> JobStatusResponse:
-    """Get current status of a background job."""
+    """获取后台任务的当前状态。"""
     job = await jobs_repo.get(job_id)
 
     if job is None:
@@ -284,34 +284,34 @@ async def get_job_status(job_id: str) -> JobStatusResponse:
         completed_at=job.completed_at,
         result=job.result if job.status == JobStatus.SUCCEEDED else None,
         error=job.error if job.status == JobStatus.FAILED else None,
-        # Helpful for clients
+        # 对客户端有帮助
         is_terminal=job.status in (JobStatus.SUCCEEDED, JobStatus.FAILED),
     )
 ```
 
-### Pattern 7: Task Chaining and Workflows
+### 模式 7：任务链与工作流
 
-Compose complex workflows from simple tasks.
+从简单任务组合复杂工作流。
 
 ```python
 from celery import chain, group, chord
 
-# Simple chain: A → B → C
+# 简单链：A → B → C
 workflow = chain(
     extract_data.s(source_id),
     transform_data.s(),
     load_data.s(destination_id),
 )
 
-# Parallel execution: A, B, C all at once
+# 并行执行：A, B, C 同时进行
 parallel = group(
     send_email.s(user_email),
     send_sms.s(user_phone),
     update_analytics.s(event_data),
 )
 
-# Chord: Run tasks in parallel, then a callback
-# Process all items, then send completion notification
+# Chord：并行运行任务，然后执行回调
+# 处理所有项目，然后发送完成通知
 workflow = chord(
     [process_item.s(item_id) for item_id in item_ids],
     send_completion_notification.s(batch_id),
@@ -320,11 +320,11 @@ workflow = chord(
 workflow.apply_async()
 ```
 
-### Pattern 8: Alternative Task Queues
+### 模式 8：替代任务队列
 
-Choose the right tool for your needs.
+根据需求选择合适的工具。
 
-**RQ (Redis Queue)**: Simple, Redis-based
+**RQ（Redis Queue）**：简单、基于 Redis
 ```python
 from rq import Queue
 from redis import Redis
@@ -333,7 +333,7 @@ queue = Queue(connection=Redis())
 job = queue.enqueue(send_email, "user@example.com", "Subject", "Body")
 ```
 
-**Dramatiq**: Modern Celery alternative
+**Dramatiq**：现代的 Celery 替代方案
 ```python
 import dramatiq
 from dramatiq.brokers.redis import RedisBroker
@@ -345,20 +345,20 @@ def send_email(to: str, subject: str, body: str) -> None:
     email_client.send(to, subject, body)
 ```
 
-**Cloud-native options:**
+**云原生选项：**
 - AWS SQS + Lambda
 - Google Cloud Tasks
 - Azure Functions
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Return immediately** - Don't block requests for long operations
-2. **Persist job state** - Enable status polling and debugging
-3. **Make tasks idempotent** - Safe to retry on any failure
-4. **Use idempotency keys** - For external service calls
-5. **Set timeouts** - Both soft and hard limits
-6. **Implement DLQ** - Capture permanently failed tasks
-7. **Log transitions** - Track job state changes
-8. **Retry appropriately** - Exponential backoff for transient errors
-9. **Don't retry permanent failures** - Validation errors, invalid credentials
-10. **Monitor queue depth** - Alert on backlog growth
+1. **立即返回** - 不要长时间阻塞请求
+2. **持久化任务状态** - 启用状态轮询和调试
+3. **使任务具有幂等性** - 任何失败都可以安全重试
+4. **使用幂等键** - 用于外部服务调用
+5. **设置超时** - 包括软限制和硬限制
+6. **实现 DLQ** - 捕获永久失败的任务
+7. **记录状态转换** - 跟踪任务状态变化
+8. **适当重试** - 对瞬态错误使用指数退避
+9. **不要重试永久性失败** - 验证错误、无效凭据
+10. **监控队列深度** - 在积压增长时发出警报

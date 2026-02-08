@@ -1,528 +1,528 @@
 ---
-description: "Generate comprehensive investor-ready business case document with market, solution, financials, and strategy"
+description: "生成面向投资人的综合商业计划书文档，涵盖市场、解决方案、财务和战略"
 allowed-tools:
   ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"]
 ---
 
-# Business Case Generator
+# 商业计划书生成器
 
-Generate a comprehensive, investor-ready business case document covering market opportunity, solution, competitive landscape, financial projections, team, risks, and funding ask for startup fundraising and strategic planning.
+生成一份综合的、面向投资人的商业计划书文档，涵盖市场机会、解决方案、竞争格局、财务预测、团队、风险和融资需求，用于初创企业融资和战略规划。
 
-## What This Command Does
+## 此命令的功能
 
-Create a complete business case including:
+创建一份完整的商业计划书，包括：
 
-1. Executive summary
-2. Problem and market opportunity
-3. Solution and product
-4. Competitive analysis and differentiation
-5. Financial projections
-6. Go-to-market strategy
-7. Team and organization
-8. Risks and mitigation
-9. Funding ask and use of proceeds
+1. 执行摘要
+2. 问题与市场机会
+3. 解决方案与产品
+4. 竞争分析与差异化
+5. 财务预测
+6. 市场进入策略
+7. 团队与组织
+8. 风险与缓解措施
+9. 融资需求与资金用途
 
-## Instructions for Claude
+## 给 Claude 的说明
 
-When this command is invoked, follow these steps:
+当调用此命令时，请按照以下步骤操作：
 
-### Step 1: Gather Context
+### 步骤 1：收集背景信息
 
-Ask the user for key information:
+向用户询问关键信息：
 
-**Company Basics:**
+**公司基础信息：**
 
-- Company name and elevator pitch
-- Stage (pre-seed, seed, Series A)
-- Problem being solved
-- Target customers
+- 公司名称和电梯演讲
+- 发展阶段（种子前、种子轮、A 轮）
+- 所解决的问题
+- 目标客户
 
-**Audience:**
+**受众：**
 
-- Who will read this? (VCs, angels, strategic partners)
-- What's the primary goal? (fundraising, partnership, internal planning)
+- 谁会阅读这份文档？（风险投资人、天使投资人、战略合作伙伴）
+- 主要目标是什么？（融资、合作、内部规划）
 
-**Available Materials:**
+**现有材料：**
 
-- Existing pitch deck or docs?
-- Market sizing data?
-- Financial model?
-- Competitive analysis?
+- 是否有现成的融资演示文稿或文档？
+- 是否有市场规模数据？
+- 是否有财务模型？
+- 是否有竞争分析？
 
-### Step 2: Activate Relevant Skills
+### 步骤 2：激活相关技能
 
-Reference skills for comprehensive analysis:
+参考相关技能以进行综合分析：
 
-- **market-sizing-analysis** - TAM/SAM/SOM calculations
-- **startup-financial-modeling** - Financial projections
-- **competitive-landscape** - Competitive analysis frameworks
-- **team-composition-analysis** - Organization planning
-- **startup-metrics-framework** - Key metrics and benchmarks
+- **market-sizing-analysis** - TAM/SAM/SOM 计算
+- **startup-financial-modeling** - 财务预测
+- **competitive-landscape** - 竞争分析框架
+- **team-composition-analysis** - 组织规划
+- **startup-metrics-framework** - 关键指标和基准
 
-### Step 3: Structure the Business Case
+### 步骤 3：构建商业计划书结构
 
-Create a comprehensive document with these sections:
+创建包含以下部分的综合性文档：
 
 ---
 
-## Business Case Document Structure
+## 商业计划书文档结构
 
-### Section 1: Executive Summary (1-2 pages)
+### 第 1 部分：执行摘要（1-2 页）
 
-**Company Overview:**
+**公司概览：**
 
-- One-sentence description
-- Founded, location, stage
-- Team highlights
+- 一句话描述
+- 成立时间、所在地、发展阶段
+- 团队亮点
 
-**Problem Statement:**
+**问题陈述：**
 
-- Core problem being solved (2-3 sentences)
-- Market pain quantified
+- 解决的核心问题（2-3 句话）
+- 量化的市场痛点
 
-**Solution:**
+**解决方案：**
 
-- How the product solves it (2-3 sentences)
-- Key differentiation
+- 产品如何解决问题（2-3 句话）
+- 关键差异化优势
 
-**Market Opportunity:**
+**市场机会：**
 
-- TAM: $X.XB
-- SAM: $X.XM
-- SOM (Year 5): $X.XM
+- TAM（总可获得市场）：$X.XB
+- SAM（可服务市场）：$X.XM
+- SOM（可获得市场份额，第 5 年）：$X.XM
 
-**Traction:**
+**发展势头：**
 
-- Current metrics (MRR, customers, growth rate)
-- Key milestones achieved
+- 当前指标（月度经常性收入、客户数、增长率）
+- 已实现的关键里程碑
 
-**Financial Snapshot:**
+**财务快照：**
 
 ```
-| Metric | Current | Year 1 | Year 2 | Year 3 |
+| 指标 | 当前 | 第 1 年 | 第 2 年 | 第 3 年 |
 |--------|---------|--------|--------|--------|
 | ARR | $X | $Y | $Z | $W |
-| Customers | X | Y | Z | W |
-| Team Size | X | Y | Z | W |
+| 客户数 | X | Y | Z | W |
+| 团队规模 | X | Y | Z | W |
 ```
 
-**Funding Ask:**
+**融资需求：**
 
-- Amount seeking
-- Use of proceeds (top 3-4)
-- Expected milestones
+- 寻求融资金额
+- 资金用途（前 3-4 项）
+- 预期里程碑
 
-### Section 2: Problem & Market Opportunity (2-3 pages)
+### 第 2 部分：问题与市场机会（2-3 页）
 
-**The Problem:**
+**问题：**
 
-- Detailed problem description
-- Who experiences this problem
-- Current solutions and their limitations
-- Cost of the problem (quantified)
+- 详细的问题描述
+- 谁面临这个问题
+- 现有解决方案及其局限性
+- 问题的成本（量化）
 
-**Market Landscape:**
+**市场格局：**
 
-- Industry overview
-- Key trends driving opportunity
-- Market growth rate and drivers
+- 行业概览
+- 推动机会的关键趋势
+- 市场增长率及驱动因素
 
-**Market Sizing:**
+**市场规模估算：**
 
-- TAM calculation and methodology
-- SAM with filters applied
-- SOM with assumptions
-- Validation and data sources
-- Comparison to public companies
+- TAM 计算和方法论
+- 应用筛选条件后的 SAM
+- 基于假设的 SOM
+- 验证和数据来源
+- 与上市公司的比较
 
-**Target Customer Profile:**
+**目标客户画像：**
 
-- Primary segments
-- Customer characteristics
-- Decision-makers and buying process
+- 主要细分市场
+- 客户特征
+- 决策者和采购流程
 
-### Section 3: Solution & Product (2-3 pages)
+### 第 3 部分：解决方案与产品（2-3 页）
 
-**Product Overview:**
+**产品概览：**
 
-- What it does (features and capabilities)
-- How it works (architecture/approach)
-- Key differentiators
-- Technology advantages
+- 产品功能（功能和能力）
+- 工作原理（架构/方法）
+- 关键差异化因素
+- 技术优势
 
-**Value Proposition:**
+**价值主张：**
 
-- Benefits by customer segment
-- ROI or value delivered
-- Time to value
+- 按客户细分划分的收益
+- 投资回报率或交付价值
+- 价值实现时间
 
-**Product Roadmap:**
+**产品路线图：**
 
-- Current state
-- Near-term (6 months)
-- Medium-term (12-18 months)
-- Vision (2-3 years)
+- 当前状态
+- 短期（6 个月）
+- 中期（12-18 个月）
+- 愿景（2-3 年）
 
-**Intellectual Property:**
+**知识产权：**
 
-- Patents (filed, pending)
-- Proprietary technology
-- Data advantages
-- Defensibility
+- 专利（已申请、待审）
+- 专有技术
+- 数据优势
+- 防护性
 
-### Section 4: Competitive Analysis (2 pages)
+### 第 4 部分：竞争分析（2 页）
 
-**Competitive Landscape:**
+**竞争格局：**
 
-- Direct competitors
-- Indirect competitors (alternatives)
-- Adjacent players (potential entrants)
+- 直接竞争对手
+- 间接竞争对手（替代方案）
+- 相邻参与者（潜在进入者）
 
-**Competitive Matrix:**
+**竞争对比矩阵：**
 
 ```
-| Feature/Factor | Us | Comp A | Comp B | Comp C |
+| 功能/因素 | 我们 | 竞争对手 A | 竞争对手 B | 竞争对手 C |
 |----------------|----|---------| -------|--------|
-| Feature 1 | ✓ | ✓ | ✗ | ✓ |
-| Feature 2 | ✓ | ✗ | ✓ | ✗ |
-| Pricing | $X | $Y | $Z | $W |
+| 功能 1 | ✓ | ✓ | ✗ | ✓ |
+| 功能 2 | ✓ | ✗ | ✓ | ✗ |
+| 定价 | $X | $Y | $Z | $W |
 ```
 
-**Differentiation:**
+**差异化：**
 
-- 3-5 key differentiators
-- Why these matter to customers
-- Defensibility of advantages
+- 3-5 个关键差异化因素
+- 这些因素对客户为何重要
+- 优势的防护性
 
-**Competitive Positioning:**
+**竞争定位：**
 
-- Positioning map (2-3 dimensions)
-- Market positioning statement
+- 定位图（2-3 个维度）
+- 市场定位声明
 
-**Barriers to Entry:**
+**进入壁垒：**
 
-- What protects against competition
-- Network effects, switching costs, etc.
+- 防止竞争的因素
+- 网络效应、转换成本等
 
-### Section 5: Business Model & Go-to-Market (2 pages)
+### 第 5 部分：商业模式与市场进入策略（2 页）
 
-**Business Model:**
+**商业模式：**
 
-- Revenue model (subscriptions, transactions, etc.)
-- Pricing strategy and tiers
-- Customer acquisition approach
-- Expansion revenue strategy
+- 收入模式（订阅、交易等）
+- 定价策略和层级
+- 客户获取方法
+- 增长收入策略
 
-**Go-to-Market Strategy:**
+**市场进入策略：**
 
-- Customer acquisition channels
-- Sales model (self-serve, sales-led, hybrid)
-- Customer acquisition cost (CAC)
-- Sales cycle and conversion rates
+- 客户获取渠道
+- 销售模式（自助、销售驱动、混合）
+- 客户获取成本（CAC）
+- 销售周期和转化率
 
-**Marketing Strategy:**
+**营销策略：**
 
-- Positioning and messaging
-- Channel strategy
-- Content and demand generation
-- Partnerships and integrations
+- 定位和信息传达
+- 渠道策略
+- 内容和需求生成
+- 合作伙伴关系和集成
 
-**Customer Success:**
+**客户成功：**
 
-- Onboarding approach
-- Support model
-- Retention strategy
-- Net dollar retention target
+- 入职方法
+- 支持模式
+- 留存策略
+- 净收入留存率目标
 
-### Section 6: Financial Projections (2-3 pages)
+### 第 6 部分：财务预测（2-3 页）
 
-**Revenue Model:**
+**收入模型：**
 
-- Cohort-based projections
-- Key assumptions
-- Revenue breakdown by segment
+- 基于队列的预测
+- 关键假设
+- 按细分划分的收入明细
 
-**3-Year Financial Summary:**
+**3 年财务汇总：**
 
 ```
-| Metric | Year 1 | Year 2 | Year 3 |
+| 指标 | 第 1 年 | 第 2 年 | 第 3 年 |
 |--------|--------|--------|--------|
-| Revenue | $X.XM | $Y.YM | $Z.ZM |
-| Gross Margin | XX% | XX% | XX% |
-| Operating Expenses | $X.XM | $Y.YM | $Z.ZM |
-| Net Income | ($X.XM) | ($Y.YM) | $Z.ZM |
-| EBITDA Margin | (XX%) | (XX%) | XX% |
+| 收入 | $X.XM | $Y.YM | $Z.ZM |
+| 毛利率 | XX% | XX% | XX% |
+| 运营费用 | $X.XM | $Y.YM | $Z.ZM |
+| 净利润 | ($X.XM) | ($Y.YM) | $Z.ZM |
+| EBITDA 利润率 | (XX%) | (XX%) | XX% |
 ```
 
-**Unit Economics:**
+**单体经济模型：**
 
-- CAC: $X,XXX
-- LTV: $X,XXX
-- LTV:CAC ratio: X.X
-- CAC Payback: XX months
-- Gross margin: XX%
+- CAC（客户获取成本）：$X,XXX
+- LTV（客户终身价值）：$X,XXX
+- LTV:CAC 比率：X.X
+- CAC 回收期：XX 个月
+- 毛利率：XX%
 
-**Key Metrics Trajectory:**
+**关键指标轨迹：**
 
 ```
-| Metric | Current | Year 1 | Year 2 | Year 3 |
+| 指标 | 当前 | 第 1 年 | 第 2 年 | 第 3 年 |
 |--------|---------|--------|--------|--------|
 | MRR/ARR | $X | $Y | $Z | $W |
-| Customers | X | Y | Z | W |
-| Net Dollar Retention | XX% | XX% | XX% | XX% |
-| Burn Multiple | X.X | X.X | X.X | X.X |
+| 客户数 | X | Y | Z | W |
+| 净收入留存率 | XX% | XX% | XX% | XX% |
+| 烧钱倍数 | X.X | X.X | X.X | X.X |
 ```
 
-**Scenario Analysis:**
+**情景分析：**
 
-- Conservative, base, optimistic
-- Key drivers and sensitivities
+- 保守、基准、乐观
+- 关键驱动因素和敏感性
 
-**Path to Profitability:**
+**盈利路径：**
 
-- Break-even timeline
-- Key milestones
-- Unit economics at scale
+- 盈亏平衡时间线
+- 关键里程碑
+- 规模化后的单体经济模型
 
-### Section 7: Team & Organization (1-2 pages)
+### 第 7 部分：团队与组织（1-2 页）
 
-**Leadership Team:**
-For each founder/executive:
+**领导团队：**
+每位创始人/高管：
 
-- Name, title, photo (if available)
-- Relevant background (2-3 sentences)
-- Key accomplishments
-- Why they're uniquely qualified
+- 姓名、职位、照片（如有）
+- 相关背景（2-3 句话）
+- 主要成就
+- 为何他们具有独特资格
 
-**Current Team:**
+**当前团队：**
 
-- Headcount by department
-- Key hires and their backgrounds
-- Advisory board
+- 按部门划分的人员数量
+- 关键招聘及其背景
+- 顾问委员会
 
-**Hiring Plan:**
+**招聘计划：**
 
-- Year 1-3 headcount growth
-- Key roles to fill
-- Recruiting strategy
+- 第 1-3 年的人员增长
+- 需要填补的关键职位
+- 招聘策略
 
-**Organization Evolution:**
-
-```
-Current (5 people) → Year 1 (15) → Year 2 (35) → Year 3 (60)
-Engineering: 3 → 7 → 15 → 25
-Sales & Marketing: 1 → 4 → 12 → 20
-Other: 1 → 4 → 8 → 15
-```
-
-**Equity & Compensation:**
-
-- Option pool sizing
-- Compensation philosophy
-- Retention strategy
-
-### Section 8: Traction & Milestones (1 page)
-
-**Current Traction:**
-
-- Revenue or user metrics
-- Growth rate
-- Key customer wins
-- Product development progress
-
-**Milestones Achieved:**
-
-- Product launches
-- Funding rounds
-- Team hires
-- Customer acquisition
-- Partnerships
-
-**Upcoming Milestones (12-18 months):**
-
-- Product milestones
-- Revenue targets
-- Customer goals
-- Team goals
-- Partnership goals
-
-### Section 9: Risks & Mitigation (1 page)
-
-**Market Risks:**
-
-- Market size assumptions
-- Competitive intensity
-- Substitute adoption
-- Mitigation strategies
-
-**Execution Risks:**
-
-- Product development
-- Go-to-market effectiveness
-- Hiring and retention
-- Mitigation strategies
-
-**Financial Risks:**
-
-- Burn rate management
-- Fundraising market
-- Unit economics
-- Mitigation strategies
-
-**Regulatory/External Risks:**
-
-- Compliance requirements
-- Data privacy
-- Economic conditions
-- Mitigation strategies
-
-### Section 10: Funding Request & Use of Proceeds (1 page)
-
-**Funding Ask:**
-
-- Amount seeking: $X.XM
-- Structure: Equity, SAFE, convertible note
-- Target valuation: $X.XM (if applicable)
-
-**Use of Proceeds:**
+**组织演进：**
 
 ```
-Total Raise: $5.0M
-- Product Development: $2.0M (40%)
-  • Engineering team expansion
-  • Infrastructure and tools
-  • Product roadmap execution
-
-- Sales & Marketing: $2.0M (40%)
-  • Sales team hiring (5 AEs)
-  • Marketing programs
-  • Demand generation
-
-- Operations & G&A: $0.5M (10%)
-  • Finance/legal/HR
-  • Office and facilities
-
-- Working Capital: $0.5M (10%)
-  • 6-month buffer
+当前（5 人）→ 第 1 年（15）→ 第 2 年（35）→ 第 3 年（60）
+工程：3 → 7 → 15 → 25
+销售与营销：1 → 4 → 12 → 20
+其他：1 → 4 → 8 → 15
 ```
 
-**Milestones to Achieve:**
+**股权与薪酬：**
 
-- Revenue: $X.XM ARR (X% growth)
-- Customer: XXX customers
-- Product: Key features launched
-- Team: XX employees
-- Metric: Key metric targets
+- 期权池规模
+- 薪酬理念
+- 留存策略
 
-**Expected Timeline:**
+### 第 8 部分：发展势头与里程碑（1 页）
 
-- 18-24 month runway
-- Achieve milestones in 15-18 months
-- 6-month buffer for next raise
+**当前发展势头：**
 
-**Next Round:**
+- 收入或用户指标
+- 增长率
+- 关键客户成果
+- 产品开发进展
 
-- Series A in 18-24 months
-- Expected metrics at that time
-- Target raise amount
+**已实现的里程碑：**
+
+- 产品发布
+- 融资轮次
+- 团队招聘
+- 客户获取
+- 合作伙伴关系
+
+**即将到来的里程碑（12-18 个月）：**
+
+- 产品里程碑
+- 收入目标
+- 客户目标
+- 团队目标
+- 合作伙伴目标
+
+### 第 9 部分：风险与缓解措施（1 页）
+
+**市场风险：**
+
+- 市场规模假设
+- 竞争强度
+- 替代品采用
+- 缓解策略
+
+**执行风险：**
+
+- 产品开发
+- 市场进入有效性
+- 招聘与留存
+- 缓解策略
+
+**财务风险：**
+
+- 烧钱率管理
+- 融资市场
+- 单体经济模型
+- 缓解策略
+
+**监管/外部风险：**
+
+- 合规要求
+- 数据隐私
+- 经济状况
+- 缓解策略
+
+### 第 10 部分：融资需求与资金用途（1 页）
+
+**融资需求：**
+
+- 寻求融资金额：$X.XM
+- 结构：股权、SAFE、可转换票据
+- 目标估值：$X.XM（如适用）
+
+**资金用途：**
+
+```
+总融资额：$5.0M
+- 产品开发：$2.0M（40%）
+  • 工程团队扩张
+  • 基础设施和工具
+  • 产品路线图执行
+
+- 销售与营销：$2.0M（40%）
+  • 销售团队招聘（5 位客户经理）
+  • 营销项目
+  • 需求生成
+
+- 运营与管理：$0.5M（10%）
+  • 财务/法律/人力资源
+  • 办公室和设施
+
+- 营运资金：$0.5M（10%）
+  • 6 个月缓冲
+```
+
+**预期里程碑：**
+
+- 收入：$X.XM ARR（X% 增长）
+- 客户：XXX 个客户
+- 产品：关键功能已发布
+- 团队：XX 名员工
+- 指标：关键指标目标
+
+**预期时间线：**
+
+- 18-24 个月资金跑道
+- 在 15-18 个月内实现里程碑
+- 下一轮融资的 6 个月缓冲期
+
+**下一轮：**
+
+- 18-24 个月后进行 A 轮融资
+- 预期当时的指标
+- 目标融资金额
 
 ---
 
-### Step 4: Enhance with Visuals
+### 步骤 4：增强视觉效果
 
-Suggest including:
+建议包含：
 
-- Charts for market sizing (TAM funnel)
-- Product screenshots or mockups
-- Positioning maps
-- Financial trend charts (revenue, customers, burn)
-- Organization chart
-- Timeline/roadmap
-- Use of proceeds pie chart
+- 市场规模图表（TAM 漏斗）
+- 产品截图或模型
+- 定位图
+- 财务趋势图（收入、客户、烧钱率）
+- 组织架构图
+- 时间线/路线图
+- 资金用途饼图
 
-### Step 5: Provide Additional Sections (Optional)
+### 步骤 5：提供附加部分（可选）
 
-**If Relevant, Add:**
+**如相关，可添加：**
 
-- Regulatory/Compliance section (for regulated industries)
-- Technology Architecture (for deep tech)
-- Clinical/Scientific Data (for biotech/health tech)
-- Unit Economics Deep Dive (for complex business models)
-- Strategic Partnerships (if material to strategy)
+- 监管/合规部分（受监管行业）
+- 技术架构（深度技术）
+- 临床/科学数据（生物技术/医疗技术）
+- 单体经济模型深入分析（复杂商业模式）
+- 战略合作伙伴关系（对战略具有重要性）
 
-### Step 6: Create Executive Summary Slide
+### 步骤 6：创建执行摘要幻灯片
 
-Provide one-page summary for quick review:
+提供一页摘要以便快速审阅：
 
-- Problem & Solution (3 bullets each)
-- Market: TAM/SAM/SOM
-- Traction: Key metrics
-- Team: Founders
-- Ask: Amount and use
-- Contact information
+- 问题与解决方案（各 3 个要点）
+- 市场：TAM/SAM/SOM
+- 发展势头：关键指标
+- 团队：创始人
+- 融资需求：金额和用途
+- 联系信息
 
-### Step 7: Save Business Case
+### 步骤 7：保存商业计划书
 
-Offer to save as markdown:
+提供保存为 Markdown 格式：
 
-- Filename: `business-case-[company-name]-YYYY-MM-DD.md`
-- Suggest converting to PDF for sharing
-- Provide tips for presentation format
+- 文件名：`business-case-[公司名称]-YYYY-MM-DD.md`
+- 建议转换为 PDF 以便分享
+- 提供演示格式的技巧
 
-## Best Practices
+## 最佳实践
 
-**Do:**
+**应做：**
 
-- Lead with customer problem
-- Quantify everything
-- Show, don't just tell (use data)
-- Be realistic on projections
-- Acknowledge risks honestly
-- Cite all data sources
-- Keep executive summary concise
-- Focus on differentiation
+- 从客户问题入手
+- 量化所有内容
+- 展示而非仅仅讲述（使用数据）
+- 对预测保持现实
+- 诚实地承认风险
+- 引用所有数据来源
+- 保持执行摘要简洁
+- 专注于差异化
 
-**Don't:**
+**不应做：**
 
-- Use jargon without explanation
-- Make unsupported claims
-- Ignore competition
-- Be overly optimistic
-- Skip the "why now"
-- Forget to proofread
-- Use generic templates without customization
+- 使用未解释的术语
+- 做出无根据的声明
+- 忽视竞争
+- 过度乐观
+- 跳过"为何是现在"
+- 忘记校对
+- 使用未经定制的通用模板
 
-## Integration with Other Commands
+## 与其他命令的集成
 
-This command synthesizes outputs from:
+此命令综合了以下命令的输出：
 
-- `/market-opportunity` - Include TAM/SAM/SOM analysis
-- `/financial-projections` - Include full financial model
+- `/market-opportunity` - 包含 TAM/SAM/SOM 分析
+- `/financial-projections` - 包含完整财务模型
 
-## Example Usage
+## 使用示例
 
 ```
 User: /business-case
 
-Claude: I'll create a comprehensive business case document. Let me gather the key information first.
+Claude: 我将创建一份综合的商业计划书文档。让我先收集关键信息。
 
-Company name and description?
-→ "AcmeCorp - AI-powered email marketing for e-commerce"
+公司名称和描述？
+→ "AcmeCorp - 面向电商的 AI 邮件营销"
 
-Who is the audience?
-→ "Series A investors"
+受众是谁？
+→ "A 轮投资人"
 
-What materials do you have?
-→ "We have market sizing and financial model done"
+您有哪些材料？
+→ "我们已完成市场规模估算和财务模型"
 
-[Claude creates comprehensive 15-20 page business case with all sections]
+[Claude 创建包含所有部分的 15-20 页综合商业计划书]
 ```
 
-## Notes
+## 注意事项
 
-- Business case creation takes 1-2 hours
-- Result is investor-grade document
-- Can be used for pitch deck development
-- Update quarterly or for funding rounds
-- Customize sections based on audience
-- Keep executive summary to 2 pages max
+- 商业计划书创建需要 1-2 小时
+- 结果是面向投资人的专业文档
+- 可用于融资演示文稿开发
+- 每季度或融资轮次时更新
+- 根据受众定制部分
+- 保持执行摘要最多 2 页

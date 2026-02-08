@@ -1,55 +1,55 @@
 ---
 name: nx-workspace-patterns
-description: Configure and optimize Nx monorepo workspaces. Use when setting up Nx, configuring project boundaries, optimizing build caching, or implementing affected commands.
+description: 配置和优化 Nx 单体仓库工作空间。在设置 Nx、配置项目边界、优化构建缓存或实施受影响的命令时使用。
 ---
 
-# Nx Workspace Patterns
+# Nx 工作空间模式
 
-Production patterns for Nx monorepo management.
+Nx 单体仓库管理的生产模式。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Setting up new Nx workspaces
-- Configuring project boundaries
-- Optimizing CI with affected commands
-- Implementing remote caching
-- Managing dependencies between projects
-- Migrating to Nx
+- 设置新的 Nx 工作空间
+- 配置项目边界
+- 使用受影响的命令优化 CI
+- 实施远程缓存
+- 管理项目之间的依赖
+- 迁移到 Nx
 
-## Core Concepts
+## 核心概念
 
-### 1. Nx Architecture
+### 1. Nx 架构
 
 ```
 workspace/
-├── apps/              # Deployable applications
+├── apps/              # 可部署的应用程序
 │   ├── web/
 │   └── api/
-├── libs/              # Shared libraries
+├── libs/              # 共享库
 │   ├── shared/
 │   │   ├── ui/
 │   │   └── utils/
 │   └── feature/
 │       ├── auth/
 │       └── dashboard/
-├── tools/             # Custom executors/generators
-├── nx.json            # Nx configuration
-└── workspace.json     # Project configuration
+├── tools/             # 自定义执行器/生成器
+├── nx.json            # Nx 配置
+└── workspace.json     # 项目配置
 ```
 
-### 2. Library Types
+### 2. 库类型
 
-| Type            | Purpose                          | Example             |
-| --------------- | -------------------------------- | ------------------- |
-| **feature**     | Smart components, business logic | `feature-auth`      |
-| **ui**          | Presentational components        | `ui-buttons`        |
-| **data-access** | API calls, state management      | `data-access-users` |
-| **util**        | Pure functions, helpers          | `util-formatting`   |
-| **shell**       | App bootstrapping                | `shell-web`         |
+| 类型           | 用途                          | 示例             |
+| -------------- | -------------------------------- | ------------------- |
+| **feature**    | 智能组件、业务逻辑 | `feature-auth`      |
+| **ui**         | 展示组件        | `ui-buttons`        |
+| **data-access** | API 调用、状态管理      | `data-access-users` |
+| **util**       | 纯函数、辅助工具          | `util-formatting`   |
+| **shell**       | 应用程序引导                | `shell-web`         |
 
-## Templates
+## 模板
 
-### Template 1: nx.json Configuration
+### 模板 1：nx.json 配置
 
 ```json
 {
@@ -125,7 +125,7 @@ workspace/
 }
 ```
 
-### Template 2: Project Configuration
+### 模板 2：项目配置
 
 ```json
 // apps/web/project.json
@@ -197,7 +197,7 @@ workspace/
 }
 ```
 
-### Template 3: Module Boundary Rules
+### 模板 3：模块边界规则
 
 ```json
 // .eslintrc.json
@@ -265,7 +265,7 @@ workspace/
 }
 ```
 
-### Template 4: Custom Generator
+### 模板 4：自定义生成器
 
 ```typescript
 // tools/generators/feature-lib/index.ts
@@ -294,7 +294,7 @@ export default async function featureLibraryGenerator(
     ? `${directory}/${name}`
     : `libs/${scope}/feature-${name}`;
 
-  // Generate base library
+  // 生成基础库
   await libraryGenerator(tree, {
     name: `feature-${name}`,
     directory: projectDirectory,
@@ -306,7 +306,7 @@ export default async function featureLibraryGenerator(
     linter: "eslint",
   });
 
-  // Add custom files
+  // 添加自定义文件
   const projectConfig = readProjectConfiguration(
     tree,
     `${scope}-feature-${name}`,
@@ -328,7 +328,7 @@ export default async function featureLibraryGenerator(
 }
 ```
 
-### Template 5: CI Configuration with Affected
+### 模板 5：使用受影响的 CI 配置
 
 ```yaml
 # .github/workflows/ci.yml
@@ -356,29 +356,29 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: npm ci
 
-      - name: Derive SHAs for affected commands
+      - name: 为受影响的命令派生 SHA
         uses: nrwl/nx-set-shas@v4
 
-      - name: Run affected lint
+      - name: 运行受影响的 lint
         run: npx nx affected -t lint --parallel=3
 
-      - name: Run affected test
+      - name: 运行受影响的测试
         run: npx nx affected -t test --parallel=3 --configuration=ci
 
-      - name: Run affected build
+      - name: 运行受影响的构建
         run: npx nx affected -t build --parallel=3
 
-      - name: Run affected e2e
+      - name: 运行受影响的 e2e
         run: npx nx affected -t e2e --parallel=1
 ```
 
-### Template 6: Remote Caching Setup
+### 模板 6：远程缓存设置
 
 ```typescript
-// nx.json with Nx Cloud
+// 使用 Nx Cloud 的 nx.json
 {
   "tasksRunnerOptions": {
     "default": {
@@ -394,7 +394,7 @@ jobs:
   "nxCloudAccessToken": "your-nx-cloud-token"
 }
 
-// Self-hosted cache with S3
+// 使用 S3 的自托管缓存
 {
   "tasksRunnerOptions": {
     "default": {
@@ -410,48 +410,48 @@ jobs:
 }
 ```
 
-## Common Commands
+## 常用命令
 
 ```bash
-# Generate new library
+# 生成新库
 nx g @nx/react:lib feature-auth --directory=libs/web --tags=type:feature,scope:web
 
-# Run affected tests
+# 运行受影响的测试
 nx affected -t test --base=main
 
-# View dependency graph
+# 查看依赖图
 nx graph
 
-# Run specific project
+# 运行特定项目
 nx build web --configuration=production
 
-# Reset cache
+# 重置缓存
 nx reset
 
-# Run migrations
+# 运行迁移
 nx migrate latest
 nx migrate --run-migrations
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Use tags consistently** - Enforce with module boundaries
-- **Enable caching early** - Significant CI savings
-- **Keep libs focused** - Single responsibility
-- **Use generators** - Ensure consistency
-- **Document boundaries** - Help new developers
+- **始终如一地使用标签** - 使用模块边界强制
+- **尽早启用缓存** - 显著节省 CI 时间
+- **保持库专注** - 单一职责
+- **使用生成器** - 确保一致性
+- **记录边界** - 帮助新开发人员
 
-### Don'ts
+### 不应该做
 
-- **Don't create circular deps** - Graph should be acyclic
-- **Don't skip affected** - Test only what changed
-- **Don't ignore boundaries** - Tech debt accumulates
-- **Don't over-granularize** - Balance lib count
+- **不要创建循环依赖** - 图应该是无环的
+- **不要跳过受影响** - 仅测试更改的内容
+- **不要忽略边界** - 技术债务累积
+- **不要过度细分** - 平衡库数量
 
-## Resources
+## 资源
 
-- [Nx Documentation](https://nx.dev/getting-started/intro)
-- [Module Boundaries](https://nx.dev/core-features/enforce-module-boundaries)
+- [Nx 文档](https://nx.dev/getting-started/intro)
+- [模块边界](https://nx.dev/core-features/enforce-module-boundaries)
 - [Nx Cloud](https://nx.app/)

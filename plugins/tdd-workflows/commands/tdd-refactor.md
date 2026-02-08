@@ -1,153 +1,153 @@
-Refactor code with confidence using comprehensive test safety net:
+借助全面的测试安全网，自信地重构代码：
 
-[Extended thinking: This tool uses the tdd-orchestrator agent (opus model) for sophisticated refactoring while maintaining all tests green. It applies design patterns, improves code quality, and optimizes performance with the safety of comprehensive test coverage.]
+[扩展思考：此工具使用 tdd-orchestrator 智能体（opus 模型）进行复杂的重构，同时保持所有测试通过。它应用设计模式、改进代码质量，并在全面测试覆盖的安全保障下优化性能。]
 
-## Usage
+## 使用方法
 
-Use Task tool with subagent_type="tdd-orchestrator" to perform safe refactoring.
+使用 Task 工具并设置 subagent_type="tdd-orchestrator" 来执行安全重构。
 
-Prompt: "Refactor this code while keeping all tests green: $ARGUMENTS. Apply TDD refactor phase:
+提示词："在保持所有测试通过的情况下重构此代码：$ARGUMENTS。应用 TDD 重构阶段：
 
-## Core Process
+## 核心流程
 
-**1. Pre-Assessment**
+**1. 预评估**
 
-- Run tests to establish green baseline
-- Analyze code smells and test coverage
-- Document current performance metrics
-- Create incremental refactoring plan
+- 运行测试以建立通过的基线
+- 分析代码异味和测试覆盖率
+- 记录当前性能指标
+- 制定增量重构计划
 
-**2. Code Smell Detection**
+**2. 代码异味检测**
 
-- Duplicated code → Extract methods/classes
-- Long methods → Decompose into focused functions
-- Large classes → Split responsibilities
-- Long parameter lists → Parameter objects
-- Feature Envy → Move methods to appropriate classes
-- Primitive Obsession → Value objects
-- Switch statements → Polymorphism
-- Dead code → Remove
+- 重复代码 → 提取方法/类
+- 长方法 → 分解为专注的函数
+- 大型类 → 拆分职责
+- 长参数列表 → 参数对象
+- 特性依恋 → 将方法移至合适的类
+- 基本类型偏执 → 值对象
+- Switch 语句 → 多态
+- 死代码 → 删除
 
-**3. Design Patterns**
+**3. 设计模式**
 
-- Apply Creational (Factory, Builder, Singleton)
-- Apply Structural (Adapter, Facade, Decorator)
-- Apply Behavioral (Strategy, Observer, Command)
-- Apply Domain (Repository, Service, Value Objects)
-- Use patterns only where they add clear value
+- 应用创建型模式（工厂、建造者、单例）
+- 应用结构型模式（适配器、外观、装饰器）
+- 应用行为型模式（策略、观察者、命令）
+- 应用领域模式（仓储、服务、值对象）
+- 仅在能带来明确价值的地方使用模式
 
-**4. SOLID Principles**
+**4. SOLID 原则**
 
-- Single Responsibility: One reason to change
-- Open/Closed: Open for extension, closed for modification
-- Liskov Substitution: Subtypes substitutable
-- Interface Segregation: Small, focused interfaces
-- Dependency Inversion: Depend on abstractions
+- 单一职责原则：只有一个改变的理由
+- 开闭原则：对扩展开放，对修改封闭
+- 里氏替换原则：子类型可替换
+- 接口隔离原则：小而专注的接口
+- 依赖倒置原则：依赖抽象
 
-**5. Refactoring Techniques**
+**5. 重构技术**
 
-- Extract Method/Variable/Interface
-- Inline unnecessary indirection
-- Rename for clarity
-- Move Method/Field to appropriate classes
-- Replace Magic Numbers with constants
-- Encapsulate fields
-- Replace Conditional with Polymorphism
-- Introduce Null Object
+- 提取方法/变量/接口
+- 内联不必要的间接层
+- 重命名以提高清晰度
+- 将方法/字段移至合适的类
+- 用常量替换魔术数字
+- 封装字段
+- 用多态替换条件表达式
+- 引入空对象
 
-**6. Performance Optimization**
+**6. 性能优化**
 
-- Profile to identify bottlenecks
-- Optimize algorithms and data structures
-- Implement caching where beneficial
-- Reduce database queries (N+1 elimination)
-- Lazy loading and pagination
-- Always measure before and after
+- 性能分析以识别瓶颈
+- 优化算法和数据结构
+- 在有益的地方实现缓存
+- 减少数据库查询（消除 N+1）
+- 延迟加载和分页
+- 始终在优化前后进行测量
 
-**7. Incremental Steps**
+**7. 增量步骤**
 
-- Make small, atomic changes
-- Run tests after each modification
-- Commit after each successful refactoring
-- Keep refactoring separate from behavior changes
-- Use scaffolding when needed
+- 进行小的、原子性的更改
+- 每次修改后运行测试
+- 每次成功重构后提交
+- 将重构与行为更改分离
+- 需要时使用脚手架
 
-**8. Architecture Evolution**
+**8. 架构演进**
 
-- Layer separation and dependency management
-- Module boundaries and interface definition
-- Event-driven patterns for decoupling
-- Database access pattern optimization
+- 分层分离和依赖管理
+- 模块边界和接口定义
+- 用于解耦的事件驱动模式
+- 数据库访问模式优化
 
-**9. Safety Verification**
+**9. 安全验证**
 
-- Run full test suite after each change
-- Performance regression testing
-- Mutation testing for test effectiveness
-- Rollback plan for major changes
+- 每次更改后运行完整测试套件
+- 性能回归测试
+- 变异测试以评估测试有效性
+- 重大更改的回滚计划
 
-**10. Advanced Patterns**
+**10. 高级模式**
 
-- Strangler Fig: Gradual legacy replacement
-- Branch by Abstraction: Large-scale changes
-- Parallel Change: Expand-contract pattern
-- Mikado Method: Dependency graph navigation
+- 绞杀者模式：渐进式遗留系统替换
+- 抽象分支：大规模更改
+- 并行更改：扩展-收缩模式
+- Mikado 方法：依赖图导航
 
-## Output Requirements
+## 输出要求
 
-- Refactored code with improvements applied
-- Test results (all green)
-- Before/after metrics comparison
-- Applied refactoring techniques list
-- Performance improvement measurements
-- Remaining technical debt assessment
+- 应用了改进的重构代码
+- 测试结果（全部通过）
+- 优化前后指标对比
+- 已应用的重构技术列表
+- 性能改进测量
+- 剩余技术债务评估
 
-## Safety Checklist
+## 安全检查清单
 
-Before committing:
+提交之前：
 
-- ✓ All tests pass (100% green)
-- ✓ No functionality regression
-- ✓ Performance metrics acceptable
-- ✓ Code coverage maintained/improved
-- ✓ Documentation updated
+- ✓ 所有测试通过（100% 通过）
+- ✓ 无功能回归
+- ✓ 性能指标可接受
+- ✓ 代码覆盖率保持/提升
+- ✓ 文档已更新
 
-## Recovery Protocol
+## 恢复协议
 
-If tests fail:
+如果测试失败：
 
-- Immediately revert last change
-- Identify breaking refactoring
-- Apply smaller incremental changes
-- Use version control for safe experimentation
+- 立即回滚最后的更改
+- 识别破坏性的重构
+- 应用更小的增量更改
+- 使用版本控制进行安全实验
 
-## Example: Extract Method Pattern
+## 示例：提取方法模式
 
-**Before:**
+**之前：**
 
 ```typescript
 class OrderProcessor {
   processOrder(order: Order): ProcessResult {
-    // Validation
+    // 验证
     if (!order.customerId || order.items.length === 0) {
       return { success: false, error: "Invalid order" };
     }
 
-    // Calculate totals
+    // 计算总计
     let subtotal = 0;
     for (const item of order.items) {
       subtotal += item.price * item.quantity;
     }
     let total = subtotal + subtotal * 0.08 + (subtotal > 100 ? 0 : 15);
 
-    // Process payment...
-    // Update inventory...
-    // Send confirmation...
+    // 处理支付...
+    // 更新库存...
+    // 发送确认...
   }
 }
 ```
 
-**After:**
+**之后：**
 
 ```typescript
 class OrderProcessor {
@@ -182,6 +182,6 @@ class OrderProcessor {
 }
 ```
 
-**Applied:** Extract Method, Value Objects, Dependency Injection, Async patterns
+**已应用：** 提取方法、值对象、依赖注入、异步模式
 
-Code to refactor: $ARGUMENTS"
+待重构代码：$ARGUMENTS"

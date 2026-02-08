@@ -1,28 +1,28 @@
 ---
 name: nodejs-backend-patterns
-description: Build production-ready Node.js backend services with Express/Fastify, implementing middleware patterns, error handling, authentication, database integration, and API design best practices. Use when creating Node.js servers, REST APIs, GraphQL backends, or microservices architectures.
+description: 使用 Express/Fastify 构建生产就绪的 Node.js 后端服务，实施中间件模式、错误处理、身份验证、数据库集成和 API 设计最佳实践。在创建 Node.js 服务器、REST API、GraphQL 后端或微服务架构时使用。
 ---
 
-# Node.js Backend Patterns
+# Node.js 后端模式
 
-Comprehensive guidance for building scalable, maintainable, and production-ready Node.js backend applications with modern frameworks, architectural patterns, and best practices.
+使用现代框架、架构模式和最佳实践构建可扩展、可维护和生产就绪的 Node.js 后端应用程序的综合指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building REST APIs or GraphQL servers
-- Creating microservices with Node.js
-- Implementing authentication and authorization
-- Designing scalable backend architectures
-- Setting up middleware and error handling
-- Integrating databases (SQL and NoSQL)
-- Building real-time applications with WebSockets
-- Implementing background job processing
+- 构建 REST API 或 GraphQL 服务器
+- 使用 Node.js 创建微服务
+- 实施身份验证和授权
+- 设计可扩展的后端架构
+- 设置中间件和错误处理
+- 集成数据库（SQL 和 NoSQL）
+- 使用 WebSockets 构建实时应用程序
+- 实施后台作业处理
 
-## Core Frameworks
+## 核心框架
 
-### Express.js - Minimalist Framework
+### Express.js - 极简框架
 
-**Basic Setup:**
+**基本设置：**
 
 ```typescript
 import express, { Request, Response, NextFunction } from "express";
@@ -32,16 +32,16 @@ import compression from "compression";
 
 const app = express();
 
-// Security middleware
+// 安全中间件
 app.use(helmet());
 app.use(cors({ origin: process.env.ALLOWED_ORIGINS?.split(",") }));
 app.use(compression());
 
-// Body parsing
+// 请求体解析
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Request logging
+// 请求日志
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(`${req.method} ${req.path}`);
   next();
@@ -53,9 +53,9 @@ app.listen(PORT, () => {
 });
 ```
 
-### Fastify - High Performance Framework
+### Fastify - 高性能框架
 
-**Basic Setup:**
+**基本设置：**
 
 ```typescript
 import Fastify from "fastify";
@@ -73,12 +73,12 @@ const fastify = Fastify({
   },
 });
 
-// Plugins
+// 插件
 await fastify.register(helmet);
 await fastify.register(cors, { origin: true });
 await fastify.register(compress);
 
-// Type-safe routes with schema validation
+// 带有架构验证的类型安全路由
 fastify.post<{
   Body: { name: string; email: string };
   Reply: { id: string; name: string };
@@ -105,26 +105,26 @@ fastify.post<{
 await fastify.listen({ port: 3000, host: "0.0.0.0" });
 ```
 
-## Architectural Patterns
+## 架构模式
 
-### Pattern 1: Layered Architecture
+### 模式 1：分层架构
 
-**Structure:**
+**结构：**
 
 ```
 src/
-├── controllers/     # Handle HTTP requests/responses
-├── services/        # Business logic
-├── repositories/    # Data access layer
-├── models/          # Data models
-├── middleware/      # Express/Fastify middleware
-├── routes/          # Route definitions
-├── utils/           # Helper functions
-├── config/          # Configuration
-└── types/           # TypeScript types
+├── controllers/     # 处理 HTTP 请求/响应
+├── services/        # 业务逻辑
+├── repositories/    # 数据访问层
+├── models/          # 数据模型
+├── middleware/      # Express/Fastify 中间件
+├── routes/          # 路由定义
+├── utils/           # 辅助函数
+├── config/          # 配置
+└── types/           # TypeScript 类型
 ```
 
-**Controller Layer:**
+**控制器层：**
 
 ```typescript
 // controllers/user.controller.ts
@@ -178,7 +178,7 @@ export class UserController {
 }
 ```
 
-**Service Layer:**
+**服务层：**
 
 ```typescript
 // services/user.service.ts
@@ -191,22 +191,22 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   async createUser(userData: CreateUserDTO): Promise<User> {
-    // Validation
+    // 验证
     const existingUser = await this.userRepository.findByEmail(userData.email);
     if (existingUser) {
       throw new ValidationError("Email already exists");
     }
 
-    // Hash password
+    // 哈希密码
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    // Create user
+    // 创建用户
     const user = await this.userRepository.create({
       ...userData,
       password: hashedPassword,
     });
 
-    // Remove password from response
+    // 从响应中移除密码
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword as User;
   }
@@ -238,7 +238,7 @@ export class UserService {
 }
 ```
 
-**Repository Layer:**
+**存储库层：**
 
 ```typescript
 // repositories/user.repository.ts
@@ -303,9 +303,9 @@ export class UserRepository {
 }
 ```
 
-### Pattern 2: Dependency Injection
+### 模式 2：依赖注入
 
-**DI Container:**
+**DI 容器：**
 
 ```typescript
 // di-container.ts
@@ -343,7 +343,7 @@ class Container {
 
 export const container = new Container();
 
-// Register dependencies
+// 注册依赖
 container.singleton(
   "db",
   () =>
@@ -380,9 +380,9 @@ container.singleton(
 );
 ```
 
-## Middleware Patterns
+## 中间件模式
 
-### Authentication Middleware
+### 身份验证中间件
 
 ```typescript
 // middleware/auth.middleware.ts
@@ -430,7 +430,7 @@ export const authorize = (...roles: string[]) => {
       return next(new UnauthorizedError("Not authenticated"));
     }
 
-    // Check if user has required role
+    // 检查用户是否具有所需角色
     const hasRole = roles.some((role) => req.user?.roles?.includes(role));
 
     if (!hasRole) {
@@ -442,7 +442,7 @@ export const authorize = (...roles: string[]) => {
 };
 ```
 
-### Validation Middleware
+### 验证中间件
 
 ```typescript
 // middleware/validation.middleware.ts
@@ -473,7 +473,7 @@ export const validate = (schema: AnyZodObject) => {
   };
 };
 
-// Usage with Zod
+// 与 Zod 一起使用
 import { z } from "zod";
 
 const createUserSchema = z.object({
@@ -487,7 +487,7 @@ const createUserSchema = z.object({
 router.post("/users", validate(createUserSchema), userController.createUser);
 ```
 
-### Rate Limiting Middleware
+### 速率限制中间件
 
 ```typescript
 // middleware/rate-limit.middleware.ts
@@ -505,8 +505,8 @@ export const apiLimiter = rateLimit({
     client: redis,
     prefix: "rl:",
   }),
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, // 15 分钟
+  max: 100, // 每个 windowMs 每个 IP 限制 100 个请求
   message: "Too many requests from this IP, please try again later",
   standardHeaders: true,
   legacyHeaders: false,
@@ -518,12 +518,12 @@ export const authLimiter = rateLimit({
     prefix: "rl:auth:",
   }),
   windowMs: 15 * 60 * 1000,
-  max: 5, // Stricter limit for auth endpoints
+  max: 5, // 身份验证端点的更严格限制
   skipSuccessfulRequests: true,
 });
 ```
 
-### Request Logging Middleware
+### 请求日志中间件
 
 ```typescript
 // middleware/logger.middleware.ts
@@ -545,7 +545,7 @@ export const requestLogger = (
 ) => {
   const start = Date.now();
 
-  // Log response when finished
+  // 完成时记录响应
   res.on("finish", () => {
     const duration = Date.now() - start;
     logger.info({
@@ -564,9 +564,9 @@ export const requestLogger = (
 export { logger };
 ```
 
-## Error Handling
+## 错误处理
 
-### Custom Error Classes
+### 自定义错误类
 
 ```typescript
 // utils/errors.ts
@@ -616,7 +616,7 @@ export class ConflictError extends AppError {
 }
 ```
 
-### Global Error Handler
+### 全局错误处理程序
 
 ```typescript
 // middleware/error-handler.ts
@@ -638,7 +638,7 @@ export const errorHandler = (
     });
   }
 
-  // Log unexpected errors
+  // 记录意外错误
   logger.error({
     error: err.message,
     stack: err.stack,
@@ -646,7 +646,7 @@ export const errorHandler = (
     method: req.method,
   });
 
-  // Don't leak error details in production
+  // 不在生产环境中泄露错误详细信息
   const message =
     process.env.NODE_ENV === "production"
       ? "Internal server error"
@@ -658,7 +658,7 @@ export const errorHandler = (
   });
 };
 
-// Async error wrapper
+// Async 错误包装器
 export const asyncHandler = (
   fn: (req: Request, res: Response, next: NextFunction) => Promise<any>,
 ) => {
@@ -668,9 +668,9 @@ export const asyncHandler = (
 };
 ```
 
-## Database Patterns
+## 数据库模式
 
-### PostgreSQL with Connection Pool
+### 带连接池的 PostgreSQL
 
 ```typescript
 // config/database.ts
@@ -689,7 +689,7 @@ const poolConfig: PoolConfig = {
 
 export const pool = new Pool(poolConfig);
 
-// Test connection
+// 测试连接
 pool.on("connect", () => {
   console.log("Database connected");
 });
@@ -699,14 +699,14 @@ pool.on("error", (err) => {
   process.exit(-1);
 });
 
-// Graceful shutdown
+// 优雅关闭
 export const closeDatabase = async () => {
   await pool.end();
   console.log("Database connection closed");
 };
 ```
 
-### MongoDB with Mongoose
+### 使用 Mongoose 的 MongoDB
 
 ```typescript
 // config/mongoose.ts
@@ -737,7 +737,7 @@ mongoose.connection.on("error", (err) => {
 
 export { connectDB };
 
-// Model example
+// 模型示例
 import { Schema, model, Document } from "mongoose";
 
 interface IUser extends Document {
@@ -759,13 +759,13 @@ const userSchema = new Schema<IUser>(
   },
 );
 
-// Indexes
+// 索引
 userSchema.index({ email: 1 });
 
 export const User = model<IUser>("User", userSchema);
 ```
 
-### Transaction Pattern
+### 事务模式
 
 ```typescript
 // services/order.service.ts
@@ -780,21 +780,21 @@ export class OrderService {
     try {
       await client.query("BEGIN");
 
-      // Create order
+      // 创建订单
       const orderResult = await client.query(
         "INSERT INTO orders (user_id, total) VALUES ($1, $2) RETURNING id",
         [userId, calculateTotal(items)],
       );
       const orderId = orderResult.rows[0].id;
 
-      // Create order items
+      // 创建订单项目
       for (const item of items) {
         await client.query(
           "INSERT INTO order_items (order_id, product_id, quantity, price) VALUES ($1, $2, $3, $4)",
           [orderId, item.productId, item.quantity, item.price],
         );
 
-        // Update inventory
+        // 更新库存
         await client.query(
           "UPDATE products SET stock = stock - $1 WHERE id = $2",
           [item.quantity, item.productId],
@@ -813,9 +813,9 @@ export class OrderService {
 }
 ```
 
-## Authentication & Authorization
+## 身份验证和授权
 
-### JWT Authentication
+### JWT 身份验证
 
 ```typescript
 // services/auth.service.ts
@@ -898,7 +898,7 @@ export class AuthService {
 }
 ```
 
-## Caching Strategies
+## 缓存策略
 
 ```typescript
 // utils/cache.ts
@@ -940,7 +940,7 @@ export class CacheService {
   }
 }
 
-// Cache decorator
+// 缓存装饰器
 export function Cacheable(ttl: number = 300) {
   return function (
     target: any,
@@ -969,7 +969,7 @@ export function Cacheable(ttl: number = 300) {
 }
 ```
 
-## API Response Format
+## API 响应格式
 
 ```typescript
 // utils/response.ts
@@ -1018,31 +1018,31 @@ export class ApiResponse {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use TypeScript**: Type safety prevents runtime errors
-2. **Implement proper error handling**: Use custom error classes
-3. **Validate input**: Use libraries like Zod or Joi
-4. **Use environment variables**: Never hardcode secrets
-5. **Implement logging**: Use structured logging (Pino, Winston)
-6. **Add rate limiting**: Prevent abuse
-7. **Use HTTPS**: Always in production
-8. **Implement CORS properly**: Don't use `*` in production
-9. **Use dependency injection**: Easier testing and maintenance
-10. **Write tests**: Unit, integration, and E2E tests
-11. **Handle graceful shutdown**: Clean up resources
-12. **Use connection pooling**: For databases
-13. **Implement health checks**: For monitoring
-14. **Use compression**: Reduce response size
-15. **Monitor performance**: Use APM tools
+1. **使用 TypeScript**：类型安全防止运行时错误
+2. **实施适当的错误处理**：使用自定义错误类
+3. **验证输入**：使用 Zod 或 Joi 等库
+4. **使用环境变量**：永远不要硬编码机密
+5. **实施日志记录**：使用结构化日志（Pino、Winston）
+6. **添加速率限制**：防止滥用
+7. **使用 HTTPS**：在生产环境中始终使用
+8. **正确实施 CORS**：不要在生产环境中使用 `*`
+9. **使用依赖注入**：更容易测试和维护
+10. **编写测试**：单元测试、集成测试和端到端测试
+11. **处理优雅关闭**：清理资源
+12. **使用连接池**：用于数据库
+13. **实施健康检查**：用于监控
+14. **使用压缩**：减小响应大小
+15. **监控性能**：使用 APM 工具
 
-## Testing Patterns
+## 测试模式
 
-See `javascript-testing-patterns` skill for comprehensive testing guidance.
+有关全面的测试指南，请参阅 `javascript-testing-patterns` 技能。
 
-## Resources
+## 资源
 
-- **Node.js Best Practices**: https://github.com/goldbergyoni/nodebestpractices
-- **Express.js Guide**: https://expressjs.com/en/guide/
-- **Fastify Documentation**: https://www.fastify.io/docs/
-- **TypeScript Node Starter**: https://github.com/microsoft/TypeScript-Node-Starter
+- **Node.js 最佳实践**：https://github.com/goldbergyoni/nodebestpractices
+- **Express.js 指南**：https://expressjs.com/en/guide/
+- **Fastify 文档**：https://www.fastify.io/docs/
+- **TypeScript Node Starter**：https://github.com/microsoft/TypeScript-Node-Starter

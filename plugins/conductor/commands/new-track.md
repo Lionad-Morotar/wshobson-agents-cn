@@ -1,331 +1,331 @@
 ---
-description: "Create a new track with specification and phased implementation plan"
-argument-hint: "<feature|bug|chore|refactor> <name>"
+description: "创建包含详细规范和分阶段实施计划的新 track"
+argument-hint: "<feature|bug|chore|refactor> <名称>"
 ---
 
-# New Track
+# 新建 Track
 
-Create a new track (feature, bug fix, chore, or refactor) with a detailed specification and phased implementation plan.
+创建一个新的 track（功能、bug 修复、杂务或重构），包含详细规范和分阶段实施计划。
 
-## Pre-flight Checks
+## 飞行前检查
 
-1. Verify Conductor is initialized:
-   - Check `conductor/product.md` exists
-   - Check `conductor/tech-stack.md` exists
-   - Check `conductor/workflow.md` exists
-   - If missing: Display error and suggest running `/conductor:setup` first
+1. 验证 Conductor 已初始化：
+   - 检查 `conductor/product.md` 是否存在
+   - 检查 `conductor/tech-stack.md` 是否存在
+   - 检查 `conductor/workflow.md` 是否存在
+   - 如果缺失：显示错误并建议先运行 `/conductor:setup`
 
-2. Load context files:
-   - Read `conductor/product.md` for product context
-   - Read `conductor/tech-stack.md` for technical context
-   - Read `conductor/workflow.md` for TDD/commit preferences
+2. 加载上下文文件：
+   - 读取 `conductor/product.md` 获取产品上下文
+   - 读取 `conductor/tech-stack.md` 获取技术上下文
+   - 读取 `conductor/workflow.md` 获取 TDD/提交偏好
 
-## Track Classification
+## Track 分类
 
-Determine track type based on description or ask user:
-
-```
-What type of track is this?
-
-1. Feature - New functionality
-2. Bug - Fix for existing issue
-3. Chore - Maintenance, dependencies, config
-4. Refactor - Code improvement without behavior change
-```
-
-## Interactive Specification Gathering
-
-**CRITICAL RULES:**
-
-- Ask ONE question per turn
-- Wait for user response before proceeding
-- Tailor questions based on track type
-- Maximum 6 questions total
-
-### For Feature Tracks
-
-**Q1: Feature Summary**
+根据描述确定 track 类型或询问用户：
 
 ```
-Describe the feature in 1-2 sentences.
-[If argument provided, confirm: "You want to: {argument}. Is this correct?"]
+这是什么类型的 track？
+
+1. Feature（功能）- 新功能
+2. Bug（缺陷）- 现有问题的修复
+3. Chore（杂务）- 维护、依赖项、配置
+4. Refactor（重构）- 不改变行为的代码改进
 ```
 
-**Q2: User Story**
+## 交互式规范收集
+
+**关键规则：**
+
+- 每次只问一个问题
+- 等待用户响应后再继续
+- 根据 track 类型定制问题
+- 最多 6 个问题
+
+### 功能类 Track
+
+**Q1: 功能摘要**
 
 ```
-Who benefits and how?
-
-Format: As a [user type], I want to [action] so that [benefit].
+用 1-2 句话描述该功能。
+[如果提供了参数，确认："您想要：{参数}。这正确吗？"]
 ```
 
-**Q3: Acceptance Criteria**
+**Q2: 用户故事**
 
 ```
-What must be true for this feature to be complete?
+谁将从中受益以及如何受益？
 
-List 3-5 acceptance criteria (one per line):
+格式：作为[用户类型]，我想要[操作]以便[收益]。
 ```
 
-**Q4: Dependencies**
+**Q3: 验收标准**
 
 ```
-Does this depend on any existing code, APIs, or other tracks?
+该功能完成必须满足什么条件？
 
-1. No dependencies
-2. Depends on existing code (specify)
-3. Depends on incomplete track (specify)
+列出 3-5 个验收标准（每行一个）：
 ```
 
-**Q5: Scope Boundaries**
+**Q4: 依赖关系**
 
 ```
-What is explicitly OUT of scope for this track?
-(Helps prevent scope creep)
+这是否依赖于任何现有代码、API 或其他 track？
+
+1. 无依赖
+2. 依赖于现有代码（请说明）
+3. 依赖于未完成的 track（请说明）
 ```
 
-**Q6: Technical Considerations (optional)**
+**Q5: 范围边界**
 
 ```
-Any specific technical approach or constraints?
-(Press enter to skip)
+该 track 明确排除哪些内容？
+（有助于防止范围蔓延）
 ```
 
-### For Bug Tracks
-
-**Q1: Bug Summary**
+**Q6: 技术考量（可选）**
 
 ```
-What is broken?
-[If argument provided, confirm]
+是否有特定的技术方法或约束？
+（按回车键跳过）
 ```
 
-**Q2: Steps to Reproduce**
+### 缺陷类 Track
+
+**Q1: 缺陷摘要**
 
 ```
-How can this bug be reproduced?
-List steps:
+什么地方有问题？
+[如果提供了参数，进行确认]
 ```
 
-**Q3: Expected vs Actual Behavior**
+**Q2: 复现步骤**
 
 ```
-What should happen vs what actually happens?
+如何复现这个 bug？
+列出步骤：
 ```
 
-**Q4: Affected Areas**
+**Q3: 预期与实际行为**
 
 ```
-What parts of the system are affected?
+应该发生什么与实际发生了什么？
 ```
 
-**Q5: Root Cause Hypothesis (optional)**
+**Q4: 受影响区域**
 
 ```
-Any hypothesis about the cause?
-(Press enter to skip)
+系统的哪些部分受到影响？
 ```
 
-### For Chore/Refactor Tracks
-
-**Q1: Task Summary**
+**Q5: 根本原因假设（可选）**
 
 ```
-What needs to be done?
-[If argument provided, confirm]
+对原因有任何假设吗？
+（按回车键跳过）
 ```
 
-**Q2: Motivation**
+### 杂务/重构类 Track
+
+**Q1: 任务摘要**
 
 ```
-Why is this work needed?
+需要做什么？
+[如果提供了参数，进行确认]
 ```
 
-**Q3: Success Criteria**
+**Q2: 动机**
 
 ```
-How will we know this is complete?
+为什么需要这项工作？
 ```
 
-**Q4: Risk Assessment**
+**Q3: 成功标准**
 
 ```
-What could go wrong? Any risky changes?
+我们如何知道这是否完成？
 ```
 
-## Track ID Generation
+**Q4: 风险评估**
 
-Generate track ID in format: `{shortname}_{YYYYMMDD}`
+```
+可能出现什么问题？有哪些有风险的变更？
+```
 
-- Extract shortname from feature/bug summary (2-3 words, lowercase, hyphenated)
-- Use current date
-- Example: `user-auth_20250115`, `nav-bug_20250115`
+## Track ID 生成
 
-Validate uniqueness:
+生成格式为 `{shortname}_{YYYYMMDD}` 的 track ID：
 
-- Check `conductor/tracks.md` for existing IDs
-- If collision, append counter: `user-auth_20250115_2`
+- 从功能/bug 摘要中提取短名称（2-3 个词，小写，连字符分隔）
+- 使用当前日期
+- 示例：`user-auth_20250115`、`nav-bug_20250115`
 
-## Specification Generation
+验证唯一性：
 
-Create `conductor/tracks/{trackId}/spec.md`:
+- 检查 `conductor/tracks.md` 中是否已存在该 ID
+- 如果冲突，追加计数器：`user-auth_20250115_2`
+
+## 规范生成
+
+创建 `conductor/tracks/{trackId}/spec.md`：
 
 ```markdown
-# Specification: {Track Title}
+# 规范：{Track 标题}
 
-**Track ID:** {trackId}
-**Type:** {Feature|Bug|Chore|Refactor}
-**Created:** {YYYY-MM-DD}
-**Status:** Draft
+**Track ID：** {trackId}
+**类型：** {Feature|Bug|Chore|Refactor}
+**创建时间：** {YYYY-MM-DD}
+**状态：** 草稿
 
-## Summary
+## 摘要
 
-{1-2 sentence summary}
+{1-2 句话摘要}
 
-## Context
+## 上下文
 
-{Product context from product.md relevant to this track}
+{与该 track 相关的 product.md 中的产品上下文}
 
-## User Story (for features)
+## 用户故事（针对功能）
 
-As a {user}, I want to {action} so that {benefit}.
+作为{用户}，我想要{操作}以便{收益}。
 
-## Problem Description (for bugs)
+## 问题描述（针对缺陷）
 
-{Bug description, steps to reproduce}
+{Bug 描述、复现步骤}
 
-## Acceptance Criteria
+## 验收标准
 
-- [ ] {Criterion 1}
-- [ ] {Criterion 2}
-- [ ] {Criterion 3}
+- [ ] {标准 1}
+- [ ] {标准 2}
+- [ ] {标准 3}
 
-## Dependencies
+## 依赖关系
 
-{List dependencies or "None"}
+{列出依赖项或"无"}
 
-## Out of Scope
+## 超出范围
 
-{Explicit exclusions}
+{明确排除的内容}
 
-## Technical Notes
+## 技术说明
 
-{Technical considerations or "None specified"}
+{技术考量或"未指定"}
 
 ---
 
-_Generated by Conductor. Review and edit as needed._
+_由 Conductor 生成。请根据需要审查和编辑。_
 ```
 
-## User Review of Spec
+## 用户审查规范
 
-Display the generated spec and ask:
+显示生成的规范并询问：
 
 ```
-Here is the specification I've generated:
+这是我生成的规范：
 
-{spec content}
+{规范内容}
 
-Is this specification correct?
-1. Yes, proceed to plan generation
-2. No, let me edit (opens for inline edits)
-3. Start over with different inputs
+此规范是否正确？
+1. 是的，继续生成计划
+2. 不，让我编辑（打开内联编辑）
+3. 使用不同的输入重新开始
 ```
 
-## Plan Generation
+## 计划生成
 
-After spec approval, generate `conductor/tracks/{trackId}/plan.md`:
+规范批准后，生成 `conductor/tracks/{trackId}/plan.md`：
 
-### Plan Structure
+### 计划结构
 
 ```markdown
-# Implementation Plan: {Track Title}
+# 实施计划：{Track 标题}
 
-**Track ID:** {trackId}
-**Spec:** [spec.md](./spec.md)
-**Created:** {YYYY-MM-DD}
-**Status:** [ ] Not Started
+**Track ID：** {trackId}
+**规范：** [spec.md](./spec.md)
+**创建时间：** {YYYY-MM-DD}
+**状态：** [ ] 未开始
 
-## Overview
+## 概述
 
-{Brief summary of implementation approach}
+{实施方法简要摘要}
 
-## Phase 1: {Phase Name}
+## 阶段 1：{阶段名称}
 
-{Phase description}
+{阶段描述}
 
-### Tasks
+### 任务
 
-- [ ] Task 1.1: {Description}
-- [ ] Task 1.2: {Description}
-- [ ] Task 1.3: {Description}
+- [ ] 任务 1.1：{描述}
+- [ ] 任务 1.2：{描述}
+- [ ] 任务 1.3：{描述}
 
-### Verification
+### 验证
 
-- [ ] {Verification step for phase 1}
+- [ ] {阶段 1 的验证步骤}
 
-## Phase 2: {Phase Name}
+## 阶段 2：{阶段名称}
 
-{Phase description}
+{阶段描述}
 
-### Tasks
+### 任务
 
-- [ ] Task 2.1: {Description}
-- [ ] Task 2.2: {Description}
+- [ ] 任务 2.1：{描述}
+- [ ] 任务 2.2：{描述}
 
-### Verification
+### 验证
 
-- [ ] {Verification step for phase 2}
+- [ ] {阶段 2 的验证步骤}
 
-## Phase 3: {Phase Name} (if needed)
+## 阶段 3：{阶段名称}（如果需要）
 
 ...
 
-## Final Verification
+## 最终验证
 
-- [ ] All acceptance criteria met
-- [ ] Tests passing
-- [ ] Documentation updated (if applicable)
-- [ ] Ready for review
+- [ ] 满足所有验收标准
+- [ ] 测试通过
+- [ ] 文档已更新（如适用）
+- [ ] 准备好审查
 
 ---
 
-_Generated by Conductor. Tasks will be marked [~] in progress and [x] complete._
+_由 Conductor 生成。任务将标记为 [~] 进行中，[x] 已完成。_
 ```
 
-### Phase Guidelines
+### 阶段指南
 
-- Group related tasks into logical phases
-- Each phase should be independently verifiable
-- Include verification task after each phase
-- TDD tracks: Include test writing tasks before implementation tasks
-- Typical structure:
-  1. **Setup/Foundation** - Initial scaffolding, interfaces
-  2. **Core Implementation** - Main functionality
-  3. **Integration** - Connect with existing system
-  4. **Polish** - Error handling, edge cases, docs
+- 将相关任务分组到逻辑阶段中
+- 每个阶段应可独立验证
+- 在每个阶段后包含验证任务
+- TDD track：在实施任务之前包含测试编写任务
+- 典型结构：
+  1. **设置/基础** - 初始脚手架、接口
+  2. **核心实施** - 主要功能
+  3. **集成** - 与现有系统连接
+  4. **完善** - 错误处理、边界情况、文档
 
-## User Review of Plan
+## 用户审查计划
 
-Display the generated plan and ask:
+显示生成的计划并询问：
 
 ```
-Here is the implementation plan:
+这是实施计划：
 
-{plan content}
+{计划内容}
 
-Is this plan correct?
-1. Yes, create the track
-2. No, let me edit (opens for inline edits)
-3. Add more phases/tasks
-4. Start over
+此计划是否正确？
+1. 是的，创建 track
+2. 不，让我编辑（打开内联编辑）
+3. 添加更多阶段/任务
+4. 重新开始
 ```
 
-## Track Creation
+## Track 创建
 
-After plan approval:
+计划批准后：
 
-1. Create directory structure:
+1. 创建目录结构：
 
    ```
    conductor/tracks/{trackId}/
@@ -335,12 +335,12 @@ After plan approval:
    └── index.md
    ```
 
-2. Create `metadata.json`:
+2. 创建 `metadata.json`：
 
    ```json
    {
      "id": "{trackId}",
-     "title": "{Track Title}",
+     "title": "{Track 标题}",
      "type": "feature|bug|chore|refactor",
      "status": "pending",
      "created": "ISO_TIMESTAMP",
@@ -356,59 +356,59 @@ After plan approval:
    }
    ```
 
-3. Create `index.md`:
+3. 创建 `index.md`：
 
    ```markdown
-   # Track: {Track Title}
+   # Track：{Track 标题}
 
-   **ID:** {trackId}
-   **Status:** Pending
+   **ID：** {trackId}
+   **状态：** 待处理
 
-   ## Documents
+   ## 文档
 
-   - [Specification](./spec.md)
-   - [Implementation Plan](./plan.md)
+   - [规范](./spec.md)
+   - [实施计划](./plan.md)
 
-   ## Progress
+   ## 进度
 
-   - Phases: 0/{N} complete
-   - Tasks: 0/{M} complete
+   - 阶段：0/{N} 已完成
+   - 任务：0/{M} 已完成
 
-   ## Quick Links
+   ## 快速链接
 
-   - [Back to Tracks](../../tracks.md)
-   - [Product Context](../../product.md)
+   - [返回到 Tracks](../../tracks.md)
+   - [产品上下文](../../product.md)
    ```
 
-4. Register in `conductor/tracks.md`:
-   - Add row to tracks table
-   - Format: `| [ ] | {trackId} | {title} | {created} | {created} |`
+4. 在 `conductor/tracks.md` 中注册：
+   - 在 tracks 表格中添加一行
+   - 格式：`| [ ] | {trackId} | {标题} | {创建日期} | {创建日期} |`
 
-5. Update `conductor/index.md`:
-   - Add track to "Active Tracks" section
+5. 更新 `conductor/index.md`：
+   - 将 track 添加到"活跃 Tracks"部分
 
-## Completion Message
+## 完成消息
 
 ```
-Track created successfully!
+Track 创建成功！
 
-Track ID: {trackId}
-Location: conductor/tracks/{trackId}/
+Track ID：{trackId}
+位置：conductor/tracks/{trackId}/
 
-Files created:
-- spec.md - Requirements specification
-- plan.md - Phased implementation plan
-- metadata.json - Track metadata
-- index.md - Track navigation
+已创建的文件：
+- spec.md - 需求规范
+- plan.md - 分阶段实施计划
+- metadata.json - Track 元数据
+- index.md - Track 导航
 
-Next steps:
-1. Review spec.md and plan.md, make any edits
-2. Run /conductor:implement {trackId} to start implementation
-3. Run /conductor:status to see project progress
+下一步：
+1. 审查 spec.md 和 plan.md，进行任何编辑
+2. 运行 /conductor:implement {trackId} 开始实施
+3. 运行 /conductor:status 查看项目进度
 ```
 
-## Error Handling
+## 错误处理
 
-- If directory creation fails: Halt and report, do not register in tracks.md
-- If any file write fails: Clean up partial track, report error
-- If tracks.md update fails: Warn user to manually register track
+- 如果目录创建失败：停止并报告，不要在 tracks.md 中注册
+- 如果任何文件写入失败：清理部分 track，报告错误
+- 如果 tracks.md 更新失败：警告用户手动注册 track

@@ -1,10 +1,10 @@
-# Component Patterns Reference
+# 组件模式参考
 
-## Compound Components Deep Dive
+## 复合组件深入
 
-Compound components share implicit state while allowing flexible composition.
+复合组件共享隐式状态，同时允许灵活组合。
 
-### Implementation with Context
+### 使用 Context 实现
 
 ```tsx
 import {
@@ -17,7 +17,7 @@ import {
   type SetStateAction,
 } from "react";
 
-// Types
+// 类型定义
 interface TabsContextValue {
   activeTab: string;
   setActiveTab: Dispatch<SetStateAction<string>>;
@@ -51,12 +51,12 @@ const TabsContext = createContext<TabsContextValue | null>(null);
 function useTabs() {
   const context = useContext(TabsContext);
   if (!context) {
-    throw new Error("Tabs components must be used within <Tabs>");
+    throw new Error("Tabs 组件必须在 <Tabs> 内使用");
   }
   return context;
 }
 
-// Root Component
+// 根组件
 export function Tabs({ defaultValue, children, onChange }: TabsProps) {
   const [activeTab, setActiveTab] = useState(defaultValue);
 
@@ -76,7 +76,7 @@ export function Tabs({ defaultValue, children, onChange }: TabsProps) {
   );
 }
 
-// Tab List (container for tab triggers)
+// 标签列表（标签触发器的容器）
 Tabs.List = function TabList({ children, className }: TabListProps) {
   return (
     <div role="tablist" className={`flex border-b ${className}`}>
@@ -85,7 +85,7 @@ Tabs.List = function TabList({ children, className }: TabListProps) {
   );
 };
 
-// Individual Tab (trigger)
+// 单个标签（触发器）
 Tabs.Tab = function Tab({ value, children, disabled }: TabProps) {
   const { activeTab, setActiveTab } = useTabs();
   const isActive = activeTab === value;
@@ -113,7 +113,7 @@ Tabs.Tab = function Tab({ value, children, disabled }: TabProps) {
   );
 };
 
-// Tab Panel (content)
+// 标签面板（内容）
 Tabs.Panel = function TabPanel({ value, children }: TabPanelProps) {
   const { activeTab } = useTabs();
 
@@ -133,31 +133,31 @@ Tabs.Panel = function TabPanel({ value, children }: TabPanelProps) {
 };
 ```
 
-### Usage
+### 使用方式
 
 ```tsx
 <Tabs defaultValue="overview" onChange={console.log}>
   <Tabs.List>
-    <Tabs.Tab value="overview">Overview</Tabs.Tab>
-    <Tabs.Tab value="features">Features</Tabs.Tab>
+    <Tabs.Tab value="overview">概览</Tabs.Tab>
+    <Tabs.Tab value="features">功能</Tabs.Tab>
     <Tabs.Tab value="pricing" disabled>
-      Pricing
+      定价
     </Tabs.Tab>
   </Tabs.List>
   <Tabs.Panel value="overview">
-    <h2>Product Overview</h2>
-    <p>Description here...</p>
+    <h2>产品概览</h2>
+    <p>描述内容...</p>
   </Tabs.Panel>
   <Tabs.Panel value="features">
-    <h2>Key Features</h2>
+    <h2>核心功能</h2>
     <ul>...</ul>
   </Tabs.Panel>
 </Tabs>
 ```
 
-## Render Props Pattern
+## 渲染属性模式
 
-Delegate rendering control to the consumer while providing state and helpers.
+将渲染控制权委托给使用者，同时提供状态和辅助方法。
 
 ```tsx
 interface DataLoaderRenderProps<T> {
@@ -187,7 +187,7 @@ function DataLoader<T>({ url, children }: DataLoaderProps<T>) {
     setState((prev) => ({ ...prev, loading: true, error: null }));
     try {
       const response = await fetch(url);
-      if (!response.ok) throw new Error("Fetch failed");
+      if (!response.ok) throw new Error("获取失败");
       const data = await response.json();
       setState({ data, loading: false, error: null });
     } catch (error) {
@@ -202,7 +202,7 @@ function DataLoader<T>({ url, children }: DataLoaderProps<T>) {
   return <>{children({ ...state, refetch: fetchData })}</>;
 }
 
-// Usage
+// 使用示例
 <DataLoader<User[]> url="/api/users">
   {({ data, loading, error, refetch }) => {
     if (loading) return <Spinner />;
@@ -212,9 +212,9 @@ function DataLoader<T>({ url, children }: DataLoaderProps<T>) {
 </DataLoader>;
 ```
 
-## Polymorphic Components
+## 多态组件
 
-Components that can render as different HTML elements.
+可以渲染为不同 HTML 元素的组件。
 
 ```tsx
 type AsProp<C extends React.ElementType> = {
@@ -268,25 +268,25 @@ function Text<C extends React.ElementType = 'span'>({
   );
 }
 
-// Usage
-<Text>Default span</Text>
-<Text as="p" variant="body" size="lg">Paragraph</Text>
-<Text as="h1" variant="heading" size="lg">Heading</Text>
-<Text as="label" variant="label" htmlFor="input">Label</Text>
+// 使用示例
+<Text>默认 span</Text>
+<Text as="p" variant="body" size="lg">段落</Text>
+<Text as="h1" variant="heading" size="lg">标题</Text>
+<Text as="label" variant="label" htmlFor="input">标签</Text>
 ```
 
-## Controlled vs Uncontrolled Pattern
+## 受控与非受控模式
 
-Support both modes for maximum flexibility.
+同时支持两种模式以获得最大灵活性。
 
 ```tsx
 interface InputProps {
-  // Controlled
+  // 受控
   value?: string;
   onChange?: (value: string) => void;
-  // Uncontrolled
+  // 非受控
   defaultValue?: string;
-  // Common
+  // 通用
   placeholder?: string;
   disabled?: boolean;
 }
@@ -299,7 +299,7 @@ function Input({
 }: InputProps) {
   const [internalValue, setInternalValue] = useState(defaultValue);
 
-  // Determine if controlled
+  // 确定是否为受控
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : internalValue;
 
@@ -323,17 +323,17 @@ function Input({
   );
 }
 
-// Controlled usage
+// 受控用法
 const [search, setSearch] = useState('');
 <Input value={search} onChange={setSearch} />
 
-// Uncontrolled usage
-<Input defaultValue="initial" onChange={console.log} />
+// 非受控用法
+<Input defaultValue="初始值" onChange={console.log} />
 ```
 
-## Slot Pattern
+## 插槽模式
 
-Allow consumers to replace internal parts.
+允许使用者替换内部部分。
 
 ```tsx
 interface CardProps {
@@ -360,19 +360,19 @@ function Card({ children, header, footer, media }: CardProps) {
   );
 }
 
-// Usage with slots
+// 使用插槽
 <Card
   media={<img src="/image.jpg" alt="" />}
-  header={<h2 className="font-semibold">Card Title</h2>}
-  footer={<Button>Action</Button>}
+  header={<h2 className="font-semibold">卡片标题</h2>}
+  footer={<Button>操作</Button>}
 >
-  <p>Card content goes here.</p>
+  <p>卡片内容放在这里。</p>
 </Card>;
 ```
 
-## Forward Ref Pattern
+## 转发 Ref 模式
 
-Allow parent components to access the underlying DOM node.
+允许父组件访问底层 DOM 节点。
 
 ```tsx
 import { forwardRef, useRef, useImperativeHandle } from "react";
@@ -416,7 +416,7 @@ const FancyInput = forwardRef<InputHandle, FancyInputProps>(
 
 FancyInput.displayName = "FancyInput";
 
-// Usage
+// 使用示例
 function Form() {
   const inputRef = useRef<InputHandle>(null);
 
@@ -427,9 +427,9 @@ function Form() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FancyInput ref={inputRef} label="Name" />
+      <FancyInput ref={inputRef} label="姓名" />
       <button type="button" onClick={() => inputRef.current?.focus()}>
-        Focus Input
+        聚焦输入框
       </button>
     </form>
   );

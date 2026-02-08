@@ -1,173 +1,173 @@
 ---
-description: "Guided component creation with proper patterns"
-argument-hint: "[component-name]"
+description: "使用正确模式引导创建组件"
+argument-hint: "[组件名称]"
 ---
 
-# Create Component
+# 创建组件
 
-Guided workflow for creating new UI components following established patterns and best practices.
+遵循既定模式和最佳实践创建新 UI 组件的引导式工作流程。
 
-## Pre-flight Checks
+## 前置检查
 
-1. Check if `.ui-design/` directory exists:
-   - If not: Create `.ui-design/` directory
-   - Create `.ui-design/components/` subdirectory for component tracking
+1. 检查 `.ui-design/` 目录是否存在:
+   - 如果不存在: 创建 `.ui-design/` 目录
+   - 创建 `.ui-design/components/` 子目录用于组件追踪
 
-2. Detect project configuration:
-   - Scan for framework (React, Vue, Svelte, Angular)
-   - Scan for styling approach (CSS Modules, Tailwind, styled-components, etc.)
-   - Check for existing component patterns in `src/components/` or similar
-   - Load `.ui-design/design-system.json` if exists
+2. 检测项目配置:
+   - 扫描框架 (React、Vue、Svelte、Angular)
+   - 扫描样式方案 (CSS Modules、Tailwind、styled-components 等)
+   - 检查 `src/components/` 或类似目录中的现有组件模式
+   - 如果存在,加载 `.ui-design/design-system.json`
 
-3. Load project context:
-   - Check for `conductor/tech-stack.md`
-   - Check for existing component conventions
+3. 加载项目上下文:
+   - 检查 `conductor/tech-stack.md`
+   - 检查现有组件约定
 
-4. If no framework detected:
+4. 如果未检测到框架:
 
    ```
-   I couldn't detect a UI framework. What are you using?
+   我无法检测到 UI 框架。您使用的是什么?
 
    1. React
    2. Vue 3
    3. Svelte
    4. Angular
    5. Vanilla JavaScript/HTML
-   6. Other (specify)
+   6. 其他 (请说明)
 
-   Enter number:
+   请输入数字:
    ```
 
-## Component Specification
+## 组件规格说明
 
-**CRITICAL RULES:**
+**关键规则:**
 
-- Ask ONE question per turn
-- Wait for user response before proceeding
-- Build complete specification before generating code
+- 每次只问一个问题
+- 等待用户响应后再继续
+- 在生成代码前构建完整的规格说明
 
-### Q1: Component Name (if not provided)
-
-```
-What should this component be called?
-
-Guidelines:
-- Use PascalCase (e.g., UserCard, DataTable)
-- Be descriptive but concise
-- Avoid generic names like "Component" or "Widget"
-
-Enter component name:
-```
-
-### Q2: Component Purpose
+### Q1: 组件名称 (如果未提供)
 
 ```
-What is this component's primary purpose?
+这个组件应该叫什么?
 
-1. Display content (cards, lists, text blocks)
-2. Collect input (forms, selects, toggles)
-3. Navigation (menus, tabs, breadcrumbs)
-4. Feedback (alerts, toasts, modals)
-5. Layout (containers, grids, sections)
-6. Data visualization (charts, graphs, indicators)
-7. Other (describe)
+指导原则:
+- 使用 PascalCase (例如: UserCard、DataTable)
+- 描述性强但简洁
+- 避免使用通用名称,如 "Component" 或 "Widget"
 
-Enter number or description:
+请输入组件名称:
 ```
 
-### Q3: Component Complexity
+### Q2: 组件用途
 
 ```
-What is the component's complexity level?
+这个组件的主要用途是什么?
 
-1. Simple - Single responsibility, minimal props, no internal state
-2. Compound - Multiple parts, some internal state, few props
-3. Complex - Multiple subcomponents, state management, many props
-4. Composite - Orchestrates other components, significant logic
+1. 展示内容 (卡片、列表、文本块)
+2. 收集输入 (表单、选择器、开关)
+3. 导航 (菜单、标签页、面包屑)
+4. 反馈 (警告、提示、模态框)
+5. 布局 (容器、网格、区块)
+6. 数据可视化 (图表、图形、指示器)
+7. 其他 (请描述)
 
-Enter number:
+请输入数字或描述:
 ```
 
-### Q4: Props/Inputs Specification
+### Q3: 组件复杂度
 
 ```
-What props/inputs should this component accept?
+组件的复杂度级别是什么?
 
-For each prop, provide:
-- Name (camelCase)
-- Type (string, number, boolean, function, object, array)
-- Required or optional
-- Default value (if optional)
+1. 简单 - 单一职责、最少 props、无内部状态
+2. 复合 - 多个部分、一些内部状态、少量 props
+3. 复杂 - 多个子组件、状态管理、许多 props
+4. 组合 - 编排其他组件、重要逻辑
 
-Example format:
+请输入数字:
+```
+
+### Q4: Props/输入规格
+
+```
+这个组件应该接受哪些 props/输入?
+
+对于每个 prop,提供:
+- 名称 (camelCase)
+- 类型 (string、number、boolean、function、object、array)
+- 必需或可选
+- 默认值 (如果可选)
+
+示例格式:
 title: string, required
 variant: "primary" | "secondary", optional, default: "primary"
 onClick: function, optional
 
-Enter props (one per line, empty line when done):
+请输入 props (每行一个,完成后输入空行):
 ```
 
-### Q5: State Requirements
+### Q5: 状态需求
 
 ```
-Does this component need internal state?
+这个组件需要内部状态吗?
 
-1. Stateless - Pure presentational, all data via props
-2. Local state - Simple internal state (open/closed, hover, etc.)
-3. Controlled - State managed by parent, component reports changes
-4. Uncontrolled - Manages own state, exposes refs for parent access
-5. Hybrid - Supports both controlled and uncontrolled modes
+1. 无状态 - 纯展示,所有数据通过 props 传入
+2. 本地状态 - 简单的内部状态 (打开/关闭、悬停等)
+3. 受控 - 状态由父组件管理,组件报告变更
+4. 非受控 - 管理自己的状态,暴露 refs 供父组件访问
+5. 混合 - 同时支持受控和非受控模式
 
-Enter number:
+请输入数字:
 ```
 
-### Q6: Composition Pattern (if complexity > Simple)
+### Q6: 组合模式 (如果复杂度 > 简单)
 
 ```
-How should child content be handled?
+应该如何处理子内容?
 
-1. No children - Self-contained component
-2. Simple children - Accepts children prop for content
-3. Named slots - Multiple content areas (header, body, footer)
-4. Compound components - Exports subcomponents (e.g., Card.Header, Card.Body)
-5. Render props - Accepts render function for flexibility
+1. 无子组件 - 自包含的组件
+2. 简单子组件 - 接受 children prop 用于内容
+3. 命名插槽 - 多个内容区域 (页眉、主体、页脚)
+4. 复合组件 - 导出子组件 (例如: Card.Header、Card.Body)
+5. 渲染 props - 接受渲染函数以提供灵活性
 
-Enter number:
+请输入数字:
 ```
 
-### Q7: Accessibility Requirements
+### Q7: 可访问性需求
 
 ```
-What accessibility features are needed?
+需要哪些可访问性功能?
 
-1. Basic - Semantic HTML, aria-labels where needed
-2. Keyboard navigation - Full keyboard support, focus management
-3. Screen reader optimized - Live regions, announcements
-4. Full WCAG AA - All applicable success criteria
+1. 基础 - 语义化 HTML,必要时添加 aria-labels
+2. 键盘导航 - 完整的键盘支持、焦点管理
+3. 屏幕阅读器优化 - 实时区域、公告
+4. 完整 WCAG AA - 所有适用的成功标准
 
-Enter number:
+请输入数字:
 ```
 
-### Q8: Styling Approach
+### Q8: 样式方案
 
 ```
-How should this component be styled?
+应该如何为这个组件设置样式?
 
-Detected: {detected_approach}
+检测到的方案: {detected_approach}
 
-1. Use detected approach ({detected_approach})
+1. 使用检测到的方案 ({detected_approach})
 2. CSS Modules
 3. Tailwind CSS
 4. Styled Components / Emotion
-5. Plain CSS/SCSS
-6. Other (specify)
+5. 普通 CSS/SCSS
+6. 其他 (请说明)
 
-Enter number:
+请输入数字:
 ```
 
-## State Management
+## 状态管理
 
-Create `.ui-design/components/{component_name}.json`:
+创建 `.ui-design/components/{component_name}.json`:
 
 ```json
 {
@@ -193,40 +193,40 @@ Create `.ui-design/components/{component_name}.json`:
 }
 ```
 
-## Component Generation
+## 组件生成
 
-### 1. Create Directory Structure
+### 1. 创建目录结构
 
-Based on detected patterns or ask user:
+基于检测到的模式或询问用户:
 
 ```
-Where should this component be created?
+应该在哪里创建这个组件?
 
-Detected component directories:
+检测到的组件目录:
 1. src/components/{ComponentName}/
 2. app/components/{ComponentName}/
 3. components/{ComponentName}/
-4. Other (specify path)
+4. 其他 (请指定路径)
 
-Enter number or path:
+请输入数字或路径:
 ```
 
-Create structure:
+创建结构:
 
 ```
 {component_path}/
 ├── index.ts                 # Barrel export
-├── {ComponentName}.tsx      # Main component
-├── {ComponentName}.test.tsx # Tests (if testing detected)
-├── {ComponentName}.styles.{ext}  # Styles (based on approach)
-└── types.ts                 # TypeScript types (if TS project)
+├── {ComponentName}.tsx      # 主组件
+├── {ComponentName}.test.tsx # 测试 (如果检测到测试)
+├── {ComponentName}.styles.{ext}  # 样式 (基于方案)
+└── types.ts                 # TypeScript 类型 (如果是 TS 项目)
 ```
 
-### 2. Generate Component Code
+### 2. 生成组件代码
 
-Generate component based on gathered specifications.
+基于收集的规格说明生成组件。
 
-**For React/TypeScript example:**
+**React/TypeScript 示例:**
 
 ```tsx
 // {ComponentName}.tsx
@@ -256,7 +256,7 @@ export const {ComponentName} = forwardRef<HTML{Element}Element, {ComponentName}P
 {ComponentName}.displayName = '{ComponentName}';
 ```
 
-### 3. Generate Types
+### 3. 生成类型
 
 ```tsx
 // types.ts
@@ -269,36 +269,36 @@ export interface {ComponentName}Props extends HTMLAttributes<HTMLDivElement> {
   /** {prop2 description} */
   prop2?: 'primary' | 'secondary';
 
-  /** Component children */
+  /** 组件子元素 */
   children?: ReactNode;
 }
 ```
 
-### 4. Generate Styles
+### 4. 生成样式
 
-Based on styling approach:
+基于样式方案:
 
 **CSS Modules:**
 
 ```css
 /* {ComponentName}.styles.module.css */
 .root {
-  /* Base styles */
+  /* 基础样式 */
 }
 
 .variant-primary {
-  /* Primary variant */
+  /* Primary 变体 */
 }
 
 .variant-secondary {
-  /* Secondary variant */
+  /* Secondary 变体 */
 }
 ```
 
 **Tailwind:**
 
 ```tsx
-// Inline in component
+// 在组件中内联
 className={cn(
   'base-classes',
   variant === 'primary' && 'primary-classes',
@@ -306,7 +306,7 @@ className={cn(
 )}
 ```
 
-### 5. Generate Tests (if testing framework detected)
+### 5. 生成测试 (如果检测到测试框架)
 
 ```tsx
 // {ComponentName}.test.tsx
@@ -321,21 +321,21 @@ describe('{ComponentName}', () => {
   });
 
   it('applies variant styles correctly', () => {
-    // Variant tests
+    // 变体测试
   });
 
   it('handles user interaction', async () => {
     const user = userEvent.setup();
-    // Interaction tests
+    // 交互测试
   });
 
   it('meets accessibility requirements', () => {
-    // A11y tests
+    // 可访问性测试
   });
 });
 ```
 
-### 6. Generate Barrel Export
+### 6. 生成 Barrel Export
 
 ```tsx
 // index.ts
@@ -343,48 +343,48 @@ export { {ComponentName} } from './{ComponentName}';
 export type { {ComponentName}Props } from './types';
 ```
 
-## User Review
+## 用户审查
 
-After generating files:
+生成文件后:
 
 ```
-I've created the {ComponentName} component:
+我已经创建了 {ComponentName} 组件:
 
-Files created:
+创建的文件:
 - {path}/index.ts
 - {path}/{ComponentName}.tsx
 - {path}/{ComponentName}.test.tsx
 - {path}/{ComponentName}.styles.module.css
 - {path}/types.ts
 
-Would you like to:
-1. Review the generated code
-2. Make modifications
-3. Add more props or features
-4. Generate Storybook stories
-5. Done, keep as-is
+您想要:
+1. 审查生成的代码
+2. 进行修改
+3. 添加更多 props 或功能
+4. 生成 Storybook stories
+5. 完成,保持原样
 
-Enter number:
+请输入数字:
 ```
 
-### If modifications requested:
+### 如果请求修改:
 
 ```
-What would you like to modify?
+您想要修改什么?
 
-1. Add a new prop
-2. Change styling approach
-3. Add a variant
-4. Modify component structure
-5. Add accessibility features
-6. Other (describe)
+1. 添加新的 prop
+2. 更改样式方案
+3. 添加变体
+4. 修改组件结构
+5. 添加可访问性功能
+6. 其他 (请描述)
 
-Enter number:
+请输入数字:
 ```
 
-## Storybook Integration (Optional)
+## Storybook 集成 (可选)
 
-If Storybook detected or user requests:
+如果检测到 Storybook 或用户请求:
 
 ```tsx
 // {ComponentName}.stories.tsx
@@ -427,9 +427,9 @@ export const Secondary: Story = {
 };
 ```
 
-## Completion
+## 完成
 
-Update `.ui-design/components/{component_name}.json`:
+更新 `.ui-design/components/{component_name}.json`:
 
 ```json
 {
@@ -445,30 +445,30 @@ Update `.ui-design/components/{component_name}.json`:
 }
 ```
 
-Display summary:
+显示摘要:
 
 ```
-Component Created Successfully!
+组件创建成功!
 
-Component: {ComponentName}
-Location: {path}/
-Files: {count} files created
+组件: {ComponentName}
+位置: {path}/
+文件: 创建了 {count} 个文件
 
-Quick reference:
-  Import: import { {ComponentName} } from '{import_path}';
-  Usage:  <{ComponentName} prop1="value" />
+快速参考:
+  导入: import { {ComponentName} } from '{import_path}';
+  使用:  <{ComponentName} prop1="value" />
 
-Next steps:
-1. Run /ui-design:design-review {path} to validate
-2. Run /ui-design:accessibility-audit {path} for a11y check
-3. Add to your page/layout
+下一步:
+1. 运行 /ui-design:design-review {path} 进行验证
+2. 运行 /ui-design:accessibility-audit {path} 进行可访问性检查
+3. 添加到您的页面/布局
 
-Need to create another component? Run /ui-design:create-component
+需要创建另一个组件? 运行 /ui-design:create-component
 ```
 
-## Error Handling
+## 错误处理
 
-- If component name conflicts: Suggest alternatives, offer to overwrite
-- If directory creation fails: Report error, suggest manual creation
-- If framework not supported: Provide generic template, explain limitations
-- If file write fails: Save to temp location, provide recovery instructions
+- 如果组件名称冲突: 建议替代方案,提供覆盖选项
+- 如果目录创建失败: 报告错误,建议手动创建
+- 如果不支持框架: 提供通用模板,说明限制
+- 如果文件写入失败: 保存到临时位置,提供恢复说明

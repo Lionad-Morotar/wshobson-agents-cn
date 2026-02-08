@@ -1,50 +1,50 @@
 ---
 name: similarity-search-patterns
-description: Implement efficient similarity search with vector databases. Use when building semantic search, implementing nearest neighbor queries, or optimizing retrieval performance.
+description: 使用向量数据库实现高效的相似性搜索。在构建语义搜索、实现最近邻查询或优化检索性能时使用。
 ---
 
-# Similarity Search Patterns
+# 相似性搜索模式
 
-Patterns for implementing efficient similarity search in production systems.
+在生产系统中实现高效相似性搜索的模式。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building semantic search systems
-- Implementing RAG retrieval
-- Creating recommendation engines
-- Optimizing search latency
-- Scaling to millions of vectors
-- Combining semantic and keyword search
+- 构建语义搜索系统
+- 实现 RAG 检索
+- 创建推荐引擎
+- 优化搜索延迟
+- 扩展到数百万向量
+- 结合语义和关键词搜索
 
-## Core Concepts
+## 核心概念
 
-### 1. Distance Metrics
+### 1. 距离度量
 
-| Metric             | Formula            | Best For              |
+| 度量             | 公式            | 最适用于              |
 | ------------------ | ------------------ | --------------------- | --- | -------------- |
-| **Cosine**         | 1 - (A·B)/(‖A‖‖B‖) | Normalized embeddings |
-| **Euclidean (L2)** | √Σ(a-b)²           | Raw embeddings        |
-| **Dot Product**    | A·B                | Magnitude matters     |
-| **Manhattan (L1)** | Σ                  | a-b                   |     | Sparse vectors |
+| **余弦**         | 1 - (A·B)/(‖A‖‖B‖) | 归一化嵌入 |
+| **欧几里得 (L2)** | √Σ(a-b)²           | 原始嵌入        |
+| **点积**    | A·B                | 量级很重要     |
+| **曼哈顿 (L1)** | Σ                  | a-b                   |     | 稀疏向量 |
 
-### 2. Index Types
+### 2. 索引类型
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                 Index Types                      │
+│                 索引类型                      │
 ├─────────────┬───────────────┬───────────────────┤
 │    Flat     │     HNSW      │    IVF+PQ         │
-│ (Exact)     │ (Graph-based) │ (Quantized)       │
+│ (精确)     │ (基于图)      │ (量化)       │
 ├─────────────┼───────────────┼───────────────────┤
-│ O(n) search │ O(log n)      │ O(√n)             │
-│ 100% recall │ ~95-99%       │ ~90-95%           │
-│ Small data  │ Medium-Large  │ Very Large        │
+│ O(n) 搜索 │ O(log n)      │ O(√n)             │
+│ 100% 召回率 │ ~95-99%       │ ~90-95%           │
+│ 小数据  │ 中等-大型  │ 超大型        │
 └─────────────┴───────────────┴───────────────────┘
 ```
 
-## Templates
+## 模板
 
-### Template 1: Pinecone Implementation
+### 模板 1：Pinecone 实现
 
 ```python
 from pinecone import Pinecone, ServerlessSpec
@@ -61,7 +61,7 @@ class PineconeVectorStore:
     ):
         self.pc = Pinecone(api_key=api_key)
 
-        # Create index if not exists
+        # 如果索引不存在则创建
         if index_name not in self.pc.list_indexes().names():
             self.pc.create_index(
                 name=index_name,
@@ -78,10 +78,10 @@ class PineconeVectorStore:
         namespace: str = ""
     ) -> int:
         """
-        Upsert vectors.
+        更新或插入向量。
         vectors: [{"id": str, "values": List[float], "metadata": dict}]
         """
-        # Batch upsert
+        # 批量更新
         batch_size = 100
         total = 0
 
@@ -100,7 +100,7 @@ class PineconeVectorStore:
         filter: Optional[Dict] = None,
         include_metadata: bool = True
     ) -> List[Dict]:
-        """Search for similar vectors."""
+        """搜索相似向量。"""
         results = self.index.query(
             vector=query_vector,
             top_k=top_k,
@@ -126,21 +126,21 @@ class PineconeVectorStore:
         rerank_top_n: int = 50,
         namespace: str = ""
     ) -> List[Dict]:
-        """Search and rerank results."""
-        # Over-fetch for reranking
+        """搜索并重排序结果。"""
+        # 过度获取以进行重排序
         initial_results = self.search(
             query_vector,
             top_k=rerank_top_n,
             namespace=namespace
         )
 
-        # Rerank with cross-encoder or LLM
+        # 使用交叉编码器或 LLM 重排序
         reranked = self._rerank(query, initial_results)
 
         return reranked[:top_k]
 
     def _rerank(self, query: str, results: List[Dict]) -> List[Dict]:
-        """Rerank results using cross-encoder."""
+        """使用交叉编码器重排序结果。"""
         from sentence_transformers import CrossEncoder
 
         model = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')
@@ -154,15 +154,15 @@ class PineconeVectorStore:
         return sorted(results, key=lambda x: x["rerank_score"], reverse=True)
 
     def delete(self, ids: List[str], namespace: str = ""):
-        """Delete vectors by ID."""
+        """按 ID 删除向量。"""
         self.index.delete(ids=ids, namespace=namespace)
 
     def delete_by_filter(self, filter: Dict, namespace: str = ""):
-        """Delete vectors matching filter."""
+        """删除匹配过滤器的向量。"""
         self.index.delete(filter=filter, namespace=namespace)
 ```
 
-### Template 2: Qdrant Implementation
+### 模板 2：Qdrant 实现
 
 ```python
 from qdrant_client import QdrantClient
@@ -180,7 +180,7 @@ class QdrantVectorStore:
         self.client = QdrantClient(url=url, port=port)
         self.collection_name = collection_name
 
-        # Create collection if not exists
+        # 如果集合不存在则创建
         collections = self.client.get_collections().collections
         if collection_name not in [c.name for c in collections]:
             self.client.create_collection(
@@ -189,7 +189,7 @@ class QdrantVectorStore:
                     size=vector_size,
                     distance=models.Distance.COSINE
                 ),
-                # Optional: enable quantization for memory efficiency
+                # 可选：启用量化以提高内存效率
                 quantization_config=models.ScalarQuantization(
                     scalar=models.ScalarQuantizationConfig(
                         type=models.ScalarType.INT8,
@@ -201,7 +201,7 @@ class QdrantVectorStore:
 
     def upsert(self, points: List[Dict]) -> int:
         """
-        Upsert points.
+        更新或插入点。
         points: [{"id": str/int, "vector": List[float], "payload": dict}]
         """
         qdrant_points = [
@@ -226,7 +226,7 @@ class QdrantVectorStore:
         filter: Optional[models.Filter] = None,
         score_threshold: Optional[float] = None
     ) -> List[Dict]:
-        """Search for similar vectors."""
+        """搜索相似向量。"""
         results = self.client.search(
             collection_name=self.collection_name,
             query_vector=query_vector,
@@ -252,7 +252,7 @@ class QdrantVectorStore:
         must_not_conditions: List[Dict] = None,
         limit: int = 10
     ) -> List[Dict]:
-        """Search with complex filters."""
+        """使用复杂过滤器搜索。"""
         conditions = []
 
         if must_conditions:
@@ -275,8 +275,8 @@ class QdrantVectorStore:
         limit: int = 10,
         dense_weight: float = 0.7
     ) -> List[Dict]:
-        """Hybrid search with dense and sparse vectors."""
-        # Requires collection with named vectors
+        """使用密集和稀疏向量的混合搜索。"""
+        # 需要具有命名向量的集合
         results = self.client.search(
             collection_name=self.collection_name,
             query_vector=models.NamedVector(
@@ -288,7 +288,7 @@ class QdrantVectorStore:
         return [{"id": r.id, "score": r.score, "payload": r.payload} for r in results]
 ```
 
-### Template 3: pgvector with PostgreSQL
+### 模板 3：使用 pgvector 的 PostgreSQL
 
 ```python
 import asyncpg
@@ -300,14 +300,14 @@ class PgVectorStore:
         self.connection_string = connection_string
 
     async def init(self):
-        """Initialize connection pool and extension."""
+        """初始化连接池和扩展。"""
         self.pool = await asyncpg.create_pool(self.connection_string)
 
         async with self.pool.acquire() as conn:
-            # Enable extension
+            # 启用扩展
             await conn.execute("CREATE EXTENSION IF NOT EXISTS vector")
 
-            # Create table
+            # 创建表
             await conn.execute("""
                 CREATE TABLE IF NOT EXISTS documents (
                     id TEXT PRIMARY KEY,
@@ -317,7 +317,7 @@ class PgVectorStore:
                 )
             """)
 
-            # Create index (HNSW for better performance)
+            # 创建索引（HNSW 以获得更好的性能）
             await conn.execute("""
                 CREATE INDEX IF NOT EXISTS documents_embedding_idx
                 ON documents
@@ -326,7 +326,7 @@ class PgVectorStore:
             """)
 
     async def upsert(self, documents: List[Dict]):
-        """Upsert documents with embeddings."""
+        """更新或插入带有嵌入的文档。"""
         async with self.pool.acquire() as conn:
             await conn.executemany(
                 """
@@ -354,7 +354,7 @@ class PgVectorStore:
         limit: int = 10,
         filter_metadata: Optional[Dict] = None
     ) -> List[Dict]:
-        """Search for similar documents."""
+        """搜索相似文档。"""
         query = """
             SELECT id, content, metadata,
                    1 - (embedding <=> $1::vector) as similarity
@@ -393,7 +393,7 @@ class PgVectorStore:
         limit: int = 10,
         vector_weight: float = 0.5
     ) -> List[Dict]:
-        """Hybrid search combining vector and full-text."""
+        """结合向量和全文的混合搜索。"""
         async with self.pool.acquire() as conn:
             rows = await conn.fetch(
                 """
@@ -429,7 +429,7 @@ class PgVectorStore:
         return [dict(row) for row in rows]
 ```
 
-### Template 4: Weaviate Implementation
+### 模板 4：Weaviate 实现
 
 ```python
 import weaviate
@@ -447,10 +447,10 @@ class WeaviateVectorStore:
         self._ensure_schema()
 
     def _ensure_schema(self):
-        """Create schema if not exists."""
+        """如果模式不存在则创建。"""
         schema = {
             "class": self.class_name,
-            "vectorizer": "none",  # We provide vectors
+            "vectorizer": "none",  # 我们提供向量
             "properties": [
                 {"name": "content", "dataType": ["text"]},
                 {"name": "source", "dataType": ["string"]},
@@ -462,7 +462,7 @@ class WeaviateVectorStore:
             self.client.schema.create_class(schema)
 
     def upsert(self, documents: List[Dict]):
-        """Batch upsert documents."""
+        """批量更新或插入文档。"""
         with self.client.batch as batch:
             batch.batch_size = 100
 
@@ -484,7 +484,7 @@ class WeaviateVectorStore:
         limit: int = 10,
         where_filter: Optional[Dict] = None
     ) -> List[Dict]:
-        """Vector search."""
+        """向量搜索。"""
         query = (
             self.client.query
             .get(self.class_name, ["content", "source", "chunk_id"])
@@ -513,9 +513,9 @@ class WeaviateVectorStore:
         query: str,
         query_vector: List[float],
         limit: int = 10,
-        alpha: float = 0.5  # 0 = keyword, 1 = vector
+        alpha: float = 0.5  # 0 = 关键词，1 = 向量
     ) -> List[Dict]:
-        """Hybrid search combining BM25 and vector."""
+        """结合 BM25 和向量的混合搜索。"""
         results = (
             self.client.query
             .get(self.class_name, ["content", "source"])
@@ -535,26 +535,26 @@ class WeaviateVectorStore:
         ]
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Use appropriate index** - HNSW for most cases
-- **Tune parameters** - ef_search, nprobe for recall/speed
-- **Implement hybrid search** - Combine with keyword search
-- **Monitor recall** - Measure search quality
-- **Pre-filter when possible** - Reduce search space
+- **使用适当的索引** - 大多数情况使用 HNSW
+- **调整参数** - ef_search、nprobe 用于召回率/速度
+- **实现混合搜索** - 与关键词搜索结合
+- **监控召回率** - 测量搜索质量
+- **尽可能预过滤** - 减少搜索空间
 
-### Don'ts
+### 不应该做
 
-- **Don't skip evaluation** - Measure before optimizing
-- **Don't over-index** - Start with flat, scale up
-- **Don't ignore latency** - P99 matters for UX
-- **Don't forget costs** - Vector storage adds up
+- **不要跳过评估** - 优化前先测量
+- **不要过度索引** - 从 flat 开始，逐步扩展
+- **不要忽略延迟** - P99 对用户体验很重要
+- **不要忘记成本** - 向量存储成本会累积
 
-## Resources
+## 资源
 
-- [Pinecone Docs](https://docs.pinecone.io/)
-- [Qdrant Docs](https://qdrant.tech/documentation/)
+- [Pinecone 文档](https://docs.pinecone.io/)
+- [Qdrant 文档](https://qdrant.tech/documentation/)
 - [pgvector](https://github.com/pgvector/pgvector)
-- [Weaviate Docs](https://weaviate.io/developers/weaviate)
+- [Weaviate 文档](https://weaviate.io/developers/weaviate)

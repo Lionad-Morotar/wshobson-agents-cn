@@ -1,8 +1,8 @@
-# Jetpack Compose Component Library
+# Jetpack Compose 组件库
 
-## Lists and Collections
+## 列表和集合
 
-### Basic LazyColumn
+### 基础 LazyColumn
 
 ```kotlin
 @Composable
@@ -29,7 +29,7 @@ fun ItemList(
 }
 ```
 
-### Pull to Refresh
+### 下拉刷新
 
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +57,7 @@ fun RefreshableList(
 }
 ```
 
-### Swipe to Dismiss
+### 滑动删除
 
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +89,7 @@ fun SwipeableItem(
             ) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Delete",
+                    contentDescription = "删除",
                     tint = MaterialTheme.colorScheme.onErrorContainer
                 )
             }
@@ -100,7 +100,7 @@ fun SwipeableItem(
 }
 ```
 
-### Sticky Headers
+### 粘性标题
 
 ```kotlin
 @OptIn(ExperimentalFoundationApi::class)
@@ -131,9 +131,9 @@ fun GroupedList(
 }
 ```
 
-## Forms and Input
+## 表单和输入
 
-### Text Fields
+### 文本字段
 
 ```kotlin
 @Composable
@@ -153,9 +153,9 @@ fun LoginForm(
             value = email,
             onValueChange = {
                 email = it
-                emailError = if (it.isValidEmail()) null else "Invalid email"
+                emailError = if (it.isValidEmail()) null else "无效的邮箱地址"
             },
-            label = { Text("Email") },
+            label = { Text("邮箱") },
             placeholder = { Text("name@example.com") },
             leadingIcon = { Icon(Icons.Default.Email, null) },
             isError = emailError != null,
@@ -171,14 +171,14 @@ fun LoginForm(
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Password") },
+            label = { Text("密码") },
             leadingIcon = { Icon(Icons.Default.Lock, null) },
             trailingIcon = {
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
                     Icon(
                         if (passwordVisible) Icons.Default.VisibilityOff
                         else Icons.Default.Visibility,
-                        contentDescription = "Toggle password visibility"
+                        contentDescription = "切换密码可见性"
                     )
                 }
             },
@@ -199,13 +199,13 @@ fun LoginForm(
             modifier = Modifier.fillMaxWidth(),
             enabled = email.isNotEmpty() && password.isNotEmpty() && emailError == null
         ) {
-            Text("Sign In")
+            Text("登录")
         }
     }
 }
 ```
 
-### Search Bar
+### 搜索栏
 
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
@@ -228,12 +228,12 @@ fun SearchableScreen(
         onSearch = { expanded = false },
         active = expanded,
         onActiveChange = { expanded = it },
-        placeholder = { Text("Search items") },
+        placeholder = { Text("搜索项目") },
         leadingIcon = { Icon(Icons.Default.Search, null) },
         trailingIcon = {
             if (query.isNotEmpty()) {
                 IconButton(onClick = { query = "" }) {
-                    Icon(Icons.Default.Clear, "Clear search")
+                    Icon(Icons.Default.Clear, "清除搜索")
                 }
             }
         },
@@ -260,7 +260,7 @@ fun SearchableScreen(
 }
 ```
 
-### Selection Controls
+### 选择控件
 
 ```kotlin
 @Composable
@@ -272,10 +272,10 @@ fun SettingsScreen() {
     val languages = listOf("English", "Spanish", "French", "German")
 
     Column {
-        // Switch
+        // 开关
         ListItem(
-            headlineContent = { Text("Enable Notifications") },
-            supportingContent = { Text("Receive push notifications") },
+            headlineContent = { Text("启用通知") },
+            supportingContent = { Text("接收推送通知") },
             trailingContent = {
                 Switch(
                     checked = notificationsEnabled,
@@ -286,10 +286,10 @@ fun SettingsScreen() {
 
         HorizontalDivider()
 
-        // Radio buttons
+        // 单选按钮
         Column {
             Text(
-                "Theme",
+                "主题",
                 modifier = Modifier.padding(16.dp),
                 style = MaterialTheme.typography.titleSmall
             )
@@ -317,7 +317,7 @@ fun SettingsScreen() {
 
         HorizontalDivider()
 
-        // Dropdown
+        // 下拉菜单
         ExposedDropdownMenuBox(
             expanded = expandedDropdown,
             onExpandedChange = { expandedDropdown = it },
@@ -327,7 +327,7 @@ fun SettingsScreen() {
                 value = selectedLanguage,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Language") },
+                label = { Text("语言") },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedDropdown) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -353,9 +353,9 @@ fun SettingsScreen() {
 }
 ```
 
-## Dialogs and Bottom Sheets
+## 对话框和底部表单
 
-### Alert Dialog
+### 警告对话框
 
 ```kotlin
 @Composable
@@ -374,10 +374,10 @@ fun DeleteConfirmationDialog(
             )
         },
         title = {
-            Text("Delete Item?")
+            Text("删除项目?")
         },
         text = {
-            Text("Are you sure you want to delete \"$itemName\"? This action cannot be undone.")
+            Text("确定要删除 \"$itemName\" 吗? 此操作无法撤销。")
         },
         confirmButton = {
             TextButton(
@@ -386,19 +386,19 @@ fun DeleteConfirmationDialog(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Delete")
+                Text("删除")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text("取消")
             }
         }
     )
 }
 ```
 
-### Modal Bottom Sheet
+### 模态底部表单
 
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
@@ -420,16 +420,16 @@ fun OptionsBottomSheet(
                 .padding(bottom = 32.dp)
         ) {
             Text(
-                "Options",
+                "选项",
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 style = MaterialTheme.typography.titleMedium
             )
 
             listOf(
-                Triple(Icons.Default.Share, "Share", "share"),
-                Triple(Icons.Default.Edit, "Edit", "edit"),
-                Triple(Icons.Default.FileCopy, "Duplicate", "duplicate"),
-                Triple(Icons.Default.Delete, "Delete", "delete")
+                Triple(Icons.Default.Share, "分享", "share"),
+                Triple(Icons.Default.Edit, "编辑", "edit"),
+                Triple(Icons.Default.FileCopy, "复制", "duplicate"),
+                Triple(Icons.Default.Delete, "删除", "delete")
             ).forEach { (icon, label, action) ->
                 ListItem(
                     headlineContent = { Text(label) },
@@ -451,7 +451,7 @@ fun OptionsBottomSheet(
 }
 ```
 
-### Date and Time Pickers
+### 日期和时间选择器
 
 ```kotlin
 @OptIn(ExperimentalMaterial3Api::class)
@@ -470,7 +470,7 @@ fun DateTimePickerExample() {
                 datePickerState.selectedDateMillis?.let {
                     SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
                         .format(Date(it))
-                } ?: "Select Date"
+                } ?: "选择日期"
             )
         }
 
@@ -490,12 +490,12 @@ fun DateTimePickerExample() {
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("OK")
+                    Text("确定")
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
+                    Text("取消")
                 }
             }
         ) {
@@ -508,12 +508,12 @@ fun DateTimePickerExample() {
             onDismissRequest = { showTimePicker = false },
             confirmButton = {
                 TextButton(onClick = { showTimePicker = false }) {
-                    Text("OK")
+                    Text("确定")
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showTimePicker = false }) {
-                    Text("Cancel")
+                    Text("取消")
                 }
             },
             text = {
@@ -524,9 +524,9 @@ fun DateTimePickerExample() {
 }
 ```
 
-## Loading States
+## 加载状态
 
-### Progress Indicators
+### 进度指示器
 
 ```kotlin
 @Composable
@@ -535,19 +535,19 @@ fun LoadingStates() {
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Indeterminate circular
+        // 不确定圆形进度
         CircularProgressIndicator()
 
-        // Determinate circular
+        // 确定圆形进度
         CircularProgressIndicator(
             progress = { 0.7f },
             strokeWidth = 4.dp
         )
 
-        // Indeterminate linear
+        // 不确定线性进度
         LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
 
-        // Determinate linear
+        // 确定线性进度
         LinearProgressIndicator(
             progress = { 0.7f },
             modifier = Modifier.fillMaxWidth()
@@ -556,7 +556,7 @@ fun LoadingStates() {
 }
 ```
 
-### Skeleton Loading
+### 骨架屏加载
 
 ```kotlin
 @Composable
@@ -611,7 +611,7 @@ fun SkeletonLoader(
 }
 ```
 
-### Content Loading Pattern
+### 内容加载模式
 
 ```kotlin
 @Composable
@@ -648,7 +648,7 @@ fun <T> AsyncContent(
                 )
                 Spacer(Modifier.height(16.dp))
                 Text(
-                    "Something went wrong",
+                    "出错了",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(Modifier.height(8.dp))
@@ -660,7 +660,7 @@ fun <T> AsyncContent(
                 )
                 Spacer(Modifier.height(24.dp))
                 Button(onClick = onRetry) {
-                    Text("Try Again")
+                    Text("重试")
                 }
             }
         }
@@ -674,9 +674,9 @@ sealed class AsyncState<out T> {
 }
 ```
 
-## Animations
+## 动画
 
-### Animated Visibility
+### 动画可见性
 
 ```kotlin
 @Composable
@@ -702,7 +702,7 @@ fun ExpandableCard(
                 Text(title, style = MaterialTheme.typography.titleMedium)
                 Icon(
                     if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                    contentDescription = if (expanded) "Collapse" else "Expand"
+                    contentDescription = if (expanded) "收起" else "展开"
                 )
             }
 
@@ -723,7 +723,7 @@ fun ExpandableCard(
 }
 ```
 
-### Animated Content
+### 动画内容
 
 ```kotlin
 @Composable
@@ -749,7 +749,7 @@ fun AnimatedCounter(count: Int) {
 }
 ```
 
-### Gesture-Based Animation
+### 手势动画
 
 ```kotlin
 @Composable

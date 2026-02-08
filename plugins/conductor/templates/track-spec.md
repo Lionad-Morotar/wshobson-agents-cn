@@ -1,163 +1,163 @@
-# Track Specification: {{TRACK_NAME}}
+# 追踪项规格说明：{{TRACK_NAME}}
 
-## Overview
+## 概览
 
-**Track ID:** {{TRACK_ID}}
-**Type:** {{TRACK_TYPE}} (feature | bug | chore | refactor)
-**Priority:** {{PRIORITY}} (critical | high | medium | low)
-**Created:** {{CREATED_DATE}}
-**Author:** {{AUTHOR}}
+**追踪项 ID：** {{TRACK_ID}}
+**类型：** {{TRACK_TYPE}} （功能 | 缺陷 | 日常事务 | 重构）
+**优先级：** {{PRIORITY}} （紧急 | 高 | 中 | 低）
+**创建时间：** {{CREATED_DATE}}
+**作者：** {{AUTHOR}}
 
-### Description
+### 描述
 
 {{TRACK_DESCRIPTION}}
 
-### Background
+### 背景
 
 {{BACKGROUND_CONTEXT}}
 
-## Functional Requirements
+## 功能需求
 
-### FR-1: {{REQUIREMENT_1_TITLE}}
+### FR-1：{{REQUIREMENT_1_TITLE}}
 
 {{REQUIREMENT_1_DESCRIPTION}}
 
-**Acceptance Criteria:**
+**验收标准：**
 
 - [ ] {{FR1_CRITERIA_1}}
 - [ ] {{FR1_CRITERIA_2}}
 - [ ] {{FR1_CRITERIA_3}}
 
-### FR-2: {{REQUIREMENT_2_TITLE}}
+### FR-2：{{REQUIREMENT_2_TITLE}}
 
 {{REQUIREMENT_2_DESCRIPTION}}
 
-**Acceptance Criteria:**
+**验收标准：**
 
 - [ ] {{FR2_CRITERIA_1}}
 - [ ] {{FR2_CRITERIA_2}}
 - [ ] {{FR2_CRITERIA_3}}
 
-### FR-3: {{REQUIREMENT_3_TITLE}}
+### FR-3：{{REQUIREMENT_3_TITLE}}
 
 {{REQUIREMENT_3_DESCRIPTION}}
 
-**Acceptance Criteria:**
+**验收标准：**
 
 - [ ] {{FR3_CRITERIA_1}}
 - [ ] {{FR3_CRITERIA_2}}
 - [ ] {{FR3_CRITERIA_3}}
 
-## Non-Functional Requirements
+## 非功能需求
 
-### Performance
+### 性能
 
 - {{PERFORMANCE_REQUIREMENT_1}}
 - {{PERFORMANCE_REQUIREMENT_2}}
 
-### Security
+### 安全性
 
 - {{SECURITY_REQUIREMENT_1}}
 - {{SECURITY_REQUIREMENT_2}}
 
-### Scalability
+### 可扩展性
 
 - {{SCALABILITY_REQUIREMENT_1}}
 
-### Accessibility
+### 可访问性
 
 - {{ACCESSIBILITY_REQUIREMENT_1}}
 
-### Compatibility
+### 兼容性
 
 - {{COMPATIBILITY_REQUIREMENT_1}}
 
-## Acceptance Criteria
+## 验收标准
 
-### Must Have (P0)
+### 必须具备 (P0)
 
 - [ ] {{P0_CRITERIA_1}}
 - [ ] {{P0_CRITERIA_2}}
 - [ ] {{P0_CRITERIA_3}}
 
-### Should Have (P1)
+### 应当具备 (P1)
 
 - [ ] {{P1_CRITERIA_1}}
 - [ ] {{P1_CRITERIA_2}}
 
-### Nice to Have (P2)
+### 具备更佳 (P2)
 
 - [ ] {{P2_CRITERIA_1}}
 - [ ] {{P2_CRITERIA_2}}
 
-## Scope
+## 范围
 
-### In Scope
+### 包含范围
 
 - {{IN_SCOPE_1}}
 - {{IN_SCOPE_2}}
 - {{IN_SCOPE_3}}
 - {{IN_SCOPE_4}}
 
-### Out of Scope
+### 排除范围
 
 - {{OUT_OF_SCOPE_1}}
 - {{OUT_OF_SCOPE_2}}
 - {{OUT_OF_SCOPE_3}}
 
-### Future Considerations
+### 未来考虑
 
 - {{FUTURE_1}}
 - {{FUTURE_2}}
 
-## Dependencies
+## 依赖项
 
-### Upstream Dependencies
+### 上游依赖
 
-| Dependency | Type       | Status       | Notes       |
-| ---------- | ---------- | ------------ | ----------- |
+| 依赖项     | 类型       | 状态       | 备注       |
+| ---------- | ---------- | ---------- | ---------- |
 | {{DEP_1}}  | {{TYPE_1}} | {{STATUS_1}} | {{NOTES_1}} |
 | {{DEP_2}}  | {{TYPE_2}} | {{STATUS_2}} | {{NOTES_2}} |
 
-### Downstream Impacts
+### 下游影响
 
-| Component       | Impact       | Mitigation       |
-| --------------- | ------------ | ---------------- |
+| 组件           | 影响       | 缓解措施       |
+| -------------- | ---------- | -------------- |
 | {{COMPONENT_1}} | {{IMPACT_1}} | {{MITIGATION_1}} |
 | {{COMPONENT_2}} | {{IMPACT_2}} | {{MITIGATION_2}} |
 
-### External Dependencies
+### 外部依赖
 
 - {{EXTERNAL_DEP_1}}
 - {{EXTERNAL_DEP_2}}
 
-## Risks
+## 风险
 
-### Technical Risks
+### 技术风险
 
-| Risk            | Probability | Impact       | Mitigation       |
-| --------------- | ----------- | ------------ | ---------------- |
-| {{TECH_RISK_1}} | {{PROB_1}}  | {{IMPACT_1}} | {{MITIGATION_1}} |
-| {{TECH_RISK_2}} | {{PROB_2}}  | {{IMPACT_2}} | {{MITIGATION_2}} |
+| 风险            | 概率       | 影响       | 缓解措施       |
+| --------------- | ---------- | ---------- | -------------- |
+| {{TECH_RISK_1}} | {{PROB_1}} | {{IMPACT_1}} | {{MITIGATION_1}} |
+| {{TECH_RISK_2}} | {{PROB_2}} | {{IMPACT_2}} | {{MITIGATION_2}} |
 
-### Business Risks
+### 业务风险
 
-| Risk           | Probability | Impact       | Mitigation       |
-| -------------- | ----------- | ------------ | ---------------- |
-| {{BIZ_RISK_1}} | {{PROB_1}}  | {{IMPACT_1}} | {{MITIGATION_1}} |
+| 风险           | 概率       | 影响       | 缓解措施       |
+| -------------- | ---------- | ---------- | -------------- |
+| {{BIZ_RISK_1}} | {{PROB_1}} | {{IMPACT_1}} | {{MITIGATION_1}} |
 
-### Unknowns
+### 未知项
 
 - {{UNKNOWN_1}}
 - {{UNKNOWN_2}}
 
-## Open Questions
+## 待解决问题
 
 - [ ] {{QUESTION_1}}
 - [ ] {{QUESTION_2}}
 - [ ] {{QUESTION_3}}
 
-## References
+## 参考资料
 
 - {{REFERENCE_1}}
 - {{REFERENCE_2}}
@@ -165,5 +165,5 @@
 
 ---
 
-**Approved By:** {{APPROVER}}
-**Approval Date:** {{APPROVAL_DATE}}
+**审批人：** {{APPROVER}}
+**审批日期：** {{APPROVAL_DATE}}

@@ -1,28 +1,28 @@
 ---
 name: visual-design-foundations
-description: Apply typography, color theory, spacing systems, and iconography principles to create cohesive visual designs. Use when establishing design tokens, building style guides, or improving visual hierarchy and consistency.
+description: 应用字体、色彩理论、间距系统和图标设计原则来创建协调的视觉设计。在建立设计令牌、构建样式指南或改善视觉层次和一致性时使用。
 ---
 
-# Visual Design Foundations
+# 视觉设计基础
 
-Build cohesive, accessible visual systems using typography, color, spacing, and iconography fundamentals.
+使用字体、色彩、间距和图标基础构建协调、无障碍的视觉系统。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Establishing design tokens for a new project
-- Creating or refining a spacing and sizing system
-- Selecting and pairing typefaces
-- Building accessible color palettes
-- Designing icon systems and visual assets
-- Improving visual hierarchy and readability
-- Auditing designs for visual consistency
-- Implementing dark mode or theming
+- 为新项目建立设计令牌
+- 创建或优化间距和尺寸系统
+- 选择和搭配字体
+- 构建无障碍的调色板
+- 设计图标系统和视觉资源
+- 改善视觉层次和可读性
+- 审核设计的视觉一致性
+- 实现深色模式或主题
 
-## Core Systems
+## 核心系统
 
-### 1. Typography Scale
+### 1. 字体比例
 
-**Modular Scale** (ratio-based sizing):
+**模块化比例**（基于比例的尺寸）:
 
 ```css
 :root {
@@ -38,16 +38,16 @@ Build cohesive, accessible visual systems using typography, color, spacing, and 
 }
 ```
 
-**Line Height Guidelines**:
-| Text Type | Line Height |
+**行高指南**:
+| 文本类型 | 行高 |
 |-----------|-------------|
-| Headings | 1.1 - 1.3 |
-| Body text | 1.5 - 1.7 |
-| UI labels | 1.2 - 1.4 |
+| 标题 | 1.1 - 1.3 |
+| 正文 | 1.5 - 1.7 |
+| UI 标签 | 1.2 - 1.4 |
 
-### 2. Spacing System
+### 2. 间距系统
 
-**8-point grid** (industry standard):
+**8点网格**（行业标准）:
 
 ```css
 :root {
@@ -64,24 +64,24 @@ Build cohesive, accessible visual systems using typography, color, spacing, and 
 }
 ```
 
-### 3. Color System
+### 3. 色彩系统
 
-**Semantic color tokens**:
+**语义化色彩令牌**:
 
 ```css
 :root {
-  /* Brand */
+  /* 品牌 */
   --color-primary: #2563eb;
   --color-primary-hover: #1d4ed8;
   --color-primary-active: #1e40af;
 
-  /* Semantic */
+  /* 语义化 */
   --color-success: #16a34a;
   --color-warning: #ca8a04;
   --color-error: #dc2626;
   --color-info: #0891b2;
 
-  /* Neutral */
+  /* 中性色 */
   --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
@@ -95,7 +95,7 @@ Build cohesive, accessible visual systems using typography, color, spacing, and 
 }
 ```
 
-## Quick Start: Design Tokens in Tailwind
+## 快速入门：Tailwind 中的设计令牌
 
 ```js
 // tailwind.config.js
@@ -123,7 +123,7 @@ module.exports = {
         },
       },
       spacing: {
-        // Extends default with custom values
+        // 使用自定义值扩展默认值
         18: "4.5rem",
         88: "22rem",
       },
@@ -132,20 +132,20 @@ module.exports = {
 };
 ```
 
-## Typography Best Practices
+## 字体最佳实践
 
-### Font Pairing
+### 字体搭配
 
-**Safe combinations**:
+**安全组合**:
 
-- Heading: **Inter** / Body: **Inter** (single family)
-- Heading: **Playfair Display** / Body: **Source Sans Pro** (contrast)
-- Heading: **Space Grotesk** / Body: **IBM Plex Sans** (geometric)
+- 标题：**Inter** / 正文：**Inter**（单一家族）
+- 标题：**Playfair Display** / 正文：**Source Sans Pro**（对比）
+- 标题：**Space Grotesk** / 正文：**IBM Plex Sans**（几何）
 
-### Responsive Typography
+### 响应式字体
 
 ```css
-/* Fluid typography using clamp() */
+/* 使用 clamp() 实现流体字体 */
 h1 {
   font-size: clamp(2rem, 5vw + 1rem, 3.5rem);
   line-height: 1.1;
@@ -154,14 +154,14 @@ h1 {
 p {
   font-size: clamp(1rem, 2vw + 0.5rem, 1.125rem);
   line-height: 1.6;
-  max-width: 65ch; /* Optimal reading width */
+  max-width: 65ch; /* 最佳阅读宽度 */
 }
 ```
 
-### Font Loading
+### 字体加载
 
 ```css
-/* Prevent layout shift */
+/* 防止布局偏移 */
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter.woff2") format("woff2");
@@ -170,18 +170,18 @@ p {
 }
 ```
 
-## Color Theory
+## 色彩理论
 
-### Contrast Requirements (WCAG)
+### 对比度要求 (WCAG)
 
-| Element            | Minimum Ratio |
+| 元素 | 最小对比度 |
 | ------------------ | ------------- |
-| Body text          | 4.5:1 (AA)    |
-| Large text (18px+) | 3:1 (AA)      |
-| UI components      | 3:1 (AA)      |
-| Enhanced           | 7:1 (AAA)     |
+| 正文 | 4.5:1 (AA) |
+| 大文本 (18px+) | 3:1 (AA) |
+| UI 组件 | 3:1 (AA) |
+| 增强型 | 7:1 (AAA) |
 
-### Dark Mode Strategy
+### 深色模式策略
 
 ```css
 :root {
@@ -201,10 +201,10 @@ p {
 }
 ```
 
-### Color Accessibility
+### 色彩无障碍
 
 ```tsx
-// Check contrast programmatically
+// 以编程方式检查对比度
 function getContrastRatio(foreground: string, background: string): number {
   const getLuminance = (hex: string) => {
     const rgb = hexToRgb(hex);
@@ -224,22 +224,22 @@ function getContrastRatio(foreground: string, background: string): number {
 }
 ```
 
-## Spacing Guidelines
+## 间距指南
 
-### Component Spacing
+### 组件间距
 
 ```
-Card padding:      16-24px (--space-4 to --space-6)
-Section gap:       32-64px (--space-8 to --space-16)
-Form field gap:    16-24px (--space-4 to --space-6)
-Button padding:    8-16px vertical, 16-24px horizontal
-Icon-text gap:     8px (--space-2)
+卡片内边距：      16-24px (--space-4 到 --space-6)
+区块间距：       32-64px (--space-8 到 --space-16)
+表单字段间距：    16-24px (--space-4 到 --space-6)
+按钮内边距：    垂直 8-16px，水平 16-24px
+图标文本间距：     8px (--space-2)
 ```
 
-### Visual Rhythm
+### 视觉韵律
 
 ```css
-/* Consistent vertical rhythm */
+/* 一致的垂直韵律 */
 .prose > * + * {
   margin-top: var(--space-4);
 }
@@ -253,9 +253,9 @@ Icon-text gap:     8px (--space-2)
 }
 ```
 
-## Iconography
+## 图标设计
 
-### Icon Sizing System
+### 图标尺寸系统
 
 ```css
 :root {
@@ -267,7 +267,7 @@ Icon-text gap:     8px (--space-2)
 }
 ```
 
-### Icon Component
+### 图标组件
 
 ```tsx
 interface IconProps {
@@ -298,29 +298,29 @@ export function Icon({ name, size = "md", className }: IconProps) {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Establish Constraints**: Limit choices to maintain consistency
-2. **Document Decisions**: Create a living style guide
-3. **Test Accessibility**: Verify contrast, sizing, touch targets
-4. **Use Semantic Tokens**: Name by purpose, not appearance
-5. **Design Mobile-First**: Start with constraints, add complexity
-6. **Maintain Vertical Rhythm**: Consistent spacing creates harmony
-7. **Limit Font Weights**: 2-3 weights per family is sufficient
+1. **建立约束**：限制选择以保持一致性
+2. **记录决策**：创建动态样式指南
+3. **测试无障碍**：验证对比度、尺寸、触摸目标
+4. **使用语义化令牌**：按用途命名，而非外观
+5. **移动优先设计**：从约束开始，增加复杂性
+6. **保持垂直韵律**：一致的间距创造和谐
+7. **限制字重**：每族 2-3 个字重足够
 
-## Common Issues
+## 常见问题
 
-- **Inconsistent Spacing**: Not using a defined scale
-- **Poor Contrast**: Failing WCAG requirements
-- **Font Overload**: Too many families or weights
-- **Magic Numbers**: Arbitrary values instead of tokens
-- **Missing States**: Forgetting hover, focus, disabled
-- **No Dark Mode Plan**: Retrofitting is harder than planning
+- **间距不一致**：未使用定义的比例
+- **对比度差**：未达到 WCAG 要求
+- **字体过载**：太多家族或字重
+- **魔法数字**：任意值而非令牌
+- **缺失状态**：忘记 hover、focus、disabled
+- **无深色模式计划**：后期改造比规划更难
 
-## Resources
+## 资源
 
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-- [Type Scale Calculator](https://typescale.com/)
-- [Contrast Checker](https://webaim.org/resources/contrastchecker/)
-- [Material Design Color System](https://m3.material.io/styles/color/overview)
+- [Tailwind CSS 文档](https://tailwindcss.com/docs)
+- [字体比例计算器](https://typescale.com/)
+- [对比度检查器](https://webaim.org/resources/contrastchecker/)
+- [Material Design 色彩系统](https://m3.material.io/styles/color/overview)
 - [Radix Colors](https://www.radix-ui.com/colors)

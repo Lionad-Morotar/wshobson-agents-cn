@@ -1,8 +1,8 @@
-# SwiftUI Component Library
+# SwiftUI 组件库
 
-## Lists and Collections
+## 列表和集合
 
-### Basic List
+### 基础列表
 
 ```swift
 struct ItemListView: View {
@@ -32,7 +32,7 @@ struct ItemListView: View {
 }
 ```
 
-### Sectioned List
+### 分组列表
 
 ```swift
 struct SectionedListView: View {
@@ -53,7 +53,7 @@ struct SectionedListView: View {
 }
 ```
 
-### Search Integration
+### 搜索集成
 
 ```swift
 struct SearchableListView: View {
@@ -72,22 +72,22 @@ struct SearchableListView: View {
             List(filteredItems) { item in
                 ItemRow(item: item)
             }
-            .searchable(text: $searchText, prompt: "Search items")
+            .searchable(text: $searchText, prompt: "搜索项目")
             .searchSuggestions {
                 ForEach(searchSuggestions, id: \.self) { suggestion in
                     Text(suggestion)
                         .searchCompletion(suggestion)
                 }
             }
-            .navigationTitle("Items")
+            .navigationTitle("项目")
         }
     }
 }
 ```
 
-## Forms and Input
+## 表单和输入
 
-### Settings Form
+### 设置表单
 
 ```swift
 struct SettingsView: View {
@@ -98,37 +98,37 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("Account") {
-                TextField("Username", text: $username)
+            Section("账户") {
+                TextField("用户名", text: $username)
                     .textContentType(.username)
                     .autocorrectionDisabled()
             }
 
-            Section("Preferences") {
-                Toggle("Enable Notifications", isOn: $notificationsEnabled)
-                Toggle("Sound Effects", isOn: $soundEnabled)
+            Section("偏好设置") {
+                Toggle("启用通知", isOn: $notificationsEnabled)
+                Toggle("音效", isOn: $soundEnabled)
 
-                Picker("Theme", selection: $selectedTheme) {
+                Picker("主题", selection: $selectedTheme) {
                     ForEach(Theme.allCases) { theme in
                         Text(theme.rawValue).tag(theme)
                     }
                 }
             }
 
-            Section("About") {
-                LabeledContent("Version", value: "1.0.0")
+            Section("关于") {
+                LabeledContent("版本", value: "1.0.0")
 
                 Link(destination: URL(string: "https://example.com/privacy")!) {
-                    Text("Privacy Policy")
+                    Text("隐私政策")
                 }
             }
         }
-        .navigationTitle("Settings")
+        .navigationTitle("设置")
     }
 }
 ```
 
-### Custom Input Fields
+### 自定义输入字段
 
 ```swift
 struct ValidatedTextField: View {
@@ -157,7 +157,7 @@ struct ValidatedTextField: View {
                 }
 
             if !isValid && !text.isEmpty {
-                Text("Invalid input")
+                Text("无效输入")
                     .font(.caption)
                     .foregroundStyle(.red)
             }
@@ -173,31 +173,31 @@ struct ValidatedTextField: View {
 }
 ```
 
-## Buttons and Actions
+## 按钮和操作
 
-### Button Styles
+### 按钮样式
 
 ```swift
-// Primary filled button
-Button("Continue") {
-    // action
+// 主要填充按钮
+Button("继续") {
+    // 操作
 }
 .buttonStyle(.borderedProminent)
 .controlSize(.large)
 
-// Secondary button
-Button("Cancel") {
-    // action
+// 次要按钮
+Button("取消") {
+    // 操作
 }
 .buttonStyle(.bordered)
 
-// Destructive button
-Button("Delete", role: .destructive) {
-    // action
+// 删除按钮
+Button("删除", role: .destructive) {
+    // 操作
 }
 .buttonStyle(.bordered)
 
-// Custom button style
+// 自定义按钮样式
 struct ScaleButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
@@ -207,32 +207,32 @@ struct ScaleButtonStyle: ButtonStyle {
 }
 ```
 
-### Menu and Context Menu
+### 菜单和上下文菜单
 
 ```swift
-// Menu button
+// 菜单按钮
 Menu {
-    Button("Edit", systemImage: "pencil") { }
-    Button("Duplicate", systemImage: "doc.on.doc") { }
+    Button("编辑", systemImage: "pencil") { }
+    Button("复制", systemImage: "doc.on.doc") { }
     Divider()
-    Button("Delete", systemImage: "trash", role: .destructive) { }
+    Button("删除", systemImage: "trash", role: .destructive) { }
 } label: {
     Image(systemName: "ellipsis.circle")
 }
 
-// Context menu on any view
-Text("Long press me")
+// 任何视图上的上下文菜单
+Text("长按我")
     .contextMenu {
-        Button("Copy", systemImage: "doc.on.doc") { }
-        Button("Share", systemImage: "square.and.arrow.up") { }
+        Button("复制", systemImage: "doc.on.doc") { }
+        Button("分享", systemImage: "square.and.arrow.up") { }
     } preview: {
         ItemPreviewView()
     }
 ```
 
-## Sheets and Modals
+## Sheet 和模态视图
 
-### Sheet Presentation
+### Sheet 展示
 
 ```swift
 struct ParentView: View {
@@ -241,7 +241,7 @@ struct ParentView: View {
 
     var body: some View {
         VStack {
-            Button("Settings") {
+            Button("设置") {
                 showSettings = true
             }
         }
@@ -266,7 +266,7 @@ struct SettingsSheet: View {
             SettingsContent()
                 .toolbar {
                     ToolbarItem(placement: .confirmationAction) {
-                        Button("Done") {
+                        Button("完成") {
                             dismiss()
                         }
                     }
@@ -276,49 +276,49 @@ struct SettingsSheet: View {
 }
 ```
 
-### Confirmation Dialog
+### 确认对话框
 
 ```swift
 struct DeleteConfirmationView: View {
     @State private var showConfirmation = false
 
     var body: some View {
-        Button("Delete Account", role: .destructive) {
+        Button("删除账户", role: .destructive) {
             showConfirmation = true
         }
         .confirmationDialog(
-            "Delete Account",
+            "删除账户",
             isPresented: $showConfirmation,
             titleVisibility: .visible
         ) {
-            Button("Delete", role: .destructive) {
+            Button("删除", role: .destructive) {
                 deleteAccount()
             }
-            Button("Cancel", role: .cancel) { }
+            Button("取消", role: .cancel) { }
         } message: {
-            Text("This action cannot be undone.")
+            Text("此操作无法撤销。")
         }
     }
 }
 ```
 
-## Loading and Progress
+## 加载和进度
 
-### Progress Indicators
+### 进度指示器
 
 ```swift
-// Indeterminate spinner
+// 不确定的旋转指示器
 ProgressView()
     .progressViewStyle(.circular)
 
-// Determinate progress
+// 确定的进度条
 ProgressView(value: downloadProgress, total: 1.0) {
-    Text("Downloading...")
+    Text("下载中...")
 } currentValueLabel: {
     Text("\(Int(downloadProgress * 100))%")
 }
 
-// Custom loading view
+// 自定义加载视图
 struct LoadingOverlay: View {
     let message: String
 
@@ -343,7 +343,7 @@ struct LoadingOverlay: View {
 }
 ```
 
-### Skeleton Loading
+### 骨架屏加载
 
 ```swift
 struct SkeletonRow: View {
@@ -374,7 +374,7 @@ struct SkeletonRow: View {
 }
 ```
 
-## Async Content Loading
+## 异步内容加载
 
 ### AsyncImage
 
@@ -398,7 +398,7 @@ AsyncImage(url: imageURL) { phase in
 .clipShape(RoundedRectangle(cornerRadius: 8))
 ```
 
-### Task-Based Loading
+### 基于任务的加载
 
 ```swift
 struct AsyncContentView: View {
@@ -409,18 +409,18 @@ struct AsyncContentView: View {
     var body: some View {
         Group {
             if isLoading {
-                ProgressView("Loading...")
+                ProgressView("加载中...")
             } else if let error {
                 ContentUnavailableView(
-                    "Failed to Load",
+                    "加载失败",
                     systemImage: "exclamationmark.triangle",
                     description: Text(error.localizedDescription)
                 )
             } else if items.isEmpty {
                 ContentUnavailableView(
-                    "No Items",
+                    "无项目",
                     systemImage: "tray",
-                    description: Text("Add your first item to get started.")
+                    description: Text("添加你的第一个项目以开始使用。")
                 )
             } else {
                 List(items) { item in
@@ -445,9 +445,9 @@ struct AsyncContentView: View {
 }
 ```
 
-## Animations
+## 动画
 
-### Implicit Animations
+### 隐式动画
 
 ```swift
 struct AnimatedCard: View {
@@ -455,10 +455,10 @@ struct AnimatedCard: View {
 
     var body: some View {
         VStack {
-            Text("Tap to expand")
+            Text("点击展开")
 
             if isExpanded {
-                Text("Additional content here")
+                Text("此处为附加内容")
                     .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
@@ -474,7 +474,7 @@ struct AnimatedCard: View {
 }
 ```
 
-### Custom Transitions
+### 自定义过渡
 
 ```swift
 extension AnyTransition {
@@ -491,12 +491,12 @@ extension AnyTransition {
 }
 ```
 
-### Phase Animator (iOS 17+)
+### 相位动画器 (iOS 17+)
 
 ```swift
 struct PulsingButton: View {
     var body: some View {
-        Button("Tap Me") { }
+        Button("点击我") { }
             .buttonStyle(.borderedProminent)
             .phaseAnimator([false, true]) { content, phase in
                 content
@@ -508,9 +508,9 @@ struct PulsingButton: View {
 }
 ```
 
-## Gestures
+## 手势
 
-### Drag Gesture
+### 拖动手势
 
 ```swift
 struct DraggableCard: View {
@@ -540,7 +540,7 @@ struct DraggableCard: View {
 }
 ```
 
-### Simultaneous Gestures
+### 同时手势
 
 ```swift
 struct ZoomableImage: View {

@@ -1,241 +1,405 @@
 ---
 name: hybrid-cloud-networking
-description: Configure secure, high-performance connectivity between on-premises infrastructure and cloud platforms using VPN and dedicated connections. Use when building hybrid cloud architectures, connecting data centers to cloud, or implementing secure cross-premises networking.
+description: 使用 VPN 和专线连接配置本地基础设施与云平台之间的安全、高性能连接。在构建混合云架构、将数据中心连接到云或实现安全的跨场所网络时使用。
 ---
 
-# Hybrid Cloud Networking
+# 混合云网络
 
-Configure secure, high-performance connectivity between on-premises and cloud environments using VPN, Direct Connect, and ExpressRoute.
+使用 VPN、Direct Connect 和 ExpressRoute 配置本地环境与云环境之间的安全、高性能连接。
 
-## Purpose
+## 目的
 
-Establish secure, reliable network connectivity between on-premises data centers and cloud providers (AWS, Azure, GCP).
+在本地数据中心与云提供商(AWS、Azure、GCP)之间建立安全、可靠的网络连接。
 
-## When to Use
+## 适用场景
 
-- Connect on-premises to cloud
-- Extend datacenter to cloud
-- Implement hybrid active-active setups
-- Meet compliance requirements
-- Migrate to cloud gradually
+混合云网络技能在以下情况下适用：
 
-## Connection Options
+- **混合云架构**：将本地基础设施扩展到云端
+- **数据中心迁移**：在迁移过程中连接本地和云端资源
+- **灾难恢复**：使用云端作为本地工作负载的恢复站点
+- **云爆发**：峰值期间将工作负载扩展到云端
+- **多云策略**：跨多个云提供商分布资源
 
-### AWS Connectivity
+## 约束和指导原则
 
-#### 1. Site-to-Site VPN
+使用此技能时，遵循这些约束和指导原则：
 
-- IPSec VPN over internet
-- Up to 1.25 Gbps per tunnel
-- Cost-effective for moderate bandwidth
-- Higher latency, internet-dependent
+- **加密**：所有连接必须使用强加密(IPsec、TLS)
+- **冗余**：为连接部署冗余隧道和网关
+- **监控**：为连接指标设置监控和警报
+- **成本优化**：根据成本考虑选择 VPN 与专线
+- **安全**：实现正确的防火墙规则和安全组
+- **性能**：根据带宽需求选择连接类型
 
-```hcl
-resource "aws_vpn_gateway" "main" {
-  vpc_id = aws_vpc.main.id
-  tags = {
-    Name = "main-vpn-gateway"
-  }
-}
+## 工作流程
 
-resource "aws_customer_gateway" "main" {
-  bgp_asn    = 65000
-  ip_address = "203.0.113.1"
-  type       = "ipsec.1"
-}
+### 混合云连接计划
 
-resource "aws_vpn_connection" "main" {
-  vpn_gateway_id      = aws_vpn_gateway.main.id
-  customer_gateway_id = aws_customer_gateway.main.id
-  type                = "ipsec.1"
-  static_routes_only  = false
-}
-```
+规划混合云连接时：
 
-#### 2. AWS Direct Connect
+1. **评估需求**：确定带宽、延迟和可用性要求
+2. **选择连接类型**：在 VPN 与专线之间选择
+3. **设计网络拓扑**：规划 IP 地址、路由和防火墙
+4. **规划冗余**：设计冗余以实现高可用性
+5. **估算成本**：估算数据传输和连接成本
+6. **实施监控**：规划连接健康和性能的监控
 
-- Dedicated network connection
-- 1 Gbps to 100 Gbps
-- Lower latency, consistent bandwidth
-- More expensive, setup time required
+### VPN 连接
 
-**Reference:** See `references/direct-connect.md`
+建立 VPN 连接：
 
-### Azure Connectivity
+1. **创建虚拟网关**：
+   ```hcl
+   # AWS Site-to-Site VPN
+   resource "aws_vpn_gateway" "main" {
+     vpc_id = aws_vpc.main.id
+     tags = {
+       Name = "main-vpn-gateway"
+     }
+   }
 
-#### 1. Site-to-Site VPN
+   resource "aws_customer_gateway" "main" {
+     bgp_asn    = 65000
+     ip_address = "YOUR_ON_PREM_IP"
+     type       = "ipsec.1"
+   }
+   ```
 
-```hcl
-resource "azurerm_virtual_network_gateway" "vpn" {
-  name                = "vpn-gateway"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+2. **创建 VPN 连接**：
+   ```hcl
+   resource "aws_vpn_connection" "main" {
+     customer_gateway_id = aws_customer_gateway.main.id
+     vpn_gateway_id      = aws_vpn_gateway.main.id
+     type                = "ipsec.1"
 
-  type     = "Vpn"
-  vpn_type = "RouteBased"
-  sku      = "VpnGw1"
+     static_routes_only = false
+   }
+   ```
 
-  ip_configuration {
-    name                          = "vnetGatewayConfig"
-    public_ip_address_id          = azurerm_public_ip.vpn.id
-    private_ip_address_allocation = "Dynamic"
-    subnet_id                     = azurerm_subnet.gateway.id
-  }
-}
-```
+3. **配置路由**：
+   ```hcl
+   resource "aws_route_table" "vpn" {
+     vpc_id = aws_vpc.main.id
 
-#### 2. Azure ExpressRoute
+     route {
+       cidr_block                = "10.0.0.0/16"
+       gateway_id                = aws_vpn_gateway.main.id
+     }
+   }
+   ```
 
-- Private connection via connectivity provider
-- Up to 100 Gbps
-- Low latency, high reliability
-- Premium for global connectivity
+### AWS Direct Connect
 
-### GCP Connectivity
+使用 AWS Direct Connect 实现专用连接：
 
-#### 1. Cloud VPN
+1. **创建连接**：
+   ```hcl
+   resource "aws_dx_connection" "main" {
+     name            = "main-dx-connection"
+     location        = "EqSE2-RK1ujJL"
+     bandwidth       = "1Gbps"
+     partner_name    = "Example Partner"
+   }
+   ```
 
-- IPSec VPN (Classic or HA VPN)
-- HA VPN: 99.99% SLA
-- Up to 3 Gbps per tunnel
+2. **创建 LAG**：
+   ```hcl
+   resource "aws_dx_lag" "main" {
+     name                  = "main-lag"
+     connections_bandwidth = "1Gbps"
+     location              = "EqSE2-RK1ujJL"
+   }
+   ```
 
-#### 2. Cloud Interconnect
+3. **创建虚拟接口**：
+   ```hcl
+   resource "aws_dx_private_virtual_interface" "main" {
+     connection_id = aws_dx_connection.main.id
 
-- Dedicated (10 Gbps, 100 Gbps)
-- Partner (50 Mbps to 50 Gbps)
-- Lower latency than VPN
+     name           = "main-vif"
+     vlan           = 4094
+     address_family = "ipv4"
+     bgp_asn        = 65000
+     bgp_auth_key   = "12345678"
 
-## Hybrid Network Patterns
+     amazon_address = "192.168.0.2/30"
+     customer_address = "192.168.0.1/30"
 
-### Pattern 1: Hub-and-Spoke
+     vpn_gateway_id = aws_vpn_gateway.main.id
+   }
+   ```
 
-```
-On-Premises Datacenter
-         ↓
-    VPN/Direct Connect
-         ↓
-    Transit Gateway (AWS) / vWAN (Azure)
-         ↓
-    ├─ Production VPC/VNet
-    ├─ Staging VPC/VNet
-    └─ Development VPC/VNet
-```
+### Azure ExpressRoute
 
-### Pattern 2: Multi-Region Hybrid
+使用 Azure ExpressRoute 连接：
 
-```
-On-Premises
-    ├─ Direct Connect → us-east-1
-    └─ Direct Connect → us-west-2
-            ↓
-        Cross-Region Peering
-```
+1. **创建 ExpressRoute 线路**：
+   ```hcl
+   resource "azurerm_express_route_circuit" "main" {
+     name                   = "main-er-circuit"
+     resource_group_name    = azurerm_resource_group.main.name
+     location               = azurerm_resource_group.main.location
+     service_provider_name  = "Equinix"
+     peering_location       = "Silicon Valley"
+     bandwidth_in_mbps      = 1000
 
-### Pattern 3: Multi-Cloud Hybrid
+     sku {
+       tier   = "Premium"
+       family = "MeteredData"
+     }
+   }
+   ```
 
-```
-On-Premises Datacenter
-    ├─ Direct Connect → AWS
-    ├─ ExpressRoute → Azure
-    └─ Interconnect → GCP
-```
+2. **配置对等互连**：
+   ```hcl
+   resource "azurerm_express_route_circuit_peering" "azure_private" {
+     peering_type                  = "AzurePrivatePeering"
+     express_route_circuit_name     = azurerm_express_route_circuit.main.name
+     resource_group_name           = azurerm_resource_group.main.name
+     peer_asn                      = 65000
+     primary_peer_address_prefix   = "192.168.1.0/30"
+     secondary_peer_address_prefix = "192.168.2.0/30"
+     vlan_id                       = 100
+   }
+   ```
 
-## Routing Configuration
+### GCP Cloud Interconnect
 
-### BGP Configuration
+使用 GCP Cloud Interconnect：
 
-```
-On-Premises Router:
-- AS Number: 65000
-- Advertise: 10.0.0.0/8
+1. **创建互连附件**：
+   ```hcl
+   resource "google_compute_interconnect_attachment" "main" {
+     name               = "main-interconnect-attachment"
+     edge_availability_domain = "availability-domain-1"
+     type               = "PARTNER"
+     router             = google_compute_router.main.name
+     region             = "us-central1"
+     bandwidth          = "BPS_10G"
+   }
+   ```
 
-Cloud Router:
-- AS Number: 64512 (AWS), 65515 (Azure)
-- Advertise: Cloud VPC/VNet CIDRs
-```
+2. **配置 Cloud Router**：
+   ```hcl
+   resource "google_compute_router" "main" {
+     name    = "main-router"
+     region  = "us-central1"
+     network = google_compute_network.main.id
 
-### Route Propagation
+     bgp {
+       asn = 65000
+     }
+   }
 
-- Enable route propagation on route tables
-- Use BGP for dynamic routing
-- Implement route filtering
-- Monitor route advertisements
+   resource "google_compute_router_interface" "main" {
+     name        = "main-interface"
+     router      = google_compute_router.main.name
+     region      = "us-central1"
+     ip_range    = "169.254.1.0/30"
+     interconnect_attachment = google_compute_interconnect_attachment.main.id
+   }
+   ```
 
-## Security Best Practices
+### 网络配置
 
-1. **Use private connectivity** (Direct Connect/ExpressRoute)
-2. **Implement encryption** for VPN tunnels
-3. **Use VPC endpoints** to avoid internet routing
-4. **Configure network ACLs** and security groups
-5. **Enable VPC Flow Logs** for monitoring
-6. **Implement DDoS protection**
-7. **Use PrivateLink/Private Endpoints**
-8. **Monitor connections** with CloudWatch/Monitor
-9. **Implement redundancy** (dual tunnels)
-10. **Regular security audits**
+配置网络设置：
 
-## High Availability
+1. **VPC 和子网**：
+   ```hcl
+   resource "aws_vpc" "main" {
+     cidr_block           = "10.0.0.0/16"
+     enable_dns_hostnames = true
+     enable_dns_support   = true
 
-### Dual VPN Tunnels
+     tags = {
+       Name = "main-vpc"
+     }
+   }
 
-```hcl
-resource "aws_vpn_connection" "primary" {
-  vpn_gateway_id      = aws_vpn_gateway.main.id
-  customer_gateway_id = aws_customer_gateway.primary.id
-  type                = "ipsec.1"
-}
+   resource "aws_subnet" "public" {
+     vpc_id     = aws_vpc.main.id
+     cidr_block = "10.0.1.0/24"
 
-resource "aws_vpn_connection" "secondary" {
-  vpn_gateway_id      = aws_vpn_gateway.main.id
-  customer_gateway_id = aws_customer_gateway.secondary.id
-  type                = "ipsec.1"
-}
-```
+     tags = {
+       Name = "public-subnet"
+     }
+   }
+   ```
 
-### Active-Active Configuration
+2. **安全组和防火墙**：
+   ```hcl
+   resource "aws_security_group" "vpn" {
+     name   = "vpn-security-group"
+     vpc_id = aws_vpc.main.id
 
-- Multiple connections from different locations
-- BGP for automatic failover
-- Equal-cost multi-path (ECMP) routing
-- Monitor health of all connections
+     ingress {
+       from_port   = 443
+       to_port     = 443
+       protocol    = "tcp"
+       cidr_blocks = ["YOUR_ON_PREM_CIDR"]
+     }
+   }
+   ```
 
-## Monitoring and Troubleshooting
+### 高可用性配置
 
-### Key Metrics
+配置高可用性：
 
-- Tunnel status (up/down)
-- Bytes in/out
-- Packet loss
-- Latency
-- BGP session status
+1. **冗余 VPN 隧道**：
+   ```hcl
+   resource "aws_vpn_connection" "main" {
+     customer_gateway_id = aws_customer_gateway.main.id
+     vpn_gateway_id      = aws_vpn_gateway.main.id
+     type                = "ipsec.1"
 
-### Troubleshooting
+     tunnel1_preshared_key = "tunnel1-key"
+     tunnel2_preshared_key = "tunnel2-key"
+   }
+   ```
 
-```bash
-# AWS VPN
-aws ec2 describe-vpn-connections
-aws ec2 get-vpn-connection-telemetry
+2. **冗余网关**：
+   ```hcl
+   resource "aws_vpn_gateway" "main" {
+     vpc_id = aws_vpc.main.id
+     tags = {
+       Name = "main-vpn-gateway"
+     }
+   }
 
-# Azure VPN
-az network vpn-connection show
-az network vpn-connection show-device-config-script
-```
+   resource "aws_vpn_gateway_route_propagation" "main" {
+     vpn_gateway_id = aws_vpn_gateway.main.id
+     route_table_id = aws_route_table.main.id
+   }
+   ```
 
-## Cost Optimization
+### 监控和故障排除
 
-1. **Right-size connections** based on traffic
-2. **Use VPN for low-bandwidth** workloads
-3. **Consolidate traffic** through fewer connections
-4. **Minimize data transfer** costs
-5. **Use Direct Connect** for high bandwidth
-6. **Implement caching** to reduce traffic
+监控连接性能：
 
-## Reference Files
+1. **CloudWatch 指标**：
+   ```hcl
+   resource "aws_cloudwatch_metric_alarm" "tunnel_state" {
+     alarm_name          = "vpn-tunnel-state"
+     comparison_operator = "LessThanThreshold"
+     evaluation_periods  = "1"
+     metric_name         = "TunnelState"
+     namespace           = "AWS/VPNConnection"
+     period              = "300"
+     statistic           = "Average"
+     threshold           = "1"
 
-- `references/vpn-setup.md` - VPN configuration guide
-- `references/direct-connect.md` - Direct Connect setup
+     dimensions = {
+       VpnId = aws_vpn_connection.main.id
+     }
+   }
+   ```
 
-## Related Skills
+2. **连接监控**：
+   ```bash
+   # 检查 VPN 状态
+   aws ec2 describe-vpn-connections --vpn-connection-ids ${VPN_ID}
 
-- `multi-cloud-architecture` - For architecture decisions
-- `terraform-module-library` - For IaC implementation
+   # 测试连接
+   ping -c 4 REMOTE_PRIVATE_IP
+
+   # 检查路由
+   traceroute REMOTE_PRIVATE_IP
+   ```
+
+### 安全配置
+
+配置安全设置：
+
+1. **加密设置**：
+   ```hcl
+   resource "aws_vpn_connection" "main" {
+     customer_gateway_id = aws_customer_gateway.main.id
+     vpn_gateway_id      = aws_vpn_gateway.main.id
+     type                = "ipsec.1"
+
+     tunnel1_phase1_lifetime     = 28800
+     tunnel1_phase2_lifetime     = 3600
+     tunnel1_preshared_key       = random_string.tunnel1_key.result
+
+     tunnel2_phase1_lifetime     = 28800
+     tunnel2_phase2_lifetime     = 3600
+     tunnel2_preshared_key       = random_string.tunnel2_key.result
+   }
+   ```
+
+2. **访问控制**：
+   ```hcl
+   resource "aws_security_group_rule" "vpn_ingress" {
+     type              = "ingress"
+     from_port         = 0
+     to_port           = 65535
+     protocol          = "-1"
+     cidr_blocks       = [YOUR_ON_PREM_CIDR]
+     security_group_id = aws_security_group.vpn.id
+   }
+   ```
+
+### 成本优化
+
+优化连接成本：
+
+1. **选择正确的连接类型**：
+   - 使用 VPN 代替 Direct Connect/ExpressRoute 处理低带宽需求
+   - 对高带宽需求使用专线连接
+   - 考虑使用带转接的合作伙伴连接
+
+2. **监控使用情况**：
+   ```bash
+   # 检查数据传输成本
+   aws ce get-cost-and-usage \
+     --time-period Start=2024-01-01,End=2024-01-31 \
+     --granularity MONTHLY \
+     --metrics BlendedCost \
+     --filter '{"Dimensions": {"Key": "USAGE_TYPE", "Values": ["DataTransfer"]}}'
+   ```
+
+## 约束和指导原则
+
+### 网络设计
+
+- **IP 地址规划**：规划 IP 地址以避免冲突
+- **路由配置**：为资源配置正确的路由
+- **DNS 配置**：设置本地和云端之间的 DNS 解析
+- **MTU 设置**：配置路径 MTU 发现
+- **防火墙规则**：实现最小权限原则
+
+### 性能优化
+
+- **带宽规划**：选择适当的连接带宽
+- **延迟优化**：为低延迟要求选择最近的区域
+- **冗余规划**：为关键工作负载实施冗余
+- **负载均衡**：跨多个连接分布流量
+
+### 安全最佳实践
+
+- **加密**：所有连接使用强加密
+- **身份认证**：使用强密钥和证书
+- **网络隔离**：使用 VPC、子网和安全组
+- **访问控制**：实施网络访问控制列表
+- **监控**：记录和监控网络流量
+
+## 何时使用此技能
+
+使用此技能进行混合云网络时：
+
+- **连接规划**：规划本地和云端之间的连接
+- **连接实施**：实施 VPN 和专线连接
+- **安全配置**：配置网络安全设置
+- **性能优化**：优化网络性能
+- **故障排除**：诊断连接问题
+- **成本优化**：优化连接成本
+- **高可用性**：实施冗余和故障切换
+- **监控设置**：配置连接的监控和警报
+
+不要将此技能用于：
+
+- **纯云网络**：使用云网络技能替代
+- **纯本地网络**：使用网络工程技能
+- **SD-WAN 解决方案**：使用 SD-WAN 专用技能
+- **负载均衡配置**：使用负载均衡技能

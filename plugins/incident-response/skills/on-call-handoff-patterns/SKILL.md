@@ -1,482 +1,481 @@
 ---
 name: on-call-handoff-patterns
-description: Master on-call shift handoffs with context transfer, escalation procedures, and documentation. Use when transitioning on-call responsibilities, documenting shift summaries, or improving on-call processes.
+description: 掌握值班轮班交接，包括上下文传递、升级程序和文档记录。在转移值班责任、记录轮班摘要或改进值班流程时使用。
 ---
 
-# On-Call Handoff Patterns
+# 值班交接模式
 
-Effective patterns for on-call shift transitions, ensuring continuity, context transfer, and reliable incident response across shifts.
+值班轮班过渡的有效模式，确保跨班次的连续性、上下文传递和可靠的事件响应。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Transitioning on-call responsibilities
-- Writing shift handoff summaries
-- Documenting ongoing investigations
-- Establishing on-call rotation procedures
-- Improving handoff quality
-- Onboarding new on-call engineers
+- 转移值班责任
+- 编写轮班交接摘要
+- 记录正在进行的调查
+- 建立值班轮换程序
+- 改进交接质量
+- 新值班工程师入职培训
 
-## Core Concepts
+## 核心概念
 
-### 1. Handoff Components
+### 1. 交接组件
 
-| Component                  | Purpose                 |
+| 组件 | 目的 |
 | -------------------------- | ----------------------- |
-| **Active Incidents**       | What's currently broken |
-| **Ongoing Investigations** | Issues being debugged   |
-| **Recent Changes**         | Deployments, configs    |
-| **Known Issues**           | Workarounds in place    |
-| **Upcoming Events**        | Maintenance, releases   |
+| **活跃事件** | 当前有什么问题 |
+| **正在进行的调查** | 正在调试的问题 |
+| **最近的更改** | 部署、配置 |
+| **已知问题** | 已采取的变通方法 |
+| **即将到来的事件** | 维护、发布 |
 
-### 2. Handoff Timing
+### 2. 交接时机
 
 ```
-Recommended: 30 min overlap between shifts
+推荐：班次之间 30 分钟重叠
 
-Outgoing:
-├── 15 min: Write handoff document
-└── 15 min: Sync call with incoming
+交接班：
+├── 15 分钟：编写交接文档
+└── 15 分钟：与接班人同步通话
 
-Incoming:
-├── 15 min: Review handoff document
-├── 15 min: Sync call with outgoing
-└── 5 min: Verify alerting setup
+接班人：
+├── 15 分钟：审查交接文档
+├── 15 分钟：与交班人同步通话
+└── 5 分钟：验证警报设置
 ```
 
-## Templates
+## 模板
 
-### Template 1: Shift Handoff Document
+### 模板 1：轮班交接文档
 
 ````markdown
-# On-Call Handoff: Platform Team
+# 值班交接：平台团队
 
-**Outgoing**: @alice (2024-01-15 to 2024-01-22)
-**Incoming**: @bob (2024-01-22 to 2024-01-29)
-**Handoff Time**: 2024-01-22 09:00 UTC
-
----
-
-## 🔴 Active Incidents
-
-### None currently active
-
-No active incidents at handoff time.
+**交班人**：@alice（2024-01-15 至 2024-01-22）
+**接班人**：@bob（2024-01-22 至 2024-01-29）
+**交接时间**：2024-01-22 09:00 UTC
 
 ---
 
-## 🟡 Ongoing Investigations
+## 🔴 活跃事件
 
-### 1. Intermittent API Timeouts (ENG-1234)
+### 目前无活跃事件
 
-**Status**: Investigating
-**Started**: 2024-01-20
-**Impact**: ~0.1% of requests timing out
-
-**Context**:
-
-- Timeouts correlate with database backup window (02:00-03:00 UTC)
-- Suspect backup process causing lock contention
-- Added extra logging in PR #567 (deployed 01/21)
-
-**Next Steps**:
-
-- [ ] Review new logs after tonight's backup
-- [ ] Consider moving backup window if confirmed
-
-**Resources**:
-
-- Dashboard: [API Latency](https://grafana/d/api-latency)
-- Thread: #platform-eng (01/20, 14:32)
+交接时无活跃事件。
 
 ---
 
-### 2. Memory Growth in Auth Service (ENG-1235)
+## 🟡 正在进行的调查
 
-**Status**: Monitoring
-**Started**: 2024-01-18
-**Impact**: None yet (proactive)
+### 1. 间歇性 API 超时（ENG-1234）
 
-**Context**:
+**状态**：调查中
+**开始时间**：2024-01-20
+**影响**：约 0.1% 的请求超时
 
-- Memory usage growing ~5% per day
-- No memory leak found in profiling
-- Suspect connection pool not releasing properly
+**上下文**：
 
-**Next Steps**:
+- 超时与数据库备份窗口相关（02:00-03:00 UTC）
+- 怀疑备份进程导致锁争用
+- 在 PR #567 中添加了额外日志（于 01/21 部署）
 
-- [ ] Review heap dump from 01/21
-- [ ] Consider restart if usage > 80%
+**下一步**：
 
-**Resources**:
+- [ ] 今晚备份后审查新日志
+- [ ] 如确认，考虑移动备份窗口
 
-- Dashboard: [Auth Service Memory](https://grafana/d/auth-memory)
-- Analysis doc: [Memory Investigation](https://docs/eng-1235)
+**资源**：
 
----
-
-## 🟢 Resolved This Shift
-
-### Payment Service Outage (2024-01-19)
-
-- **Duration**: 23 minutes
-- **Root Cause**: Database connection exhaustion
-- **Resolution**: Rolled back v2.3.4, increased pool size
-- **Postmortem**: [POSTMORTEM-89](https://docs/postmortem-89)
-- **Follow-up tickets**: ENG-1230, ENG-1231
+- 仪表板：[API 延迟](https://grafana/d/api-latency)
+- 线程：#platform-eng（01/20，14:32）
 
 ---
 
-## 📋 Recent Changes
+### 2. 认证服务内存增长（ENG-1235）
 
-### Deployments
+**状态**：监控中
+**开始时间**：2024-01-18
+**影响**：暂无（主动发现）
 
-| Service      | Version | Time        | Notes                      |
+**上下文**：
+
+- 内存使用每天增长约 5%
+- 性能分析中未发现内存泄漏
+- 怀疑连接池未正确释放
+
+**下一步**：
+
+- [ ] 审查来自 01/21 的堆转储
+- [ ] 如果使用率 > 80%，考虑重启
+
+**资源**：
+
+- 仪表板：[认证服务内存](https://grafana/d/auth-memory)
+- 分析文档：[内存调查](https://docs/eng-1235)
+
+---
+
+## 🟢 本班次已解决
+
+### 支付服务中断（2024-01-19）
+
+- **持续时间**：23 分钟
+- **根本原因**：数据库连接耗尽
+- **解决方案**：回滚 v2.3.4，增加池大小
+- **事后分析**：[POSTMORTEM-89](https://docs/postmortem-89)
+- **后续工单**：ENG-1230、ENG-1231
+
+---
+
+## 📋 最近的更改
+
+### 部署
+
+| 服务 | 版本 | 时间 | 备注 |
 | ------------ | ------- | ----------- | -------------------------- |
-| api-gateway  | v3.2.1  | 01/21 14:00 | Bug fix for header parsing |
-| user-service | v2.8.0  | 01/20 10:00 | New profile features       |
-| auth-service | v4.1.2  | 01/19 16:00 | Security patch             |
+| api-gateway | v3.2.1 | 01/21 14:00 | 标头解析错误修复 |
+| user-service | v2.8.0 | 01/20 10:00 | 新的个人资料功能 |
+| auth-service | v4.1.2 | 01/19 16:00 | 安全补丁 |
 
-### Configuration Changes
+### 配置更改
 
-- 01/21: Increased API rate limit from 1000 to 1500 RPS
-- 01/20: Updated database connection pool max from 50 to 75
+- 01/21：将 API 速率限制从 1000 增加到 1500 RPS
+- 01/20：将数据库连接池最大值从 50 更新到 75
 
-### Infrastructure
+### 基础设施
 
-- 01/20: Added 2 nodes to Kubernetes cluster
-- 01/19: Upgraded Redis from 6.2 to 7.0
-
----
-
-## ⚠️ Known Issues & Workarounds
-
-### 1. Slow Dashboard Loading
-
-**Issue**: Grafana dashboards slow on Monday mornings
-**Workaround**: Wait 5 min after 08:00 UTC for cache warm-up
-**Ticket**: OPS-456 (P3)
-
-### 2. Flaky Integration Test
-
-**Issue**: `test_payment_flow` fails intermittently in CI
-**Workaround**: Re-run failed job (usually passes on retry)
-**Ticket**: ENG-1200 (P2)
+- 01/20：向 Kubernetes 集群添加 2 个节点
+- 01/19：将 Redis 从 6.2 升级到 7.0
 
 ---
 
-## 📅 Upcoming Events
+## ⚠️ 已知问题和变通方法
 
-| Date        | Event                | Impact              | Contact       |
+### 1. 仪表板加载缓慢
+
+**问题**：Grafana 仪表板在周一早晨缓慢
+**变通方法**：在 08:00 UTC 后等待 5 分钟，让缓存预热
+**工单**：OPS-456（P3）
+
+### 2. 不稳定的集成测试
+
+**问题**：`test_payment_flow` 在 CI 中间歇性失败
+**变通方法**：重新运行失败的作业（通常在重试时通过）
+**工单**：ENG-1200（P2）
+
+---
+
+## 📅 即将到来的事件
+
+| 日期 | 事件 | 影响 | 联系人 |
 | ----------- | -------------------- | ------------------- | ------------- |
-| 01/23 02:00 | Database maintenance | 5 min read-only     | @dba-team     |
-| 01/24 14:00 | Major release v5.0   | Monitor closely     | @release-team |
-| 01/25       | Marketing campaign   | 2x traffic expected | @platform     |
+| 01/23 02:00 | 数据库维护 | 5 分钟只读 | @dba-team |
+| 01/24 14:00 | 主要版本 v5.0 | 密切监控 | @release-team |
+| 01/25 | 营销活动 | 预期流量 2 倍 | @platform |
 
 ---
 
-## 📞 Escalation Reminders
+## 📞 升级提醒
 
-| Issue Type      | First Escalation     | Second Escalation |
+| 问题类型 | 首次升级 | 二次升级 |
 | --------------- | -------------------- | ----------------- |
-| Payment issues  | @payments-oncall     | @payments-manager |
-| Auth issues     | @auth-oncall         | @security-team    |
-| Database issues | @dba-team            | @infra-manager    |
-| Unknown/severe  | @engineering-manager | @vp-engineering   |
+| 支付问题 | @payments-oncall | @payments-manager |
+| 认证问题 | @auth-oncall | @security-team |
+| 数据库问题 | @dba-team | @infra-manager |
+| 未知/严重 | @engineering-manager | @vp-engineering |
 
 ---
 
-## 🔧 Quick Reference
+## 🔧 快速参考
 
-### Common Commands
+### 常用命令
 
 ```bash
-# Check service health
+# 检查服务健康状况
 kubectl get pods -A | grep -v Running
 
-# Recent deployments
+# 最近的部署
 kubectl get events --sort-by='.lastTimestamp' | tail -20
 
-# Database connections
+# 数据库连接
 psql -c "SELECT count(*) FROM pg_stat_activity;"
 
-# Clear cache (emergency only)
+# 清除缓存（仅紧急情况）
 redis-cli FLUSHDB
-```
 ````
 
-### Important Links
+### 重要链接
 
-- [Runbooks](https://wiki/runbooks)
-- [Service Catalog](https://wiki/services)
-- [Incident Slack](https://slack.com/incidents)
+- [运行手册](https://wiki/runbooks)
+- [服务目录](https://wiki/services)
+- [事件 Slack](https://slack.com/incidents)
 - [PagerDuty](https://pagerduty.com/schedules)
 
 ---
 
-## Handoff Checklist
+## 交接清单
 
-### Outgoing Engineer
+### 交班工程师
 
-- [x] Document active incidents
-- [x] Document ongoing investigations
-- [x] List recent changes
-- [x] Note known issues
-- [x] Add upcoming events
-- [x] Sync with incoming engineer
+- [x] 记录活跃事件
+- [x] 记录正在进行的调查
+- [x] 列出最近的更改
+- [x] 注明已知问题
+- [x] 添加即将到来的事件
+- [x] 与接班工程师同步
 
-### Incoming Engineer
+### 接班工程师
 
-- [ ] Read this document
-- [ ] Join sync call
-- [ ] Verify PagerDuty is routing to you
-- [ ] Verify Slack notifications working
-- [ ] Check VPN/access working
-- [ ] Review critical dashboards
+- [ ] 阅读本文档
+- [ ] 加入同步通话
+- [ ] 验证 PagerDuty 路由到您
+- [ ] 验证 Slack 通知正常工作
+- [ ] 检查 VPN/访问权限
+- [ ] 审查关键仪表板
 
 ````
 
-### Template 2: Quick Handoff (Async)
+### 模板 2：快速交接（异步）
 
 ```markdown
-# Quick Handoff: @alice → @bob
+# 快速交接：@alice → @bob
 
-## TL;DR
-- No active incidents
-- 1 investigation ongoing (API timeouts, see ENG-1234)
-- Major release tomorrow (01/24) - be ready for issues
+## 简介
+- 无活跃事件
+- 1 项调查进行中（API 超时，见 ENG-1234）
+- 明天（01/24）主要版本发布 - 准备好应对问题
 
-## Watch List
-1. API latency around 02:00-03:00 UTC (backup window)
-2. Auth service memory (restart if > 80%)
+## 关注列表
+1. 02:00-03:00 UTC 左右的 API 延迟（备份窗口）
+2. 认证服务内存（如果 > 80% 则重启）
 
-## Recent
-- Deployed api-gateway v3.2.1 yesterday (stable)
-- Increased rate limits to 1500 RPS
+## 最近情况
+- 昨天部署了 api-gateway v3.2.1（稳定）
+- 将速率限制增加到 1500 RPS
 
-## Coming Up
-- 01/23 02:00 - DB maintenance (5 min read-only)
-- 01/24 14:00 - v5.0 release
+## 即将发生
+- 01/23 02:00 - 数据库维护（5 分钟只读）
+- 01/24 14:00 - v5.0 发布
 
-## Questions?
-I'll be available on Slack until 17:00 today.
+## 有问题吗？
+今天 17:00 之前我可以在 Slack 上联系。
 ````
 
-### Template 3: Incident Handoff (Mid-Incident)
+### 模板 3：事件交接（事件进行中）
 
 ```markdown
-# INCIDENT HANDOFF: Payment Service Degradation
+# 事件交接：支付服务降级
 
-**Incident Start**: 2024-01-22 08:15 UTC
-**Current Status**: Mitigating
-**Severity**: SEV2
+**事件开始**：2024-01-22 08:15 UTC
+**当前状态**：缓解中
+**严重程度**：SEV2
 
 ---
 
-## Current State
+## 当前状态
 
-- Error rate: 15% (down from 40%)
-- Mitigation in progress: scaling up pods
-- ETA to resolution: ~30 min
+- 错误率：15%（从 40% 下降）
+- 正在进行的缓解：扩容 Pod
+- 预计解决时间：约 30 分钟
 
-## What We Know
+## 我们已知的
 
-1. Root cause: Memory pressure on payment-service pods
-2. Triggered by: Unusual traffic spike (3x normal)
-3. Contributing: Inefficient query in checkout flow
+1. 根本原因：payment-service Pod 上的内存压力
+2. 触发原因：异常流量激增（正常的 3 倍）
+3. 促成因素：结账流程中的低效查询
 
-## What We've Done
+## 我们已采取的操作
 
-- Scaled payment-service from 5 → 15 pods
-- Enabled rate limiting on checkout endpoint
-- Disabled non-critical features
+- 将 payment-service 从 5 个 Pod 扩容到 15 个
+- 在结账端点上启用速率限制
+- 禁用非关键功能
 
-## What Needs to Happen
+## 需要执行的操作
 
-1. Monitor error rate - should reach <1% in ~15 min
-2. If not improving, escalate to @payments-manager
-3. Once stable, begin root cause investigation
+1. 监控错误率 - 应在约 15 分钟内达到 <1%
+2. 如果未改善，升级到 @payments-manager
+3. 稳定后，开始根因调查
 
-## Key People
+## 关键人员
 
-- Incident Commander: @alice (handing off)
-- Comms Lead: @charlie
-- Technical Lead: @bob (incoming)
+- 事件指挥：@alice（交接中）
+- 沟通负责人：@charlie
+- 技术负责人：@bob（接班人）
 
-## Communication
+## 沟通
 
-- Status page: Updated at 08:45
-- Customer support: Notified
-- Exec team: Aware
+- 状态页面：于 08:45 更新
+- 客户支持：已通知
+- 管理团队：已知晓
 
-## Resources
+## 资源
 
-- Incident channel: #inc-20240122-payment
-- Dashboard: [Payment Service](https://grafana/d/payments)
-- Runbook: [Payment Degradation](https://wiki/runbooks/payments)
+- 事件频道：#inc-20240122-payment
+- 仪表板：[支付服务](https://grafana/d/payments)
+- 运行手册：[支付降级](https://wiki/runbooks/payments)
 
 ---
 
-**Incoming on-call (@bob) - Please confirm you have:**
+**接班值班（@bob）- 请确认您已：**
 
-- [ ] Joined #inc-20240122-payment
-- [ ] Access to dashboards
-- [ ] Understand current state
-- [ ] Know escalation path
+- [ ] 加入 #inc-20240122-payment
+- [ ] 访问仪表板
+- [ ] 了解当前状态
+- [ ] 知道升级路径
 ```
 
-## Handoff Sync Meeting
+## 交接同步会议
 
-### Agenda (15 minutes)
+### 议程（15 分钟）
 
 ```markdown
-## Handoff Sync: @alice → @bob
+## 交接同步：@alice → @bob
 
-1. **Active Issues** (5 min)
-   - Walk through any ongoing incidents
-   - Discuss investigation status
-   - Transfer context and theories
+1. **活跃问题**（5 分钟）
+   - 查看任何正在进行的事件
+   - 讨论调查状态
+   - 传递上下文和理论
 
-2. **Recent Changes** (3 min)
-   - Deployments to watch
-   - Config changes
-   - Known regressions
+2. **最近的更改**（3 分钟）
+   - 需要关注的部署
+   - 配置更改
+   - 已知的回归
 
-3. **Upcoming Events** (3 min)
-   - Maintenance windows
-   - Expected traffic changes
-   - Releases planned
+3. **即将到来的事件**（3 分钟）
+   - 维护窗口
+   - 预期的流量变化
+   - 计划的发布
 
-4. **Questions** (4 min)
-   - Clarify anything unclear
-   - Confirm access and alerting
-   - Exchange contact info
+4. **问题**（4 分钟）
+   - 澄清任何不清楚的问题
+   - 确认访问和警报
+   - 交换联系信息
 ```
 
-## On-Call Best Practices
+## 值班最佳实践
 
-### Before Your Shift
+### 轮班前
 
 ```markdown
-## Pre-Shift Checklist
+## 轮班前清单
 
-### Access Verification
+### 访问验证
 
-- [ ] VPN working
-- [ ] kubectl access to all clusters
-- [ ] Database read access
-- [ ] Log aggregator access (Splunk/Datadog)
-- [ ] PagerDuty app installed and logged in
+- [ ] VPN 正常工作
+- [ ] 对所有集群的 kubectl 访问权限
+- [ ] 数据库读取权限
+- [ ] 日志聚合器访问权限（Splunk/DataDog）
+- [ ] PagerDuty 应用程序已安装并登录
 
-### Alerting Setup
+### 警报设置
 
-- [ ] PagerDuty schedule shows you as primary
-- [ ] Phone notifications enabled
-- [ ] Slack notifications for incident channels
-- [ ] Test alert received and acknowledged
+- [ ] PagerDuty 日程表显示您为主要负责人
+- [ ] 电话通知已启用
+- [ ] 事件频道的 Slack 通知
+- [ ] 收到并确认测试警报
 
-### Knowledge Refresh
+### 知识更新
 
-- [ ] Review recent incidents (past 2 weeks)
-- [ ] Check service changelog
-- [ ] Skim critical runbooks
-- [ ] Know escalation contacts
+- [ ] 审查最近的事件（过去 2 周）
+- [ ] 检查服务变更日志
+- [ ] 浏览关键运行手册
+- [ ] 了解升级联系人
 
-### Environment Ready
+### 环境准备
 
-- [ ] Laptop charged and accessible
-- [ ] Phone charged
-- [ ] Quiet space available for calls
-- [ ] Secondary contact identified (if traveling)
+- [ ] 笔记本电脑已充电且可访问
+- [ ] 电话已充电
+- [ ] 有安静的空间进行通话
+- [ ] 已确定备用联系人（如旅行中）
 ```
 
-### During Your Shift
+### 轮班期间
 
 ```markdown
-## Daily On-Call Routine
+## 每日值班例行工作
 
-### Morning (start of day)
+### 早晨（一天开始）
 
-- [ ] Check overnight alerts
-- [ ] Review dashboards for anomalies
-- [ ] Check for any P0/P1 tickets created
-- [ ] Skim incident channels for context
+- [ ] 检查夜间警报
+- [ ] 审查仪表板异常
+- [ ] 检查是否有创建的 P0/P1 工单
+- [ ] 浏览事件频道以获取上下文
 
-### Throughout Day
+### 全天
 
-- [ ] Respond to alerts within SLA
-- [ ] Document investigation progress
-- [ ] Update team on significant issues
-- [ ] Triage incoming pages
+- [ ] 在 SLA 内响应警报
+- [ ] 记录调查进度
+- [ ] 向团队更新重大问题
+- [ ] 对传入的页面进行分类
 
-### End of Day
+### 一天结束
 
-- [ ] Hand off any active issues
-- [ ] Update investigation docs
-- [ ] Note anything for next shift
+- [ ] 交接任何活跃问题
+- [ ] 更新调查文档
+- [ ] 为下一班次记录任何事项
 ```
 
-### After Your Shift
+### 轮班后
 
 ```markdown
-## Post-Shift Checklist
+## 轮班后清单
 
-- [ ] Complete handoff document
-- [ ] Sync with incoming on-call
-- [ ] Verify PagerDuty routing changed
-- [ ] Close/update investigation tickets
-- [ ] File postmortems for any incidents
-- [ ] Take time off if shift was stressful
+- [ ] 完成交接文档
+- [ ] 与接班值班同步
+- [ ] 验证 PagerDuty 路由已更改
+- [ ] 关闭/更新调查工单
+- [ ] 为任何事件提交事后分析
+- [ ] 如果轮班压力大，请休息
 ```
 
-## Escalation Guidelines
+## 升级指南
 
-### When to Escalate
+### 何时升级
 
 ```markdown
-## Escalation Triggers
+## 升级触发条件
 
-### Immediate Escalation
+### 立即升级
 
-- SEV1 incident declared
-- Data breach suspected
-- Unable to diagnose within 30 min
-- Customer or legal escalation received
+- 宣布 SEV1 事件
+- 疑似数据泄露
+- 30 分钟内无法诊断
+- 收到客户或法务升级
 
-### Consider Escalation
+### 考虑升级
 
-- Issue spans multiple teams
-- Requires expertise you don't have
-- Business impact exceeds threshold
-- You're uncertain about next steps
+- 问题跨越多个团队
+- 需要您不具备的专业知识
+- 业务影响超过阈值
+- 您不确定下一步该怎么做
 
-### How to Escalate
+### 如何升级
 
-1. Page the appropriate escalation path
-2. Provide brief context in Slack
-3. Stay engaged until escalation acknowledges
-4. Hand off cleanly, don't just disappear
+1. 寻呼相应的升级路径
+2. 在 Slack 中提供简要上下文
+3. 保持参与，直到升级确认
+4. 干净地交接，不要直接消失
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做的
 
-- **Document everything** - Future you will thank you
-- **Escalate early** - Better safe than sorry
-- **Take breaks** - Alert fatigue is real
-- **Keep handoffs synchronous** - Async loses context
-- **Test your setup** - Before incidents, not during
+- **记录一切** - 未来的你会感谢你
+- **尽早升级** - 小心驶得万年船
+- **休息一下** - 警报疲劳是真实存在的
+- **保持交接同步** - 异步会丢失上下文
+- **测试您的设置** - 在事件之前，而不是期间
 
-### Don'ts
+### 不应该做的
 
-- **Don't skip handoffs** - Context loss causes incidents
-- **Don't hero** - Escalate when needed
-- **Don't ignore alerts** - Even if they seem minor
-- **Don't work sick** - Swap shifts instead
-- **Don't disappear** - Stay reachable during shift
+- **不要跳过交接** - 上下文丢失会导致事件
+- **不要逞英雄** - 需要时升级
+- **不要忽视警报** - 即使它们看起来很轻微
+- **不要带病工作** - 改为交换班次
+- **不要消失** - 轮班期间保持可联系
 
-## Resources
+## 资源
 
-- [Google SRE - Being On-Call](https://sre.google/sre-book/being-on-call/)
-- [PagerDuty On-Call Guide](https://www.pagerduty.com/resources/learn/on-call-management/)
-- [Increment On-Call Issue](https://increment.com/on-call/)
+- [Google SRE - 值班](https://sre.google/sre-book/being-on-call/)
+- [PagerDuty 值班指南](https://www.pagerduty.com/resources/learn/on-call-management/)
+- [Increment 值班期刊](https://increment.com/on-call/)

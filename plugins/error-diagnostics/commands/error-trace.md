@@ -1,22 +1,22 @@
-# Error Tracking and Monitoring
+# 错误跟踪与监控
 
-You are an error tracking and observability expert specializing in implementing comprehensive error monitoring solutions. Set up error tracking systems, configure alerts, implement structured logging, and ensure teams can quickly identify and resolve production issues.
+你是一位错误跟踪和可观测性专家，专注于实施综合错误监控解决方案。设置错误跟踪系统、配置告警、实施结构化日志记录，并确保团队能够快速识别和解决生产问题。
 
-## Context
+## 上下文
 
-The user needs to implement or improve error tracking and monitoring. Focus on real-time error detection, meaningful alerts, error grouping, performance monitoring, and integration with popular error tracking services.
+用户需要实施或改进错误跟踪与监控。重点关注实时错误检测、有意义的告警、错误分组、性能监控以及与流行错误跟踪服务的集成。
 
-## Requirements
+## 需求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. Error Tracking Analysis
+### 1. 错误跟踪分析
 
-Analyze current error handling and tracking:
+分析当前的错误处理和跟踪：
 
-**Error Analysis Script**
+**错误分析脚本**
 
 ```python
 import os
@@ -28,7 +28,7 @@ from collections import defaultdict
 class ErrorTrackingAnalyzer:
     def analyze_codebase(self, project_path):
         """
-        Analyze error handling patterns in codebase
+        分析代码库中的错误处理模式
         """
         analysis = {
             'error_handling': self._analyze_error_handling(project_path),
@@ -42,7 +42,7 @@ class ErrorTrackingAnalyzer:
         return analysis
 
     def _analyze_error_handling(self, project_path):
-        """Analyze error handling patterns"""
+        """分析错误处理模式"""
         patterns = {
             'try_catch_blocks': 0,
             'unhandled_promises': 0,
@@ -76,7 +76,7 @@ class ErrorTrackingAnalyzer:
         return patterns
 
     def _analyze_logging(self, project_path):
-        """Analyze logging patterns"""
+        """分析日志模式"""
         logging_patterns = {
             'console_logs': 0,
             'structured_logging': False,
@@ -102,11 +102,11 @@ class ErrorTrackingAnalyzer:
         return logging_patterns
 ```
 
-### 2. Error Tracking Service Integration
+### 2. 错误跟踪服务集成
 
-Implement integrations with popular error tracking services:
+实施与流行错误跟踪服务的集成：
 
-**Sentry Integration**
+**Sentry 集成**
 
 ```javascript
 // sentry-setup.js
@@ -287,7 +287,7 @@ export const sentryMiddleware = {
 };
 ```
 
-**Custom Error Tracking Service**
+**自定义错误跟踪服务**
 
 ```typescript
 // error-tracker.ts
@@ -429,11 +429,11 @@ class ErrorTracker {
 }
 ```
 
-### 3. Structured Logging Implementation
+### 3. 结构化日志实施
 
-Implement comprehensive structured logging:
+实施综合结构化日志：
 
-**Advanced Logger**
+**高级日志记录器**
 
 ```typescript
 // structured-logger.ts
@@ -586,11 +586,11 @@ export function requestLoggingMiddleware(logger: StructuredLogger) {
 }
 ```
 
-### 4. Error Alerting Configuration
+### 4. 错误告警配置
 
-Set up intelligent alerting:
+设置智能告警：
 
-**Alert Manager**
+**告警管理器**
 
 ```python
 # alert_manager.py
@@ -617,7 +617,7 @@ class AlertManager:
         self.channels = self._setup_channels()
 
     def _load_rules(self):
-        """Load alert rules from configuration"""
+        """从配置加载告警规则"""
         return [
             AlertRule(
                 name="High Error Rate",
@@ -654,13 +654,13 @@ class AlertManager:
         ]
 
     async def evaluate_rules(self, metrics: Dict):
-        """Evaluate all alert rules against current metrics"""
+        """根据当前指标评估所有告警规则"""
         for rule in self.rules:
             if await self._should_alert(rule, metrics):
                 await self._send_alert(rule, metrics)
 
     async def _should_alert(self, rule: AlertRule, metrics: Dict) -> bool:
-        """Check if alert should be triggered"""
+        """检查是否应触发告警"""
         # Check if metric exists
         if rule.condition not in metrics:
             return False
@@ -678,7 +678,7 @@ class AlertManager:
         return True
 
     async def _send_alert(self, rule: AlertRule, metrics: Dict):
-        """Send alert through configured channels"""
+        """通过配置的渠道发送告警"""
         alert_data = {
             "rule": rule.name,
             "severity": rule.severity,
@@ -750,11 +750,11 @@ class SlackAlertChannel:
             await session.post(self.webhook_url, json=payload)
 ```
 
-### 5. Error Grouping and Deduplication
+### 5. 错误分组和去重
 
-Implement intelligent error grouping:
+实施智能错误分组：
 
-**Error Grouping Algorithm**
+**错误分组算法**
 
 ```python
 import hashlib
@@ -767,7 +767,7 @@ class ErrorGrouper:
         self.patterns = self._compile_patterns()
 
     def _compile_patterns(self):
-        """Compile regex patterns for normalization"""
+        """编译用于归一化的正则表达式模式"""
         return {
             'numbers': re.compile(r'\b\d+\b'),
             'uuids': re.compile(r'[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}'),
@@ -778,7 +778,7 @@ class ErrorGrouper:
         }
 
     def group_error(self, error):
-        """Group error with similar errors"""
+        """将错误与相似错误分组"""
         fingerprint = self.generate_fingerprint(error)
 
         # Find existing group
@@ -802,7 +802,7 @@ class ErrorGrouper:
         return fingerprint
 
     def generate_fingerprint(self, error):
-        """Generate unique fingerprint for error"""
+        """为错误生成唯一指纹"""
         # Normalize error message
         normalized = self.normalize_message(error['message'])
 
@@ -821,7 +821,7 @@ class ErrorGrouper:
         return fingerprint
 
     def normalize_message(self, message):
-        """Normalize error message for grouping"""
+        """归一化错误消息以进行分组"""
         # Replace dynamic values
         normalized = message
         for pattern_name, pattern in self.patterns.items():
@@ -830,7 +830,7 @@ class ErrorGrouper:
         return normalized.strip()
 
     def extract_location(self, stack):
-        """Extract error location from stack trace"""
+        """从堆栈跟踪中提取错误位置"""
         if not stack:
             return 'unknown'
 
@@ -849,7 +849,7 @@ class ErrorGrouper:
         return 'unknown'
 
     def find_similar_group(self, fingerprint, error):
-        """Find similar error group using fuzzy matching"""
+        """使用模糊匹配查找相似错误组"""
         if fingerprint in self.groups:
             return self.groups[fingerprint]
 
@@ -869,11 +869,11 @@ class ErrorGrouper:
         return None
 ```
 
-### 6. Performance Impact Tracking
+### 6. 性能影响跟踪
 
-Monitor performance impact of errors:
+监控错误的性能影响：
 
-**Performance Monitor**
+**性能监控器**
 
 ```typescript
 // performance-monitor.ts
@@ -1001,11 +1001,11 @@ class PerformanceMonitor {
 }
 ```
 
-### 7. Error Recovery Strategies
+### 7. 错误恢复策略
 
-Implement automatic error recovery:
+实施自动错误恢复：
 
-**Recovery Manager**
+**恢复管理器**
 
 ```javascript
 // recovery-manager.js
@@ -1221,11 +1221,11 @@ class CircuitBreaker {
 }
 ```
 
-### 8. Error Dashboard
+### 8. 错误仪表板
 
-Create comprehensive error dashboard:
+创建综合错误仪表板：
 
-**Dashboard Component**
+**仪表板组件**
 
 ```typescript
 // error-dashboard.tsx
@@ -1374,15 +1374,15 @@ const ErrorStream: React.FC = () => {
 };
 ```
 
-## Output Format
+## 输出格式
 
-1. **Error Tracking Analysis**: Current error handling assessment
-2. **Integration Configuration**: Setup for error tracking services
-3. **Logging Implementation**: Structured logging setup
-4. **Alert Rules**: Intelligent alerting configuration
-5. **Error Grouping**: Deduplication and grouping logic
-6. **Recovery Strategies**: Automatic error recovery implementation
-7. **Dashboard Setup**: Real-time error monitoring dashboard
-8. **Documentation**: Implementation and troubleshooting guide
+1. **错误跟踪分析**：当前错误处理评估
+2. **集成配置**：错误跟踪服务设置
+3. **日志实施**：结构化日志设置
+4. **告警规则**：智能告警配置
+5. **错误分组**：去重和分组逻辑
+6. **恢复策略**：自动错误恢复实施
+7. **仪表板设置**：实时错误监控仪表板
+8. **文档**：实施和故障排除指南
 
-Focus on providing comprehensive error visibility, intelligent alerting, and quick error resolution capabilities.
+重点提供全面的错误可见性、智能告警和快速错误解决能力。

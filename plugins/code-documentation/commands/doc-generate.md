@@ -1,76 +1,76 @@
-# Automated Documentation Generation
+# 自动化文档生成
 
-You are a documentation expert specializing in creating comprehensive, maintainable documentation from code. Generate API docs, architecture diagrams, user guides, and technical references using AI-powered analysis and industry best practices.
+你是一位文档专家,专精于从代码创建全面、可维护的文档。使用 AI 驱动的分析和行业最佳实践来生成 API 文档、架构图、用户指南和技术参考。
 
-## Context
+## 上下文
 
-The user needs automated documentation generation that extracts information from code, creates clear explanations, and maintains consistency across documentation types. Focus on creating living documentation that stays synchronized with code.
+用户需要自动化文档生成,从代码中提取信息、创建清晰的解释,并在各种文档类型之间保持一致性。专注于创建与代码保持同步的活文档。
 
-## Requirements
+## 要求
 
 $ARGUMENTS
 
-## How to Use This Tool
+## 如何使用此工具
 
-This tool provides both **concise instructions** (what to create) and **detailed reference examples** (how to create it). Structure:
+此工具同时提供**简洁指令**(创建什么)和**详细参考示例**(如何创建)。结构如下:
 
-- **Instructions**: High-level guidance and documentation types to generate
-- **Reference Examples**: Complete implementation patterns to adapt and use as templates
+- **指令**: 高级指导和要生成的文档类型
+- **参考示例**: 可调整和用作模板的完整实现模式
 
-## Instructions
+## 指令
 
-Generate comprehensive documentation by analyzing the codebase and creating the following artifacts:
+通过分析代码库并创建以下工件来生成全面的文档:
 
-### 1. **API Documentation**
+### 1. **API 文档**
 
-- Extract endpoint definitions, parameters, and responses from code
-- Generate OpenAPI/Swagger specifications
-- Create interactive API documentation (Swagger UI, Redoc)
-- Include authentication, rate limiting, and error handling details
+- 从代码中提取端点定义、参数和响应
+- 生成 OpenAPI/Swagger 规范
+- 创建交互式 API 文档(Swagger UI、Redoc)
+- 包括身份验证、速率限制和错误处理详细信息
 
-### 2. **Architecture Documentation**
+### 2. **架构文档**
 
-- Create system architecture diagrams (Mermaid, PlantUML)
-- Document component relationships and data flows
-- Explain service dependencies and communication patterns
-- Include scalability and reliability considerations
+- 创建系统架构图(Mermaid、PlantUML)
+- 记录组件关系和数据流
+- 解释服务依赖关系和通信模式
+- 包括可扩展性和可靠性考虑因素
 
-### 3. **Code Documentation**
+### 3. **代码文档**
 
-- Generate inline documentation and docstrings
-- Create README files with setup, usage, and contribution guidelines
-- Document configuration options and environment variables
-- Provide troubleshooting guides and code examples
+- 生成内联文档和文档字符串
+- 创建包含设置、使用和贡献指南的 README 文件
+- 记录配置选项和环境变量
+- 提供故障排除指南和代码示例
 
-### 4. **User Documentation**
+### 4. **用户文档**
 
-- Write step-by-step user guides
-- Create getting started tutorials
-- Document common workflows and use cases
-- Include accessibility and localization notes
+- 编写分步用户指南
+- 创建入门教程
+- 记录常见工作流程和用例
+- 包括可访问性和本地化说明
 
-### 5. **Documentation Automation**
+### 5. **文档自动化**
 
-- Configure CI/CD pipelines for automatic doc generation
-- Set up documentation linting and validation
-- Implement documentation coverage checks
-- Automate deployment to hosting platforms
+- 配置 CI/CD 管道以自动生成文档
+- 设置文档检查和验证
+- 实现文档覆盖率检查
+- 自动部署到托管平台
 
-### Quality Standards
+### 质量标准
 
-Ensure all generated documentation:
+确保所有生成的文档:
 
-- Is accurate and synchronized with current code
-- Uses consistent terminology and formatting
-- Includes practical examples and use cases
-- Is searchable and well-organized
-- Follows accessibility best practices
+- 准确并与当前代码同步
+- 使用一致的术语和格式
+- 包括实用的示例和用例
+- 可搜索且组织良好
+- 遵循可访问性最佳实践
 
-## Reference Examples
+## 参考示例
 
-### Example 1: Code Analysis for Documentation
+### 示例 1: 文档代码分析
 
-**API Documentation Extraction**
+**API 文档提取**
 
 ```python
 import ast
@@ -78,7 +78,7 @@ from typing import Dict, List
 
 class APIDocExtractor:
     def extract_endpoints(self, code_path):
-        """Extract API endpoints and their documentation"""
+        """提取 API 端点及其文档"""
         endpoints = []
 
         with open(code_path, 'r') as f:
@@ -100,7 +100,7 @@ class APIDocExtractor:
         return endpoints
 
     def _extract_parameters(self, func_node):
-        """Extract function parameters with types"""
+        """提取带类型的函数参数"""
         params = []
         for arg in func_node.args.args:
             param = {
@@ -112,11 +112,11 @@ class APIDocExtractor:
         return params
 ```
 
-**Schema Extraction**
+**Schema 提取**
 
 ```python
 def extract_pydantic_schemas(file_path):
-    """Extract Pydantic model definitions for API documentation"""
+    """提取 Pydantic 模型定义用于 API 文档"""
     schemas = []
 
     with open(file_path, 'r') as f:
@@ -143,9 +143,9 @@ def extract_pydantic_schemas(file_path):
     return schemas
 ```
 
-### Example 2: OpenAPI Specification Generation
+### 示例 2: OpenAPI 规范生成
 
-**OpenAPI Template**
+**OpenAPI 模板**
 
 ```yaml
 openapi: 3.0.0
@@ -155,12 +155,12 @@ info:
   description: |
     ${DESCRIPTION}
 
-    ## Authentication
+    ## 身份验证
     ${AUTH_DESCRIPTION}
 
 servers:
   - url: https://api.example.com/v1
-    description: Production server
+    description: 生产服务器
 
 security:
   - bearerAuth: []
@@ -168,10 +168,10 @@ security:
 paths:
   /users:
     get:
-      summary: List all users
+      summary: 列出所有用户
       operationId: listUsers
       tags:
-        - Users
+        - 用户
       parameters:
         - name: page
           in: query
@@ -186,7 +186,7 @@ paths:
             maximum: 100
       responses:
         "200":
-          description: Successful response
+          description: 成功响应
           content:
             application/json:
               schema:
@@ -222,32 +222,32 @@ components:
           format: date-time
 ```
 
-### Example 3: Architecture Diagrams
+### 示例 3: 架构图
 
-**System Architecture (Mermaid)**
+**系统架构(Mermaid)**
 
 ```mermaid
 graph TB
-    subgraph "Frontend"
+    subgraph "前端"
         UI[React UI]
-        Mobile[Mobile App]
+        Mobile[移动应用]
     end
 
-    subgraph "API Gateway"
+    subgraph "API 网关"
         Gateway[Kong/nginx]
-        Auth[Auth Service]
+        Auth[认证服务]
     end
 
-    subgraph "Microservices"
-        UserService[User Service]
-        OrderService[Order Service]
-        PaymentService[Payment Service]
+    subgraph "微服务"
+        UserService[用户服务]
+        OrderService[订单服务]
+        PaymentService[支付服务]
     end
 
-    subgraph "Data Layer"
+    subgraph "数据层"
         PostgresMain[(PostgreSQL)]
-        Redis[(Redis Cache)]
-        S3[S3 Storage]
+        Redis[(Redis 缓存)]
+        S3[S3 存储]
     end
 
     UI --> Gateway
@@ -261,29 +261,29 @@ graph TB
     OrderService --> PostgresMain
 ```
 
-**Component Documentation**
+**组件文档**
 
 ````markdown
-## User Service
+## 用户服务
 
-**Purpose**: Manages user accounts, authentication, and profiles
+**用途**: 管理用户账户、身份验证和个人资料
 
-**Technology Stack**:
+**技术栈**:
 
-- Language: Python 3.11
-- Framework: FastAPI
-- Database: PostgreSQL
-- Cache: Redis
-- Authentication: JWT
+- 语言: Python 3.11
+- 框架: FastAPI
+- 数据库: PostgreSQL
+- 缓存: Redis
+- 身份验证: JWT
 
-**API Endpoints**:
+**API 端点**:
 
-- `POST /users` - Create new user
-- `GET /users/{id}` - Get user details
-- `PUT /users/{id}` - Update user
-- `POST /auth/login` - User login
+- `POST /users` - 创建新用户
+- `GET /users/{id}` - 获取用户详细信息
+- `PUT /users/{id}` - 更新用户
+- `POST /auth/login` - 用户登录
 
-**Configuration**:
+**配置**:
 
 ```yaml
 user_service:
@@ -299,9 +299,9 @@ user_service:
 
 ````
 
-### Example 4: README Generation
+### 示例 4: README 生成
 
-**README Template**
+**README 模板**
 ```markdown
 # ${PROJECT_NAME}
 
@@ -309,25 +309,25 @@ ${BADGES}
 
 ${SHORT_DESCRIPTION}
 
-## Features
+## 功能
 
 ${FEATURES_LIST}
 
-## Installation
+## 安装
 
-### Prerequisites
+### 前置要求
 
 - Python 3.8+
 - PostgreSQL 12+
 - Redis 6+
 
-### Using pip
+### 使用 pip
 
 ```bash
 pip install ${PACKAGE_NAME}
 ````
 
-### From source
+### 从源码安装
 
 ```bash
 git clone https://github.com/${GITHUB_ORG}/${REPO_NAME}.git
@@ -335,72 +335,72 @@ cd ${REPO_NAME}
 pip install -e .
 ```
 
-## Quick Start
+## 快速开始
 
 ```python
 ${QUICK_START_CODE}
 ```
 
-## Configuration
+## 配置
 
-### Environment Variables
+### 环境变量
 
-| Variable     | Description                  | Default | Required |
-| ------------ | ---------------------------- | ------- | -------- |
-| DATABASE_URL | PostgreSQL connection string | -       | Yes      |
-| REDIS_URL    | Redis connection string      | -       | Yes      |
-| SECRET_KEY   | Application secret key       | -       | Yes      |
+| 变量名       | 描述                   | 默认值 | 必需   |
+| ------------ | ---------------------- | ------ | ------ |
+| DATABASE_URL | PostgreSQL 连接字符串  | -      | 是     |
+| REDIS_URL    | Redis 连接字符串       | -      | 是     |
+| SECRET_KEY   | 应用程序密钥           | -      | 是     |
 
-## Development
+## 开发
 
 ```bash
-# Clone and setup
+# 克隆并设置
 git clone https://github.com/${GITHUB_ORG}/${REPO_NAME}.git
 cd ${REPO_NAME}
 python -m venv venv
 source venv/bin/activate
 
-# Install dependencies
+# 安装依赖
 pip install -r requirements-dev.txt
 
-# Run tests
+# 运行测试
 pytest
 
-# Start development server
+# 启动开发服务器
 python manage.py runserver
 ```
 
-## Testing
+## 测试
 
 ```bash
-# Run all tests
+# 运行所有测试
 pytest
 
-# Run with coverage
+# 运行覆盖率测试
 pytest --cov=your_package
 ```
 
-## Contributing
+## 贡献
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. Fork 仓库
+2. 创建功能分支(`git checkout -b feature/amazing-feature`)
+3. 提交更改(`git commit -m 'Add amazing feature'`)
+4. 推送到分支(`git push origin feature/amazing-feature`)
+5. 打开 Pull Request
 
-## License
+## 许可证
 
-This project is licensed under the ${LICENSE} License - see the [LICENSE](LICENSE) file for details.
+本项目在 ${LICENSE} 许可证下发布 - 详见 [LICENSE](LICENSE) 文件
 
 ````
 
-### Example 5: Function Documentation Generator
+### 示例 5: 函数文档生成器
 
 ```python
 import inspect
 
 def generate_function_docs(func):
-    """Generate comprehensive documentation for a function"""
+    """为函数生成全面的文档"""
     sig = inspect.signature(func)
     params = []
     args_doc = []
@@ -412,7 +412,7 @@ def generate_function_docs(func):
         if param.default != param.empty:
             param_str += f" = {param.default}"
         params.append(param_str)
-        args_doc.append(f"{param_name}: Description of {param_name}")
+        args_doc.append(f"{param_name}: {param_name} 的描述")
 
     return_type = ""
     if sig.return_annotation != sig.empty:
@@ -421,15 +421,15 @@ def generate_function_docs(func):
     doc_template = f'''
 def {func.__name__}({", ".join(params)}){return_type}:
     """
-    Brief description of {func.__name__}
+    {func.__name__} 的简要描述
 
-    Args:
+    参数:
         {chr(10).join(f"        {arg}" for arg in args_doc)}
 
-    Returns:
-        Description of return value
+    返回:
+        返回值的描述
 
-    Examples:
+    示例:
         >>> {func.__name__}(example_input)
         expected_output
     """
@@ -437,67 +437,67 @@ def {func.__name__}({", ".join(params)}){return_type}:
     return doc_template
 ````
 
-### Example 6: User Guide Template
+### 示例 6: 用户指南模板
 
 ```markdown
-# User Guide
+# 用户指南
 
-## Getting Started
+## 入门指南
 
-### Creating Your First ${FEATURE}
+### 创建你的第一个 ${FEATURE}
 
-1. **Navigate to the Dashboard**
+1. **导航到仪表板**
 
-   Click on the ${FEATURE} tab in the main navigation menu.
+   点击主导航菜单中的 ${FEATURE} 选项卡。
 
-2. **Click "Create New"**
+2. **点击"新建"**
 
-   You'll find the "Create New" button in the top right corner.
+   你会在右上角找到"新建"按钮。
 
-3. **Fill in the Details**
-   - **Name**: Enter a descriptive name
-   - **Description**: Add optional details
-   - **Settings**: Configure as needed
+3. **填写详细信息**
+   - **名称**: 输入描述性名称
+   - **描述**: 添加可选详细信息
+   - **设置**: 根据需要配置
 
-4. **Save Your Changes**
+4. **保存更改**
 
-   Click "Save" to create your ${FEATURE}.
+   点击"保存"以创建你的 ${FEATURE}。
 
-### Common Tasks
+### 常见任务
 
-#### Editing ${FEATURE}
+#### 编辑 ${FEATURE}
 
-1. Find your ${FEATURE} in the list
-2. Click the "Edit" button
-3. Make your changes
-4. Click "Save"
+1. 在列表中找到你的 ${FEATURE}
+2. 点击"编辑"按钮
+3. 进行更改
+4. 点击"保存"
 
-#### Deleting ${FEATURE}
+#### 删除 ${FEATURE}
 
-> ⚠️ **Warning**: Deletion is permanent and cannot be undone.
+> ⚠️ **警告**: 删除操作是永久性的,无法撤销。
 
-1. Find your ${FEATURE} in the list
-2. Click the "Delete" button
-3. Confirm the deletion
+1. 在列表中找到你的 ${FEATURE}
+2. 点击"删除"按钮
+3. 确认删除
 
-### Troubleshooting
+### 故障排除
 
-| Error               | Meaning                 | Solution        |
-| ------------------- | ----------------------- | --------------- |
-| "Name required"     | The name field is empty | Enter a name    |
-| "Permission denied" | You don't have access   | Contact admin   |
-| "Server error"      | Technical issue         | Try again later |
+| 错误                | 含义                 | 解决方案       |
+| ------------------- | -------------------- | -------------- |
+| "Name required"     | 名称字段为空         | 输入名称       |
+| "Permission denied" | 你没有访问权限       | 联系管理员     |
+| "Server error"      | 技术问题             | 稍后重试       |
 ```
 
-### Example 7: Interactive API Playground
+### 示例 7: 交互式 API 演练场
 
-**Swagger UI Setup**
+**Swagger UI 设置**
 
 ```html
 <!DOCTYPE html>
 <html>
   <head>
-    <title>API Documentation</title>
+    <title>API 文档</title>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@latest/swagger-ui.css"
@@ -522,11 +522,11 @@ def {func.__name__}({", ".join(params)}){return_type}:
 </html>
 ```
 
-**Code Examples Generator**
+**代码示例生成器**
 
 ```python
 def generate_code_examples(endpoint):
-    """Generate code examples for API endpoints in multiple languages"""
+    """为多种语言的 API 端点生成代码示例"""
     examples = {}
 
     # Python
@@ -560,12 +560,12 @@ curl -X {endpoint['method']} https://api.example.com{endpoint['path']} \\
     return examples
 ```
 
-### Example 8: Documentation CI/CD
+### 示例 8: 文档 CI/CD
 
-**GitHub Actions Workflow**
+**GitHub Actions 工作流**
 
 ```yaml
-name: Generate Documentation
+name: 生成文档
 
 on:
   push:
@@ -581,32 +581,32 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: 设置 Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: 安装依赖
         run: |
           pip install -r requirements-docs.txt
           npm install -g @redocly/cli
 
-      - name: Generate API documentation
+      - name: 生成 API 文档
         run: |
           python scripts/generate_openapi.py > docs/api/openapi.json
           redocly build-docs docs/api/openapi.json -o docs/api/index.html
 
-      - name: Generate code documentation
+      - name: 生成代码文档
         run: sphinx-build -b html docs/source docs/build
 
-      - name: Deploy to GitHub Pages
+      - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/build
 ```
 
-### Example 9: Documentation Coverage Validation
+### 示例 9: 文档覆盖率验证
 
 ```python
 import ast
@@ -614,7 +614,7 @@ import glob
 
 class DocCoverage:
     def check_coverage(self, codebase_path):
-        """Check documentation coverage for codebase"""
+        """检查代码库的文档覆盖率"""
         results = {
             'total_functions': 0,
             'documented_functions': 0,
@@ -651,7 +651,7 @@ class DocCoverage:
                             'line': node.lineno
                         })
 
-        # Calculate coverage percentages
+        # 计算覆盖率百分比
         results['function_coverage'] = (
             results['documented_functions'] / results['total_functions'] * 100
             if results['total_functions'] > 0 else 100
@@ -664,14 +664,14 @@ class DocCoverage:
         return results
 ```
 
-## Output Format
+## 输出格式
 
-1. **API Documentation**: OpenAPI spec with interactive playground
-2. **Architecture Diagrams**: System, sequence, and component diagrams
-3. **Code Documentation**: Inline docs, docstrings, and type hints
-4. **User Guides**: Step-by-step tutorials
-5. **Developer Guides**: Setup, contribution, and API usage guides
-6. **Reference Documentation**: Complete API reference with examples
-7. **Documentation Site**: Deployed static site with search functionality
+1. **API 文档**: 带有交互式演练场的 OpenAPI 规范
+2. **架构图**: 系统、序列和组件图
+3. **代码文档**: 内联文档、文档字符串和类型提示
+4. **用户指南**: 分步教程
+5. **开发者指南**: 设置、贡献和 API 使用指南
+6. **参考文档**: 带有示例的完整 API 参考
+7. **文档站点**: 带有搜索功能的已部署静态站点
 
-Focus on creating documentation that is accurate, comprehensive, and easy to maintain alongside code changes.
+专注于创建准确、全面且易于随代码更改维护的文档。

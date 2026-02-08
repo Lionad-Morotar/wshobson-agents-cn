@@ -1,8 +1,8 @@
-# GraphQL Schema Design Patterns
+# GraphQL Schema 设计模式
 
-## Schema Organization
+## Schema 组织
 
-### Modular Schema Structure
+### 模块化 Schema 结构
 
 ```graphql
 # user.graphql
@@ -35,21 +35,21 @@ extend type Query {
 }
 ```
 
-## Type Design Patterns
+## 类型设计模式
 
-### 1. Non-Null Types
+### 1. 非空类型
 
 ```graphql
 type User {
-  id: ID! # Always required
-  email: String! # Required
-  phone: String # Optional (nullable)
-  posts: [Post!]! # Non-null array of non-null posts
-  tags: [String!] # Nullable array of non-null strings
+  id: ID! # 始终必需
+  email: String! # 必需
+  phone: String # 可选（可空）
+  posts: [Post!]! # 非空文章的非空数组
+  tags: [String!] # 非空字符串的可空数组
 }
 ```
 
-### 2. Interfaces for Polymorphism
+### 2. 接口实现多态
 
 ```graphql
 interface Node {
@@ -74,7 +74,7 @@ type Query {
 }
 ```
 
-### 3. Unions for Heterogeneous Results
+### 3. 联合类型处理异构结果
 
 ```graphql
 union SearchResult = User | Post | Comment
@@ -83,7 +83,7 @@ type Query {
   search(query: String!): [SearchResult!]!
 }
 
-# Query example
+# 查询示例
 {
   search(query: "graphql") {
     ... on User {
@@ -104,7 +104,7 @@ type Query {
 }
 ```
 
-### 4. Input Types
+### 4. 输入类型
 
 ```graphql
 input CreateUserInput {
@@ -128,9 +128,9 @@ input UpdateUserInput {
 }
 ```
 
-## Pagination Patterns
+## 分页模式
 
-### Relay Cursor Pagination (Recommended)
+### Relay 游标分页（推荐）
 
 ```graphql
 type UserConnection {
@@ -155,7 +155,7 @@ type Query {
   users(first: Int, after: String, last: Int, before: String): UserConnection!
 }
 
-# Usage
+# 使用示例
 {
   users(first: 10, after: "cursor123") {
     edges {
@@ -173,7 +173,7 @@ type Query {
 }
 ```
 
-### Offset Pagination (Simpler)
+### 偏移分页（更简单）
 
 ```graphql
 type UserList {
@@ -188,9 +188,9 @@ type Query {
 }
 ```
 
-## Mutation Design Patterns
+## 变更设计模式
 
-### 1. Input/Payload Pattern
+### 1. 输入/负载模式
 
 ```graphql
 input CreatePostInput {
@@ -216,7 +216,7 @@ type Mutation {
 }
 ```
 
-### 2. Optimistic Response Support
+### 2. 乐观响应支持
 
 ```graphql
 type UpdateUserPayload {
@@ -236,7 +236,7 @@ type Mutation {
 }
 ```
 
-### 3. Batch Mutations
+### 3. 批量变更
 
 ```graphql
 input BatchCreateUserInput {
@@ -260,27 +260,27 @@ type Mutation {
 }
 ```
 
-## Field Design
+## 字段设计
 
-### Arguments and Filtering
+### 参数和过滤
 
 ```graphql
 type Query {
   posts(
-    # Pagination
+    # 分页
     first: Int = 20
     after: String
 
-    # Filtering
+    # 过滤
     status: PostStatus
     authorId: ID
     tag: String
 
-    # Sorting
+    # 排序
     orderBy: PostOrderBy = CREATED_AT
     orderDirection: OrderDirection = DESC
 
-    # Searching
+    # 搜索
     search: String
   ): PostConnection!
 }
@@ -303,25 +303,25 @@ enum OrderDirection {
 }
 ```
 
-### Computed Fields
+### 计算字段
 
 ```graphql
 type User {
   firstName: String!
   lastName: String!
-  fullName: String! # Computed in resolver
+  fullName: String! # 在解析器中计算
   posts: [Post!]!
-  postCount: Int! # Computed, doesn't load all posts
+  postCount: Int! # 计算，不加载所有文章
 }
 
 type Post {
   likeCount: Int!
   commentCount: Int!
-  isLikedByViewer: Boolean! # Context-dependent
+  isLikedByViewer: Boolean! # 上下文相关
 }
 ```
 
-## Subscriptions
+## 订阅
 
 ```graphql
 type Subscription {
@@ -338,7 +338,7 @@ type UserStatus {
   lastSeen: DateTime!
 }
 
-# Client usage
+# 客户端使用
 subscription {
   postAdded {
     id
@@ -350,7 +350,7 @@ subscription {
 }
 ```
 
-## Custom Scalars
+## 自定义标量
 
 ```graphql
 scalar DateTime
@@ -371,21 +371,21 @@ type Product {
 }
 ```
 
-## Directives
+## 指令
 
-### Built-in Directives
+### 内置指令
 
 ```graphql
 type User {
   name: String!
-  email: String! @deprecated(reason: "Use emails field instead")
+  email: String! @deprecated(reason: "改用 emails 字段")
   emails: [String!]!
 
-  # Conditional inclusion
+  # 条件包含
   privateData: PrivateData @include(if: $isOwner)
 }
 
-# Query
+# 查询
 query GetUser($isOwner: Boolean!) {
   user(id: "123") {
     name
@@ -396,7 +396,7 @@ query GetUser($isOwner: Boolean!) {
 }
 ```
 
-### Custom Directives
+### 自定义指令
 
 ```graphql
 directive @auth(requires: Role = USER) on FIELD_DEFINITION
@@ -413,9 +413,9 @@ type Mutation {
 }
 ```
 
-## Error Handling
+## 错误处理
 
-### Union Error Pattern
+### 联合错误模式
 
 ```graphql
 type User {
@@ -444,7 +444,7 @@ type Query {
   user(id: ID!): UserResult!
 }
 
-# Usage
+# 使用示例
 {
   user(id: "123") {
     ... on User {
@@ -462,7 +462,7 @@ type Query {
 }
 ```
 
-### Errors in Payload
+### 负载中的错误
 
 ```graphql
 type CreateUserPayload {
@@ -485,9 +485,9 @@ enum ErrorCode {
 }
 ```
 
-## N+1 Query Problem Solutions
+## N+1 查询问题解决方案
 
-### DataLoader Pattern
+### DataLoader 模式
 
 ```python
 from aiodataloader import DataLoader
@@ -498,14 +498,14 @@ class PostLoader(DataLoader):
         post_map = {post["id"]: post for post in posts}
         return [post_map.get(pid) for pid in post_ids]
 
-# Resolver
+# 解析器
 @user_type.field("posts")
 async def resolve_posts(user, info):
     loader = info.context["loaders"]["post"]
     return await loader.load_many(user["post_ids"])
 ```
 
-### Query Depth Limiting
+### 查询深度限制
 
 ```python
 from graphql import GraphQLError
@@ -515,17 +515,17 @@ def depth_limit_validator(max_depth: int):
         depth = len(ancestors)
         if depth > max_depth:
             raise GraphQLError(
-                f"Query depth {depth} exceeds maximum {max_depth}"
+                f"查询深度 {depth} 超过最大值 {max_depth}"
             )
     return validate
 ```
 
-### Query Complexity Analysis
+### 查询复杂度分析
 
 ```python
 def complexity_limit_validator(max_complexity: int):
     def calculate_complexity(node):
-        # Each field = 1, lists multiply
+        # 每个字段 = 1，列表相乘
         complexity = 1
         if is_list_field(node):
             complexity *= get_list_size_arg(node)
@@ -534,50 +534,50 @@ def complexity_limit_validator(max_complexity: int):
     return validate_complexity
 ```
 
-## Schema Versioning
+## Schema 版本控制
 
-### Field Deprecation
+### 字段弃用
 
 ```graphql
 type User {
-  name: String! @deprecated(reason: "Use firstName and lastName")
+  name: String! @deprecated(reason: "使用 firstName 和 lastName")
   firstName: String!
   lastName: String!
 }
 ```
 
-### Schema Evolution
+### Schema 演进
 
 ```graphql
-# v1 - Initial
+# v1 - 初始版本
 type User {
   name: String!
 }
 
-# v2 - Add optional field (backward compatible)
+# v2 - 添加可选字段（向后兼容）
 type User {
   name: String!
   email: String
 }
 
-# v3 - Deprecate and add new field
+# v3 - 弃用并添加新字段
 type User {
-  name: String! @deprecated(reason: "Use firstName/lastName")
+  name: String! @deprecated(reason: "使用 firstName/lastName")
   firstName: String!
   lastName: String!
   email: String
 }
 ```
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Nullable vs Non-Null**: Start nullable, make non-null when guaranteed
-2. **Input Types**: Always use input types for mutations
-3. **Payload Pattern**: Return errors in mutation payloads
-4. **Pagination**: Use cursor-based for infinite scroll, offset for simple cases
-5. **Naming**: Use camelCase for fields, PascalCase for types
-6. **Deprecation**: Use `@deprecated` instead of removing fields
-7. **DataLoaders**: Always use for relationships to prevent N+1
-8. **Complexity Limits**: Protect against expensive queries
-9. **Custom Scalars**: Use for domain-specific types (Email, DateTime)
-10. **Documentation**: Document all fields with descriptions
+1. **可空 vs 非空**：从可空开始，确保存在时设为非空
+2. **输入类型**：变更始终使用输入类型
+3. **负载模式**：在变更负载中返回错误
+4. **分页**：无限滚动使用基于游标，简单情况使用偏移
+5. **命名**：字段使用驼峰命名，类型使用帕斯卡命名
+6. **弃用**：使用 `@deprecated` 而非删除字段
+7. **DataLoaders**：关联关系始终使用以防止 N+1
+8. **复杂度限制**：防止昂贵查询
+9. **自定义标量**：用于领域特定类型（Email、DateTime）
+10. **文档**：为所有字段添加描述文档

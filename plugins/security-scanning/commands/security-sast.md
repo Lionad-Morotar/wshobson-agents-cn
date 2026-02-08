@@ -28,36 +28,36 @@ keywords:
   ]
 ---
 
-# SAST Security Plugin
+# SAST 安全插件
 
-Static Application Security Testing (SAST) for comprehensive code vulnerability detection across multiple languages, frameworks, and security patterns.
+静态应用程序安全测试（SAST），用于跨多种语言、框架和安全模式的全面代码漏洞检测。
 
-## Capabilities
+## 功能特性
 
-- **Multi-language SAST**: Python, JavaScript/TypeScript, Java, Ruby, PHP, Go, Rust
-- **Tool integration**: Bandit, Semgrep, ESLint Security, SonarQube, CodeQL, PMD, SpotBugs, Brakeman, gosec, cargo-clippy
-- **Vulnerability patterns**: SQL injection, XSS, hardcoded secrets, path traversal, IDOR, CSRF, insecure deserialization
-- **Framework analysis**: Django, Flask, React, Express, Spring Boot, Rails, Laravel
-- **Custom rule authoring**: Semgrep pattern development for organization-specific security policies
+- **多语言 SAST**：支持 Python、JavaScript/TypeScript、Java、Ruby、PHP、Go、Rust
+- **工具集成**：Bandit、Semgrep、ESLint Security、SonarQube、CodeQL、PMD、SpotBugs、Brakeman、gosec、cargo-clippy
+- **漏洞模式**：SQL 注入、XSS、硬编码密钥、路径遍历、IDOR、CSRF、不安全的反序列化
+- **框架分析**：Django、Flask、React、Express、Spring Boot、Rails、Laravel
+- **自定义规则编写**：为组织特定的安全策略开发 Semgrep 规则
 
-## When to Use This Tool
+## 使用场景
 
-Use for code review security analysis, injection vulnerabilities, hardcoded secrets, framework-specific patterns, custom security policy enforcement, pre-deployment validation, legacy code assessment, and compliance (OWASP, PCI-DSS, SOC2).
+用于代码审查安全分析、注入漏洞、硬编码密钥、框架特定模式、自定义安全策略执行、部署前验证、遗留代码评估以及合规性检查（OWASP、PCI-DSS、SOC2）。
 
-**Specialized tools**: Use `security-secrets.md` for advanced credential scanning, `security-owasp.md` for Top 10 mapping, `security-api.md` for REST/GraphQL endpoints.
+**专用工具**：使用 `security-secrets.md` 进行高级凭据扫描，`security-owasp.md` 进行 Top 10 映射，`security-api.md` 进行 REST/GraphQL 端点测试。
 
-## SAST Tool Selection
+## SAST 工具选择
 
 ### Python: Bandit
 
 ```bash
-# Installation & scan
+# 安装与扫描
 pip install bandit
 bandit -r . -f json -o bandit-report.json
-bandit -r . -ll -ii -f json  # High/Critical only
+bandit -r . -ll -ii -f json  # 仅高/严重级别
 ```
 
-**Configuration**: `.bandit`
+**配置文件**：`.bandit`
 
 ```yaml
 exclude_dirs: ["/tests/", "/venv/", "/.tox/", "/build/"]
@@ -90,7 +90,7 @@ npm install --save-dev eslint @eslint/plugin-security eslint-plugin-no-secrets
 eslint . --ext .js,.jsx,.ts,.tsx --format json > eslint-security.json
 ```
 
-**Configuration**: `.eslintrc-security.json`
+**配置文件**：`.eslintrc-security.json`
 
 ```json
 {
@@ -106,23 +106,23 @@ eslint . --ext .js,.jsx,.ts,.tsx --format json > eslint-security.json
 }
 ```
 
-### Multi-Language: Semgrep
+### 多语言: Semgrep
 
 ```bash
 pip install semgrep
 semgrep --config=auto --json --output=semgrep-report.json
 semgrep --config=p/security-audit --json
 semgrep --config=p/owasp-top-ten --json
-semgrep ci --config=auto  # CI mode
+semgrep ci --config=auto  # CI 模式
 ```
 
-**Custom Rules**: `.semgrep.yml`
+**自定义规则**：`.semgrep.yml`
 
 ```yaml
 rules:
   - id: sql-injection-format-string
     pattern: cursor.execute("... %s ..." % $VAR)
-    message: SQL injection via string formatting
+    message: 通过字符串格式化导致的 SQL 注入
     severity: ERROR
     languages: [python]
     metadata:
@@ -131,7 +131,7 @@ rules:
 
   - id: dangerous-innerHTML
     pattern: $ELEM.innerHTML = $VAR
-    message: XSS via innerHTML assignment
+    message: 通过 innerHTML 赋值导致的 XSS
     severity: ERROR
     languages: [javascript, typescript]
     metadata:
@@ -143,7 +143,7 @@ rules:
       - metavariable-regex:
           metavariable: $KEY
           regex: "(aws_access_key_id|AWS_ACCESS_KEY_ID)"
-    message: Hardcoded AWS credentials detected
+    message: 检测到硬编码的 AWS 凭据
     severity: ERROR
     languages: [python, javascript, java]
 
@@ -155,7 +155,7 @@ rules:
           metavariable: $PATH
           patterns:
             - pattern: $REQ.get(...)
-    message: Path traversal via user input
+    message: 通过用户输入导致的路径遍历
     severity: ERROR
     languages: [python]
 
@@ -170,55 +170,55 @@ rules:
             - pattern-either:
                 - pattern: $X + $Y
                 - pattern: f"...{$VAR}..."
-    message: Command injection via shell=True
+    message: 通过 shell=True 导致的命令注入
     severity: ERROR
     languages: [python]
 ```
 
-### Other Language Tools
+### 其他语言工具
 
 **Java**: `mvn spotbugs:check`
 **Ruby**: `brakeman -o report.json -f json`
 **Go**: `gosec -fmt=json -out=gosec.json ./...`
 **Rust**: `cargo clippy -- -W clippy::unwrap_used`
 
-## Vulnerability Patterns
+## 漏洞模式
 
-### SQL Injection
+### SQL 注入
 
-**VULNERABLE**: String formatting/concatenation with user input in SQL queries
+**易受攻击**：在 SQL 查询中使用字符串格式化/拼接用户输入
 
-**SECURE**:
+**安全做法**：
 
 ```python
-# Parameterized queries
+# 使用参数化查询
 cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 User.objects.filter(id=user_id)  # ORM
 ```
 
-### Cross-Site Scripting (XSS)
+### 跨站脚本攻击（XSS）
 
-**VULNERABLE**: Direct HTML manipulation with unsanitized user input (innerHTML, outerHTML, document.write)
+**易受攻击**：直接使用未经净化的用户输入操作 HTML（innerHTML、outerHTML、document.write）
 
-**SECURE**:
+**安全做法**：
 
 ```javascript
-// Use textContent for plain text
+// 使用 textContent 处理纯文本
 element.textContent = userInput;
 
-// React auto-escapes
+// React 会自动转义
 <div>{userInput}</div>;
 
-// Sanitize when HTML required
+// 需要 HTML 时进行净化
 import DOMPurify from "dompurify";
 element.innerHTML = DOMPurify.sanitize(userInput);
 ```
 
-### Hardcoded Secrets
+### 硬编码密钥
 
-**VULNERABLE**: Hardcoded API keys, passwords, tokens in source code
+**易受攻击**：在源代码中硬编码 API 密钥、密码、令牌
 
-**SECURE**:
+**安全做法**：
 
 ```python
 import os
@@ -226,11 +226,11 @@ API_KEY = os.environ.get('API_KEY')
 PASSWORD = os.getenv('DB_PASSWORD')
 ```
 
-### Path Traversal
+### 路径遍历
 
-**VULNERABLE**: Opening files using unsanitized user input
+**易受攻击**：使用未经净化的用户输入打开文件
 
-**SECURE**:
+**安全做法**：
 
 ```python
 import os
@@ -244,36 +244,36 @@ with open(file_path, 'r') as f:
     content = f.read()
 ```
 
-### Insecure Deserialization
+### 不安全的反序列化
 
-**VULNERABLE**: pickle.loads(), yaml.load() with untrusted data
+**易受攻击**：对不受信任的数据使用 pickle.loads()、yaml.load()
 
-**SECURE**:
+**安全做法**：
 
 ```python
 import json
-data = json.loads(user_input)  # SECURE
+data = json.loads(user_input)  # 安全
 import yaml
-config = yaml.safe_load(user_input)  # SECURE
+config = yaml.safe_load(user_input)  # 安全
 ```
 
-### Command Injection
+### 命令注入
 
-**VULNERABLE**: os.system() or subprocess with shell=True and user input
+**易受攻击**：使用 os.system() 或带 shell=True 的 subprocess 处理用户输入
 
-**SECURE**:
+**安全做法**：
 
 ```python
-subprocess.run(['ping', '-c', '4', user_input])  # Array args
+subprocess.run(['ping', '-c', '4', user_input])  # 数组参数
 import shlex
-safe_input = shlex.quote(user_input)  # Input validation
+safe_input = shlex.quote(user_input)  # 输入验证
 ```
 
-### Insecure Random
+### 不安全的随机数
 
-**VULNERABLE**: random module for security-critical operations
+**易受攻击**：在安全关键操作中使用 random 模块
 
-**SECURE**:
+**安全做法**：
 
 ```python
 import secrets
@@ -281,13 +281,13 @@ token = secrets.token_hex(16)
 session_id = secrets.token_urlsafe(32)
 ```
 
-## Framework Security
+## 框架安全
 
 ### Django
 
-**VULNERABLE**: @csrf_exempt, DEBUG=True, weak SECRET_KEY, missing security middleware
+**易受攻击**：@csrf_exempt、DEBUG=True、弱 SECRET_KEY、缺少安全中间件
 
-**SECURE**:
+**安全做法**：
 
 ```python
 # settings.py
@@ -308,9 +308,9 @@ X_FRAME_OPTIONS = 'DENY'
 
 ### Flask
 
-**VULNERABLE**: debug=True, weak secret_key, CORS wildcard
+**易受攻击**：debug=True、弱 secret_key、CORS 通配符
 
-**SECURE**:
+**安全做法**：
 
 ```python
 import os
@@ -323,9 +323,9 @@ CORS(app, origins=['https://example.com'])
 
 ### Express.js
 
-**VULNERABLE**: Missing helmet, CORS wildcard, no rate limiting
+**易受攻击**：缺少 helmet、CORS 通配符、无速率限制
 
-**SECURE**:
+**安全做法**：
 
 ```javascript
 const helmet = require("helmet");
@@ -336,7 +336,7 @@ app.use(cors({ origin: "https://example.com" }));
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 ```
 
-## Multi-Language Scanner Implementation
+## 多语言扫描器实现
 
 ```python
 import json
@@ -365,7 +365,7 @@ class MultiLanguageSASTScanner:
         self.findings: List[SASTFinding] = []
 
     def detect_languages(self) -> List[str]:
-        """Auto-detect languages"""
+        """自动检测语言"""
         languages = []
         indicators = {
             'python': ['*.py', 'requirements.txt'],
@@ -384,7 +384,7 @@ class MultiLanguageSASTScanner:
         return languages
 
     def run_comprehensive_sast(self) -> Dict[str, Any]:
-        """Execute all applicable SAST tools"""
+        """执行所有适用的 SAST 工具"""
         languages = self.detect_languages()
 
         scan_results = {
@@ -409,7 +409,7 @@ class MultiLanguageSASTScanner:
         return scan_results
 
     def run_semgrep_scan(self):
-        """Run Semgrep"""
+        """运行 Semgrep"""
         for ruleset in ['auto', 'p/security-audit', 'p/owasp-top-ten']:
             try:
                 result = subprocess.run([
@@ -433,10 +433,10 @@ class MultiLanguageSASTScanner:
                             confidence=f.get('extra', {}).get('metadata', {}).get('confidence', 'MEDIUM')
                         ))
             except Exception as e:
-                print(f"Semgrep {ruleset} failed: {e}")
+                print(f"Semgrep {ruleset} 失败: {e}")
 
     def generate_summary(self) -> Dict[str, Any]:
-        """Generate statistics"""
+        """生成统计信息"""
         severity_counts = {'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 0, 'LOW': 0}
         for f in self.findings:
             severity_counts[f.severity] = severity_counts.get(f.severity, 0) + 1
@@ -448,18 +448,18 @@ class MultiLanguageSASTScanner:
         }
 
     def calculate_risk_score(self, severity_counts: Dict[str, int]) -> int:
-        """Risk score 0-100"""
+        """风险评分 0-100"""
         weights = {'CRITICAL': 10, 'HIGH': 7, 'MEDIUM': 4, 'LOW': 1}
         total = sum(weights[s] * c for s, c in severity_counts.items())
         return min(100, int((total / 50) * 100))
 ```
 
-## CI/CD Integration
+## CI/CD 集成
 
 ### GitHub Actions
 
 ```yaml
-name: SAST Scan
+name: SAST 扫描
 on:
   pull_request:
     branches: [main]
@@ -473,17 +473,17 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install tools
+      - name: 安装工具
         run: |
           pip install bandit semgrep
           npm install -g eslint @eslint/plugin-security
 
-      - name: Run scans
+      - name: 运行扫描
         run: |
           bandit -r . -f json -o bandit.json || true
           semgrep --config=auto --json --output=semgrep.json || true
 
-      - name: Upload reports
+      - name: 上传报告
         uses: actions/upload-artifact@v3
         with:
           name: sast-reports
@@ -507,22 +507,22 @@ sast:
       sast: bandit.json
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Run early and often** - Pre-commit hooks and CI/CD
-2. **Combine multiple tools** - Different tools catch different vulnerabilities
-3. **Tune false positives** - Configure exclusions and thresholds
-4. **Prioritize findings** - Focus on CRITICAL/HIGH first
-5. **Framework-aware scanning** - Use specific rulesets
-6. **Custom rules** - Organization-specific patterns
-7. **Developer training** - Secure coding practices
-8. **Incremental remediation** - Fix gradually
-9. **Baseline management** - Track known issues
-10. **Regular updates** - Keep tools current
+1. **尽早且频繁运行** - 使用预提交钩子和 CI/CD
+2. **组合多种工具** - 不同工具可以捕获不同的漏洞
+3. **调整误报** - 配置排除项和阈值
+4. **优先级排序** - 优先关注严重/高危级别
+5. **框架感知扫描** - 使用特定的规则集
+6. **自定义规则** - 针对组织特定模式
+7. **开发者培训** - 安全编码实践
+8. **渐进式修复** - 逐步修复问题
+9. **基线管理** - 跟踪已知问题
+10. **定期更新** - 保持工具最新
 
-## Related Tools
+## 相关工具
 
-- **security-secrets.md** - Advanced credential detection
-- **security-owasp.md** - OWASP Top 10 assessment
-- **security-api.md** - API security testing
-- **security-scan.md** - Comprehensive security scanning
+- **security-secrets.md** - 高级凭据检测
+- **security-owasp.md** - OWASP Top 10 评估
+- **security-api.md** - API 安全测试
+- **security-scan.md** - 综合安全扫描

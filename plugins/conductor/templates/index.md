@@ -1,90 +1,90 @@
-# Conductor Hub
+# Conductor 中心
 
-## Project: {{PROJECT_NAME}}
+## 项目：{{PROJECT_NAME}}
 
-Central navigation for all Conductor artifacts and development tracks.
+所有 Conductor 工件和开发 tracks 的中央导航。
 
-## Quick Links
+## 快速链接
 
-### Core Documents
+### 核心文档
 
-| Document                                      | Description                | Status     |
+| 文档                                      | 描述                | 状态     |
 | --------------------------------------------- | -------------------------- | ---------- |
-| [Product Vision](./product.md)                | Product overview and goals | {{STATUS}} |
-| [Product Guidelines](./product-guidelines.md) | Voice, tone, and standards | {{STATUS}} |
-| [Tech Stack](./tech-stack.md)                 | Technology decisions       | {{STATUS}} |
-| [Workflow](./workflow.md)                     | Development process        | {{STATUS}} |
+| [产品愿景](./product.md)                | 产品概览和目标 | {{STATUS}} |
+| [产品指南](./product-guidelines.md) | 语气、语调和标准 | {{STATUS}} |
+| [技术栈](./tech-stack.md)                 | 技术决策       | {{STATUS}} |
+| [工作流程](./workflow.md)                     | 开发流程        | {{STATUS}} |
 
-### Track Management
+### Track 管理
 
-| Document                        | Description            |
+| 文档                        | 描述            |
 | ------------------------------- | ---------------------- |
-| [Track Registry](./tracks.md)   | All development tracks |
-| [Active Tracks](#active-tracks) | Currently in progress  |
+| [Track 注册表](./tracks.md)   | 所有开发 tracks |
+| [活跃 Tracks](#active-tracks) | 当前进行中  |
 
-### Style Guides
+### 风格指南
 
-| Guide                                          | Language/Domain           |
+| 指南                                          | 语言/域           |
 | ---------------------------------------------- | ------------------------- |
-| [General](./code_styleguides/general.md)       | Universal principles      |
-| [TypeScript](./code_styleguides/typescript.md) | TypeScript conventions    |
-| [JavaScript](./code_styleguides/javascript.md) | JavaScript best practices |
-| [Python](./code_styleguides/python.md)         | Python standards          |
-| [Go](./code_styleguides/go.md)                 | Go idioms                 |
-| [C#](./code_styleguides/csharp.md)             | C# conventions            |
-| [Dart](./code_styleguides/dart.md)             | Dart/Flutter patterns     |
-| [HTML/CSS](./code_styleguides/html-css.md)     | Web standards             |
+| [通用](./code_styleguides/general.md)       | 通用原则      |
+| [TypeScript](./code_styleguides/typescript.md) | TypeScript 约定    |
+| [JavaScript](./code_styleguides/javascript.md) | JavaScript 最佳实践 |
+| [Python](./code_styleguides/python.md)         | Python 标准          |
+| [Go](./code_styleguides/go.md)                 | Go 惯用语                 |
+| [C#](./code_styleguides/csharp.md)             | C# 约定            |
+| [Dart](./code_styleguides/dart.md)             | Dart/Flutter 模式     |
+| [HTML/CSS](./code_styleguides/html-css.md)     | Web 标准             |
 
-## Active Tracks
+## 活跃 Tracks
 
-| Track          | Status     | Priority     | Spec                                  | Plan                                  |
+| Track          | 状态     | 优先级     | 规范                                  | 计划                                  |
 | -------------- | ---------- | ------------ | ------------------------------------- | ------------------------------------- |
-| {{TRACK_NAME}} | {{STATUS}} | {{PRIORITY}} | [spec](./tracks/{{TRACK_ID}}/spec.md) | [plan](./tracks/{{TRACK_ID}}/plan.md) |
+| {{TRACK_NAME}} | {{STATUS}} | {{PRIORITY}} | [规范](./tracks/{{TRACK_ID}}/spec.md) | [计划](./tracks/{{TRACK_ID}}/plan.md) |
 
-## Recent Activity
+## 最近活动
 
-| Date     | Track     | Action     |
+| 日期     | Track     | 操作     |
 | -------- | --------- | ---------- |
 | {{DATE}} | {{TRACK}} | {{ACTION}} |
 
-## Project Status
+## 项目状态
 
-**Current Phase:** {{CURRENT_PHASE}}
-**Overall Progress:** {{PROGRESS_PERCENTAGE}}%
+**当前阶段：** {{CURRENT_PHASE}}
+**总体进度：** {{PROGRESS_PERCENTAGE}}%
 
-### Milestone Tracker
+### 里程碑跟踪器
 
-| Milestone       | Target Date | Status       |
+| 里程碑       | 目标日期 | 状态       |
 | --------------- | ----------- | ------------ |
 | {{MILESTONE_1}} | {{DATE_1}}  | {{STATUS_1}} |
 | {{MILESTONE_2}} | {{DATE_2}}  | {{STATUS_2}} |
 | {{MILESTONE_3}} | {{DATE_3}}  | {{STATUS_3}} |
 
-## Getting Started
+## 入门指南
 
-1. Review [Product Vision](./product.md) for project context
-2. Check [Tech Stack](./tech-stack.md) for technology decisions
-3. Read [Workflow](./workflow.md) for development process
-4. Find your track in [Track Registry](./tracks.md)
-5. Follow track spec and plan
+1. 查看 [产品愿景](./product.md) 了解项目上下文
+2. 查看 [技术栈](./tech-stack.md) 了解技术决策
+3. 阅读 [工作流程](./workflow.md) 了解开发流程
+4. 在 [Track 注册表](./tracks.md) 中找到您的 track
+5. 按照 track 规范和计划进行
 
-## Commands Reference
+## 命令参考
 
 ```bash
-# Setup
+# 设置
 {{SETUP_COMMAND}}
 
-# Development
+# 开发
 {{DEV_COMMAND}}
 
-# Testing
+# 测试
 {{TEST_COMMAND}}
 
-# Build
+# 构建
 {{BUILD_COMMAND}}
 ```
 
 ---
 
-**Last Updated:** {{LAST_UPDATED}}
-**Maintained By:** {{MAINTAINER}}
+**最后更新：** {{LAST_UPDATED}}
+**维护者：** {{MAINTAINER}}

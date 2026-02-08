@@ -1,248 +1,248 @@
 ---
-description: "Generate comprehensive market opportunity analysis with TAM/SAM/SOM calculations"
+description: "生成包含 TAM/SAM/SOM 计算的综合市场机会分析"
 allowed-tools:
   ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"]
 ---
 
-# Market Opportunity Analysis
+# 市场机会分析
 
-Generate a comprehensive market opportunity analysis for a startup, including Total Addressable Market (TAM), Serviceable Available Market (SAM), and Serviceable Obtainable Market (SOM) calculations using both bottom-up and top-down methodologies.
+为初创公司生成综合市场机会分析，包括使用自下而上和自上而下方法论计算的总可寻址市场（TAM）、可服务可用市场（SAM）和可获得市场（SOM）。
 
-## What This Command Does
+## 此命令的功能
 
-This command guides through an interactive market sizing process to:
+此命令通过交互式市场规模流程指导用户完成以下步骤：
 
-1. Define the target market and customer segments
-2. Gather relevant market data
-3. Calculate TAM using bottom-up methodology
-4. Validate with top-down analysis
-5. Narrow to SAM with appropriate filters
-6. Estimate realistic SOM (3-5 year opportunity)
-7. Present findings in a formatted report
+1. 定义目标市场和客户细分
+2. 收集相关市场数据
+3. 使用自下而上方法论计算 TAM
+4. 使用自上而下分析进行验证
+5. 通过适当的筛选条件缩小至 SAM
+6. 估算现实的 SOM（3-5 年机会）
+7. 以格式化报告呈现发现
 
-## Instructions for Claude
+## 给 Claude 的说明
 
-When this command is invoked, follow these steps:
+当调用此命令时，请遵循以下步骤：
 
-### Step 1: Gather Context
+### 第 1 步：收集背景信息
 
-Ask the user for essential information:
+向用户询问关键信息：
 
-- **Product/Service Description:** What problem is being solved?
-- **Target Customers:** Who is the ideal customer? (industry, size, geography)
-- **Business Model:** How does pricing work? (subscription, transaction, etc.)
-- **Stage:** What stage is the company? (pre-launch, seed, Series A)
-- **Geography:** Initial target market (US, North America, Global)
+- **产品/服务描述：** 解决什么问题？
+- **目标客户：** 谁是理想客户？（行业、规模、地理位置）
+- **商业模式：** 定价如何运作？（订阅、交易等）
+- **阶段：** 公司处于什么阶段？（预发布、种子轮、A 轮）
+- **地理范围：** 初始目标市场（美国、北美、全球）
 
-### Step 2: Activate market-sizing-analysis Skill
+### 第 2 步：激活 market-sizing-analysis 技能
 
-The market-sizing-analysis skill provides comprehensive methodologies. Reference it for:
+market-sizing-analysis 技能提供全面的方法论。参考它以获取：
 
-- Bottom-up calculation frameworks
-- Top-down validation approaches
-- Industry-specific templates
-- Data source recommendations
+- 自下而上计算框架
+- 自上而下验证方法
+- 特定行业模板
+- 数据源推荐
 
-### Step 3: Conduct Bottom-Up Analysis
+### 第 3 步：进行自下而上分析
 
-**For B2B/SaaS:**
+**对于 B2B/SaaS：**
 
-1. Define customer segments (company size, industry, use case)
-2. Estimate number of companies in each segment
-3. Determine average contract value (ACV) per segment
-4. Calculate TAM: Σ (Segment Size × ACV)
+1. 定义客户细分（公司规模、行业、用例）
+2. 估算每个细分市场的公司数量
+3. 确定每个细分的平均合同价值（ACV）
+4. 计算 TAM：Σ（细分市场规模 × ACV）
 
-**For Consumer/Marketplace:**
+**对于消费者/市场平台：**
 
-1. Define target user demographics
-2. Estimate total addressable users
-3. Determine average revenue per user (ARPU)
-4. Calculate TAM: Total Users × ARPU × Frequency
+1. 定义目标用户人口统计
+2. 估算总可寻址用户数
+3. 确定每用户平均收入（ARPU）
+4. 计算 TAM：总用户数 × ARPU × 频率
 
-**For Transactions/E-commerce:**
+**对于交易/电子商务：**
 
-1. Estimate total transaction volume (GMV)
-2. Determine take rate or margin
-3. Calculate TAM: Total GMV × Take Rate
+1. 估算总交易量（GMV）
+2. 确定抽成率或利润率
+3. 计算 TAM：总 GMV × 抽成率
 
-### Step 4: Gather Market Data
+### 第 4 步：收集市场数据
 
-Use available tools to research:
+使用可用工具研究：
 
-- **WebSearch:** Find industry reports, market size estimates, public company data
-- **Cite all sources** with URLs and publication dates
-- **Document assumptions** clearly
+- **WebSearch：** 查找行业报告、市场规模估算、上市公司数据
+- **引用所有来源**并附上 URL 和发布日期
+- **清晰记录假设条件**
 
-Recommended data sources (from skill):
+推荐数据源（来自技能）：
 
-- Government data (Census, BLS)
-- Industry reports (Gartner, Forrester, Statista)
-- Public company filings (10-K reports)
-- Trade associations
-- Academic research
+- 政府数据（人口普查、劳工统计局）
+- 行业报告（Gartner、Forrester、Statista）
+- 上市公司文件（10-K 报告）
+- 贸易协会
+- 学术研究
 
-### Step 5: Top-Down Validation
+### 第 5 步：自上而下验证
 
-Validate bottom-up calculation:
+验证自下而上计算：
 
-1. Find total market category size from research
-2. Apply geographic filters
-3. Apply segment/product filters
-4. Compare to bottom-up TAM (should be within 30%)
+1. 从研究中查找总市场类别规模
+2. 应用地理筛选
+3. 应用细分/产品筛选
+4. 与自下而上 TAM 比较（应在 30% 以内）
 
-If variance > 30%, investigate and explain differences.
+如果差异 > 30%，调查并解释差异原因。
 
-### Step 6: Calculate SAM
+### 第 6 步：计算 SAM
 
-Apply realistic filters to narrow TAM:
+应用现实筛选以缩小 TAM：
 
-- **Geographic:** Regions actually serviceable
-- **Product Capability:** Features needed to serve
-- **Market Readiness:** Customers ready to adopt
-- **Addressable Switching:** Can reach and convert
+- **地理：** 实际可服务的区域
+- **产品能力：** 服务所需的功能
+- **市场准备度：** 准备采用的客户
+- **可寻址转化：** 可以触达和转化的客户
 
-Formula:
+公式：
 
 ```
-SAM = TAM × Geographic % × Product Fit % × Market Readiness %
+SAM = TAM × 地理位置 % × 产品适配度 % × 市场准备度 %
 ```
 
-### Step 7: Estimate SOM
+### 第 7 步：估算 SOM
 
-Calculate realistic obtainable market share:
+计算现实的可获得市场份额：
 
-**Conservative Approach (Recommended):**
+**保守方法（推荐）：**
 
-- Year 3: 2-3% of SAM
-- Year 5: 4-6% of SAM
+- 第 3 年：SAM 的 2-3%
+- 第 5 年：SAM 的 4-6%
 
-**Consider:**
+**考虑因素：**
 
-- Competitive intensity
-- Available resources (funding, team)
-- Go-to-market effectiveness
-- Differentiation strength
+- 竞争强度
+- 可用资源（资金、团队）
+- 市场进入效果
+- 差异化优势
 
-### Step 8: Create Market Sizing Report
+### 第 8 步：创建市场规模报告
 
-Generate a comprehensive markdown report with:
+生成包含以下内容的综合 Markdown 报告：
 
-**Section 1: Executive Summary**
+**第 1 部分：执行摘要**
 
-- Market opportunity in one paragraph
-- TAM/SAM/SOM headline numbers
+- 一段话概括市场机会
+- TAM/SAM/SOM 关键数字
 
-**Section 2: Market Definition**
+**第 2 部分：市场定义**
 
-- Problem being solved
-- Target customer profile
-- Geographic scope
-- Time horizon
+- 解决的问题
+- 目标客户画像
+- 地理范围
+- 时间跨度
 
-**Section 3: Bottom-Up Analysis**
+**第 3 部分：自下而上分析**
 
-- Customer segment breakdown
-- Segment sizing with sources
-- TAM calculation with formula
-- Assumptions documented
+- 客户细分分解
+- 带来源的细分市场规模
+- TAM 计算公式
+- 记录的假设条件
 
-**Section 4: Top-Down Validation**
+**第 4 部分：自上而下验证**
 
-- Industry category and size
-- Filter application
-- Validated TAM
-- Comparison to bottom-up
+- 行业类别和规模
+- 筛选应用
+- 验证后的 TAM
+- 与自下而上的比较
 
-**Section 5: SAM Calculation**
+**第 5 部分：SAM 计算**
 
-- Filters applied with rationale
-- SAM formula and result
-- Segment-level breakdown
+- 应用的筛选及其理由
+- SAM 公式和结果
+- 细分级别的分解
 
-**Section 6: SOM Projection**
+**第 6 部分：SOM 预测**
 
-- Market share assumptions
-- Year 3 and Year 5 estimates
-- Customer count implications
-- Revenue projections
+- 市场份额假设
+- 第 3 年和第 5 年估算
+- 客户数量含义
+- 收入预测
 
-**Section 7: Market Growth**
+**第 7 部分：市场增长**
 
-- Industry growth rate (CAGR)
-- Key growth drivers
-- 5-year market evolution
+- 行业增长率（CAGR）
+- 关键增长驱动因素
+- 5 年市场演变
 
-**Section 8: Validation and Sanity Checks**
+**第 8 部分：验证和合理性检查**
 
-- Public company comparisons
-- Customer count validation
-- Competitive context
+- 上市公司比较
+- 客户数量验证
+- 竞争背景
 
-**Section 9: Investment Thesis**
+**第 9 部分：投资论点**
 
-- Market opportunity assessment
-- Key positives and risks
-- Venture-scale potential
-- Next steps
+- 市场机会评估
+- 主要优势和风险
+- 风投规模潜力
+- 下一步行动
 
-### Step 9: Save Report
+### 第 9 步：保存报告
 
-Offer to save the report as a markdown file:
+提议将报告保存为 Markdown 文件：
 
-- Suggest filename: `market-opportunity-analysis-YYYY-MM-DD.md`
-- Use Write tool to create file
-- Confirm file location with user
+- 建议文件名：`market-opportunity-analysis-YYYY-MM-DD.md`
+- 使用 Write 工具创建文件
+- 与用户确认文件位置
 
-## Tips for Best Results
+## 获得最佳效果的提示
 
-**Do:**
+**应该做：**
 
-- Start with bottom-up (most credible)
-- Always triangulate with top-down
-- Cite all data sources
-- Document every assumption
-- Be conservative on SOM
-- Compare to public company benchmarks
-- Explain any data gaps or limitations
+- 从自下而上开始（最可信）
+- 始终用自上而下进行三角验证
+- 引用所有数据源
+- 记录每个假设
+- 对 SOM 保持保守
+- 与上市公司基准进行比较
+- 解释任何数据缺口或局限性
 
-**Don't:**
+**不应该做：**
 
-- Rely solely on top-down
-- Cherry-pick optimistic data
-- Claim >10% SOM without strong justification
-- Mix methodologies inappropriately
-- Ignore competitive context
-- Skip validation steps
+- 仅依赖自上而下
+- 挑选乐观的数据
+- 在没有充分理由的情况下声称 >10% 的 SOM
+- 不恰当地混合方法论
+- 忽略竞争背景
+- 跳过验证步骤
 
-## Example Usage
+## 使用示例
 
 ```
 User: /market-opportunity
 
-Claude: I'll help you create a comprehensive market opportunity analysis. Let me start by gathering some context.
+Claude: 我将帮助您创建综合市场机会分析。让我先收集一些背景信息。
 
-What product or service are you analyzing?
-→ "AI-powered email marketing for e-commerce companies"
+您正在分析什么产品或服务？
+→ "面向电子商务公司的 AI 邮件营销"
 
-Who are your target customers?
-→ "E-commerce companies with $1M+ annual revenue in North America"
+谁是您的目标客户？
+→ "北美地区年收入 100 万美元以上的电子商务公司"
 
-What's your pricing model?
-→ "Subscription: $50-500/month based on email volume, average $300/month"
+您的定价模式是什么？
+→ "订阅：根据邮件量每月 50-500 美元，平均每月 300 美元"
 
-[Claude proceeds with analysis, gathering data, calculating TAM/SAM/SOM, and generating report]
+[Claude 继续进行分析、收集数据、计算 TAM/SAM/SOM 并生成报告]
 ```
 
-## Integration with Other Commands
+## 与其他命令的集成
 
-This command pairs well with:
+此命令与以下命令配合良好：
 
-- `/financial-projections` - Use SOM to build revenue model
-- `/business-case` - Include market sizing in business case
+- `/financial-projections` - 使用 SOM 构建收入模型
+- `/business-case` - 在业务案例中包含市场规模
 
-## Notes
+## 注意事项
 
-- Market sizing typically takes 30-60 minutes for thorough analysis
-- Quality depends on data availability - explain limitations
-- Update annually as market evolves
-- Conservative estimates build credibility with investors
+- 市场规模分析通常需要 30-60 分钟进行全面分析
+- 质量取决于数据可用性 - 解释局限性
+- 随着市场发展每年更新
+- 保守估算可建立投资者信誉

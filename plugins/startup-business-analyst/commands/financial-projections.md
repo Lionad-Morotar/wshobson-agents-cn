@@ -4,250 +4,250 @@ allowed-tools:
   ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "WebSearch", "WebFetch"]
 ---
 
-# Financial Projections
+# 财务预测
 
-Create a comprehensive 3-5 year financial model with revenue projections, cost structure, headcount planning, cash flow analysis, and three-scenario modeling (conservative, base, optimistic) for startup financial planning and fundraising.
+创建包含收入预测、成本结构、人员规划、现金流分析和三情景建模（保守、基准、乐观）的综合 3-5 年财务模型，用于初创企业财务规划和融资。
 
-## What This Command Does
+## 此命令的功能
 
-This command builds a complete financial model including:
+此命令构建完整的财务模型，包括：
 
-1. Cohort-based revenue projections
-2. Detailed cost structure (COGS, S&M, R&D, G&A)
-3. Headcount planning by role
-4. Monthly cash flow analysis
-5. Key metrics (CAC, LTV, burn rate, runway)
-6. Three-scenario analysis
+1. 基于队列的收入预测
+2. 详细的成本结构（销售成本、销售与市场、研发、行政管理）
+3. 按角色的人员规划
+4. 月度现金流分析
+5. 关键指标（客户获取成本、客户生命周期价值、烧钱率、现金跑道）
+6. 三情景分析
 
-## Instructions for Claude
+## Claude 执行指令
 
-When this command is invoked, follow these steps:
+当调用此命令时，请按以下步骤执行：
 
-### Step 1: Gather Model Inputs
+### 步骤 1：收集模型输入
 
-Ask the user for essential information:
+向用户询问必要信息：
 
-**Business Model:**
+**商业模式：**
 
-- Revenue model (SaaS, marketplace, transaction, etc.)
-- Pricing structure (tiers, average price)
-- Target customer segments
+- 收入模式（SaaS、市场平台、交易等）
+- 定价结构（分层、平均价格）
+- 目标客户细分
 
-**Starting Point:**
+**起点数据：**
 
-- Current MRR/ARR (if any)
-- Current customer count
-- Current team size
-- Current cash balance
+- 当前月度经常性收入/年度经常性收入（如有）
+- 当前客户数量
+- 当前团队规模
+- 当前现金余额
 
-**Growth Assumptions:**
+**增长假设：**
 
-- Expected monthly customer acquisition
-- Customer retention/churn rate
-- Average contract value (ACV)
-- Sales cycle length
+- 预期月度客户获取量
+- 客户留存/流失率
+- 平均合同价值
+- 销售周期长度
 
-**Cost Assumptions:**
+**成本假设：**
 
-- Gross margin or COGS %
-- S&M budget or CAC target
-- Current burn rate (if applicable)
+- 毛利率或销售成本占比
+- 销售与市场预算或客户获取成本目标
+- 当前烧钱率（如适用）
 
-**Funding:**
+**融资：**
 
-- Planned fundraising (amount, timing)
-- Pre/post-money valuation
+- 计划融资（金额、时机）
+- 融资前/后估值
 
-### Step 2: Activate startup-financial-modeling Skill
+### 步骤 2：激活 startup-financial-modeling 技能
 
-The startup-financial-modeling skill provides frameworks. Reference it for:
+startup-financial-modeling 技能提供框架。参考它以获取：
 
-- Revenue modeling approaches
-- Cost structure templates
-- Headcount planning guidance
-- Scenario analysis methods
+- 收入建模方法
+- 成本结构模板
+- 人员规划指导
+- 情景分析方法
 
-### Step 3: Build Revenue Model
+### 步骤 3：构建收入模型
 
-**Use Cohort-Based Approach:**
+**使用基于队列的方法：**
 
-For each month, track:
+对于每个月，跟踪：
 
-1. New customers acquired
-2. Existing customers retained (apply churn)
-3. Revenue per cohort (customers × ARPU)
-4. Expansion revenue (upsells)
+1. 获取的新客户
+2. 留存的现有客户（应用流失率）
+3. 每个队列的收入（客户数 × ARPU）
+4. 扩展收入（增购）
 
-**Formula:**
-
-```
-MRR (Month N) = Σ across all cohorts:
-  (Cohort Size × Retention Rate × ARPU) + Expansion
-```
-
-**Project:**
-
-- Monthly detail for Year 1-2
-- Quarterly detail for Year 3
-- Annual for Years 4-5
-
-### Step 4: Model Cost Structure
-
-Break down operating expenses:
-
-**1. Cost of Goods Sold (COGS)**
-
-- Hosting/infrastructure (% of revenue or fixed)
-- Payment processing (% of revenue)
-- Variable customer support
-- Third-party services
-
-Target gross margin:
-
-- SaaS: 75-85%
-- Marketplace: 60-70%
-- E-commerce: 40-60%
-
-**2. Sales & Marketing (S&M)**
-
-- Sales team compensation
-- Marketing programs
-- Tools and software
-- Target: 40-60% of revenue (early stage)
-
-**3. Research & Development (R&D)**
-
-- Engineering team
-- Product management
-- Design
-- Target: 30-40% of revenue
-
-**4. General & Administrative (G&A)**
-
-- Executive team
-- Finance, legal, HR
-- Office and facilities
-- Target: 15-25% of revenue
-
-### Step 5: Plan Headcount
-
-Create role-by-role hiring plan:
-
-**Reference team-composition-analysis skill for:**
-
-- Roles by stage
-- Compensation benchmarks
-- Hiring velocity assumptions
-
-**For each role:**
-
-- Title and department
-- Start date (month/quarter)
-- Base salary
-- Fully-loaded cost (salary × 1.3-1.4)
-- Equity grant
-
-**Track departmental ratios:**
-
-- Engineering: 40-50% of team
-- Sales & Marketing: 25-35%
-- G&A: 10-15%
-- Product/CS: 10-15%
-
-### Step 6: Calculate Cash Flow
-
-Monthly cash flow projection:
+**公式：**
 
 ```
-Beginning Cash Balance
-+ Cash Collected (revenue, consider payment terms)
-- Operating Expenses
-- CapEx
-= Ending Cash Balance
-
-Monthly Burn = Revenue - Expenses (if negative)
-Runway = Cash Balance / Monthly Burn Rate
+MRR (第 N 月) = 所有队列求和:
+  (队列规模 × 留存率 × ARPU) + 扩展收入
 ```
 
-**Include Funding Events:**
+**预测粒度：**
 
-- Timing of raises
-- Amount raised
-- Use of proceeds
-- Impact on cash balance
+- 第 1-2 年：月度明细
+- 第 3 年：季度明细
+- 第 4-5 年：年度
 
-### Step 7: Compute Key Metrics
+### 步骤 4：建模成本结构
 
-Calculate monthly/quarterly:
+分解运营支出：
 
-**Unit Economics:**
+**1. 销售成本 (COGS)**
 
-- CAC (S&M spend / new customers)
-- LTV (ARPU × margin% / churn rate)
-- LTV:CAC ratio (target > 3.0)
-- CAC payback period (target < 18 months)
+- 主机/基础设施（收入百分比或固定）
+- 支付处理（收入百分比）
+- 可变客户支持
+- 第三方服务
 
-**Efficiency Metrics:**
+目标毛利率：
 
-- Burn multiple (net burn / net new ARR) - target < 2.0
-- Magic number (net new ARR / S&M spend) - target > 0.5
-- Rule of 40 (growth% + margin%) - target > 40%
+- SaaS：75-85%
+- 市场平台：60-70%
+- 电子商务：40-60%
 
-**Cash Metrics:**
+**2. 销售与市场 (S&M)**
 
-- Monthly burn rate
-- Runway in months
-- Cash efficiency
+- 销售团队薪酬
+- 市场项目
+- 工具和软件
+- 目标：占收入的 40-60%（早期阶段）
 
-### Step 8: Create Three Scenarios
+**3. 研发 (R&D)**
 
-Build conservative, base, and optimistic projections:
+- 工程团队
+- 产品管理
+- 设计
+- 目标：占收入的 30-40%
 
-**Conservative (P10):**
+**4. 行政管理 (G&A)**
 
-- New customers: -30% vs. base
-- Churn: +20% vs. base
-- Pricing: -15% vs. base
-- CAC: +25% vs. base
+- 高管团队
+- 财务、法务、人力资源
+- 办公和设施
+- 目标：占收入的 15-25%
 
-**Base (P50):**
+### 步骤 5：规划人员
 
-- Most likely assumptions
-- Primary planning scenario
+创建按角色的招聘计划：
 
-**Optimistic (P90):**
+**参考 team-composition-analysis 技能以获取：**
 
-- New customers: +30% vs. base
-- Churn: -20% vs. base
-- Pricing: +15% vs. base
-- CAC: -25% vs. base
+- 按阶段的角色配置
+- 薪酬基准
+- 招聘速度假设
 
-### Step 9: Generate Financial Model Report
+**对于每个角色：**
 
-Create comprehensive markdown report with tables:
+- 职称和部门
+- 开始日期（月/季度）
+- 基本工资
+- 综合成本（工资 × 1.3-1.4）
+- 股权授予
 
-**Section 1: Executive Summary**
+**跟踪部门比例：**
 
-- 3-5 year financial snapshot
-- Key metrics at scale
-- Funding requirements
+- 工程：占团队的 40-50%
+- 销售与市场：25-35%
+- 行政管理：10-15%
+- 产品/客户成功：10-15%
 
-**Section 2: Model Assumptions**
+### 步骤 6：计算现金流
 
-- Revenue model and pricing
-- Growth assumptions
-- Cost structure assumptions
-- Headcount plan summary
+月度现金流预测：
 
-**Section 3: Revenue Projections**
-Monthly/quarterly tables showing:
+```
+期初现金余额
++ 现金回收（收入，考虑付款条款）
+- 运营支出
+- 资本支出
+= 期末现金余额
+
+月度烧钱额 = 收入 - 支出（如为负值）
+现金跑道 = 现金余额 / 月度烧钱率
+```
+
+**包含融资事件：**
+
+- 融资时机
+- 融资金额
+- 资金用途
+- 对现金余额的影响
+
+### 步骤 7：计算关键指标
+
+按月/季度计算：
+
+**单体经济模型：**
+
+- CAC（S&M 支出 / 新客户）
+- LTV（ARPU × 毛利率% / 流失率）
+- LTV:CAC 比率（目标 > 3.0）
+- CAC 回收期（目标 < 18 个月）
+
+**效率指标：**
+
+- 烧钱倍数（净烧钱 / 净新增 ARR）- 目标 < 2.0
+- 魔法数字（净新增 ARR / S&M 支出）- 目标 > 0.5
+- 40 法则（增长率% + 毛利率%）- 目标 > 40%
+
+**现金流指标：**
+
+- 月度烧钱率
+- 现金跑道（月数）
+- 现金效率
+
+### 步骤 8：创建三种情景
+
+构建保守、基准和乐观预测：
+
+**保守情景 (P10)：**
+
+- 新客户：较基准 -30%
+- 流失率：较基准 +20%
+- 定价：较基准 -15%
+- CAC：较基准 +25%
+
+**基准情景 (P50)：**
+
+- 最可能的假设
+- 主要规划情景
+
+**乐观情景 (P90)：**
+
+- 新客户：较基准 +30%
+- 流失率：较基准 -20%
+- 定价：较基准 +15%
+- CAC：较基准 -25%
+
+### 步骤 9：生成财务模型报告
+
+创建包含表格的综合 markdown 报告：
+
+**第 1 部分：执行摘要**
+
+- 3-5 年财务快照
+- 规模化关键指标
+- 融资需求
+
+**第 2 部分：模型假设**
+
+- 收入模式和定价
+- 增长假设
+- 成本结构假设
+- 人员规划摘要
+
+**第 3 部分：收入预测**
+月度/季度表格显示：
 
 ```
 | Month | New Customers | Total Customers | MRR | ARR | Growth % |
 |-------|---------------|-----------------|-----|-----|----------|
 ```
 
-**Section 4: Cost Breakdown**
+**第 4 部分：成本分解**
 
 ```
 | Department | Year 1 | Year 2 | Year 3 | % Revenue |
@@ -258,7 +258,7 @@ Monthly/quarterly tables showing:
 | G&A        | $X     | $Y     | $Z     | XX%       |
 ```
 
-**Section 5: Headcount Plan**
+**第 5 部分：人员规划**
 
 ```
 | Department | Current | Year 1 | Year 2 | Year 3 |
@@ -266,14 +266,14 @@ Monthly/quarterly tables showing:
 | Engineering| X       | Y      | Z      | W      |
 ```
 
-**Section 6: Cash Flow Analysis**
+**第 6 部分：现金流分析**
 
 ```
 | Quarter | Revenue | Expenses | Net Burn | Cash Balance | Runway |
 |---------|---------|----------|----------|--------------|--------|
 ```
 
-**Section 7: Key Metrics**
+**第 7 部分：关键指标**
 
 ```
 | Metric | Year 1 | Year 2 | Year 3 | Target |
@@ -283,7 +283,7 @@ Monthly/quarterly tables showing:
 | Burn Multiple | X | Y | Z | <2.0 |
 ```
 
-**Section 8: Scenario Analysis**
+**第 8 部分：情景分析**
 
 ```
 | Scenario | Year 3 ARR | Customers | Burn | Runway |
@@ -293,59 +293,59 @@ Monthly/quarterly tables showing:
 | Optimistic | $X | Y | $Z | W mo |
 ```
 
-**Section 9: Funding Requirements**
+**第 9 部分：融资需求**
 
-- Amount needed
-- Use of proceeds breakdown
-- Milestones to achieve
-- Expected valuation impact
+- 所需金额
+- 资金用途分解
+- 需达成的里程碑
+- 预期估值影响
 
-**Section 10: Validation**
+**第 10 部分：验证**
 
-- Sanity checks performed
-- Benchmark comparisons
-- Risk factors
-- Assumptions to monitor
+- 执行的合理性检查
+- 基准比较
+- 风险因素
+- 需监控的假设
 
-### Step 10: Save Model
+### 步骤 10：保存模型
 
-Offer to save as markdown file:
+提议保存为 markdown 文件：
 
-- Suggest filename: `financial-projections-YYYY-MM-DD.md`
-- Include note that user can convert to Excel/Sheets
-- Provide formulas for key calculations
+- 建议文件名：`financial-projections-YYYY-MM-DD.md`
+- 包含说明：用户可以转换为 Excel/Sheets
+- 提供关键计算的公式
 
-## Financial Model Best Practices
+## 财务模型最佳实践
 
-**Do:**
+**应做：**
 
-- Use cohort-based revenue model
-- Include 3 scenarios
-- Show monthly detail (Year 1-2)
-- Calculate key metrics
-- Validate against benchmarks
-- Document all assumptions
-- Show cash flow and runway
-- Include fundraising milestones
+- 使用基于队列的收入模型
+- 包含 3 种情景
+- 显示月度明细（第 1-2 年）
+- 计算关键指标
+- 与基准进行验证
+- 记录所有假设
+- 显示现金流和现金跑道
+- 包含融资里程碑
 
-**Don't:**
+**不应做：**
 
-- Be overly optimistic on growth
-- Underestimate costs
-- Forget fully-loaded compensation
-- Ignore cash timing
-- Skip scenario analysis
-- Use static headcount
-- Forget to validate
+- 对增长过于乐观
+- 低估成本
+- 忘记综合薪酬
+- 忽视现金流时机
+- 跳过情景分析
+- 使用静态人员配置
+- 忘记验证
 
-## Integration with Other Commands
+## 与其他命令的集成
 
-Pairs well with:
+与以下命令配合使用效果良好：
 
-- `/market-opportunity` - Use SOM for revenue ceiling
-- `/business-case` - Include projections in business case
+- `/market-opportunity` - 使用可服务市场作为收入上限
+- `/business-case` - 将预测包含在商业案例中
 
-## Example Usage
+## 使用示例
 
 ```
 User: /financial-projections
@@ -364,11 +364,11 @@ Growth assumptions?
 [Claude builds complete model with all sections]
 ```
 
-## Notes
+## 注意事项
 
-- Model building takes 45-90 minutes
-- Results in comprehensive planning tool
-- Update monthly to track vs. actuals
-- Share with investors and board
-- Use for fundraising decks
-- Basis for budget and hiring decisions
+- 模型构建需要 45-90 分钟
+- 生成综合规划工具
+- 每月更新以跟踪实际表现
+- 与投资人和董事会分享
+- 用于融资演示文稿
+- 作为预算和招聘决策的基础

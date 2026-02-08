@@ -1,52 +1,52 @@
 ---
 name: workflow-patterns
-description: Use this skill when implementing tasks according to Conductor's TDD workflow, handling phase checkpoints, managing git commits for tasks, or understanding the verification protocol.
+description: 使用此技能来按照 Conductor 的 TDD 工作流程实施任务、处理阶段检查点、管理任务的 git 提交或理解验证协议。
 version: 1.0.0
 ---
 
-# Workflow Patterns
+# 工作流程模式
 
-Guide for implementing tasks using Conductor's TDD workflow, managing phase checkpoints, handling git commits, and executing the verification protocol that ensures quality throughout implementation.
+使用 Conductor 的 TDD 工作流程实施任务、管理阶段检查点、处理 git 提交和执行验证协议以确保实施质量的指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Implementing tasks from a track's plan.md
-- Following TDD red-green-refactor cycle
-- Completing phase checkpoints
-- Managing git commits and notes
-- Understanding quality assurance gates
-- Handling verification protocols
-- Recording progress in plan files
+- 从 track 的 plan.md 实施任务
+- 遵循 TDD 红绿重构循环
+- 完成阶段检查点
+- 管理 git 提交和注释
+- 理解质量保证门
+- 处理验证协议
+- 在计划文件中记录进度
 
-## TDD Task Lifecycle
+## TDD 任务生命周期
 
-Follow these 11 steps for each task:
+为每个任务遵循这 11 个步骤：
 
-### Step 1: Select Next Task
+### 步骤 1：选择下一个任务
 
-Read plan.md and identify the next pending `[ ]` task. Select tasks in order within the current phase. Do not skip ahead to later phases.
+阅读 plan.md 并识别下一个待处理 `[ ]` 任务。在当前阶段内按顺序选择任务。不要跳到后面的阶段。
 
-### Step 2: Mark as In Progress
+### 步骤 2：标记为进行中
 
-Update plan.md to mark the task as `[~]`:
+更新 plan.md 将任务标记为 `[~]`：
 
 ```markdown
-- [~] **Task 2.1**: Implement user validation
+- [~] **任务 2.1**：实施用户验证
 ```
 
-Commit this status change separately from implementation.
+将此状态更改与实施分开提交。
 
-### Step 3: RED - Write Failing Tests
+### 步骤 3：RED - 编写失败测试
 
-Write tests that define the expected behavior before writing implementation:
+在编写实施之前编写定义预期行为的测试：
 
-- Create test file if needed
-- Write test cases covering happy path
-- Write test cases covering edge cases
-- Write test cases covering error conditions
-- Run tests - they should FAIL
+- 如需要则创建测试文件
+- 编写覆盖正常路径的测试用例
+- 编写覆盖边缘情况的测试用例
+- 编写覆盖错误条件的测试用例
+- 运行测试 - 它们应该失败
 
-Example:
+示例：
 
 ```python
 def test_validate_user_email_valid():
@@ -58,50 +58,50 @@ def test_validate_user_email_invalid():
     assert user.validate_email() is False
 ```
 
-### Step 4: GREEN - Implement Minimum Code
+### 步骤 4：GREEN - 实施最少代码
 
-Write the minimum code necessary to make tests pass:
+编写使测试通过所需的最少代码：
 
-- Focus on making tests green, not perfection
-- Avoid premature optimization
-- Keep implementation simple
-- Run tests - they should PASS
+- 专注于使测试变绿，而不是完美
+- 避免过早优化
+- 保持实施简单
+- 运行测试 - 它们应该通过
 
-### Step 5: REFACTOR - Improve Clarity
+### 步骤 5：REFACTOR - 改进清晰度
 
-With green tests, improve the code:
+在测试变绿的情况下，改进代码：
 
-- Extract common patterns
-- Improve naming
-- Remove duplication
-- Simplify logic
-- Run tests after each change - they should remain GREEN
+- 提取通用模式
+- 改进命名
+- 删除重复
+- 简化逻辑
+- 每次更改后运行测试 - 它们应保持变绿
 
-### Step 6: Verify Coverage
+### 步骤 6：验证覆盖率
 
-Check test coverage meets the 80% target:
+检查测试覆盖率是否达到 80% 目标：
 
 ```bash
 pytest --cov=module --cov-report=term-missing
 ```
 
-If coverage is below 80%:
+如果覆盖率低于 80%：
 
-- Identify uncovered lines
-- Add tests for missing paths
-- Re-run coverage check
+- 识别未覆盖的行
+- 为缺失路径添加测试
+- 重新运行覆盖率检查
 
-### Step 7: Document Deviations
+### 步骤 7：记录偏差
 
-If implementation deviated from plan or introduced new dependencies:
+如果实施偏离计划或引入新依赖：
 
-- Update tech-stack.md with new dependencies
-- Note deviations in plan.md task comments
-- Update spec.md if requirements changed
+- 使用新依赖更新 tech-stack.md
+- 在 plan.md 任务注释中记录偏差
+- 如果需求更改，更新 spec.md
 
-### Step 8: Commit Implementation
+### 步骤 8：提交实施
 
-Create a focused commit for the task:
+为任务创建聚焦的提交：
 
 ```bash
 git add -A
@@ -115,17 +115,17 @@ Task: 2.1
 Track: user-auth_20250115"
 ```
 
-Commit message format:
+提交消息格式：
 
-- Type: feat, fix, refactor, test, docs, chore
-- Scope: affected module or component
-- Summary: imperative, present tense
-- Body: bullet points of changes
-- Footer: task and track references
+- 类型：feat、fix、refactor、test、docs、chore
+- 范围：受影响的模块或组件
+- 摘要：祈使句，现在时态
+- 正文：更改的要点
+- 页脚：任务和 track 引用
 
-### Step 9: Attach Git Notes
+### 步骤 9：附加 Git 注释
 
-Add rich task summary as git note:
+添加丰富的任务摘要作为 git 注释：
 
 ```bash
 git notes add -m "Task 2.1: Implement user validation
@@ -144,17 +144,17 @@ Decisions:
 - Reason: No external dependency for basic validation"
 ```
 
-### Step 10: Update Plan with SHA
+### 步骤 10：使用 SHA 更新计划
 
-Update plan.md to mark task complete with commit SHA:
+更新 plan.md 标记任务完成并附带提交 SHA：
 
 ```markdown
-- [x] **Task 2.1**: Implement user validation `abc1234`
+- [x] **任务 2.1**：实施用户验证 `abc1234`
 ```
 
-### Step 11: Commit Plan Update
+### 步骤 11：提交计划更新
 
-Commit the plan status update:
+提交计划状态更新：
 
 ```bash
 git add conductor/tracks/*/plan.md
@@ -163,68 +163,68 @@ git commit -m "docs: update plan - task 2.1 complete
 Track: user-auth_20250115"
 ```
 
-## Phase Completion Protocol
+## 阶段完成协议
 
-When all tasks in a phase are complete, execute the verification protocol:
+当阶段中的所有任务完成时，执行验证协议：
 
-### Identify Changed Files
+### 识别已更改的文件
 
-List all files modified since the last checkpoint:
+列出自上次检查点以来修改的所有文件：
 
 ```bash
 git diff --name-only <last-checkpoint-sha>..HEAD
 ```
 
-### Ensure Test Coverage
+### 确保测试覆盖率
 
-For each modified file:
+对于每个修改的文件：
 
-1. Identify corresponding test file
-2. Verify tests exist for new/changed code
-3. Run coverage for modified modules
-4. Add tests if coverage < 80%
+1. 识别相应的测试文件
+2. 验证新/更改代码的测试存在
+3. 为修改的模块运行覆盖率
+4. 如果覆盖率 < 80%，添加测试
 
-### Run Full Test Suite
+### 运行完整测试套件
 
-Execute complete test suite:
+执行完整测试套件：
 
 ```bash
 pytest -v --tb=short
 ```
 
-All tests must pass before proceeding.
+所有测试必须在继续之前通过。
 
-### Generate Manual Verification Steps
+### 生成手动验证步骤
 
-Create checklist of manual verifications:
+创建手动验证清单：
 
 ```markdown
-## Phase 1 Verification Checklist
+## 阶段 1 验证清单
 
-- [ ] User can register with valid email
-- [ ] Invalid email shows appropriate error
-- [ ] Database stores user correctly
-- [ ] API returns expected response codes
+- [ ] 用户可以使用有效电子邮件注册
+- [ ] 无效电子邮件显示适当的错误
+- [ ] 数据库正确存储用户
+- [ ] API 返回预期的响应代码
 ```
 
-### WAIT for User Approval
+### 等待用户批准
 
-Present verification checklist to user:
+向用户展示验证清单：
 
 ```
-Phase 1 complete. Please verify:
-1. [ ] Test suite passes (automated)
-2. [ ] Coverage meets target (automated)
-3. [ ] Manual verification items (requires human)
+阶段 1 完成。请验证：
+1. [ ] 测试套件通过（自动）
+2. [ ] 覆盖率满足目标（自动）
+3. [ ] 手动验证项目（需要人工）
 
-Respond with 'approved' to continue, or note issues.
+回复 'approved' 以继续，或记录问题。
 ```
 
-Do NOT proceed without explicit approval.
+未经明确批准不得继续。
 
-### Create Checkpoint Commit
+### 创建检查点提交
 
-After approval, create checkpoint commit:
+批准后，创建检查点提交：
 
 ```bash
 git add -A
@@ -241,77 +241,77 @@ Phase 1 tasks:
 - [x] Task 1.3: Add validation logic"
 ```
 
-### Record Checkpoint SHA
+### 记录检查点 SHA
 
-Update plan.md checkpoints table:
+更新 plan.md 检查点表：
 
 ```markdown
-## Checkpoints
+## 检查点
 
-| Phase   | Checkpoint SHA | Date       | Status   |
+| 阶段   | 检查点 SHA | 日期       | 状态   |
 | ------- | -------------- | ---------- | -------- |
-| Phase 1 | def5678        | 2025-01-15 | verified |
-| Phase 2 |                |            | pending  |
+| 阶段 1 | def5678        | 2025-01-15 | verified |
+| 阶段 2 |                |            | pending  |
 ```
 
-## Quality Assurance Gates
+## 质量保证门
 
-Before marking any task complete, verify these gates:
+在标记任何任务完成之前，验证这些门：
 
-### Passing Tests
+### 通过的测试
 
-- All existing tests pass
-- New tests pass
-- No test regressions
+- 所有现有测试通过
+- 新测试通过
+- 没有测试回归
 
-### Coverage >= 80%
+### 覆盖率 >= 80%
 
-- New code has 80%+ coverage
-- Overall project coverage maintained
-- Critical paths fully covered
+- 新代码有 80%+ 覆盖率
+- 保持整体项目覆盖率
+- 关键路径完全覆盖
 
-### Style Compliance
+### 风格合规
 
-- Code follows style guides
-- Linting passes
-- Formatting correct
+- 代码遵循风格指南
+- Linting 通过
+- 格式正确
 
-### Documentation
+### 文档
 
-- Public APIs documented
-- Complex logic explained
-- README updated if needed
+- 公共 API 已记录
+- 解释了复杂逻辑
+- 如需要则更新 README
 
-### Type Safety
+### 类型安全
 
-- Type hints present (if applicable)
-- Type checker passes
-- No type: ignore without reason
+- 存在类型提示（如适用）
+- 类型检查器通过
+- 没有原因的 `type: ignore`
 
-### No Linting Errors
+### 无 Linting 错误
 
-- Zero linter errors
-- Warnings addressed or justified
-- Static analysis clean
+- 零 linter 错误
+- 已解决或证明警告合理
+- 静态分析干净
 
-### Mobile Compatibility
+### 移动兼容性
 
-If applicable:
+如适用：
 
-- Responsive design verified
-- Touch interactions work
-- Performance acceptable
+- 验证响应式设计
+- 触摸交互有效
+- 性能可接受
 
-### Security Audit
+### 安全审计
 
-- No secrets in code
-- Input validation present
-- Authentication/authorization correct
-- Dependencies vulnerability-free
+- 代码中没有秘密
+- 存在输入验证
+- 身份验证/授权正确
+- 依赖项无漏洞
 
-## Git Integration
+## Git 集成
 
-### Commit Message Format
+### 提交消息格式
 
 ```
 <type>(<scope>): <subject>
@@ -321,303 +321,307 @@ If applicable:
 <footer>
 ```
 
-Types:
+类型：
 
-- `feat`: New feature
-- `fix`: Bug fix
-- `refactor`: Code change without feature/fix
-- `test`: Adding tests
-- `docs`: Documentation
-- `chore`: Maintenance
+- `feat`：新功能
+- `fix`：Bug 修复
+- `refactor`：没有功能/修复的代码更改
+- `test`：添加测试
+- `docs`：文档
+- `chore`：维护
 
-### Git Notes for Rich Summaries
+### Git 注释用于丰富摘要
 
-Attach detailed notes to commits:
+向提交附加详细注释：
 
 ```bash
 git notes add -m "<detailed summary>"
 ```
 
-View notes:
+查看注释：
 
 ```bash
 git log --show-notes
 ```
 
-Benefits:
+好处：
 
-- Preserves context without cluttering commit message
-- Enables semantic queries across commits
-- Supports track-based operations
+- 在不杂乱提交消息的情况下保留上下文
+- 启用跨提交的语义查询
+- 支持基于 track 的操作
 
-### SHA Recording in plan.md
+### 在 plan.md 中记录 SHA
 
-Always record the commit SHA when completing tasks:
+完成任务时始终记录提交 SHA：
 
 ```markdown
-- [x] **Task 1.1**: Setup schema `abc1234`
-- [x] **Task 1.2**: Add model `def5678`
+- [x] **任务 1.1**：设置模式 `abc1234`
+- [x] **任务 1.2**：添加模型 `def5678`
 ```
 
-This enables:
+这实现：
 
-- Traceability from plan to code
-- Semantic revert operations
-- Progress auditing
+- 从计划到代码的可追溯性
+- 语义撤销操作
+- 进度审计
 
-## Verification Checkpoints
+## 验证检查点
 
-### Why Checkpoints Matter
+### 为什么检查点很重要
 
-Checkpoints create restore points for semantic reversion:
+检查点为语义撤销创建恢复点：
 
-- Revert to end of any phase
-- Maintain logical code state
-- Enable safe experimentation
+- 撤销到任何阶段的结束
+- 维护逻辑代码状态
+- 启用安全实验
 
-### When to Create Checkpoints
+### 何时创建检查点
 
-Create checkpoint after:
+在以下情况后创建检查点：
 
-- All phase tasks complete
-- All phase verifications pass
-- User approval received
+- 所有阶段任务完成
+- 所有阶段验证通过
+- 收到用户批准
 
-### Checkpoint Commit Content
+### 检查点提交内容
 
-Include in checkpoint commit:
+在检查点提交中包括：
 
-- All uncommitted changes
-- Updated plan.md
-- Updated metadata.json
-- Any documentation updates
+- 所有未提交的更改
+- 更新的 plan.md
+- 更新的 metadata.json
+- 任何文档更新
 
-### How to Use Checkpoints
+### 如何使用检查点
 
-For reverting:
+用于撤销：
 
 ```bash
-# Revert to end of Phase 1
+# 撤销到阶段 1 结束
 git revert --no-commit <phase-2-commits>...
 git commit -m "revert: rollback to phase 1 checkpoint"
 ```
 
-For review:
+用于审查：
 
 ```bash
-# See what changed in Phase 2
+# 查看阶段 2 中更改的内容
 git diff <phase-1-sha>..<phase-2-sha>
 ```
 
-## Handling Deviations
+## 处理偏差
 
-During implementation, deviations from the plan may occur. Handle them systematically:
+在实施期间，可能会发生偏离计划的情况。系统地处理它们：
 
-### Types of Deviations
+### 偏差类型
 
-**Scope Addition**
-Discovered requirement not in original spec.
+**范围增加**
 
-- Document in spec.md as new requirement
-- Add tasks to plan.md
-- Note addition in task comments
+发现原始规范中未包含的需求。
 
-**Scope Reduction**
-Feature deemed unnecessary during implementation.
+- 在 spec.md 中记录为新需求
+- 将任务添加到 plan.md
+- 在任务注释中记录增加
 
-- Mark tasks as `[-]` (skipped) with reason
-- Update spec.md scope section
-- Document decision rationale
+**范围减少**
 
-**Technical Deviation**
-Different implementation approach than planned.
+实施期间被认为不必要的功能。
 
-- Note deviation in task completion comment
-- Update tech-stack.md if dependencies changed
-- Document why original approach was unsuitable
+- 使用原因将任务标记为 `[-]`（已跳过）
+- 更新 spec.md 范围部分
+- 记录决策理由
 
-**Requirement Change**
-Understanding of requirement changes during work.
+**技术偏差**
 
-- Update spec.md with corrected requirement
-- Adjust plan.md tasks if needed
-- Re-verify acceptance criteria
+与计划不同的实施方法。
 
-### Deviation Documentation Format
+- 在任务完成注释中记录偏差
+- 如果依赖更改，更新 tech-stack.md
+- 记录为什么原始方法不合适
 
-When completing a task with deviation:
+**需求变更**
+
+工作期间对需求的理解发生变化。
+
+- 使用更正的需求更新 spec.md
+- 如需要则调整 plan.md 任务
+- 重新验证验收标准
+
+### 偏差文档格式
+
+完成有偏差的任务时：
 
 ```markdown
-- [x] **Task 2.1**: Implement validation `abc1234`
-  - DEVIATION: Used library instead of custom code
-  - Reason: Better edge case handling
-  - Impact: Added email-validator to dependencies
+- [x] **任务 2.1**：实施验证 `abc1234`
+  - DEVIATION: 使用库而不是自定义代码
+  - Reason: 更好的边缘情况处理
+  - Impact: 将 email-validator 添加到依赖
 ```
 
-## Error Recovery
+## 错误恢复
 
-### Failed Tests After GREEN
+### GREEN 后测试失败
 
-If tests fail after reaching GREEN:
+如果在达到 GREEN 后测试失败：
 
-1. Do NOT proceed to REFACTOR
-2. Identify which test started failing
-3. Check if refactoring broke something
-4. Revert to last known GREEN state
-5. Re-approach the implementation
+1. 不要继续到 REFACTOR
+2. 识别哪个测试开始失败
+3. 检查重构是否破坏了某些东西
+4. 恢复到最后已知的 GREEN 状态
+5. 重新接近实施
 
-### Checkpoint Rejection
+### 检查点被拒绝
 
-If user rejects a checkpoint:
+如果用户拒绝检查点：
 
-1. Note rejection reason in plan.md
-2. Create tasks to address issues
-3. Complete remediation tasks
-4. Request checkpoint approval again
+1. 在 plan.md 中记录拒绝原因
+2. 创建解决问题的任务
+3. 完成补救任务
+4. 再次请求检查点批准
 
-### Blocked by Dependency
+### 被依赖阻塞
 
-If task cannot proceed:
+如果任务无法继续：
 
-1. Mark task as `[!]` with blocker description
-2. Check if other tasks can proceed
-3. Document expected resolution timeline
-4. Consider creating dependency resolution track
+1. 使用阻塞描述将任务标记为 `[!]`
+2. 检查其他任务是否可以继续
+3. 记录预期解决时间表
+4. 考虑创建依赖解决 track
 
-## TDD Variations by Task Type
+## 按任务类型的 TDD 变体
 
-### Data Model Tasks
-
-```
-RED: Write test for model creation and validation
-GREEN: Implement model class with fields
-REFACTOR: Add computed properties, improve types
-```
-
-### API Endpoint Tasks
+### 数据模型任务
 
 ```
-RED: Write test for request/response contract
-GREEN: Implement endpoint handler
-REFACTOR: Extract validation, improve error handling
+RED: 编写模型创建和验证的测试
+GREEN: 实施具有字段的模型类
+REFACTOR: 添加计算属性，改进类型
 ```
 
-### Integration Tasks
+### API 端点任务
 
 ```
-RED: Write test for component interaction
-GREEN: Wire components together
-REFACTOR: Improve error propagation, add logging
+RED: 编写请求/响应契约的测试
+GREEN: 实施端点处理程序
+REFACTOR: 提取验证，改进错误处理
 ```
 
-### Refactoring Tasks
+### 集成任务
 
 ```
-RED: Add characterization tests for current behavior
-GREEN: Apply refactoring (tests should stay green)
-REFACTOR: Clean up any introduced complexity
+RED: 编写组件交互的测试
+GREEN: 将组件连接在一起
+REFACTOR: 改进错误传播，添加日志记录
 ```
 
-## Working with Existing Tests
+### 重构任务
 
-When modifying code with existing tests:
+```
+RED: 为当前行为添加表征测试
+GREEN: 应用重构（测试应保持变绿）
+REFACTOR: 清理引入的任何复杂性
+```
 
-### Extend, Don't Replace
+## 使用现有测试
 
-- Keep existing tests passing
-- Add new tests for new behavior
-- Update tests only when requirements change
+修改具有现有测试的代码时：
 
-### Test Migration
+### 扩展，不要替换
 
-When refactoring changes test structure:
+- 保持现有测试通过
+- 为新行为添加新测试
+- 仅在需求更改时更新测试
 
-1. Run existing tests (should pass)
-2. Add new tests for refactored code
-3. Migrate test cases to new structure
-4. Remove old tests only after new tests pass
+### 测试迁移
 
-### Regression Prevention
+当重构改变测试结构时：
 
-After any change:
+1. 运行现有测试（应通过）
+2. 为重构代码添加新测试
+3. 将测试用例迁移到新结构
+4. 仅在新测试通过后删除旧测试
 
-1. Run full test suite
-2. Check for unexpected failures
-3. Investigate any new failures
-4. Fix regressions before proceeding
+### 回归预防
 
-## Checkpoint Verification Details
+任何更改后：
 
-### Automated Verification
+1. 运行完整测试套件
+2. 检查意外失败
+3. 调查任何新失败
+4. 在继续之前修复回归
 
-Run before requesting approval:
+## 检查点验证详细信息
+
+### 自动验证
+
+在请求批准之前运行：
 
 ```bash
-# Test suite
+# 测试套件
 pytest -v --tb=short
 
-# Coverage
+# 覆盖率
 pytest --cov=src --cov-report=term-missing
 
 # Linting
 ruff check src/ tests/
 
-# Type checking (if applicable)
+# 类型检查（如适用）
 mypy src/
 ```
 
-### Manual Verification Guidance
+### 手动验证指导
 
-For manual items, provide specific instructions:
+对于手动项目，提供具体说明：
 
 ```markdown
-## Manual Verification Steps
+## 手动验证步骤
 
-### User Registration
+### 用户注册
 
-1. Navigate to /register
-2. Enter valid email: test@example.com
-3. Enter password meeting requirements
-4. Click Submit
-5. Verify success message appears
-6. Verify user appears in database
+1. 导航到 /register
+2. 输入有效电子邮件：test@example.com
+3. 输入满足要求的密码
+4. 点击提交
+5. 验证成功消息出现
+6. 验证用户出现在数据库中
 
-### Error Handling
+### 错误处理
 
-1. Enter invalid email: "notanemail"
-2. Verify error message shows
-3. Verify form retains other entered data
+1. 输入无效电子邮件："notanemail"
+2. 验证错误消息显示
+3. 验证表单保留其他输入的数据
 ```
 
-## Performance Considerations
+## 性能考虑
 
-### Test Suite Performance
+### 测试套件性能
 
-Keep test suite fast:
+保持测试套件快速：
 
-- Use fixtures to avoid redundant setup
-- Mock slow external calls
-- Run subset during development, full suite at checkpoints
+- 使用夹具避免冗余设置
+- 模拟缓慢的外部调用
+- 在开发期间运行子集，在检查点运行完整套件
 
-### Commit Performance
+### 提交性能
 
-Keep commits atomic:
+保持提交原子性：
 
-- One logical change per commit
-- Complete thought, not work-in-progress
-- Tests should pass after every commit
+- 每个提交一个逻辑更改
+- 完整的想法，而不是进行中
+- 每次提交后测试应通过
 
-## Best Practices
+## 最佳实践
 
-1. **Never skip RED**: Always write failing tests first
-2. **Small commits**: One logical change per commit
-3. **Immediate updates**: Update plan.md right after task completion
-4. **Wait for approval**: Never skip checkpoint verification
-5. **Rich git notes**: Include context that helps future understanding
-6. **Coverage discipline**: Don't accept coverage below target
-7. **Quality gates**: Check all gates before marking complete
-8. **Sequential phases**: Complete phases in order
-9. **Document deviations**: Note any changes from original plan
-10. **Clean state**: Each commit should leave code in working state
-11. **Fast feedback**: Run relevant tests frequently during development
-12. **Clear blockers**: Address blockers promptly, don't work around them
+1. **永远不要跳过 RED**：始终先编写失败测试
+2. **小提交**：每个提交一个逻辑更改
+3. **立即更新**：任务完成后立即更新 plan.md
+4. **等待批准**：永远不要跳过检查点验证
+5. **丰富的 git 注释**：包含有助于未来理解的上下文
+6. **覆盖率纪律**：不接受低于目标的覆盖率
+7. **质量门**：在标记完成之前检查所有门
+8. **顺序阶段**：按顺序完成阶段
+9. **记录偏差**：记录与原始计划的任何更改
+10. **干净状态**：每个提交应使代码处于工作状态
+11. **快速反馈**：在开发期间频繁运行相关测试
+12. **清晰的阻塞项**：及时解决阻塞项，不要绕过它们

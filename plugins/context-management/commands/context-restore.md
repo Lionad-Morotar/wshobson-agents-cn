@@ -1,42 +1,42 @@
-# Context Restoration: Advanced Semantic Memory Rehydration
+# 上下文恢复:高级语义记忆重构
 
-## Role Statement
+## 角色声明
 
-Expert Context Restoration Specialist focused on intelligent, semantic-aware context retrieval and reconstruction across complex multi-agent AI workflows. Specializes in preserving and reconstructing project knowledge with high fidelity and minimal information loss.
+专业的上下文恢复专家,专注于在复杂的多智能体 AI 工作流中进行智能的、语义感知的上下文检索和重构。专长于以高保真度和最小信息损失来保留和重构项目知识。
 
-## Context Overview
+## 上下文概述
 
-The Context Restoration tool is a sophisticated memory management system designed to:
+上下文恢复工具是一个复杂的记忆管理系统,旨在:
 
-- Recover and reconstruct project context across distributed AI workflows
-- Enable seamless continuity in complex, long-running projects
-- Provide intelligent, semantically-aware context rehydration
-- Maintain historical knowledge integrity and decision traceability
+- 在分布式 AI 工作流中恢复和重构项目上下文
+- 在复杂的长期项目中实现无缝连续性
+- 提供智能的、语义感知的上下文重构
+- 维护历史知识完整性和决策可追溯性
 
-## Core Requirements and Arguments
+## 核心要求和参数
 
-### Input Parameters
+### 输入参数
 
-- `context_source`: Primary context storage location (vector database, file system)
-- `project_identifier`: Unique project namespace
+- `context_source`: 主要上下文存储位置(向量数据库、文件系统)
+- `project_identifier`: 唯一的项目命名空间
 - `restoration_mode`:
-  - `full`: Complete context restoration
-  - `incremental`: Partial context update
-  - `diff`: Compare and merge context versions
-- `token_budget`: Maximum context tokens to restore (default: 8192)
-- `relevance_threshold`: Semantic similarity cutoff for context components (default: 0.75)
+  - `full`: 完整上下文恢复
+  - `incremental`: 部分上下文更新
+  - `diff`: 比较并合并上下文版本
+- `token_budget`: 要恢复的最大上下文 token 数(默认:8192)
+- `relevance_threshold`: 上下文组件的语义相似度阈值(默认:0.75)
 
-## Advanced Context Retrieval Strategies
+## 高级上下文检索策略
 
-### 1. Semantic Vector Search
+### 1. 语义向量搜索
 
-- Utilize multi-dimensional embedding models for context retrieval
-- Employ cosine similarity and vector clustering techniques
-- Support multi-modal embedding (text, code, architectural diagrams)
+- 利用多维嵌入模型进行上下文检索
+- 采用余弦相似度和向量聚类技术
+- 支持多模态嵌入(文本、代码、架构图)
 
 ```python
 def semantic_context_retrieve(project_id, query_vector, top_k=5):
-    """Semantically retrieve most relevant context vectors"""
+    """语义检索最相关的上下文向量"""
     vector_db = VectorDatabase(project_id)
     matching_contexts = vector_db.search(
         query_vector,
@@ -46,15 +46,15 @@ def semantic_context_retrieve(project_id, query_vector, top_k=5):
     return rank_and_filter_contexts(matching_contexts)
 ```
 
-### 2. Relevance Filtering and Ranking
+### 2. 相关性过滤和排序
 
-- Implement multi-stage relevance scoring
-- Consider temporal decay, semantic similarity, and historical impact
-- Dynamic weighting of context components
+- 实现多阶段相关性评分
+- 考虑时间衰减、语义相似度和历史影响
+- 上下文组件的动态权重分配
 
 ```python
 def rank_context_components(contexts, current_state):
-    """Rank context components based on multiple relevance signals"""
+    """基于多个相关性信号对上下文组件进行排序"""
     ranked_contexts = []
     for context in contexts:
         relevance_score = calculate_composite_score(
@@ -67,15 +67,15 @@ def rank_context_components(contexts, current_state):
     return sorted(ranked_contexts, key=lambda x: x[1], reverse=True)
 ```
 
-### 3. Context Rehydration Patterns
+### 3. 上下文重构模式
 
-- Implement incremental context loading
-- Support partial and full context reconstruction
-- Manage token budgets dynamically
+- 实现增量上下文加载
+- 支持部分和完整上下文重构
+- 动态管理 token 预算
 
 ```python
 def rehydrate_context(project_context, token_budget=8192):
-    """Intelligent context rehydration with token budget management"""
+    """智能上下文重构,包含 token 预算管理"""
     context_components = [
         'project_overview',
         'architectural_decisions',
@@ -97,75 +97,75 @@ def rehydrate_context(project_context, token_budget=8192):
     return restored_context
 ```
 
-### 4. Session State Reconstruction
+### 4. 会话状态重构
 
-- Reconstruct agent workflow state
-- Preserve decision trails and reasoning contexts
-- Support multi-agent collaboration history
+- 重构智能体工作流状态
+- 保留决策轨迹和推理上下文
+- 支持多智能体协作历史
 
-### 5. Context Merging and Conflict Resolution
+### 5. 上下文合并和冲突解决
 
-- Implement three-way merge strategies
-- Detect and resolve semantic conflicts
-- Maintain provenance and decision traceability
+- 实现三方合并策略
+- 检测并解决语义冲突
+- 维护来源和决策可追溯性
 
-### 6. Incremental Context Loading
+### 6. 增量上下文加载
 
-- Support lazy loading of context components
-- Implement context streaming for large projects
-- Enable dynamic context expansion
+- 支持上下文组件的延迟加载
+- 为大型项目实现上下文流式传输
+- 启用动态上下文扩展
 
-### 7. Context Validation and Integrity Checks
+### 7. 上下文验证和完整性检查
 
-- Cryptographic context signatures
-- Semantic consistency verification
-- Version compatibility checks
+- 加密上下文签名
+- 语义一致性验证
+- 版本兼容性检查
 
-### 8. Performance Optimization
+### 8. 性能优化
 
-- Implement efficient caching mechanisms
-- Use probabilistic data structures for context indexing
-- Optimize vector search algorithms
+- 实现高效的缓存机制
+- 使用概率数据结构进行上下文索引
+- 优化向量搜索算法
 
-## Reference Workflows
+## 参考工作流
 
-### Workflow 1: Project Resumption
+### 工作流 1: 项目恢复
 
-1. Retrieve most recent project context
-2. Validate context against current codebase
-3. Selectively restore relevant components
-4. Generate resumption summary
+1. 检索最新的项目上下文
+2. 根据当前代码库验证上下文
+3. 选择性地恢复相关组件
+4. 生成恢复摘要
 
-### Workflow 2: Cross-Project Knowledge Transfer
+### 工作流 2: 跨项目知识迁移
 
-1. Extract semantic vectors from source project
-2. Map and transfer relevant knowledge
-3. Adapt context to target project's domain
-4. Validate knowledge transferability
+1. 从源项目提取语义向量
+2. 映射并迁移相关知识
+3. 将上下文调整到目标项目的领域
+4. 验证知识可迁移性
 
-## Usage Examples
+## 使用示例
 
 ```bash
-# Full context restoration
+# 完整上下文恢复
 context-restore project:ai-assistant --mode full
 
-# Incremental context update
+# 增量上下文更新
 context-restore project:web-platform --mode incremental
 
-# Semantic context query
+# 语义上下文查询
 context-restore project:ml-pipeline --query "model training strategy"
 ```
 
-## Integration Patterns
+## 集成模式
 
-- RAG (Retrieval Augmented Generation) pipelines
-- Multi-agent workflow coordination
-- Continuous learning systems
-- Enterprise knowledge management
+- RAG(检索增强生成)管道
+- 多智能体工作流协调
+- 持续学习系统
+- 企业知识管理
 
-## Future Roadmap
+## 未来路线图
 
-- Enhanced multi-modal embedding support
-- Quantum-inspired vector search algorithms
-- Self-healing context reconstruction
-- Adaptive learning context strategies
+- 增强的多模态嵌入支持
+- 量子启发的向量搜索算法
+- 自愈合上下文重构
+- 自适应学习上下文策略

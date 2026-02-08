@@ -1,8 +1,8 @@
-# RBAC Patterns and Best Practices
+# RBAC 模式和最佳实践
 
-## Common RBAC Patterns
+## 常见 RBAC 模式
 
-### Pattern 1: Read-Only Access
+### 模式 1: 只读访问
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -15,7 +15,7 @@ rules:
     verbs: ["get", "list", "watch"]
 ```
 
-### Pattern 2: Namespace Admin
+### 模式 2: 命名空间管理员
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -29,7 +29,7 @@ rules:
     verbs: ["*"]
 ```
 
-### Pattern 3: Deployment Manager
+### 模式 3: 部署管理器
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -46,7 +46,7 @@ rules:
     verbs: ["get", "list", "watch"]
 ```
 
-### Pattern 4: Secret Reader (ServiceAccount)
+### 模式 4: 密钥读取器(ServiceAccount)
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -58,7 +58,7 @@ rules:
   - apiGroups: [""]
     resources: ["secrets"]
     verbs: ["get"]
-    resourceNames: ["app-secrets"] # Specific secret only
+    resourceNames: ["app-secrets"] # 仅限特定密钥
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -75,7 +75,7 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
-### Pattern 5: CI/CD Pipeline Access
+### 模式 5: CI/CD 流水线访问
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -94,9 +94,9 @@ rules:
     verbs: ["get", "list"]
 ```
 
-## ServiceAccount Best Practices
+## ServiceAccount 最佳实践
 
-### Create Dedicated ServiceAccounts
+### 创建专用 ServiceAccount
 
 ```yaml
 apiVersion: v1
@@ -113,10 +113,10 @@ spec:
   template:
     spec:
       serviceAccountName: my-app
-      automountServiceAccountToken: false # Disable if not needed
+      automountServiceAccountToken: false # 如不需要则禁用
 ```
 
-### Least-Privilege ServiceAccount
+### 最小权限 ServiceAccount
 
 ```yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -131,56 +131,56 @@ rules:
     resourceNames: ["my-app-config"]
 ```
 
-## Security Best Practices
+## 安全最佳实践
 
-1. **Use Roles over ClusterRoles** when possible
-2. **Specify resourceNames** for fine-grained access
-3. **Avoid wildcard permissions** (`*`) in production
-4. **Create dedicated ServiceAccounts** for each app
-5. **Disable token auto-mounting** if not needed
-6. **Regular RBAC audits** to remove unused permissions
-7. **Use groups** for user management
-8. **Implement namespace isolation**
-9. **Monitor RBAC usage** with audit logs
-10. **Document role purposes** in metadata
+1. **尽可能使用 Roles 而非 ClusterRoles**
+2. **指定 resourceNames** 以实现细粒度访问
+3. **避免生产环境中的通配符权限** (`*`)
+4. **为每个应用创建专用 ServiceAccount**
+5. **如不需要则禁用令牌自动挂载**
+6. **定期 RBAC 审计** 以删除未使用的权限
+7. **使用组** 进行用户管理
+8. **实施命名空间隔离**
+9. **使用审计日志监控 RBAC 使用情况**
+10. **在元数据中记录角色用途**
 
-## Troubleshooting RBAC
+## RBAC 故障排查
 
-### Check User Permissions
+### 检查用户权限
 
 ```bash
 kubectl auth can-i list pods --as john@example.com
 kubectl auth can-i '*' '*' --as system:serviceaccount:default:my-app
 ```
 
-### View Effective Permissions
+### 查看有效权限
 
 ```bash
 kubectl describe clusterrole cluster-admin
 kubectl describe rolebinding -n production
 ```
 
-### Debug Access Issues
+### 调试访问问题
 
 ```bash
 kubectl get rolebindings,clusterrolebindings --all-namespaces -o wide | grep my-user
 ```
 
-## Common RBAC Verbs
+## 常见 RBAC 动词
 
-- `get` - Read a specific resource
-- `list` - List all resources of a type
-- `watch` - Watch for resource changes
-- `create` - Create new resources
-- `update` - Update existing resources
-- `patch` - Partially update resources
-- `delete` - Delete resources
-- `deletecollection` - Delete multiple resources
-- `*` - All verbs (avoid in production)
+- `get` - 读取特定资源
+- `list` - 列出某种类型的所有资源
+- `watch` - 监视资源更改
+- `create` - 创建新资源
+- `update` - 更新现有资源
+- `patch` - 部分更新资源
+- `delete` - 删除资源
+- `deletecollection` - 删除多个资源
+- `*` - 所有动词(生产环境中避免使用)
 
-## Resource Scope
+## 资源范围
 
-### Cluster-Scoped Resources
+### 集群范围资源
 
 - Nodes
 - PersistentVolumes
@@ -188,7 +188,7 @@ kubectl get rolebindings,clusterrolebindings --all-namespaces -o wide | grep my-
 - ClusterRoleBindings
 - Namespaces
 
-### Namespace-Scoped Resources
+### 命名空间范围资源
 
 - Pods
 - Services

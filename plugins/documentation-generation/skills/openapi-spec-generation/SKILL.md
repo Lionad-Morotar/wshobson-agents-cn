@@ -1,29 +1,29 @@
 ---
 name: openapi-spec-generation
-description: Generate and maintain OpenAPI 3.1 specifications from code, design-first specs, and validation patterns. Use when creating API documentation, generating SDKs, or ensuring API contract compliance.
+description: 从代码、设计优先规范和验证模式生成和维护 OpenAPI 3.1 规范。用于创建 API 文档、生成 SDK 或确保 API 契约合规。
 ---
 
-# OpenAPI Spec Generation
+# OpenAPI 规范生成
 
-Comprehensive patterns for creating, maintaining, and validating OpenAPI 3.1 specifications for RESTful APIs.
+用于创建、维护和验证 RESTful API 的 OpenAPI 3.1 规范的综合模式。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Creating API documentation from scratch
-- Generating OpenAPI specs from existing code
-- Designing API contracts (design-first approach)
-- Validating API implementations against specs
-- Generating client SDKs from specs
-- Setting up API documentation portals
+- 从头开始创建 API 文档
+- 从现有代码生成 OpenAPI 规范
+- 设计 API 契约（设计优先方法）
+- 根据规范验证 API 实现
+- 从规范生成客户端 SDK
+- 设置 API 文档门户
 
-## Core Concepts
+## 核心概念
 
-### 1. OpenAPI 3.1 Structure
+### 1. OpenAPI 3.1 结构
 
 ```yaml
 openapi: 3.1.0
 info:
-  title: API Title
+  title: API 标题
   version: 1.0.0
 servers:
   - url: https://api.example.com/v1
@@ -35,34 +35,34 @@ components:
   securitySchemes: ...
 ```
 
-### 2. Design Approaches
+### 2. 设计方法
 
 | Approach         | Description                  | Best For            |
 | ---------------- | ---------------------------- | ------------------- |
-| **Design-First** | Write spec before code       | New APIs, contracts |
-| **Code-First**   | Generate spec from code      | Existing APIs       |
-| **Hybrid**       | Annotate code, generate spec | Evolving APIs       |
+| **设计优先**     | 在代码之前编写规范           | 新 API、契约        |
+| **代码优先**     | 从代码生成规范               | 现有 API            |
+| **混合**         | 注释代码，生成规范           | 演化中的 API        |
 
-## Templates
+## 模板
 
-### Template 1: Complete API Specification
+### 模板 1：完整 API 规范
 
 ```yaml
 openapi: 3.1.0
 info:
-  title: User Management API
+  title: 用户管理 API
   description: |
-    API for managing users and their profiles.
+    用于管理用户及其配置文件的 API。
 
-    ## Authentication
-    All endpoints require Bearer token authentication.
+    ## 身份验证
+    所有端点都需要 Bearer 令牌身份验证。
 
-    ## Rate Limiting
-    - 1000 requests per minute for standard tier
-    - 10000 requests per minute for enterprise tier
+    ## 速率限制
+    - 标准层级每分钟 1000 个请求
+    - 企业层级每分钟 10000 个请求
   version: 2.0.0
   contact:
-    name: API Support
+    name: API 支持
     email: api-support@example.com
     url: https://docs.example.com
   license:
@@ -71,46 +71,46 @@ info:
 
 servers:
   - url: https://api.example.com/v2
-    description: Production
+    description: 生产环境
   - url: https://staging-api.example.com/v2
-    description: Staging
+    description: 预发布环境
   - url: http://localhost:3000/v2
-    description: Local development
+    description: 本地开发
 
 tags:
-  - name: Users
-    description: User management operations
-  - name: Profiles
-    description: User profile operations
-  - name: Admin
-    description: Administrative operations
+  - name: 用户
+    description: 用户管理操作
+  - name: 配置文件
+    description: 用户配置文件操作
+  - name: 管理
+    description: 管理操作
 
 paths:
   /users:
     get:
       operationId: listUsers
-      summary: List all users
-      description: Returns a paginated list of users with optional filtering.
+      summary: 列出所有用户
+      description: 返回带有可选过滤的用户分页列表。
       tags:
-        - Users
+        - 用户
       parameters:
         - $ref: "#/components/parameters/PageParam"
         - $ref: "#/components/parameters/LimitParam"
         - name: status
           in: query
-          description: Filter by user status
+          description: 按用户状态过滤
           schema:
             $ref: "#/components/schemas/UserStatus"
         - name: search
           in: query
-          description: Search by name or email
+          description: 按名称或电子邮件搜索
           schema:
             type: string
             minLength: 2
             maxLength: 100
       responses:
         "200":
-          description: Successful response
+          description: 成功响应
           content:
             application/json:
               schema:
@@ -129,10 +129,10 @@ paths:
 
     post:
       operationId: createUser
-      summary: Create a new user
-      description: Creates a new user account and sends welcome email.
+      summary: 创建新用户
+      description: 创建新用户账户并发送欢迎电子邮件。
       tags:
-        - Users
+        - 用户
       requestBody:
         required: true
         content:
@@ -141,34 +141,34 @@ paths:
               $ref: "#/components/schemas/CreateUserRequest"
             examples:
               standard:
-                summary: Standard user
+                summary: 标准用户
                 value:
                   email: user@example.com
                   name: John Doe
                   role: user
               admin:
-                summary: Admin user
+                summary: 管理员用户
                 value:
                   email: admin@example.com
                   name: Admin User
                   role: admin
       responses:
         "201":
-          description: User created successfully
+          description: 用户创建成功
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
           headers:
             Location:
-              description: URL of created user
+              description: 创建用户的 URL
               schema:
                 type: string
                 format: uri
         "400":
           $ref: "#/components/responses/BadRequest"
         "409":
-          description: Email already exists
+          description: 电子邮件已存在
           content:
             application/json:
               schema:
@@ -182,12 +182,12 @@ paths:
 
     get:
       operationId: getUser
-      summary: Get user by ID
+      summary: 按 ID 获取用户
       tags:
-        - Users
+        - 用户
       responses:
         "200":
-          description: Successful response
+          description: 成功响应
           content:
             application/json:
               schema:
@@ -199,9 +199,9 @@ paths:
 
     patch:
       operationId: updateUser
-      summary: Update user
+      summary: 更新用户
       tags:
-        - Users
+        - 用户
       requestBody:
         required: true
         content:
@@ -210,7 +210,7 @@ paths:
               $ref: "#/components/schemas/UpdateUserRequest"
       responses:
         "200":
-          description: User updated
+          description: 用户已更新
           content:
             application/json:
               schema:
@@ -224,13 +224,13 @@ paths:
 
     delete:
       operationId: deleteUser
-      summary: Delete user
+      summary: 删除用户
       tags:
-        - Users
-        - Admin
+        - 用户
+        - 管理
       responses:
         "204":
-          description: User deleted
+          description: 用户已删除
         "404":
           $ref: "#/components/responses/NotFound"
       security:
@@ -252,16 +252,16 @@ components:
           type: string
           format: uuid
           readOnly: true
-          description: Unique user identifier
+          description: 唯一用户标识符
         email:
           type: string
           format: email
-          description: User email address
+          description: 用户电子邮件地址
         name:
           type: string
           minLength: 1
           maxLength: 100
-          description: User display name
+          description: 用户显示名称
         status:
           $ref: "#/components/schemas/UserStatus"
         role:
@@ -275,7 +275,7 @@ components:
         metadata:
           type: object
           additionalProperties: true
-          description: Custom metadata
+          description: 自定义元数据
         createdAt:
           type: string
           format: date-time
@@ -288,7 +288,7 @@ components:
     UserStatus:
       type: string
       enum: [active, inactive, suspended, pending]
-      description: User account status
+      description: 用户账户状态
 
     CreateUserRequest:
       type: object
@@ -375,10 +375,10 @@ components:
       properties:
         code:
           type: string
-          description: Error code for programmatic handling
+          description: 用于程序化处理的错误代码
         message:
           type: string
-          description: Human-readable error message
+          description: 人类可读的错误消息
         details:
           type: array
           items:
@@ -390,14 +390,14 @@ components:
                 type: string
         requestId:
           type: string
-          description: Request ID for support
+          description: 用于支持的请求 ID
 
   parameters:
     UserIdParam:
       name: userId
       in: path
       required: true
-      description: User ID
+      description: 用户 ID
       schema:
         type: string
         format: uuid
@@ -405,7 +405,7 @@ components:
     PageParam:
       name: page
       in: query
-      description: Page number (1-based)
+      description: 页码（从 1 开始）
       schema:
         type: integer
         minimum: 1
@@ -414,7 +414,7 @@ components:
     LimitParam:
       name: limit
       in: query
-      description: Items per page
+      description: 每页项目数
       schema:
         type: integer
         minimum: 1
@@ -423,55 +423,55 @@ components:
 
   responses:
     BadRequest:
-      description: Invalid request
+      description: 无效请求
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
           example:
             code: VALIDATION_ERROR
-            message: Invalid request parameters
+            message: 无效的请求参数
             details:
               - field: email
-                message: Must be a valid email address
+                message: 必须是有效的电子邮件地址
 
     Unauthorized:
-      description: Authentication required
+      description: 需要身份验证
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
           example:
             code: UNAUTHORIZED
-            message: Authentication required
+            message: 需要身份验证
 
     NotFound:
-      description: Resource not found
+      description: 未找到资源
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
           example:
             code: NOT_FOUND
-            message: User not found
+            message: 未找到用户
 
     RateLimited:
-      description: Too many requests
+      description: 请求过多
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
       headers:
         Retry-After:
-          description: Seconds until rate limit resets
+          description: 速率限制重置前的秒数
           schema:
             type: integer
         X-RateLimit-Limit:
-          description: Request limit per window
+          description: 每个窗口的请求限制
           schema:
             type: integer
         X-RateLimit-Remaining:
-          description: Remaining requests in window
+          description: 窗口中剩余的请求数
           schema:
             type: integer
 
@@ -498,22 +498,22 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token from /auth/login
+      description: 来自 /auth/login 的 JWT 令牌
 
     apiKey:
       type: apiKey
       in: header
       name: X-API-Key
-      description: API key for service-to-service calls
+      description: 用于服务对服务调用的 API 密钥
 
 security:
   - bearerAuth: []
 ```
 
-### Template 2: Code-First Generation (Python/FastAPI)
+### 模板 2：代码优先生成（Python/FastAPI）
 
 ```python
-# FastAPI with automatic OpenAPI generation
+# FastAPI 自动生成 OpenAPI
 from fastapi import FastAPI, HTTPException, Query, Path, Depends
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
@@ -522,20 +522,20 @@ from uuid import UUID
 from enum import Enum
 
 app = FastAPI(
-    title="User Management API",
-    description="API for managing users and profiles",
+    title="用户管理 API",
+    description="用于管理用户和配置文件的 API",
     version="2.0.0",
     openapi_tags=[
-        {"name": "Users", "description": "User operations"},
-        {"name": "Profiles", "description": "Profile operations"},
+        {"name": "用户", "description": "用户操作"},
+        {"name": "配置文件", "description": "配置文件操作"},
     ],
     servers=[
-        {"url": "https://api.example.com/v2", "description": "Production"},
-        {"url": "http://localhost:8000", "description": "Development"},
+        {"url": "https://api.example.com/v2", "description": "生产环境"},
+        {"url": "http://localhost:8000", "description": "开发环境"},
     ],
 )
 
-# Enums
+# 枚举
 class UserStatus(str, Enum):
     active = "active"
     inactive = "inactive"
@@ -547,14 +547,14 @@ class UserRole(str, Enum):
     moderator = "moderator"
     admin = "admin"
 
-# Models
+# 模型
 class UserBase(BaseModel):
-    email: EmailStr = Field(..., description="User email address")
-    name: str = Field(..., min_length=1, max_length=100, description="Display name")
+    email: EmailStr = Field(..., description="用户电子邮件地址")
+    name: str = Field(..., min_length=1, max_length=100, description="显示名称")
 
 class UserCreate(UserBase):
     role: UserRole = Field(default=UserRole.user)
-    metadata: Optional[dict] = Field(default=None, description="Custom metadata")
+    metadata: Optional[dict] = Field(default=None, description="自定义元数据")
 
     model_config = {
         "json_schema_extra": {
@@ -575,10 +575,10 @@ class UserUpdate(BaseModel):
     metadata: Optional[dict] = None
 
 class User(UserBase):
-    id: UUID = Field(..., description="Unique identifier")
+    id: UUID = Field(..., description="唯一标识符")
     status: UserStatus
     role: UserRole
-    avatar: Optional[str] = Field(None, description="Avatar URL")
+    avatar: Optional[str] = Field(None, description="头像 URL")
     metadata: Optional[dict] = None
     created_at: datetime = Field(..., alias="createdAt")
     updated_at: Optional[datetime] = Field(None, alias="updatedAt")
@@ -602,108 +602,108 @@ class ErrorDetail(BaseModel):
     message: str
 
 class ErrorResponse(BaseModel):
-    code: str = Field(..., description="Error code")
-    message: str = Field(..., description="Error message")
+    code: str = Field(..., description="错误代码")
+    message: str = Field(..., description="错误消息")
     details: Optional[List[ErrorDetail]] = None
     request_id: Optional[str] = Field(None, alias="requestId")
 
-# Endpoints
+# 端点
 @app.get(
     "/users",
     response_model=UserListResponse,
-    tags=["Users"],
-    summary="List all users",
-    description="Returns a paginated list of users with optional filtering.",
+    tags=["用户"],
+    summary="列出所有用户",
+    description="返回带有可选过滤的用户分页列表。",
     responses={
-        400: {"model": ErrorResponse, "description": "Invalid request"},
-        401: {"model": ErrorResponse, "description": "Unauthorized"},
+        400: {"model": ErrorResponse, "description": "无效请求"},
+        401: {"model": ErrorResponse, "description": "未授权"},
     },
 )
 async def list_users(
-    page: int = Query(1, ge=1, description="Page number"),
-    limit: int = Query(20, ge=1, le=100, description="Items per page"),
-    status: Optional[UserStatus] = Query(None, description="Filter by status"),
+    page: int = Query(1, ge=1, description="页码"),
+    limit: int = Query(20, ge=1, le=100, description="每页项目数"),
+    status: Optional[UserStatus] = Query(None, description="按状态过滤"),
     search: Optional[str] = Query(None, min_length=2, max_length=100),
 ):
     """
-    List users with pagination and filtering.
+    列出带有分页和过滤的用户。
 
-    - **page**: Page number (1-based)
-    - **limit**: Number of items per page (max 100)
-    - **status**: Filter by user status
-    - **search**: Search by name or email
+    - **page**：页码（从 1 开始）
+    - **limit**：每页项目数（最多 100）
+    - **status**：按用户状态过滤
+    - **search**：按名称或电子邮件搜索
     """
-    # Implementation
+    # 实现
     pass
 
 @app.post(
     "/users",
     response_model=User,
     status_code=201,
-    tags=["Users"],
-    summary="Create a new user",
+    tags=["用户"],
+    summary="创建新用户",
     responses={
         400: {"model": ErrorResponse},
-        409: {"model": ErrorResponse, "description": "Email already exists"},
+        409: {"model": ErrorResponse, "description": "电子邮件已存在"},
     },
 )
 async def create_user(user: UserCreate):
-    """Create a new user and send welcome email."""
+    """创建新用户并发送欢迎电子邮件。"""
     pass
 
 @app.get(
     "/users/{user_id}",
     response_model=User,
-    tags=["Users"],
-    summary="Get user by ID",
+    tags=["用户"],
+    summary="按 ID 获取用户",
     responses={404: {"model": ErrorResponse}},
 )
 async def get_user(
-    user_id: UUID = Path(..., description="User ID"),
+    user_id: UUID = Path(..., description="用户 ID"),
 ):
-    """Retrieve a specific user by their ID."""
+    """按其 ID 检索特定用户。"""
     pass
 
 @app.patch(
     "/users/{user_id}",
     response_model=User,
-    tags=["Users"],
-    summary="Update user",
+    tags=["用户"],
+    summary="更新用户",
     responses={
         400: {"model": ErrorResponse},
         404: {"model": ErrorResponse},
     },
 )
 async def update_user(
-    user_id: UUID = Path(..., description="User ID"),
+    user_id: UUID = Path(..., description="用户 ID"),
     user: UserUpdate = ...,
 ):
-    """Update user attributes."""
+    """更新用户属性。"""
     pass
 
 @app.delete(
     "/users/{user_id}",
     status_code=204,
-    tags=["Users", "Admin"],
-    summary="Delete user",
+    tags=["用户", "管理"],
+    summary="删除用户",
     responses={404: {"model": ErrorResponse}},
 )
 async def delete_user(
-    user_id: UUID = Path(..., description="User ID"),
+    user_id: UUID = Path(..., description="用户 ID"),
 ):
-    """Permanently delete a user."""
+    """永久删除用户。"""
     pass
 
-# Export OpenAPI spec
+# 导出 OpenAPI 规范
 if __name__ == "__main__":
     import json
     print(json.dumps(app.openapi(), indent=2))
 ```
 
-### Template 3: Code-First (TypeScript/Express with tsoa)
+### 模板 3：代码优先（TypeScript/Express 与 tsoa）
 
 ```typescript
-// tsoa generates OpenAPI from TypeScript decorators
+// tsoa 从 TypeScript 装饰器生成 OpenAPI
 
 import {
   Controller,
@@ -722,19 +722,19 @@ import {
   Example,
 } from "tsoa";
 
-// Models
+// 模型
 interface User {
-  /** Unique identifier */
+  /** 唯一标识符 */
   id: string;
-  /** User email address */
+  /** 用户电子邮件地址 */
   email: string;
-  /** Display name */
+  /** 显示名称 */
   name: string;
   status: UserStatus;
   role: UserRole;
-  /** Avatar URL */
+  /** 头像 URL */
   avatar?: string;
-  /** Custom metadata */
+  /** 自定义元数据 */
   metadata?: Record<string, unknown>;
   createdAt: Date;
   updatedAt?: Date;
@@ -789,19 +789,19 @@ interface ErrorResponse {
 }
 
 @Route("users")
-@Tags("Users")
+@Tags("用户")
 export class UsersController extends Controller {
   /**
-   * List all users with pagination and filtering
-   * @param page Page number (1-based)
-   * @param limit Items per page (max 100)
-   * @param status Filter by user status
-   * @param search Search by name or email
+   * 列出所有带有分页和过滤的用户
+   * @param page 页码（从 1 开始）
+   * @param limit 每页项目数（最多 100）
+   * @param status 按用户状态过滤
+   * @param search 按名称或电子邮件搜索
    */
   @Get()
   @Security("bearerAuth")
-  @Response<ErrorResponse>(400, "Invalid request")
-  @Response<ErrorResponse>(401, "Unauthorized")
+  @Response<ErrorResponse>(400, "无效请求")
+  @Response<ErrorResponse>(401, "未授权")
   @Example<UserListResponse>({
     data: [
       {
@@ -828,42 +828,42 @@ export class UsersController extends Controller {
     @Query() status?: UserStatus,
     @Query() search?: string,
   ): Promise<UserListResponse> {
-    // Implementation
+    // 实现
     throw new Error("Not implemented");
   }
 
   /**
-   * Create a new user
+   * 创建新用户
    */
   @Post()
   @Security("bearerAuth")
-  @SuccessResponse(201, "Created")
-  @Response<ErrorResponse>(400, "Invalid request")
-  @Response<ErrorResponse>(409, "Email already exists")
+  @SuccessResponse(201, "已创建")
+  @Response<ErrorResponse>(400, "无效请求")
+  @Response<ErrorResponse>(409, "电子邮件已存在")
   public async createUser(@Body() body: CreateUserRequest): Promise<User> {
     this.setStatus(201);
     throw new Error("Not implemented");
   }
 
   /**
-   * Get user by ID
-   * @param userId User ID
+   * 按 ID 获取用户
+   * @param userId 用户 ID
    */
   @Get("{userId}")
   @Security("bearerAuth")
-  @Response<ErrorResponse>(404, "User not found")
+  @Response<ErrorResponse>(404, "未找到用户")
   public async getUser(@Path() userId: string): Promise<User> {
     throw new Error("Not implemented");
   }
 
   /**
-   * Update user attributes
-   * @param userId User ID
+   * 更新用户属性
+   * @param userId 用户 ID
    */
   @Patch("{userId}")
   @Security("bearerAuth")
-  @Response<ErrorResponse>(400, "Invalid request")
-  @Response<ErrorResponse>(404, "User not found")
+  @Response<ErrorResponse>(400, "无效请求")
+  @Response<ErrorResponse>(404, "未找到用户")
   public async updateUser(
     @Path() userId: string,
     @Body() body: UpdateUserRequest,
@@ -872,51 +872,51 @@ export class UsersController extends Controller {
   }
 
   /**
-   * Delete user
-   * @param userId User ID
+   * 删除用户
+   * @param userId 用户 ID
    */
   @Delete("{userId}")
-  @Tags("Users", "Admin")
+  @Tags("用户", "管理")
   @Security("bearerAuth")
-  @SuccessResponse(204, "Deleted")
-  @Response<ErrorResponse>(404, "User not found")
+  @SuccessResponse(204, "已删除")
+  @Response<ErrorResponse>(404, "未找到用户")
   public async deleteUser(@Path() userId: string): Promise<void> {
     this.setStatus(204);
   }
 }
 ```
 
-### Template 4: Validation & Linting
+### 模板 4：验证和检查
 
 ```bash
-# Install validation tools
+# 安装验证工具
 npm install -g @stoplight/spectral-cli
 npm install -g @redocly/cli
 
-# Spectral ruleset (.spectral.yaml)
+# Spectral 规则集 (.spectral.yaml)
 cat > .spectral.yaml << 'EOF'
 extends: ["spectral:oas", "spectral:asyncapi"]
 
 rules:
-  # Enforce operation IDs
+  # 强制操作 ID
   operation-operationId: error
 
-  # Require descriptions
+  # 需要描述
   operation-description: warn
   info-description: error
 
-  # Naming conventions
+  # 命名约定
   operation-operationId-valid-in-url: true
 
-  # Security
+  # 安全
   operation-security-defined: error
 
-  # Response codes
+  # 响应代码
   operation-success-response: error
 
-  # Custom rules
+  # 自定义规则
   path-params-snake-case:
-    description: Path parameters should be snake_case
+    description: 路径参数应为 snake_case
     severity: warn
     given: "$.paths[*].parameters[?(@.in == 'path')].name"
     then:
@@ -925,7 +925,7 @@ rules:
         match: "^[a-z][a-z0-9_]*$"
 
   schema-properties-camelCase:
-    description: Schema properties should be camelCase
+    description: 模式属性应为 camelCase
     severity: warn
     given: "$.components.schemas[*].properties[*]~"
     then:
@@ -934,10 +934,10 @@ rules:
         type: camel
 EOF
 
-# Run Spectral
+# 运行 Spectral
 spectral lint openapi.yaml
 
-# Redocly config (redocly.yaml)
+# Redocly 配置 (redocly.yaml)
 cat > redocly.yaml << 'EOF'
 extends:
   - recommended
@@ -965,60 +965,60 @@ theme:
         - lang: javascript
 EOF
 
-# Run Redocly
+# 运行 Redocly
 redocly lint openapi.yaml
 redocly bundle openapi.yaml -o bundled.yaml
 redocly preview-docs openapi.yaml
 ```
 
-## SDK Generation
+## SDK 生成
 
 ```bash
 # OpenAPI Generator
 npm install -g @openapitools/openapi-generator-cli
 
-# Generate TypeScript client
+# 生成 TypeScript 客户端
 openapi-generator-cli generate \
   -i openapi.yaml \
   -g typescript-fetch \
   -o ./generated/typescript-client \
   --additional-properties=supportsES6=true,npmName=@myorg/api-client
 
-# Generate Python client
+# 生成 Python 客户端
 openapi-generator-cli generate \
   -i openapi.yaml \
   -g python \
   -o ./generated/python-client \
   --additional-properties=packageName=api_client
 
-# Generate Go client
+# 生成 Go 客户端
 openapi-generator-cli generate \
   -i openapi.yaml \
   -g go \
   -o ./generated/go-client
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做的
 
-- **Use $ref** - Reuse schemas, parameters, responses
-- **Add examples** - Real-world values help consumers
-- **Document errors** - All possible error codes
-- **Version your API** - In URL or header
-- **Use semantic versioning** - For spec changes
+- **使用 $ref** - 重用模式、参数、响应
+- **添加示例** - 真实世界的值有助于使用者
+- **记录错误** - 所有可能的错误代码
+- **对 API 进行版本控制** - 在 URL 或标头中
+- **使用语义版本控制** - 用于规范更改
 
-### Don'ts
+### 不应该做的
 
-- **Don't use generic descriptions** - Be specific
-- **Don't skip security** - Define all schemes
-- **Don't forget nullable** - Be explicit about null
-- **Don't mix styles** - Consistent naming throughout
-- **Don't hardcode URLs** - Use server variables
+- **不要使用通用描述** - 要具体
+- **不要跳过安全** - 定义所有方案
+- **不要忘记可空** - 明确说明 null
+- **不要混合样式** - 始终如一的命名
+- **不要硬编码 URL** - 使用服务器变量
 
-## Resources
+## 资源
 
-- [OpenAPI 3.1 Specification](https://spec.openapis.org/oas/v3.1.0)
-- [Swagger Editor](https://editor.swagger.io/)
+- [OpenAPI 3.1 规范](https://spec.openapis.org/oas/v3.1.0)
+- [Swagger 编辑器](https://editor.swagger.io/)
 - [Redocly](https://redocly.com/)
 - [Spectral](https://stoplight.io/open-source/spectral)

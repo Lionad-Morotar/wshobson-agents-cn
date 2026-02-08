@@ -1,50 +1,50 @@
 ---
 name: airflow-dag-patterns
-description: Build production Apache Airflow DAGs with best practices for operators, sensors, testing, and deployment. Use when creating data pipelines, orchestrating workflows, or scheduling batch jobs.
+description: 构建生产级 Apache Airflow DAG，遵循操作符、传感器、测试和部署的最佳实践。在创建数据管道、编排工作流或调度批处理作业时使用。
 ---
 
-# Apache Airflow DAG Patterns
+# Apache Airflow DAG 模式
 
-Production-ready patterns for Apache Airflow including DAG design, operators, sensors, testing, and deployment strategies.
+适用于 Apache Airflow 的生产级模式，包括 DAG 设计、操作符、传感器、测试和部署策略。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Creating data pipeline orchestration with Airflow
-- Designing DAG structures and dependencies
-- Implementing custom operators and sensors
-- Testing Airflow DAGs locally
-- Setting up Airflow in production
-- Debugging failed DAG runs
+- 使用 Airflow 创建数据管道编排
+- 设计 DAG 结构和依赖关系
+- 实现自定义操作符和传感器
+- 本地测试 Airflow DAG
+- 在生产环境中设置 Airflow
+- 调试失败的 DAG 运行
 
-## Core Concepts
+## 核心概念
 
-### 1. DAG Design Principles
+### 1. DAG 设计原则
 
-| Principle       | Description                         |
+| 原则         | 描述                         |
 | --------------- | ----------------------------------- |
-| **Idempotent**  | Running twice produces same result  |
-| **Atomic**      | Tasks succeed or fail completely    |
-| **Incremental** | Process only new/changed data       |
-| **Observable**  | Logs, metrics, alerts at every step |
+| **幂等性**  | 运行两次产生相同结果  |
+| **原子性**      | 任务完全成功或完全失败    |
+| **增量性** | 仅处理新/变更数据       |
+| **可观测性**  | 每步都有日志、指标、告警 |
 
-### 2. Task Dependencies
+### 2. 任务依赖关系
 
 ```python
-# Linear
+# 线性依赖
 task1 >> task2 >> task3
 
-# Fan-out
+# 扇出
 task1 >> [task2, task3, task4]
 
-# Fan-in
+# 扇入
 [task1, task2, task3] >> task4
 
-# Complex
+# 复杂依赖
 task1 >> task2 >> task4
 task1 >> task3 >> task4
 ```
 
-## Quick Start
+## 快速开始
 
 ```python
 # dags/example_dag.py
@@ -67,8 +67,8 @@ default_args = {
 with DAG(
     dag_id='example_etl',
     default_args=default_args,
-    description='Example ETL pipeline',
-    schedule='0 6 * * *',  # Daily at 6 AM
+    description='示例 ETL 管道',
+    schedule='0 6 * * *',  # 每天早上 6 点
     start_date=datetime(2024, 1, 1),
     catchup=False,
     tags=['etl', 'example'],
@@ -79,7 +79,7 @@ with DAG(
 
     def extract_data(**context):
         execution_date = context['ds']
-        # Extract logic here
+        # 提取逻辑
         return {'records': 1000}
 
     extract = PythonOperator(
@@ -92,9 +92,9 @@ with DAG(
     start >> extract >> end
 ```
 
-## Patterns
+## 模式
 
-### Pattern 1: TaskFlow API (Airflow 2.0+)
+### 模式 1: TaskFlow API (Airflow 2.0+)
 
 ```python
 # dags/taskflow_example.py
@@ -110,11 +110,11 @@ from airflow.models import Variable
     tags=['etl', 'taskflow'],
 )
 def taskflow_etl():
-    """ETL pipeline using TaskFlow API"""
+    """使用 TaskFlow API 的 ETL 管道"""
 
     @task()
     def extract(source: str) -> dict:
-        """Extract data from source"""
+        """从数据源提取数据"""
         import pandas as pd
 
         df = pd.read_csv(f's3://bucket/{source}/{{ ds }}.csv')
@@ -122,7 +122,7 @@ def taskflow_etl():
 
     @task()
     def transform(extracted: dict) -> dict:
-        """Transform extracted data"""
+        """转换提取的数据"""
         import pandas as pd
 
         df = pd.DataFrame(extracted['data'])
@@ -132,7 +132,7 @@ def taskflow_etl():
 
     @task()
     def load(transformed: dict, target: str):
-        """Load data to target"""
+        """加载数据到目标"""
         import pandas as pd
 
         df = pd.DataFrame(transformed['data'])
@@ -141,20 +141,20 @@ def taskflow_etl():
 
     @task()
     def notify(rows_loaded: int):
-        """Send notification"""
-        print(f'Loaded {rows_loaded} rows')
+        """发送通知"""
+        print(f'已加载 {rows_loaded} 行')
 
-    # Define dependencies with XCom passing
+    # 使用 XCom 传递定义依赖关系
     extracted = extract(source='raw_data')
     transformed = transform(extracted)
     loaded = load(transformed, target='processed_data')
     notify(loaded)
 
-# Instantiate the DAG
+# 实例化 DAG
 taskflow_etl()
 ```
 
-### Pattern 2: Dynamic DAG Generation
+### 模式 2: 动态 DAG 生成
 
 ```python
 # dags/dynamic_dag_factory.py
@@ -164,7 +164,7 @@ from airflow.operators.python import PythonOperator
 from airflow.models import Variable
 import json
 
-# Configuration for multiple similar pipelines
+# 多个相似管道的配置
 PIPELINE_CONFIGS = [
     {'name': 'customers', 'schedule': '@daily', 'source': 's3://raw/customers'},
     {'name': 'orders', 'schedule': '@hourly', 'source': 's3://raw/orders'},
@@ -172,7 +172,7 @@ PIPELINE_CONFIGS = [
 ]
 
 def create_dag(config: dict) -> DAG:
-    """Factory function to create DAGs from config"""
+    """从配置创建 DAG 的工厂函数"""
 
     dag_id = f"etl_{config['name']}"
 
@@ -193,13 +193,13 @@ def create_dag(config: dict) -> DAG:
 
     with dag:
         def extract_fn(source, **context):
-            print(f"Extracting from {source} for {context['ds']}")
+            print(f"从 {source} 提取 {context['ds']} 的数据")
 
         def transform_fn(**context):
-            print(f"Transforming data for {context['ds']}")
+            print(f"转换 {context['ds']} 的数据")
 
         def load_fn(table_name, **context):
-            print(f"Loading to {table_name} for {context['ds']}")
+            print(f"加载 {context['ds']} 的数据到 {table_name}")
 
         extract = PythonOperator(
             task_id='extract',
@@ -222,12 +222,12 @@ def create_dag(config: dict) -> DAG:
 
     return dag
 
-# Generate DAGs
+# 生成 DAG
 for config in PIPELINE_CONFIGS:
     globals()[f"dag_{config['name']}"] = create_dag(config)
 ```
 
-### Pattern 3: Branching and Conditional Logic
+### 模式 3: 分支和条件逻辑
 
 ```python
 # dags/branching_example.py
@@ -246,12 +246,12 @@ def branching_pipeline():
 
     @task()
     def check_data_quality() -> dict:
-        """Check data quality and return metrics"""
-        quality_score = 0.95  # Simulated
+        """检查数据质量并返回指标"""
+        quality_score = 0.95  # 模拟
         return {'score': quality_score, 'rows': 10000}
 
     def choose_branch(**context) -> str:
-        """Determine which branch to execute"""
+        """确定执行哪个分支"""
         ti = context['ti']
         metrics = ti.xcom_pull(task_ids='check_data_quality')
 
@@ -273,7 +273,7 @@ def branching_pipeline():
     medium_quality = EmptyOperator(task_id='medium_quality_path')
     low_quality = EmptyOperator(task_id='low_quality_path')
 
-    # Join point - runs after any branch completes
+    # 汇合点 - 任何分支完成后运行
     join = EmptyOperator(
         task_id='join',
         trigger_rule=TriggerRule.NONE_FAILED_MIN_ONE_SUCCESS,
@@ -284,7 +284,7 @@ def branching_pipeline():
 branching_pipeline()
 ```
 
-### Pattern 4: Sensors and External Dependencies
+### 模式 4: 传感器和外部依赖
 
 ```python
 # dags/sensor_patterns.py
@@ -302,31 +302,31 @@ with DAG(
     catchup=False,
 ) as dag:
 
-    # Wait for file on S3
+    # 等待 S3 上的文件
     wait_for_file = S3KeySensor(
         task_id='wait_for_s3_file',
         bucket_name='data-lake',
         bucket_key='raw/{{ ds }}/data.parquet',
         aws_conn_id='aws_default',
-        timeout=60 * 60 * 2,  # 2 hours
-        poke_interval=60 * 5,  # Check every 5 minutes
-        mode='reschedule',  # Free up worker slot while waiting
+        timeout=60 * 60 * 2,  # 2 小时
+        poke_interval=60 * 5,  # 每 5 分钟检查一次
+        mode='reschedule',  # 等待时释放 worker 插槽
     )
 
-    # Wait for another DAG to complete
+    # 等待另一个 DAG 完成
     wait_for_upstream = ExternalTaskSensor(
         task_id='wait_for_upstream_dag',
         external_dag_id='upstream_etl',
         external_task_id='final_task',
-        execution_date_fn=lambda dt: dt,  # Same execution date
+        execution_date_fn=lambda dt: dt,  # 相同的执行日期
         timeout=60 * 60 * 3,
         mode='reschedule',
     )
 
-    # Custom sensor using @task.sensor decorator
+    # 使用 @task.sensor 装饰器的自定义传感器
     @task.sensor(poke_interval=60, timeout=3600, mode='reschedule')
     def wait_for_api() -> PokeReturnValue:
-        """Custom sensor for API availability"""
+        """API 可用性的自定义传感器"""
         import requests
 
         response = requests.get('https://api.example.com/health')
@@ -338,7 +338,7 @@ with DAG(
 
     def process_data(**context):
         api_result = context['ti'].xcom_pull(task_ids='wait_for_api')
-        print(f"API returned: {api_result}")
+        print(f"API 返回: {api_result}")
 
     process = PythonOperator(
         task_id='process',
@@ -348,7 +348,7 @@ with DAG(
     [wait_for_file, wait_for_upstream, api_ready] >> process
 ```
 
-### Pattern 5: Error Handling and Alerts
+### 模式 5: 错误处理和告警
 
 ```python
 # dags/error_handling.py
@@ -359,25 +359,25 @@ from airflow.utils.trigger_rule import TriggerRule
 from airflow.models import Variable
 
 def task_failure_callback(context):
-    """Callback on task failure"""
+    """任务失败时的回调"""
     task_instance = context['task_instance']
     exception = context.get('exception')
 
-    # Send to Slack/PagerDuty/etc
+    # 发送到 Slack/PagerDuty 等
     message = f"""
-    Task Failed!
+    任务失败！
     DAG: {task_instance.dag_id}
-    Task: {task_instance.task_id}
-    Execution Date: {context['ds']}
-    Error: {exception}
-    Log URL: {task_instance.log_url}
+    任务: {task_instance.task_id}
+    执行日期: {context['ds']}
+    错误: {exception}
+    日志 URL: {task_instance.log_url}
     """
     # send_slack_alert(message)
     print(message)
 
 def dag_failure_callback(context):
-    """Callback on DAG failure"""
-    # Aggregate failures, send summary
+    """DAG 失败时的回调"""
+    # 汇总失败，发送摘要
     pass
 
 with DAG(
@@ -396,8 +396,8 @@ with DAG(
     def might_fail(**context):
         import random
         if random.random() < 0.3:
-            raise ValueError("Random failure!")
-        return "Success"
+            raise ValueError("随机失败！")
+        return "成功"
 
     risky_task = PythonOperator(
         task_id='risky_task',
@@ -405,18 +405,18 @@ with DAG(
     )
 
     def cleanup(**context):
-        """Cleanup runs regardless of upstream failures"""
-        print("Cleaning up...")
+        """无论上游是否失败都运行清理"""
+        print("正在清理...")
 
     cleanup_task = PythonOperator(
         task_id='cleanup',
         python_callable=cleanup,
-        trigger_rule=TriggerRule.ALL_DONE,  # Run even if upstream fails
+        trigger_rule=TriggerRule.ALL_DONE,  # 即使上游失败也运行
     )
 
     def notify_success(**context):
-        """Only runs if all upstream succeeded"""
-        print("All tasks succeeded!")
+        """仅当所有上游成功时运行"""
+        print("所有任务成功！")
 
     success_notification = PythonOperator(
         task_id='notify_success',
@@ -427,7 +427,7 @@ with DAG(
     risky_task >> [cleanup_task, success_notification]
 ```
 
-### Pattern 6: Testing DAGs
+### 模式 6: 测试 DAG
 
 ```python
 # tests/test_dags.py
@@ -440,11 +440,11 @@ def dagbag():
     return DagBag(dag_folder='dags/', include_examples=False)
 
 def test_dag_loaded(dagbag):
-    """Test that all DAGs load without errors"""
-    assert len(dagbag.import_errors) == 0, f"DAG import errors: {dagbag.import_errors}"
+    """测试所有 DAG 加载无错误"""
+    assert len(dagbag.import_errors) == 0, f"DAG 导入错误: {dagbag.import_errors}"
 
 def test_dag_structure(dagbag):
-    """Test specific DAG structure"""
+    """测试特定 DAG 结构"""
     dag = dagbag.get_dag('example_etl')
 
     assert dag is not None
@@ -452,7 +452,7 @@ def test_dag_structure(dagbag):
     assert dag.schedule_interval == '0 6 * * *'
 
 def test_task_dependencies(dagbag):
-    """Test task dependencies are correct"""
+    """测试任务依赖关系正确"""
     dag = dagbag.get_dag('example_etl')
 
     extract_task = dag.get_task('extract')
@@ -460,13 +460,13 @@ def test_task_dependencies(dagbag):
     assert 'end' in [t.task_id for t in extract_task.downstream_list]
 
 def test_dag_integrity(dagbag):
-    """Test DAG has no cycles and is valid"""
+    """测试 DAG 没有循环且有效"""
     for dag_id, dag in dagbag.dags.items():
-        assert dag.test_cycle() is None, f"Cycle detected in {dag_id}"
+        assert dag.test_cycle() is None, f"在 {dag_id} 中检测到循环"
 
-# Test individual task logic
+# 测试单个任务逻辑
 def test_extract_function():
-    """Unit test for extract function"""
+    """提取函数的单元测试"""
     from dags.example_dag import extract_data
 
     result = extract_data(ds='2024-01-01')
@@ -474,7 +474,7 @@ def test_extract_function():
     assert isinstance(result['records'], int)
 ```
 
-## Project Structure
+## 项目结构
 
 ```
 airflow/
@@ -482,9 +482,9 @@ airflow/
 │   ├── __init__.py
 │   ├── common/
 │   │   ├── __init__.py
-│   │   ├── operators.py    # Custom operators
-│   │   ├── sensors.py      # Custom sensors
-│   │   └── callbacks.py    # Alert callbacks
+│   │   ├── operators.py    # 自定义操作符
+│   │   ├── sensors.py      # 自定义传感器
+│   │   └── callbacks.py    # 告警回调
 │   ├── etl/
 │   │   ├── customers.py
 │   │   └── orders.py
@@ -500,26 +500,26 @@ airflow/
 └── requirements.txt
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做的
 
-- **Use TaskFlow API** - Cleaner code, automatic XCom
-- **Set timeouts** - Prevent zombie tasks
-- **Use `mode='reschedule'`** - For sensors, free up workers
-- **Test DAGs** - Unit tests and integration tests
-- **Idempotent tasks** - Safe to retry
+- **使用 TaskFlow API** - 代码更简洁，自动处理 XCom
+- **设置超时** - 防止僵尸任务
+- **使用 `mode='reschedule'`** - 对于传感器，释放 worker
+- **测试 DAG** - 单元测试和集成测试
+- **幂等任务** - 安全重试
 
-### Don'ts
+### 不应该做的
 
-- **Don't use `depends_on_past=True`** - Creates bottlenecks
-- **Don't hardcode dates** - Use `{{ ds }}` macros
-- **Don't use global state** - Tasks should be stateless
-- **Don't skip catchup blindly** - Understand implications
-- **Don't put heavy logic in DAG file** - Import from modules
+- **不要使用 `depends_on_past=True`** - 会造成瓶颈
+- **不要硬编码日期** - 使用 `{{ ds }}` 宏
+- **不要使用全局状态** - 任务应该是无状态的
+- **不要盲目跳过 catchup** - 了解影响
+- **不要在 DAG 文件中放重逻辑** - 从模块导入
 
-## Resources
+## 资源
 
-- [Airflow Documentation](https://airflow.apache.org/docs/)
-- [Astronomer Guides](https://docs.astronomer.io/learn)
+- [Airflow 文档](https://airflow.apache.org/docs/)
+- [Astronomer 指南](https://docs.astronomer.io/learn)
 - [TaskFlow API](https://airflow.apache.org/docs/apache-airflow/stable/tutorial/taskflow.html)

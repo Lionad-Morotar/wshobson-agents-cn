@@ -3,38 +3,38 @@ name: python-configuration
 description: Python configuration management via environment variables and typed settings. Use when externalizing config, setting up pydantic-settings, managing secrets, or implementing environment-specific behavior.
 ---
 
-# Python Configuration Management
+# Python 配置管理
 
-Externalize configuration from code using environment variables and typed settings. Well-managed configuration enables the same code to run in any environment without modification.
+使用环境变量和类型化设置将配置从代码中外部化。良好的配置管理使得相同的代码无需修改即可在任何环境中运行。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Setting up a new project's configuration system
-- Migrating from hardcoded values to environment variables
-- Implementing pydantic-settings for typed configuration
-- Managing secrets and sensitive values
-- Creating environment-specific settings (dev/staging/prod)
-- Validating configuration at application startup
+- 为新项目设置配置系统
+- 从硬编码值迁移到环境变量
+- 实现类型化配置的 pydantic-settings
+- 管理密钥和敏感值
+- 创建特定环境的设置（开发/预发布/生产）
+- 在应用启动时验证配置
 
-## Core Concepts
+## 核心概念
 
-### 1. Externalized Configuration
+### 1. 外部化配置
 
-All environment-specific values (URLs, secrets, feature flags) come from environment variables, not code.
+所有特定于环境的值（URL、密钥、功能开关）都来自环境变量，而非代码。
 
-### 2. Typed Settings
+### 2. 类型化设置
 
-Parse and validate configuration into typed objects at startup, not scattered throughout code.
+在启动时将配置解析并验证为类型化对象，而非分散在代码各处。
 
-### 3. Fail Fast
+### 3. 快速失败
 
-Validate all required configuration at application boot. Missing config should crash immediately with a clear message.
+在应用启动时验证所有必需的配置。缺失的配置应立即崩溃并显示清晰的错误消息。
 
-### 4. Sensible Defaults
+### 4. 合理的默认值
 
-Provide reasonable defaults for local development while requiring explicit values for sensitive settings.
+为本地开发提供合理的默认值，同时要求敏感设置必须显式指定值。
 
-## Quick Start
+## 快速开始
 
 ```python
 from pydantic_settings import BaseSettings
@@ -45,14 +45,14 @@ class Settings(BaseSettings):
     api_key: str = Field(alias="API_KEY")
     debug: bool = Field(default=False, alias="DEBUG")
 
-settings = Settings()  # Loads from environment
+settings = Settings()  # 从环境变量加载
 ```
 
-## Fundamental Patterns
+## 基本模式
 
-### Pattern 1: Typed Settings with Pydantic
+### 模式 1：使用 Pydantic 的类型化设置
 
-Create a central settings class that loads and validates all configuration.
+创建一个中心化的设置类来加载和验证所有配置。
 
 ```python
 from pydantic_settings import BaseSettings
@@ -60,7 +60,7 @@ from pydantic import Field, PostgresDsn, ValidationError
 import sys
 
 class Settings(BaseSettings):
-    """Application configuration loaded from environment variables."""
+    """从环境变量加载的应用配置。"""
 
     # Database
     db_host: str = Field(alias="DB_HOST")
@@ -83,7 +83,7 @@ class Settings(BaseSettings):
         "env_file_encoding": "utf-8",
     }
 
-# Create singleton instance at module load
+# 在模块加载时创建单例实例
 try:
     settings = Settings()
 except ValidationError as e:
@@ -91,7 +91,7 @@ except ValidationError as e:
     sys.exit(1)
 ```
 
-Import `settings` throughout your application:
+在应用中导入 `settings`：
 
 ```python
 from myapp.config import settings
@@ -104,9 +104,9 @@ def get_database_connection():
     )
 ```
 
-### Pattern 2: Fail Fast on Missing Configuration
+### 模式 2：配置缺失时快速失败
 
-Required settings should crash the application immediately with a clear error.
+必需的设置应立即导致应用崩溃并显示清晰的错误。
 
 ```python
 from pydantic_settings import BaseSettings
@@ -134,11 +134,11 @@ except ValidationError as e:
     sys.exit(1)
 ```
 
-A clear error at startup is better than a cryptic `None` failure mid-request.
+在启动时显示清晰的错误比在请求过程中出现神秘的 `None` 失败要好得多。
 
-### Pattern 3: Local Development Defaults
+### 模式 3：本地开发默认值
 
-Provide sensible defaults for local development while requiring explicit values for secrets.
+为本地开发提供合理的默认值，同时要求密钥必须显式指定值。
 
 ```python
 class Settings(BaseSettings):
@@ -156,7 +156,7 @@ class Settings(BaseSettings):
     model_config = {"env_file": ".env"}
 ```
 
-Create a `.env` file for local development (never commit this):
+为本地开发创建 `.env` 文件（切勿提交此文件）：
 
 ```bash
 # .env (add to .gitignore)
@@ -165,9 +165,9 @@ API_SECRET_KEY=dev-secret-key
 DEBUG=true
 ```
 
-### Pattern 4: Namespaced Environment Variables
+### 模式 4：带命名空间的环境变量
 
-Prefix related variables for clarity and easy debugging.
+为相关变量添加前缀以提高清晰度并便于调试。
 
 ```bash
 # Database configuration
@@ -191,13 +191,13 @@ FEATURE_NEW_CHECKOUT=true
 FEATURE_BETA_UI=false
 ```
 
-Makes `env | grep DB_` useful for debugging.
+这样可以使用 `env | grep DB_` 进行调试。
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 5: Type Coercion
+### 模式 5：类型强制转换
 
-Pydantic handles common conversions automatically.
+Pydantic 自动处理常见的类型转换。
 
 ```python
 from pydantic_settings import BaseSettings
@@ -221,7 +221,7 @@ class Settings(BaseSettings):
         return v
 ```
 
-Usage:
+使用方式：
 
 ```bash
 ALLOWED_HOSTS=example.com,api.example.com,localhost
@@ -229,9 +229,9 @@ MAX_CONNECTIONS=50
 DEBUG=true
 ```
 
-### Pattern 6: Environment-Specific Configuration
+### 模式 6：特定环境的配置
 
-Use an environment enum to switch behavior.
+使用环境枚举来切换行为。
 
 ```python
 from enum import Enum
@@ -269,9 +269,9 @@ else:
     configure_debug_logging()
 ```
 
-### Pattern 7: Nested Configuration Groups
+### 模式 7：嵌套配置组
 
-Organize related settings into nested models.
+将相关设置组织到嵌套模型中。
 
 ```python
 from pydantic import BaseModel
@@ -299,7 +299,7 @@ class Settings(BaseSettings):
     }
 ```
 
-Environment variables use double underscore for nesting:
+环境变量使用双下划线进行嵌套：
 
 ```bash
 DATABASE__HOST=db.example.com
@@ -310,9 +310,9 @@ DATABASE__PASSWORD=secret
 REDIS__URL=redis://redis.example.com:6379
 ```
 
-### Pattern 8: Secrets from Files
+### 模式 8：从文件读取密钥
 
-For container environments, read secrets from mounted files.
+对于容器环境，从挂载的文件中读取密钥。
 
 ```python
 from pydantic_settings import BaseSettings
@@ -328,11 +328,11 @@ class Settings(BaseSettings):
     }
 ```
 
-Pydantic will look for `/run/secrets/db_password` if the env var isn't set.
+如果未设置环境变量，Pydantic 将查找 `/run/secrets/db_password`。
 
-### Pattern 9: Configuration Validation
+### 模式 9：配置验证
 
-Add custom validation for complex requirements.
+为复杂需求添加自定义验证。
 
 ```python
 from pydantic_settings import BaseSettings
@@ -354,15 +354,15 @@ class Settings(BaseSettings):
         return self
 ```
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Never hardcode config** - All environment-specific values from env vars
-2. **Use typed settings** - Pydantic-settings with validation
-3. **Fail fast** - Crash on missing required config at startup
-4. **Provide dev defaults** - Make local development easy
-5. **Never commit secrets** - Use `.env` files (gitignored) or secret managers
-6. **Namespace variables** - `DB_HOST`, `REDIS_URL` for clarity
-7. **Import settings singleton** - Don't call `os.getenv()` throughout code
-8. **Document all variables** - README should list required env vars
-9. **Validate early** - Check config correctness at boot time
-10. **Use secrets_dir** - Support mounted secrets in containers
+1. **永远不要硬编码配置** - 所有特定于环境的值都来自环境变量
+2. **使用类型化设置** - 使用带验证的 Pydantic-settings
+3. **快速失败** - 在启动时缺失必需配置时立即崩溃
+4. **提供开发默认值** - 简化本地开发
+5. **永远不要提交密钥** - 使用 `.env` 文件（已 gitignore）或密钥管理器
+6. **使用命名空间变量** - 使用 `DB_HOST`、`REDIS_URL` 等提高清晰度
+7. **导入设置单例** - 不要在代码中到处调用 `os.getenv()`
+8. **记录所有变量** - README 应列出必需的环境变量
+9. **尽早验证** - 在启动时检查配置正确性
+10. **使用 secrets_dir** - 支持容器中挂载的密钥

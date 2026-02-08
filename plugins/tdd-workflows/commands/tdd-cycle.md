@@ -1,221 +1,221 @@
-Execute a comprehensive Test-Driven Development (TDD) workflow with strict red-green-refactor discipline:
+执行严格的测试驱动开发（TDD）工作流程，遵循红绿重构的纪律：
 
-[Extended thinking: This workflow enforces test-first development through coordinated agent orchestration. Each phase of the TDD cycle is strictly enforced with fail-first verification, incremental implementation, and continuous refactoring. The workflow supports both single test and test suite approaches with configurable coverage thresholds.]
+[扩展思考：此工作流程通过协调的智能体编排强制执行测试优先开发。TDD 周期的每个阶段都严格实施失败优先验证、增量实现和持续重构。该工作流程支持单测试和测试套件两种方法，并可配置覆盖率阈值。]
 
-## Configuration
+## 配置
 
-### Coverage Thresholds
+### 覆盖率阈值
 
-- Minimum line coverage: 80%
-- Minimum branch coverage: 75%
-- Critical path coverage: 100%
+- 最低行覆盖率：80%
+- 最低分支覆盖率：75%
+- 关键路径覆盖率：100%
 
-### Refactoring Triggers
+### 重构触发条件
 
-- Cyclomatic complexity > 10
-- Method length > 20 lines
-- Class length > 200 lines
-- Duplicate code blocks > 3 lines
+- 圈复杂度 > 10
+- 方法长度 > 20 行
+- 类长度 > 200 行
+- 重复代码块 > 3 行
 
-## Phase 1: Test Specification and Design
+## 阶段 1：测试规格与设计
 
-### 1. Requirements Analysis
+### 1. 需求分析
 
-- Use Task tool with subagent_type="comprehensive-review::architect-review"
-- Prompt: "Analyze requirements for: $ARGUMENTS. Define acceptance criteria, identify edge cases, and create test scenarios. Output a comprehensive test specification."
-- Output: Test specification, acceptance criteria, edge case matrix
-- Validation: Ensure all requirements have corresponding test scenarios
+- 使用 Task 工具，设置 subagent_type="comprehensive-review::architect-review"
+- 提示词："分析 $ARGUMENTS 的需求。定义验收标准，识别边界情况，并创建测试场景。输出全面的测试规格。"
+- 输出：测试规格、验收标准、边界情况矩阵
+- 验证：确保所有需求都有对应的测试场景
 
-### 2. Test Architecture Design
+### 2. 测试架构设计
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Design test architecture for: $ARGUMENTS based on test specification. Define test structure, fixtures, mocks, and test data strategy. Ensure testability and maintainability."
-- Output: Test architecture, fixture design, mock strategy
-- Validation: Architecture supports isolated, fast, reliable tests
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示词："基于测试规格为 $ARGUMENTS 设计测试架构。定义测试结构、测试夹具、模拟对象和测试数据策略。确保可测试性和可维护性。"
+- 输出：测试架构、夹具设计、模拟策略
+- 验证：架构支持隔离、快速、可靠的测试
 
-## Phase 2: RED - Write Failing Tests
+## 阶段 2：RED - 编写失败的测试
 
-### 3. Write Unit Tests (Failing)
+### 3. 编写单元测试（失败状态）
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Write FAILING unit tests for: $ARGUMENTS. Tests must fail initially. Include edge cases, error scenarios, and happy paths. DO NOT implement production code."
-- Output: Failing unit tests, test documentation
-- **CRITICAL**: Verify all tests fail with expected error messages
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示词："为 $ARGUMENTS 编写失败的单元测试。测试必须初始失败。包括边界情况、错误场景和正常路径。不要实现生产代码。"
+- 输出：失败的单元测试、测试文档
+- **关键**：验证所有测试都以预期的错误消息失败
 
-### 4. Verify Test Failure
+### 4. 验证测试失败
 
-- Use Task tool with subagent_type="tdd-workflows::code-reviewer"
-- Prompt: "Verify that all tests for: $ARGUMENTS are failing correctly. Ensure failures are for the right reasons (missing implementation, not test errors). Confirm no false positives."
-- Output: Test failure verification report
-- **GATE**: Do not proceed until all tests fail appropriately
+- 使用 Task 工具，设置 subagent_type="tdd-workflows::code-reviewer"
+- 提示词："验证 $ARGUMENTS 的所有测试都正确失败。确保失败的原因正确（缺少实现，而非测试错误）。确认没有误报。"
+- 输出：测试失败验证报告
+- **关卡**：在所有测试适当失败之前不得继续
 
-## Phase 3: GREEN - Make Tests Pass
+## 阶段 3：GREEN - 使测试通过
 
-### 5. Minimal Implementation
+### 5. 最小化实现
 
-- Use Task tool with subagent_type="backend-development::backend-architect"
-- Prompt: "Implement MINIMAL code to make tests pass for: $ARGUMENTS. Focus only on making tests green. Do not add extra features or optimizations. Keep it simple."
-- Output: Minimal working implementation
-- Constraint: No code beyond what's needed to pass tests
+- 使用 Task 工具，设置 subagent_type="backend-development::backend-architect"
+- 提示词："为 $ARGUMENTS 实现使测试通过的最低限度代码。仅专注于使测试变绿。不要添加额外功能或优化。保持简单。"
+- 输出：最小化工作实现
+- 约束：除了通过测试所需的代码外，不得添加其他代码
 
-### 6. Verify Test Success
+### 6. 验证测试成功
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Run all tests for: $ARGUMENTS and verify they pass. Check test coverage metrics. Ensure no tests were accidentally broken."
-- Output: Test execution report, coverage metrics
-- **GATE**: All tests must pass before proceeding
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示词："运行 $ARGUMENTS 的所有测试并验证它们通过。检查测试覆盖率指标。确保没有测试被意外破坏。"
+- 输出：测试执行报告、覆盖率指标
+- **关卡**：所有测试必须通过才能继续
 
-## Phase 4: REFACTOR - Improve Code Quality
+## 阶段 4：REFACTOR - 改进代码质量
 
-### 7. Code Refactoring
+### 7. 代码重构
 
-- Use Task tool with subagent_type="tdd-workflows::code-reviewer"
-- Prompt: "Refactor implementation for: $ARGUMENTS while keeping tests green. Apply SOLID principles, remove duplication, improve naming, and optimize performance. Run tests after each refactoring."
-- Output: Refactored code, refactoring report
-- Constraint: Tests must remain green throughout
+- 使用 Task 工具，设置 subagent_type="tdd-workflows::code-reviewer"
+- 提示词："在保持测试通过的同时重构 $ARGUMENTS 的实现。应用 SOLID 原则，消除重复，改进命名，并优化性能。每次重构后运行测试。"
+- 输出：重构后的代码、重构报告
+- 约束：测试必须始终保持通过
 
-### 8. Test Refactoring
+### 8. 测试重构
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Refactor tests for: $ARGUMENTS. Remove test duplication, improve test names, extract common fixtures, and enhance test readability. Ensure tests still provide same coverage."
-- Output: Refactored tests, improved test structure
-- Validation: Coverage metrics unchanged or improved
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示词："重构 $ARGUMENTS 的测试。消除测试重复，改进测试名称，提取公共夹具，并增强测试可读性。确保测试仍然提供相同的覆盖率。"
+- 输出：重构后的测试、改进的测试结构
+- 验证：覆盖率指标不变或有所改善
 
-## Phase 5: Integration and System Tests
+## 阶段 5：集成测试与系统测试
 
-### 9. Write Integration Tests (Failing First)
+### 9. 编写集成测试（首先失败）
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Write FAILING integration tests for: $ARGUMENTS. Test component interactions, API contracts, and data flow. Tests must fail initially."
-- Output: Failing integration tests
-- Validation: Tests fail due to missing integration logic
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示词："为 $ARGUMENTS 编写失败的集成测试。测试组件交互、API 契约和数据流。测试必须初始失败。"
+- 输出：失败的集成测试
+- 验证：测试因缺少集成逻辑而失败
 
-### 10. Implement Integration
+### 10. 实现集成
 
-- Use Task tool with subagent_type="backend-development::backend-architect"
-- Prompt: "Implement integration code for: $ARGUMENTS to make integration tests pass. Focus on component interaction and data flow."
-- Output: Integration implementation
-- Validation: All integration tests pass
+- 使用 Task 工具，设置 subagent_type="backend-development::backend-architect"
+- 提示词："为 $ARGUMENTS 实现集成代码以使集成测试通过。专注于组件交互和数据流。"
+- 输出：集成实现
+- 验证：所有集成测试通过
 
-## Phase 6: Continuous Improvement Cycle
+## 阶段 6：持续改进循环
 
-### 11. Performance and Edge Case Tests
+### 11. 性能与边界情况测试
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Add performance tests and additional edge case tests for: $ARGUMENTS. Include stress tests, boundary tests, and error recovery tests."
-- Output: Extended test suite
-- Metric: Increased test coverage and scenario coverage
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示词："为 $ARGUMENTS 添加性能测试和额外的边界情况测试。包括压力测试、边界测试和错误恢复测试。"
+- 输出：扩展的测试套件
+- 指标：增加的测试覆盖率和场景覆盖率
 
-### 12. Final Code Review
+### 12. 最终代码审查
 
-- Use Task tool with subagent_type="comprehensive-review::architect-review"
-- Prompt: "Perform comprehensive review of: $ARGUMENTS. Verify TDD process was followed, check code quality, test quality, and coverage. Suggest improvements."
-- Output: Review report, improvement suggestions
-- Action: Implement critical suggestions while maintaining green tests
+- 使用 Task 工具，设置 subagent_type="comprehensive-review::architect-review"
+- 提示词："对 $ARGUMENTS 进行全面审查。验证是否遵循了 TDD 流程，检查代码质量、测试质量和覆盖率。提出改进建议。"
+- 输出：审查报告、改进建议
+- 行动：在保持测试通过的同时实施关键建议
 
-## Incremental Development Mode
+## 增量开发模式
 
-For test-by-test development:
+逐个测试的开发方式：
 
-1. Write ONE failing test
-2. Make ONLY that test pass
-3. Refactor if needed
-4. Repeat for next test
+1. 编写一个失败的测试
+2. 仅使该测试通过
+3. 如有需要则重构
+4. 对下一个测试重复此过程
 
-Use this approach by adding `--incremental` flag to focus on one test at a time.
+通过添加 `--incremental` 标志使用此方法，一次专注于一个测试。
 
-## Test Suite Mode
+## 测试套件模式
 
-For comprehensive test suite development:
+全面的测试套件开发方式：
 
-1. Write ALL tests for a feature/module (failing)
-2. Implement code to pass ALL tests
-3. Refactor entire module
-4. Add integration tests
+1. 为功能/模块编写所有测试（失败状态）
+2. 实现代码使所有测试通过
+3. 重构整个模块
+4. 添加集成测试
 
-Use this approach by adding `--suite` flag for batch test development.
+通过添加 `--suite` 标志使用此方法进行批量测试开发。
 
-## Validation Checkpoints
+## 验证检查点
 
-### RED Phase Validation
+### RED 阶段验证
 
-- [ ] All tests written before implementation
-- [ ] All tests fail with meaningful error messages
-- [ ] Test failures are due to missing implementation
-- [ ] No test passes accidentally
+- [ ] 在实现之前编写所有测试
+- [ ] 所有测试都有意义的错误消息而失败
+- [ ] 测试失败是由于缺少实现
+- [ ] 没有测试意外通过
 
-### GREEN Phase Validation
+### GREEN 阶段验证
 
-- [ ] All tests pass
-- [ ] No extra code beyond test requirements
-- [ ] Coverage meets minimum thresholds
-- [ ] No test was modified to make it pass
+- [ ] 所有测试通过
+- [ ] 没有超出测试要求的额外代码
+- [ ] 覆盖率满足最低阈值
+- [ ] 没有修改测试以使其通过
 
-### REFACTOR Phase Validation
+### REFACTOR 阶段验证
 
-- [ ] All tests still pass after refactoring
-- [ ] Code complexity reduced
-- [ ] Duplication eliminated
-- [ ] Performance improved or maintained
-- [ ] Test readability improved
+- [ ] 重构后所有测试仍然通过
+- [ ] 代码复杂度降低
+- [ ] 消除重复
+- [ ] 性能改善或保持
+- [ ] 测试可读性提高
 
-## Coverage Reports
+## 覆盖率报告
 
-Generate coverage reports after each phase:
+在每个阶段后生成覆盖率报告：
 
-- Line coverage
-- Branch coverage
-- Function coverage
-- Statement coverage
+- 行覆盖率
+- 分支覆盖率
+- 函数覆盖率
+- 语句覆盖率
 
-## Failure Recovery
+## 失败恢复
 
-If TDD discipline is broken:
+如果违反了 TDD 纪律：
 
-1. **STOP** immediately
-2. Identify which phase was violated
-3. Rollback to last valid state
-4. Resume from correct phase
-5. Document lesson learned
+1. 立即**停止**
+2. 识别违反了哪个阶段
+3. 回滚到最后一个有效状态
+4. 从正确的阶段重新开始
+5. 记录经验教训
 
-## TDD Metrics Tracking
+## TDD 指标跟踪
 
-Track and report:
+跟踪并报告：
 
-- Time in each phase (Red/Green/Refactor)
-- Number of test-implementation cycles
-- Coverage progression
-- Refactoring frequency
-- Defect escape rate
+- 每个阶段的时间（红/绿/重构）
+- 测试-实现循环次数
+- 覆盖率进展
+- 重构频率
+- 缺陷逃逸率
 
-## Anti-Patterns to Avoid
+## 需避免的反模式
 
-- Writing implementation before tests
-- Writing tests that already pass
-- Skipping the refactor phase
-- Writing multiple features without tests
-- Modifying tests to make them pass
-- Ignoring failing tests
-- Writing tests after implementation
+- 在测试之前编写实现
+- 编写已经通过的测试
+- 跳过重构阶段
+- 在没有测试的情况下编写多个功能
+- 修改测试以使其通过
+- 忽略失败的测试
+- 在实现之后编写测试
 
-## Success Criteria
+## 成功标准
 
-- 100% of code written test-first
-- All tests pass continuously
-- Coverage exceeds thresholds
-- Code complexity within limits
-- Zero defects in covered code
-- Clear test documentation
-- Fast test execution (< 5 seconds for unit tests)
+- 100% 的代码采用测试优先编写
+- 所有测试持续通过
+- 覆盖率超过阈值
+- 代码复杂度在限制范围内
+- 覆盖代码中的零缺陷
+- 清晰的测试文档
+- 快速的测试执行（单元测试 < 5 秒）
 
-## Notes
+## 注意事项
 
-- Enforce strict RED-GREEN-REFACTOR discipline
-- Each phase must be completed before moving to next
-- Tests are the specification
-- If a test is hard to write, the design needs improvement
-- Refactoring is NOT optional
-- Keep test execution fast
-- Tests should be independent and isolated
+- 强制执行严格的 RED-GREEN-REFACTOR 纪律
+- 每个阶段必须完成后才能进入下一个
+- 测试即规格
+- 如果测试难以编写，说明设计需要改进
+- 重构不是可选的
+- 保持测试执行快速
+- 测试应该独立且隔离
 
-TDD implementation for: $ARGUMENTS
+为 $ARGUMENTS 实现 TDD

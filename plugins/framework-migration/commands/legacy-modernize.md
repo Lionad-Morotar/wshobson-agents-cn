@@ -1,123 +1,123 @@
-# Legacy Code Modernization Workflow
+# 遗留代码现代化工作流
 
-Orchestrate a comprehensive legacy system modernization using the strangler fig pattern, enabling gradual replacement of outdated components while maintaining continuous business operations through expert agent coordination.
+使用绞杀榕模式协调整个遗留系统现代化，通过专家代理协调实现过时组件的逐步替换，同时保持持续的业务运营。
 
-[Extended thinking: The strangler fig pattern, named after the tropical fig tree that gradually envelops and replaces its host, represents the gold standard for risk-managed legacy modernization. This workflow implements a systematic approach where new functionality gradually replaces legacy components, allowing both systems to coexist during transition. By orchestrating specialized agents for assessment, testing, security, and implementation, we ensure each migration phase is validated before proceeding, minimizing disruption while maximizing modernization velocity.]
+[扩展思考：绞杀榕模式以其热带无花果树逐渐包裹并替换宿主树而得名，代表了风险管理的遗留现代化的黄金标准。此工作流程实现了系统化的方法，其中新功能逐步替换遗留组件，允许两个系统在过渡期间共存。通过编排评估、测试、安全和实施的专门代理，我们确保每个迁移阶段在继续之前都得到验证，在最大化现代化速度的同时最大限度地减少干扰。]
 
-## Phase 1: Legacy Assessment and Risk Analysis
+## 第一阶段：遗留评估和风险分析
 
-### 1. Comprehensive Legacy System Analysis
+### 1. 全面遗留系统分析
 
-- Use Task tool with subagent_type="legacy-modernizer"
-- Prompt: "Analyze the legacy codebase at $ARGUMENTS. Document technical debt inventory including: outdated dependencies, deprecated APIs, security vulnerabilities, performance bottlenecks, and architectural anti-patterns. Generate a modernization readiness report with component complexity scores (1-10), dependency mapping, and database coupling analysis. Identify quick wins vs complex refactoring targets."
-- Expected output: Detailed assessment report with risk matrix and modernization priorities
+- 使用 Task 工具，设置 subagent_type="legacy-modernizer"
+- 提示："分析位于 $ARGUMENTS 的遗留代码库。记录技术债务清单，包括：过时的依赖、已弃用的 API、安全漏洞、性能瓶颈和架构反模式。生成现代化就绪报告，包含组件复杂度分数（1-10）、依赖映射和数据库耦合分析。识别快速胜利与复杂的重构目标。"
+- 预期输出：详细评估报告，包含风险矩阵和现代化优先级
 
-### 2. Dependency and Integration Mapping
+### 2. 依赖和集成映射
 
-- Use Task tool with subagent_type="architect-review"
-- Prompt: "Based on the legacy assessment report, create a comprehensive dependency graph showing: internal module dependencies, external service integrations, shared database schemas, and cross-system data flows. Identify integration points that will require facade patterns or adapter layers during migration. Highlight circular dependencies and tight coupling that need resolution."
-- Context from previous: Legacy assessment report, component complexity scores
-- Expected output: Visual dependency map and integration point catalog
+- 使用 Task 工具，设置 subagent_type="architect-review"
+- 提示："基于遗留评估报告，创建全面的依赖图，显示：内部模块依赖、外部服务集成、共享数据库架构和跨系统数据流。识别在迁移期间需要外观模式或适配器层的集成点。突出显示需要解决的循环依赖和紧耦合。"
+- 上下文来源：遗留评估报告、组件复杂度分数
+- 预期输出：可视化依赖图和集成点目录
 
-### 3. Business Impact and Risk Assessment
+### 3. 业务影响和风险评估
 
-- Use Task tool with subagent_type="business-analytics::business-analyst"
-- Prompt: "Evaluate business impact of modernizing each component identified. Create risk assessment matrix considering: business criticality (revenue impact), user traffic patterns, data sensitivity, regulatory requirements, and fallback complexity. Prioritize components using a weighted scoring system: (Business Value × 0.4) + (Technical Risk × 0.3) + (Quick Win Potential × 0.3). Define rollback strategies for each component."
-- Context from previous: Component inventory, dependency mapping
-- Expected output: Prioritized migration roadmap with risk mitigation strategies
+- 使用 Task 工具，设置 subagent_type="business-analytics::business-analyst"
+- 提示："评估每个已识别组件现代化的业务影响。创建风险评估矩阵，考虑：业务关键性（收入影响）、用户流量模式、数据敏感性、监管要求和回退复杂性。使用加权评分系统确定组件优先级：(业务价值 × 0.4) + (技术风险 × 0.3) + (快速胜利潜力 × 0.3)。为每个组件定义回滚策略。"
+- 上下文来源：组件清单、依赖映射
+- 预期输出：带风险缓解策略的优先级迁移路线图
 
-## Phase 2: Test Coverage Establishment
+## 第二阶段：测试覆盖建立
 
-### 1. Legacy Code Test Coverage Analysis
+### 1. 遗留代码测试覆盖分析
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Analyze existing test coverage for legacy components at $ARGUMENTS. Use coverage tools to identify untested code paths, missing integration tests, and absent end-to-end scenarios. For components with <40% coverage, generate characterization tests that capture current behavior without modifying functionality. Create test harness for safe refactoring."
-- Expected output: Test coverage report and characterization test suite
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示："分析位于 $ARGUMENTS 的遗留组件的现有测试覆盖。使用覆盖工具识别未测试的代码路径、缺失的集成测试和缺失的端到端场景。对于覆盖 <40% 的组件，生成捕获当前行为的特征测试而不修改功能。创建安全重构的测试工具。"
+- 预期输出：测试覆盖报告和特征测试套件
 
-### 2. Contract Testing Implementation
+### 2. 契约测试实施
 
-- Use Task tool with subagent_type="unit-testing::test-automator"
-- Prompt: "Implement contract tests for all integration points identified in dependency mapping. Create consumer-driven contracts for APIs, message queue interactions, and database schemas. Set up contract verification in CI/CD pipeline. Generate performance baselines for response times and throughput to validate modernized components maintain SLAs."
-- Context from previous: Integration point catalog, existing test coverage
-- Expected output: Contract test suite with performance baselines
+- 使用 Task 工具，设置 subagent_type="unit-testing::test-automator"
+- 提示："为依赖映射中识别的所有集成点实施契约测试。为 API、消息队列交互和数据库架构创建消费者驱动的契约。在 CI/CD 流水线中设置契约验证。生成响应时间和吞吐量的性能基线，以验证现代化组件保持 SLA。"
+- 上下文来源：集成点目录、现有测试覆盖
+- 预期输出：带性能基线的契约测试套件
 
-### 3. Test Data Management Strategy
+### 3. 测试数据管理策略
 
-- Use Task tool with subagent_type="data-engineering::data-engineer"
-- Prompt: "Design test data management strategy for parallel system operation. Create data generation scripts for edge cases, implement data masking for sensitive information, and establish test database refresh procedures. Set up monitoring for data consistency between legacy and modernized components during migration."
-- Context from previous: Database schemas, test requirements
-- Expected output: Test data pipeline and consistency monitoring
+- 使用 Task 工具，设置 subagent_type="data-engineering::data-engineer"
+- 提示："为并行系统运营设计测试数据管理策略。为边缘情况创建数据生成脚本，为敏感信息实施数据掩码，并建立测试数据库刷新程序。设置监控，在迁移期间监控遗留和现代化组件之间的数据一致性。"
+- 上下文来源：数据库架构、测试要求
+- 预期输出：测试数据流水线和一致性监控
 
-## Phase 3: Incremental Migration Implementation
+## 第三阶段：增量迁移实施
 
-### 1. Strangler Fig Infrastructure Setup
+### 1. 绞杀榕基础设施设置
 
-- Use Task tool with subagent_type="backend-development::backend-architect"
-- Prompt: "Implement strangler fig infrastructure with API gateway for traffic routing. Configure feature flags for gradual rollout using environment variables or feature management service. Set up proxy layer with request routing rules based on: URL patterns, headers, or user segments. Implement circuit breakers and fallback mechanisms for resilience. Create observability dashboard for dual-system monitoring."
-- Expected output: API gateway configuration, feature flag system, monitoring dashboard
+- 使用 Task 工具，设置 subagent_type="backend-development::backend-architect"
+- 提示："实施带有 API 网关的绞杀榕基础设施以进行流量路由。配置功能标志以使用环境变量或功能管理服务进行渐进式推出。设置带有请求路由规则的代理层，基于：URL 模式、标头或用户细分。实施弹性熔断器和回退机制。创建双系统监控的可观测性仪表板。"
+- 预期输出：API 网关配置、功能标志系统、监控仪表板
 
-### 2. Component Modernization - First Wave
+### 2. 组件现代化 - 第一波
 
-- Use Task tool with subagent_type="python-development::python-pro" or "golang-pro" (based on target stack)
-- Prompt: "Modernize first-wave components (quick wins identified in assessment). For each component: extract business logic from legacy code, implement using modern patterns (dependency injection, SOLID principles), ensure backward compatibility through adapter patterns, maintain data consistency with event sourcing or dual writes. Follow 12-factor app principles. Components to modernize: [list from prioritized roadmap]"
-- Context from previous: Characterization tests, contract tests, infrastructure setup
-- Expected output: Modernized components with adapters
+- 使用 Task 工具，设置 subagent_type="python-development::python-pro" 或 "golang-pro"（基于目标技术栈）
+- 提示："现代化第一波组件（评估中识别的快速胜利）。对于每个组件：从遗留代码中提取业务逻辑，使用现代模式实施（依赖注入、SOLID 原则），通过适配器模式确保向后兼容性，通过事件溯源或双写入保持数据一致性。遵循 12-factor 应用原则。要现代化的组件：[来自优先级路线图的列表]"
+- 上下文来源：特征测试、契约测试、基础设施设置
+- 预期输出：带适配器的现代化组件
 
-### 3. Security Hardening
+### 3. 安全加固
 
-- Use Task tool with subagent_type="security-scanning::security-auditor"
-- Prompt: "Audit modernized components for security vulnerabilities. Implement security improvements including: OAuth 2.0/JWT authentication, role-based access control, input validation and sanitization, SQL injection prevention, XSS protection, and secrets management. Verify OWASP top 10 compliance. Configure security headers and implement rate limiting."
-- Context from previous: Modernized component code
-- Expected output: Security audit report and hardened components
+- 使用 Task 工具，设置 subagent_type="security-scanning::security-auditor"
+- 提示："审计现代化组件的安全漏洞。实施安全改进，包括：OAuth 2.0/JWT 认证、基于角色的访问控制、输入验证和清理、SQL 注入预防、XSS 保护和机密管理。验证 OWASP 前 10 合规性。配置安全标头并实施速率限制。"
+- 上下文来源：现代化组件代码
+- 预期输出：安全审计报告和加固组件
 
-## Phase 4: Performance Validation and Optimization
+## 第四阶段：性能验证和优化
 
-### 1. Performance Testing and Optimization
+### 1. 性能测试和优化
 
-- Use Task tool with subagent_type="application-performance::performance-engineer"
-- Prompt: "Conduct performance testing comparing legacy vs modernized components. Run load tests simulating production traffic patterns, measure response times, throughput, and resource utilization. Identify performance regressions and optimize: database queries with indexing, caching strategies (Redis/Memcached), connection pooling, and async processing where applicable. Validate against SLA requirements."
-- Context from previous: Performance baselines, modernized components
-- Expected output: Performance test results and optimization recommendations
+- 使用 Task 工具，设置 subagent_type="application-performance::performance-engineer"
+- 提示："进行遗留与现代化组件的性能比较测试。运行模拟生产流量模式的负载测试，测量响应时间、吞吐量和资源利用率。识别性能回归并优化：通过索引的数据库查询、缓存策略（Redis/Memcached）、连接池和适用的异步处理。根据 SLA 要求进行验证。"
+- 上下文来源：性能基线、现代化组件
+- 预期输出：性能测试结果和优化建议
 
-### 2. Progressive Rollout and Monitoring
+### 2. 渐进式推出和监控
 
-- Use Task tool with subagent_type="deployment-strategies::deployment-engineer"
-- Prompt: "Implement progressive rollout strategy using feature flags. Start with 5% traffic to modernized components, monitor error rates, latency, and business metrics. Define automatic rollback triggers: error rate >1%, latency >2x baseline, or business metric degradation. Create runbook for traffic shifting: 5% → 25% → 50% → 100% with 24-hour observation periods."
-- Context from previous: Feature flag configuration, monitoring dashboard
-- Expected output: Rollout plan with automated safeguards
+- 使用 Task 工具，设置 subagent_type="deployment-strategies::deployment-engineer"
+- 提示："使用功能标志实施渐进式推出策略。从 5% 流量到现代化组件开始，监控错误率、延迟和业务指标。定义自动回滚触发器：错误率 >1%、延迟 >2x 基线或业务指标下降。创建流量转移的运行手册：5% → 25% → 50% → 100%，具有 24 小时观察期。"
+- 上下文来源：功能标志配置、监控仪表板
+- 预期输出：带自动保障措施的推出计划
 
-## Phase 5: Migration Completion and Documentation
+## 第五阶段：迁移完成和文档
 
-### 1. Legacy Component Decommissioning
+### 1. 遗留组件退役
 
-- Use Task tool with subagent_type="legacy-modernizer"
-- Prompt: "Plan safe decommissioning of replaced legacy components. Verify no remaining dependencies through traffic analysis (minimum 30 days at 0% traffic). Archive legacy code with documentation of original functionality. Update CI/CD pipelines to remove legacy builds. Clean up unused database tables and remove deprecated API endpoints. Document any retained legacy components with sunset timeline."
-- Context from previous: Traffic routing data, modernization status
-- Expected output: Decommissioning checklist and timeline
+- 使用 Task 工具，设置 subagent_type="legacy-modernizer"
+- 提示："规划被替换的遗留组件的安全退役。通过流量分析（0% 流量最少 30 天）验证没有剩余依赖。归档遗留代码并附带原始功能文档。更新 CI/CD 流水线以删除遗留构建。清理未使用的数据库表并删除已弃用的 API 端点。记录任何保留的遗留组件及其日落时间表。"
+- 上下文来源：流量路由数据、现代化状态
+- 预期输出：退役检查清单和时间表
 
-### 2. Documentation and Knowledge Transfer
+### 2. 文档和知识转移
 
-- Use Task tool with subagent_type="documentation-generation::docs-architect"
-- Prompt: "Create comprehensive modernization documentation including: architectural diagrams (before/after), API documentation with migration guides, runbooks for dual-system operation, troubleshooting guides for common issues, and lessons learned report. Generate developer onboarding guide for modernized system. Document technical decisions and trade-offs made during migration."
-- Context from previous: All migration artifacts and decisions
-- Expected output: Complete modernization documentation package
+- 使用 Task 工具，设置 subagent_type="documentation-generation::docs-architect"
+- 提示："创建全面的现代化文档，包括：架构图（之前/之后）、带迁移指南的 API 文档、双系统运营的运行手册、常见问题的故障排除指南和经验教训报告。生成现代化系统的开发者入门指南。记录迁移期间的技术决策和权衡。"
+- 上下文来源：所有迁移工件和决策
+- 预期输出：完整的现代化文档包
 
-## Configuration Options
+## 配置选项
 
-- **--parallel-systems**: Keep both systems running indefinitely (for gradual migration)
-- **--big-bang**: Full cutover after validation (higher risk, faster completion)
-- **--by-feature**: Migrate complete features rather than technical components
-- **--database-first**: Prioritize database modernization before application layer
-- **--api-first**: Modernize API layer while maintaining legacy backend
+- **--parallel-systems**：无限期保持两个系统运行（用于渐进式迁移）
+- **--big-bang**：验证后完全切换（风险较高，完成更快）
+- **--by-feature**：迁移完整功能而非技术组件
+- **--database-first**：在应用层之前优先数据库现代化
+- **--api-first**：在维护遗留后端的同时现代化 API 层
 
-## Success Criteria
+## 成功标准
 
-- All high-priority components modernized with >80% test coverage
-- Zero unplanned downtime during migration
-- Performance metrics maintained or improved (P95 latency within 110% of baseline)
-- Security vulnerabilities reduced by >90%
-- Technical debt score improved by >60%
-- Successful operation for 30 days post-migration without rollbacks
-- Complete documentation enabling new developer onboarding in <1 week
+- 所有高优先级组件已现代化，测试覆盖 >80%
+- 迁移期间零计划外停机时间
+- 性能指标保持或改善（P95 延迟在基线的 110% 以内）
+- 安全漏洞减少 >90%
+- 技术债务分数改善 >60%
+- 迁移后成功运行 30 天，无需回滚
+- 完整文档使新开发者能够在 <1 周内入门
 
-Target: $ARGUMENTS
+目标：$ARGUMENTS

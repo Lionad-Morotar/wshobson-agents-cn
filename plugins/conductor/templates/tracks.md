@@ -1,62 +1,62 @@
-# Track Registry
+# 轨道注册表
 
-This file maintains the registry of all development tracks for the project. Each track represents a distinct body of work with its own spec and implementation plan.
+本文件维护项目的所有开发轨道注册表。每个轨道代表一个独立的工作主体，拥有各自的规范和实施计划。
 
-## Status Legend
+## 状态图例
 
-| Symbol | Status      | Description               |
+| 符号 | 状态      | 描述               |
 | ------ | ----------- | ------------------------- |
-| `[ ]`  | Pending     | Not yet started           |
-| `[~]`  | In Progress | Currently being worked on |
-| `[x]`  | Completed   | Finished and verified     |
+| `[ ]`  | 待处理     | 尚未启动           |
+| `[~]`  | 进行中 | 正在处理中 |
+| `[x]`  | 已完成   | 已完成并验证     |
 
-## Active Tracks
-
-### [ ] {{TRACK_ID}}: {{TRACK_NAME}}
-
-**Description:** {{TRACK_DESCRIPTION}}
-**Priority:** {{PRIORITY}}
-**Folder:** [./tracks/{{TRACK_ID}}/](./tracks/{{TRACK_ID}}/)
-
----
+## 活跃轨道
 
 ### [ ] {{TRACK_ID}}: {{TRACK_NAME}}
 
-**Description:** {{TRACK_DESCRIPTION}}
-**Priority:** {{PRIORITY}}
-**Folder:** [./tracks/{{TRACK_ID}}/](./tracks/{{TRACK_ID}}/)
+**描述：** {{TRACK_DESCRIPTION}}
+**优先级：** {{PRIORITY}}
+**目录：** [./tracks/{{TRACK_ID}}/](./tracks/{{TRACK_ID}}/)
 
 ---
 
-## Completed Tracks
+### [ ] {{TRACK_ID}}: {{TRACK_NAME}}
 
-<!-- Move completed tracks here -->
+**描述：** {{TRACK_DESCRIPTION}}
+**优先级：** {{PRIORITY}}
+**目录：** [./tracks/{{TRACK_ID}}/](./tracks/{{TRACK_ID}}/)
 
 ---
 
-## Archived Tracks
+## 已完成轨道
 
-<!-- Archived tracks are moved here with reason and date -->
+<!-- 将已完成的轨道移至此处 -->
 
-| Track ID | Type | Reason | Archived | Folder |
+---
+
+## 已归档轨道
+
+<!-- 已归档的轨道移至此处，并注明原因和日期 -->
+
+| 轨道 ID | 类型 | 原因 | 归档时间 | 目录 |
 | -------- | ---- | ------ | -------- | ------ |
 
 ---
 
-## Track Creation Checklist
+## 轨道创建清单
 
-When creating a new track:
+创建新轨道时：
 
-1. [ ] Add entry to this registry
-2. [ ] Create track folder: `./tracks/{{track-id}}/`
-3. [ ] Create spec.md from template
-4. [ ] Create plan.md from template
-5. [ ] Create metadata.json from template
-6. [ ] Update index.md with new track reference
+1. [ ] 在此注册表中添加条目
+2. [ ] 创建轨道目录：`./tracks/{{track-id}}/`
+3. [ ] 根据模板创建 spec.md
+4. [ ] 根据模板创建 plan.md
+5. [ ] 根据模板创建 metadata.json
+6. [ ] 更新 index.md，添加新轨道引用
 
-## Notes
+## 注意事项
 
-- Track IDs should be lowercase with hyphens (e.g., `user-auth`, `api-v2`)
-- Keep descriptions concise (one line)
-- Prioritize tracks as: critical, high, medium, low
-- Archive completed tracks quarterly
+- 轨道 ID 应使用小写字母和连字符（例如 `user-auth`、`api-v2`）
+- 保持描述简洁（单行）
+- 轨道优先级分为：critical（关键）、high（高）、medium（中）、low（低）
+- 每季度归档已完成的轨道

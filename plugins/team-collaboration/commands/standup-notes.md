@@ -1,706 +1,706 @@
-# Standup Notes Generator
+# 站立会议笔记生成器
 
-You are an expert team communication specialist focused on async-first standup practices, AI-assisted note generation from commit history, and effective remote team coordination patterns.
+您是一位专注于异步优先站立会议实践、AI 辅助从提交历史生成笔记以及高效远程团队协调模式的团队沟通专家。
 
-## Context
+## 背景
 
-Modern remote-first teams rely on async standup notes to maintain visibility, coordinate work, and identify blockers without synchronous meetings. This tool generates comprehensive daily standup notes by analyzing multiple data sources: Obsidian vault context, Jira tickets, Git commit history, and calendar events. It supports both traditional synchronous standups and async-first team communication patterns, automatically extracting accomplishments from commits and formatting them for maximum team visibility.
+现代远程优先团队依赖异步站立会议笔记来保持工作可见性、协调工作并识别障碍，而无需同步会议。此工具通过分析多个数据源生成全面的每日站立会议笔记：Obsidian vault 上下文、Jira 工单、Git 提交历史和日历事件。它支持传统的同步站立会议和异步优先的团队沟通模式，自动从提交中提取成果并为最大的团队可见性进行格式化。
 
-## Requirements
+## 要求
 
-**Arguments:** `$ARGUMENTS` (optional)
+**参数：** `$ARGUMENTS`（可选）
 
-- If provided: Use as context about specific work areas, projects, or tickets to highlight
-- If empty: Automatically discover work from all available sources
+- 如果提供：用作特定工作领域、项目或工单的上下文以突出显示
+- 如果为空：自动从所有可用源发现工作
 
-**Required MCP Integrations:**
+**必需的 MCP 集成：**
 
-- `mcp-obsidian`: Vault access for daily notes and project updates
-- `atlassian`: Jira ticket queries (graceful fallback if unavailable)
-- Optional: Calendar integrations for meeting context
+- `mcp-obsidian`：用于每日笔记和项目更新的 Vault 访问
+- `atlassian`：Jira 工单查询（如果不可用则优雅降级）
+- 可选：日历集成用于会议上下文
 
-## Data Source Orchestration
+## 数据源编排
 
-**Primary Sources:**
+**主要源：**
 
-1. **Git commit history** - Parse recent commits (last 24-48h) to extract accomplishments
-2. **Jira tickets** - Query assigned tickets for status updates and planned work
-3. **Obsidian vault** - Review recent daily notes, project updates, and task lists
-4. **Calendar events** - Include meeting context and time commitments
+1. **Git 提交历史** - 解析最近的提交（过去 24-48 小时）以提取成果
+2. **Jira 工单** - 查询已分配的工单以获取状态更新和计划工作
+3. **Obsidian vault** - 查看最近的每日笔记、项目更新和任务列表
+4. **日历事件** - 包含会议上下文和时间承诺
 
-**Collection Strategy:**
+**收集策略：**
 
 ```
-1. Get current user context (Jira username, Git author)
-2. Fetch recent Git commits:
-   - Use `git log --author="<user>" --since="yesterday" --pretty=format:"%h - %s (%cr)"`
-   - Parse commit messages for PR references, ticket IDs, features
-3. Query Obsidian:
-   - `obsidian_get_recent_changes` (last 2 days)
-   - `obsidian_get_recent_periodic_notes` (daily/weekly notes)
-   - Search for task completions, meeting notes, action items
-4. Search Jira tickets:
-   - Completed: `assignee = currentUser() AND status CHANGED TO "Done" DURING (-1d, now())`
-   - In Progress: `assignee = currentUser() AND status = "In Progress"`
-   - Planned: `assignee = currentUser() AND status in ("To Do", "Open") AND priority in (High, Highest)`
-5. Correlate data across sources (link commits to tickets, tickets to notes)
+1. 获取当前用户上下文（Jira 用户名、Git 作者）
+2. 获取最近的 Git 提交：
+   - 使用 `git log --author="<user>" --since="yesterday" --pretty=format:"%h - %s (%cr)"`
+   - 解析提交消息以获取 PR 引用、工单 ID、功能
+3. 查询 Obsidian：
+   - `obsidian_get_recent_changes`（最近 2 天）
+   - `obsidian_get_recent_periodic_notes`（每日/每周笔记）
+   - 搜索完成的任务、会议笔记、行动项
+4. 搜索 Jira 工单：
+   - 已完成：`assignee = currentUser() AND status CHANGED TO "Done" DURING (-1d, now())`
+   - 进行中：`assignee = currentUser() AND status = "In Progress"`
+   - 已计划：`assignee = currentUser() AND status in ("To Do", "Open") AND priority in (High, Highest)`
+5. 关联跨源的数据（将提交链接到工单、工单链接到笔记）
 ```
 
-## Standup Note Structure
+## 站立会议笔记结构
 
-**Standard Format:**
+**标准格式：**
 
 ```markdown
-# Standup - YYYY-MM-DD
+# 站立会议 - YYYY-MM-DD
 
-## Yesterday / Last Update
+## 昨天 / 上次更新
 
-• [Completed task 1] - [Jira ticket link if applicable]
-• [Shipped feature/fix] - [Link to PR or deployment]
-• [Meeting outcomes or decisions made]
-• [Progress on ongoing work] - [Percentage complete or milestone reached]
+• [已完成的任务 1] - [如适用，Jira 工单链接]
+• [已发布的功能/修复] - [PR 或部署链接]
+• [会议结果或做出的决策]
+• [正在进行的工作的进展] - [完成百分比或达到的里程碑]
 
-## Today / Next
+## 今天 / 接下来
 
-• [Continue work on X] - [Jira ticket] - [Expected completion: end of day]
-• [Start new feature Y] - [Jira ticket] - [Goal: complete design phase]
-• [Code review for Z] - [PR link]
-• [Meetings: Team sync 2pm, Design review 4pm]
+• [继续处理 X] - [Jira 工单] - [预期完成：今天结束前]
+• [开始新功能 Y] - [Jira 工单] - [目标：完成设计阶段]
+• [Z 的代码审查] - [PR 链接]
+• [会议：团队同步 2pm，设计审查 4pm]
 
-## Blockers / Notes
+## 阻碍 / 注意事项
 
-• [Blocker description] - **Needs:** [Specific help needed] - **From:** [Person/team]
-• [Dependency or waiting on] - **ETA:** [Expected resolution date]
-• [Important context or risk] - [Impact if not addressed]
-• [Out of office or schedule notes]
+• [阻碍描述] - **需要：** [需要的具体帮助] - **来自：** [人员/团队]
+• [依赖或等待] - **预计：** [预期解决日期]
+• [重要上下文或风险] - [如果不解决的影响]
+• [不在办公室或日程说明]
 
-[Optional: Links to related docs, PRs, or Jira epics]
+[可选：相关文档、PR 或 Jira epic 的链接]
 ```
 
-**Formatting Guidelines:**
+**格式指南：**
 
-- Use bullet points for scanability
-- Include links to tickets, PRs, docs for quick navigation
-- Bold blockers and key information
-- Add time estimates or completion targets where relevant
-- Keep each bullet concise (1-2 lines max)
-- Group related items together
+- 使用项目符号以便于扫描
+- 包含工单、PR、文档的链接以便快速导航
+- 对阻碍和关键信息使用粗体
+- 在相关处添加时间估算或完成目标
+- 保持每个项目符号简洁（最多 1-2 行）
+- 将相关项组合在一起
 
-## Yesterday's Accomplishments Extraction
+## 昨天成果的提取
 
-**AI-Assisted Commit Analysis:**
-
-```
-For each commit in the last 24-48 hours:
-1. Extract commit message and parse for:
-   - Conventional commit types (feat, fix, refactor, docs, etc.)
-   - Ticket references (JIRA-123, #456, etc.)
-   - Descriptive action (what was accomplished)
-2. Group commits by:
-   - Feature area or epic
-   - Ticket/PR number
-   - Type of work (bug fixes, features, refactoring)
-3. Summarize into accomplishment statements:
-   - "Implemented X feature for Y" (from feat: commits)
-   - "Fixed Z bug affecting A users" (from fix: commits)
-   - "Deployed B to production" (from deployment commits)
-4. Cross-reference with Jira:
-   - If commit references ticket, use ticket title for context
-   - Add ticket status if moved to Done/Closed
-   - Include acceptance criteria met if available
-```
-
-**Obsidian Task Completion Parsing:**
+**AI 辅助提交分析：**
 
 ```
-Search vault for completed tasks (last 24-48h):
-- Pattern: `- [x] Task description` with recent modification date
-- Extract context from surrounding notes (which project, meeting, or epic)
-- Summarize completed todos from daily notes
-- Include any journal entries about accomplishments or milestones
+对于过去 24-48 小时内的每个提交：
+1. 提取提交消息并解析：
+   - 约定式提交类型（feat、fix、refactor、docs 等）
+   - 工单引用（JIRA-123、#456 等）
+   - 描述性操作（完成了什么）
+2. 按以下方式分组提交：
+   - 功能领域或 epic
+   - 工单/PR 编号
+   - 工作类型（bug 修复、功能、重构）
+3. 总结为成果陈述：
+   - "为 Y 实现了 X 功能"（来自 feat: 提交）
+   - "修复了影响 A 用户的 Z bug"（来自 fix: 提交）
+   - "将 B 部署到生产环境"（来自部署提交）
+4. 与 Jira 交叉引用：
+   - 如果提交引用了工单，使用工单标题作为上下文
+   - 如果工单状态变为 Done/Closed，添加工单状态
+   - 包括已满足的验收标准（如果可用）
 ```
 
-**Accomplishment Quality Criteria:**
-
-- Focus on delivered value, not just activity ("Shipped user auth" vs "Worked on auth")
-- Include impact when known ("Fixed bug affecting 20% of users")
-- Connect to team goals or sprint objectives
-- Avoid jargon unless team-standard terminology
-
-## Today's Plans and Priorities
-
-**Priority-Based Planning:**
+**Obsidian 任务完成解析：**
 
 ```
-1. Urgent blockers for others (unblock teammates first)
-2. Sprint/iteration commitments (tickets in current sprint)
-3. High-priority bugs or production issues
-4. Feature work in progress (continue momentum)
-5. Code reviews and team support
-6. New work from backlog (if capacity available)
+在 vault 中搜索已完成的任务（过去 24-48 小时）：
+- 模式：`- [x] 任务描述` 带有最近的修改日期
+- 从周围的笔记中提取上下文（哪个项目、会议或 epic）
+- 总结每日笔记中完成的待办事项
+- 包括任何关于成果或里程碑的日记条目
 ```
 
-**Capacity-Aware Planning:**
+**成果质量标准：**
 
-- Calculate available hours (8h - meetings - expected interruptions)
-- Flag overcommitment if planned work exceeds capacity
-- Include time for code reviews, testing, deployment tasks
-- Note partial day availability (half-day due to appointments, etc.)
+- 专注于交付的价值，而不仅仅是活动（"发布了用户身份验证" vs "在身份验证上工作"）
+- 在已知时包括影响（"修复了影响 20% 用户的 bug"）
+- 连接到团队目标或冲刺目标
+- 除非是团队标准术语，否则避免行话
 
-**Clear Outcomes:**
+## 今天的计划和优先级
 
-- Define success criteria for each task ("Complete API integration" vs "Work on API")
-- Include ticket status transitions expected ("Move JIRA-123 to Code Review")
-- Set realistic completion targets ("Finish by EOD" or "Rough draft by lunch")
+**基于优先级的规划：**
 
-## Blockers and Dependencies Identification
+```
+1. 其他人的紧急阻碍（首先解除队友的阻碍）
+2. 冲刺/迭代承诺（当前冲刺中的工单）
+3. 高优先级 bug 或生产问题
+4. 进行中的功能工作（保持势头）
+5. 代码审查和团队支持
+6. 积压的新工作（如果有可用容量）
+```
 
-**Blocker Categorization:**
+**容量感知规划：**
 
-**Hard Blockers (work completely stopped):**
+- 计算可用小时数（8h - 会议 - 预期中断）
+- 如果计划的工作超过容量，标记过度承诺
+- 包括代码审查、测试、部署任务的时间
+- 注意部分日期的可用性（因预约半天等）
 
-- Waiting on external API access or credentials
-- Blocked by failed CI/CD or infrastructure issues
-- Dependent on another team's incomplete work
-- Missing requirements or design decisions
+**明确的成果：**
 
-**Soft Blockers (work slowed but not stopped):**
+- 为每个任务定义成功标准（"完成 API 集成" vs "在 API 上工作"）
+- 包括预期的工单状态转换（"将 JIRA-123 移至代码审查"）
+- 设定现实的完成目标（"在下班前完成"或"在午饭后完成粗略草稿"）
 
-- Need clarification on requirements (can proceed with assumptions)
-- Waiting on code review (can start next task)
-- Performance issues impacting development workflow
-- Missing nice-to-have resources or tools
+## 阻碍和依赖识别
 
-**Blocker Escalation Format:**
+**阻碍分类：**
+
+**硬阻碍（工作完全停止）：**
+
+- 等待外部 API 访问或凭据
+- 被 CI/CD 失败或基础设施问题阻碍
+- 依赖另一个团队的未完成工作
+- 缺少需求或设计决策
+
+**软阻碍（工作放缓但未停止）：**
+
+- 需要需求澄清（可以基于假设继续）
+- 等待代码审查（可以开始下一个任务）
+- 影响开发工作流程的性能问题
+- 缺少很好但非必需的资源或工具
+
+**阻碍升级格式：**
 
 ```markdown
-## Blockers
+## 阻碍
 
-• **[CRITICAL]** [Description] - Blocked since [date]
+• **[关键]** [描述] - 自 [日期] 被阻碍
 
-- **Impact:** [What work is stopped, team/customer impact]
-- **Need:** [Specific action required]
-- **From:** [@person or @team]
-- **Tried:** [What you've already attempted]
-- **Next step:** [What will happen if not resolved by X date]
+- **影响：** [停止了什么工作、团队/客户影响]
+- **需要：** [需要的具体行动]
+- **来自：** [@人员或@团队]
+- **已尝试：** [您已经尝试过的内容]
+- **下一步：** [如果在 X 日期前未解决会发生什么]
 
-• **[NORMAL]** [Description] - [When it became a blocker]
+• **[正常]** [描述] - [何时成为阻碍]
 
-- **Need:** [What would unblock]
-- **Workaround:** [Current alternative approach if any]
+- **需要：** [什么可以解除阻碍]
+- **变通方法：** [当前替代方法（如果有）]
 ```
 
-**Dependency Tracking:**
+**依赖跟踪：**
 
-- Call out cross-team dependencies explicitly
-- Include expected delivery dates for dependent work
-- Tag relevant stakeholders with @mentions
-- Update dependencies daily until resolved
+- 明确指出跨团队依赖
+- 包括依赖工作的预期交付日期
+- 使用 @提及标记相关利益相关者
+- 每天更新依赖项直到解决
 
-## AI-Assisted Note Generation
+## AI 辅助笔记生成
 
-**Automated Generation Workflow:**
+**自动生成工作流程：**
 
 ```bash
-# Generate standup notes from Git commits (last 24h)
+# 从 Git 提交生成站立会议笔记（过去 24 小时）
 git log --author="$(git config user.name)" --since="24 hours ago" \
   --pretty=format:"%s" --no-merges | \
-  # Parse into accomplishments with AI summarization
+  # 使用 AI 总结解析为成果
 
-# Query Jira for ticket updates
+# 查询 Jira 工单更新
 jira issues list --assignee currentUser() --status "In Progress,Done" \
   --updated-after "-2d" | \
-  # Correlate with commits and format
+  # 与提交关联并格式化
 
-# Extract from Obsidian daily notes
+# 从 Obsidian 每日笔记中提取
 obsidian_get_recent_periodic_notes --period daily --limit 2 | \
-  # Parse completed tasks and meeting notes
+  # 解析已完成的任务和会议笔记
 
-# Combine all sources into structured standup note
-# AI synthesizes into coherent narrative with proper grouping
+# 将所有源组合成结构化的站立会议笔记
+# AI 综合成连贯的叙述并正确分组
 ```
 
-**AI Summarization Techniques:**
+**AI 总结技术：**
 
-- Group related commits/tasks under single accomplishment bullets
-- Translate technical commit messages to business value statements
-- Identify patterns across multiple changes (e.g., "Refactored auth module" from 5 commits)
-- Extract key decisions or learnings from meeting notes
-- Flag potential blockers or risks from context clues
+- 将相关的提交/任务分组在单个成果项目符号下
+- 将技术提交消息转换为业务价值陈述
+- 识别多个更改中的模式（例如，从 5 个提交中"重构了身份验证模块"）
+- 从会议笔记中提取关键决策或学习
+- 根据上下文线索标记潜在的阻碍或风险
 
-**Manual Override:**
+**手动覆盖：**
 
-- Always review AI-generated content for accuracy
-- Add personal context AI cannot infer (conversations, planning thoughts)
-- Adjust priorities based on team needs or changed circumstances
-- Include soft skills work (mentoring, documentation, process improvement)
+- 始终审查 AI 生成的内容的准确性
+- 添加 AI 无法推断的个人上下文（对话、规划思路）
+- 根据团队需求或变化的情况调整优先级
+- 包括软技能工作（指导、文档、流程改进）
 
-## Communication Best Practices
+## 沟通最佳实践
 
-**Async-First Principles:**
+**异步优先原则：**
 
-- Post standup notes at consistent time daily (e.g., 9am local time)
-- Don't wait for synchronous standup meeting to share updates
-- Include enough context for readers in different timezones
-- Link to detailed docs/tickets rather than explaining in-line
-- Make blockers actionable (specific requests, not vague concerns)
+- 每天在一致的时间发布站立会议笔记（例如，当地时间上午 9 点）
+- 不要等到同步站立会议才分享更新
+- 包含足够的上下文供不同时区的读者阅读
+- 链接到详细文档/工单而不是内联解释
+- 使阻碍可操作（具体请求，而不是模糊的担忧）
 
-**Visibility and Transparency:**
+**可见性和透明度：**
 
-- Share wins and progress, not just problems
-- Be honest about challenges and timeline concerns early
-- Call out dependencies proactively before they become blockers
-- Highlight collaboration and team support activities
-- Include learning moments or process improvements
+- 分享胜利和进展，而不仅仅是问题
+- 早期诚实地说明挑战和时间表担忧
+- 在依赖成为阻碍之前主动指出
+- 突出协作和团队支持活动
+- 包括学习时刻或流程改进
 
-**Team Coordination:**
+**团队协调：**
 
-- Read teammates' standup notes before posting yours (adjust plans accordingly)
-- Offer help when you see blockers you can resolve
-- Tag people when their input or action is needed
-- Use threads for discussion, keep main post scannable
-- Update throughout day if priorities shift significantly
+- 在发布您的笔记之前阅读队友的站立会议笔记（相应调整计划）
+- 当您看到可以解决的阻碍时提供帮助
+- 当需要他们的输入或行动时标记人员
+- 使用线程进行讨论，保持主要帖子可扫描
+- 如果优先级发生重大变化，全天更新
 
-**Writing Style:**
+**写作风格：**
 
-- Use active voice and clear action verbs
-- Avoid ambiguous terms ("soon", "later", "eventually")
-- Be specific about timeline and scope
-- Balance confidence with appropriate uncertainty
-- Keep it human (casual tone, not formal report)
+- 使用主动语态和清晰的行动动词
+- 避免模糊的术语（"很快"、"稍后"、"最终"）
+- 具体说明时间表和范围
+- 在自信和适当的不确定性之间取得平衡
+- 保持人性化（随意语气，而非正式报告）
 
-## Async Standup Patterns
+## 异步站立会议模式
 
-**Written-Only Standup (No Sync Meeting):**
+**仅书面站立会议（无同步会议）：**
 
 ```markdown
-# Post daily in #standup-team-name Slack channel
+# 每天在 #standup-team-name Slack 频道发布
 
-**Posted:** 9:00 AM PT | **Read time:** ~2min
+**发布时间：** 上午 9:00 PT | **阅读时间：** ~2分钟
 
-## ✅ Yesterday
+## ✅ 昨天
 
-• Shipped user profile API endpoints (JIRA-234) - Live in staging
-• Fixed critical bug in payment flow - PR merged, deploying at 2pm
-• Reviewed PRs from @teammate1 and @teammate2
+• 发布了用户个人资料 API 端点（JIRA-234）- 已在 staging 中运行
+• 修复了支付流程中的关键 bug - PR 已合并，将在 2pm 部署
+• 审查了来自 @teammate1 和 @teammate2 的 PR
 
-## 🎯 Today
+## 🎯 今天
 
-• Migrate user database to new schema (JIRA-456) - Target: EOD
-• Pair with @teammate3 on webhook integration - 11am session
-• Write deployment runbook for profile API
+• 将用户数据库迁移到新模式（JIRA-456）- 目标：下班前
+• 与 @teammate3 结对进行 webhook 集成 - 11am 会话
+• 为个人资料 API 编写部署运行手册
 
-## 🚧 Blockers
+## 🚧 阻碍
 
-• Need staging database access for migration testing - @infra-team
+• 需要 staging 数据库访问权限以进行迁移测试 - @infra-team
 
-## 📎 Links
+## 📎 链接
 
-• [PR #789](link) | [JIRA Sprint Board](link)
+• [PR #789](link) | [Jira 冲刺看板](link)
 ```
 
-**Thread-Based Standup:**
+**基于线程的站立会议：**
 
-- Post standup as Slack thread parent message
-- Teammates reply in thread with questions or offers to help
-- Keep discussion contained, surface key decisions to channel
-- Use emoji reactions for quick acknowledgment (👀 = read, ✅ = noted, 🤝 = I can help)
+- 将站立会议作为 Slack 线程父消息发布
+- 队友在线程中回复问题或提供帮助
+- 保持讨论受控，将关键决策展示到频道
+- 使用表情符号反应进行快速确认（👀 = 已读，✅ = 已注意，🤝 = 我可以帮忙）
 
-**Video Async Standup:**
+**视频异步站立会议：**
 
-- Record 2-3 minute Loom video walking through work
-- Post video link with text summary (for skimmers)
-- Useful for demoing UI work, explaining complex technical issues
-- Include automatic transcript for accessibility
+- 录制 2-3 分钟的 Loom 视频介绍工作
+- 发布带有文本摘要的视频链接（供浏览者使用）
+- 适用于演示 UI 工作、解释复杂的技术问题
+- 包括自动转录以方便访问
 
-**Rolling 24-Hour Standup:**
+**滚动 24 小时站立会议：**
 
-- Post update anytime within 24h window
-- Mark as "posted" when shared (use emoji status)
-- Accommodates distributed teams across timezones
-- Weekly summary thread consolidates key updates
+- 在 24 小时窗口内的任何时间发布更新
+- 共享时标记为"已发布"（使用表情符号状态）
+- 适应跨时区的分布式团队
+- 每周摘要线程整合关键更新
 
-## Follow-Up Tracking
+## 后续跟踪
 
-**Action Item Extraction:**
+**行动项提取：**
 
 ```
-From standup notes, automatically extract:
-1. Blockers requiring follow-up → Create reminder tasks
-2. Promised deliverables → Add to todo list with deadline
-3. Dependencies on others → Track in separate "Waiting On" list
-4. Meeting action items → Link to meeting note with owner
+从站立会议笔记中自动提取：
+1. 需要后续跟进的阻碍 → 创建提醒任务
+2. 承诺的可交付成果 → 带截止日期添加到待办事项列表
+3. 对他人的依赖 → 在单独的"等待"列表中跟踪
+4. 会议行动项 → 链接到带有负责人的会议笔记
 ```
 
-**Progress Tracking Over Time:**
+**随时间的进度跟踪：**
 
-- Link today's "Yesterday" section to previous day's "Today" plan
-- Flag items that remain in "Today" for 3+ days (potential stuck work)
-- Celebrate completed multi-day efforts when finally done
-- Review weekly to identify recurring blockers or process improvements
+- 将今天的"昨天"部分链接到前一天的"今天"计划
+- 标记在"今天"中保留 3 天以上的项目（可能卡住的工作）
+- 当最终完成时庆祝已完成的多日工作
+- 每周审查以识别重复出现的阻碍或流程改进
 
-**Retrospective Data:**
+**回顾数据：**
 
-- Monthly review of standup notes reveals patterns:
-  - How often are estimates accurate?
-  - Which types of blockers are most common?
-  - Where is time going? (meetings, bugs, feature work ratio)
-  - Team health indicators (frequent blockers, overcommitment)
-- Use insights for sprint planning and capacity estimation
+- 每月审查站立会议笔记揭示模式：
+  - 估算的准确频率如何？
+  - 哪些类型的阻碍最常见？
+  - 时间去向哪里？（会议、bug、功能工作比例）
+  - 团队健康指标（频繁阻碍、过度承诺）
+- 使用见解进行冲刺规划和容量估算
 
-**Integration with Task Systems:**
+**与任务系统集成：**
 
 ```markdown
-## Follow-Up Tasks (Auto-generated from standup)
+## 后续任务（从站立会议自动生成）
 
-- [ ] Follow up with @infra-team on staging access (from blocker) - Due: Today EOD
-- [ ] Review PR #789 feedback from @teammate (from yesterday's post) - Due: Tomorrow
-- [ ] Document deployment process (from today's plan) - Due: End of week
-- [ ] Check in on JIRA-456 migration (from today's priority) - Due: Tomorrow standup
+- [ ] 跟进 @infra-team 的 staging 访问（来自阻碍）- 截止：今天下班前
+- [ ] 审查来自 @teammate 的 PR #789 反馈（来自昨天的帖子）- 截止：明天
+- [ ] 记录部署流程（来自今天的计划）- 截止：本周末
+- [ ] 检查 JIRA-456 迁移（来自今天的优先级）- 截止：明天站立会议
 ```
 
-## Examples
+## 示例
 
-### Example 1: Well-Structured Daily Standup Note
+### 示例 1：结构良好的每日站立会议笔记
 
 ```markdown
-# Standup - 2025-10-11
+# 站立会议 - 2025-10-11
 
-## Yesterday
+## 昨天
 
-• **Completed JIRA-892:** User authentication with OAuth2 - PR #445 merged and deployed to staging
-• **Fixed prod bug:** Payment retry logic wasn't handling timeouts - Hotfix deployed, monitoring for 24h
-• **Code review:** Reviewed 3 PRs from @sarah and @mike - All approved with minor feedback
-• **Meeting outcomes:** Design sync on Q4 roadmap - Agreed to prioritize mobile responsiveness
+• **已完成 JIRA-892：** 使用 OAuth2 进行用户身份验证 - PR #445 已合并并部署到 staging
+• **修复了生产 bug：** 支付重试逻辑未处理超时 - 已部署热修复，监控 24 小时
+• **代码审查：** 审查了来自 @sarah 和 @mike 的 3 个 PR - 全部批准并提供少量反馈
+• **会议结果：** Q4 路线图的设计同步 - 同意优先考虑移动响应式设计
 
-## Today
+## 今天
 
-• **Continue JIRA-903:** Implement user profile edit flow - Target: Complete API integration by EOD
-• **Deploy:** Roll out auth changes to production during 2pm deploy window
-• **Pairing:** Work with @chris on webhook error handling - 11am-12pm session
-• **Meetings:** Team retro at 3pm, 1:1 with manager at 4pm
-• **Code review:** Review @sarah's notification service refactor (PR #451)
+• **继续 JIRA-903：** 实现用户个人资料编辑流程 - 目标：在下班前完成 API 集成
+• **部署：** 在 2pm 部署窗口期间将身份验证更改推出到生产环境
+• **结对：** 与 @chris 一起处理 webhook 错误处理 - 11am-12pm 会话
+• **会议：** 3pm 团队回顾，4pm 与经理一对一
+• **代码审查：** 审查 @sarah 的通知服务重构（PR #451）
 
-## Blockers
+## 阻碍
 
-• **Need:** QA environment refresh for profile testing - Database is 2 weeks stale
+• **需要：** QA 环境刷新以进行个人资料测试 - 数据库已过时 2 周
 
-- **From:** @qa-team or @devops
-- **Impact:** Can't test full user flow until refreshed
-- **Workaround:** Testing with mock data for now, but need real data before production
+- **来自：** @qa-team 或 @devops
+- **影响：** 在刷新之前无法测试完整的用户流程
+- **变通方法：** 现在使用模拟数据进行测试，但在生产之前需要真实数据
 
-## Notes
+## 注意事项
 
-• Taking tomorrow afternoon off (dentist appointment) - Will post morning standup but limited availability after 12pm
-• Mobile responsiveness research doc started: [Link to Notion doc]
+• 明天下午请假（牙医预约）- 将发布晨间站立会议，但 12pm 后可用性有限
+• 移动响应式设计研究文档已启动：[链接到 Notion 文档]
 
-📎 [Sprint Board](link) | [My Active PRs](link)
+📎 [冲刺看板](link) | [我的活跃 PR](link)
 ```
 
-### Example 2: AI-Generated Standup from Git History
+### 示例 2：从 Git 历史 AI 生成的站立会议
 
 ```markdown
-# Standup - 2025-10-11 (Auto-generated from Git commits)
+# 站立会议 - 2025-10-11（从 Git 提交自动生成）
 
-## Yesterday (12 commits analyzed)
+## 昨天（分析了 12 个提交）
 
-• **Feature work:** Implemented caching layer for API responses
+• **功能工作：** 为 API 响应实现了缓存层
 
-- Added Redis integration (3 commits)
-- Implemented cache invalidation logic (2 commits)
-- Added monitoring for cache hit rates (1 commit)
-- _Related tickets:_ JIRA-567, JIRA-568
+- 添加了 Redis 集成（3 个提交）
+- 实现了缓存失效逻辑（2 个提交）
+- 添加了缓存命中率监控（1 个提交）
+- _相关工单：_ JIRA-567、JIRA-568
 
-• **Bug fixes:** Resolved 3 production issues
+• **Bug 修复：** 解决了 3 个生产问题
 
-- Fixed null pointer exception in user service (JIRA-601)
-- Corrected timezone handling in reports (JIRA-615)
-- Patched memory leak in background job processor (JIRA-622)
+- 修复了用户服务中的空指针异常（JIRA-601）
+- 更正了报告中的时区处理（JIRA-615）
+- 修补了后台作业处理器中的内存泄漏（JIRA-622）
 
-• **Maintenance:** Updated dependencies and improved testing
+• **维护：** 更新了依赖项并改进了测试
 
-- Upgraded Node.js to v20 LTS (2 commits)
-- Added integration tests for payment flow (2 commits)
-- Refactored error handling in API gateway (1 commit)
+- 将 Node.js 升级到 v20 LTS（2 个提交）
+- 为支付流程添加了集成测试（2 个提交）
+- 重构了 API 网关中的错误处理（1 个提交）
 
-## Today (From Jira: 3 tickets in progress)
+## 今天（来自 Jira：3 个工单进行中）
 
-• **JIRA-670:** Continue performance optimization work - Add database query caching
-• **JIRA-681:** Review and merge teammate PRs (5 pending reviews)
-• **JIRA-690:** Start user notification preferences UI - Design approved yesterday
+• **JIRA-670：** 继续性能优化工作 - 添加数据库查询缓存
+• **JIRA-681：** 审查和合并队友 PR（5 个待审查）
+• **JIRA-690：** 开始用户通知偏好 UI - 昨天设计已批准
 
-## Blockers
+## 阻碍
 
-• None currently
+• 目前无
 
 ---
 
-_Auto-generated from Git commits (24h) + Jira tickets. Reviewed and approved by human._
+_从 Git 提交（24h）+ Jira 工单自动生成。由人工审查和批准。_
 ```
 
-### Example 3: Async Standup Template (Slack/Discord)
+### 示例 3：异步站立会议模板（Slack/Discord）
 
 ```markdown
-**🌅 Standup - Friday, Oct 11** | Posted 9:15 AM ET | @here
+**🌅 站立会议 - 10 月 11 日星期五** | 发布于 上午 9:15 ET | @here
 
-**✅ Since last update (Thu evening)**
-• Merged PR #789 - New search filters now in production 🚀
-• Closed JIRA-445 (the CSS rendering bug) - Fix deployed and verified
-• Documented API changes in Confluence - [Link]
-• Helped @alex debug the staging environment issue
+**✅ 自上次更新（周四晚上）**
+• 合并了 PR #789 - 新搜索过滤器现已投入生产 🚀
+• 关闭了 JIRA-445（CSS 渲染 bug）- 修复已部署并验证
+• 在 Confluence 中记录了 API 更改 - [链接]
+• 帮助 @alex 调试 staging 环境问题
 
-**🎯 Today's focus**
-• Finish user permissions refactor (JIRA-501) - aiming for code complete by EOD
-• Deploy search performance improvements to prod (pending final QA approval)
-• Kick off spike on GraphQL migration - research phase, doc by end of day
+**🎯 今天的重点**
+• 完成用户权限重构（JIRA-501）- 目标是在下班前完成代码
+• 将搜索性能改进部署到 prod（等待最终 QA 批准）
+• 启动 GraphQL 迁移的 spike - 研究阶段，在一天结束时记录文档
 
-**🚧 Blockers**
-• ⚠️ Need @product approval on permissions UX before I can finish JIRA-501
+**🚧 阻碍**
+• ⚠️ 在我完成 JIRA-501 之前需要 @product 对权限 UX 的批准
 
-- I've posted in #product-questions, following up in standup if no response by 11am
+- 我已在 #product-questions 中发布，如果在 11am 之前没有回复，将在站立会议中跟进
 
-**📅 Schedule notes**
-• OOO 2-3pm for doctor appointment
-• Available for pairing this afternoon if anyone needs help!
+**📅 日程说明**
+• 下午 2-3 点因医生预约 OOO
+• 如果有人需要帮助，今天下午可以结对！
 
 ---
 
-React with 👀 when read | Reply in thread with questions
+阅读时用 👀 反应 | 在线程中回复问题
 ```
 
-### Example 4: Blocker Escalation Format
+### 示例 4：阻碍升级格式
 
 ```markdown
-# Standup - 2025-10-11
+# 站立会议 - 2025-10-11
 
-## Yesterday
+## 昨天
 
-• Continued work on data migration pipeline (JIRA-777)
-• Investigated blocker with database permissions (see below)
-• Updated migration runbook with new error handling
+• 继续进行数据迁移管道的工作（JIRA-777）
+• 调查了数据库权限的阻碍（见下文）
+• 使用新的错误处理更新了迁移运行手册
 
-## Today
+## 今天
 
-• **BLOCKED:** Cannot progress on JIRA-777 until permissions resolved
-• Will pivot to JIRA-802 (refactor user service) as backup work
-• Review PRs and help unblock teammates
+• **受阻：** 在权限解决之前无法继续处理 JIRA-777
+• 将转向 JIRA-802（重构用户服务）作为备份工作
+• 审查 PR 并帮助解除队友的阻碍
 
-## 🚨 CRITICAL BLOCKER
+## 🚨 关键阻碍
 
-**Issue:** Production database read access for migration dry-run
-**Blocked since:** Tuesday (3 days)
-**Impact:**
+**问题：** 用于迁移试运行的生产数据库读取访问权限
+**被阻碍时间：** 星期二（3 天）
+**影响：**
 
-- Cannot test migration on real data before production cutover
-- Risk of data loss if migration fails in production
-- Blocking sprint goal (migration scheduled for Monday)
+- 无法在生产切换之前对真实数据测试迁移
+- 如果迁移在生产中失败，存在数据丢失的风险
+- 阻碍冲刺目标（迁移计划在星期一进行）
 
-**What I need:**
+**我需要的：**
 
-- Read-only credentials for production database replica
-- Alternative: Sanitized production data dump in staging
+- 生产数据库副本的只读凭据
+- 替代方案：staging 中的清理生产数据转储
 
-**From:** @database-team (pinged @john and @maria)
+**来自：** @database-team（已 ping @john 和 @maria）
 
-**What I've tried:**
+**我已尝试的：**
 
-- Submitted access request via IT portal (Ticket #12345) - No response
-- Asked in #database-help channel - Referred to IT portal
-- DM'd @john yesterday - Said he'd check today
+- 通过 IT 门户提交访问请求（工单 #12345）- 无响应
+- 在 #database-help 频道询问 - 被引向 IT 门户
+- 昨天 DM 了 @john - 他说他今天会查看
 
-**Escalation:**
+**升级：**
 
-- If not resolved by EOD today, will need to reschedule Monday migration
-- Requesting manager (@sarah) to escalate to database team lead
-- Backup plan: Proceed with staging data only (higher risk)
+- 如果在今天的下班前未解决，将需要重新安排星期一的迁移
+- 请求经理（@sarah）向数据库团队负责人升级
+- 备份计划：仅使用 staging 数据进行（风险较高）
 
-**Next steps:**
+**下一步：**
 
-- Following up with @john at 10am
-- Will update this thread when resolved
-- If unblocked, can complete testing over weekend to stay on schedule
+- 上午 10 点跟进步 @john
+- 解决后将更新此线程
+- 如果解除阻碍，可以在周末完成测试以保持按计划进行
 
 ---
 
-@sarah @john - Please prioritize, this is blocking sprint delivery
+@sarah @john - 请优先考虑，这阻碍了冲刺交付
 ```
 
-## Reference Examples
+## 参考示例
 
-### Reference 1: Full Async Standup Workflow
+### 参考 1：完整的异步站立会议工作流程
 
-**Scenario:** Distributed team across US, Europe, and Asia timezones. No synchronous standup meetings. Daily written updates in Slack #standup channel.
+**场景：** 分布在美国、欧洲和亚洲时区的分布式团队。没有同步站立会议。在 Slack #standup 频道进行每日书面更新。
 
-**Morning Routine (30 minutes):**
+**早晨例行程序（30 分钟）：**
 
 ```bash
-# 1. Generate draft standup from data sources
+# 1. 从数据源生成站立会议草稿
 git log --author="$(git config user.name)" --since="24 hours ago" --oneline
-# Review commits, note key accomplishments
+# 审查提交，记录关键成果
 
-# 2. Check Jira tickets
+# 2. 检查 Jira 工单
 jira issues list --assignee currentUser() --status "In Progress"
-# Identify today's priorities
+# 识别今天的优先级
 
-# 3. Review Obsidian daily note from yesterday
-# Check for completed tasks, meeting outcomes
+# 3. 查看昨天的 Obsidian 每日笔记
+# 检查已完成的任务、会议结果
 
-# 4. Draft standup note in Obsidian
-# File: Daily Notes/Standup/2025-10-11.md
+# 4. 在 Obsidian 中起草站立会议笔记
+# 文件：Daily Notes/Standup/2025-10-11.md
 
-# 5. Review teammates' standup notes (last 8 hours)
-# Identify opportunities to help, dependencies to note
+# 5. 查看队友的站立会议笔记（过去 8 小时）
+# 识别帮助机会、需要注意的依赖
 
-# 6. Post standup to Slack #standup channel (9:00 AM local time)
-# Copy from Obsidian, adjust formatting for Slack
+# 6. 将站立会议发布到 Slack #standup 频道（当地时间上午 9:00）
+# 从 Obsidian 复制，调整 Slack 格式
 
-# 7. Set reminder to check thread responses by 11am
-# Respond to questions, offers of help
+# 7. 设置提醒在上午 11 点之前检查线程响应
+# 回答问题、提供帮助
 
-# 8. Update task list with any new follow-ups from discussion
+# 8. 使用讨论中的任何新后续更新任务列表
 ```
 
-**Standup Note (Posted in Slack):**
+**站立会议笔记（在 Slack 中发布）：**
 
 ```markdown
-**🌄 Standup - Oct 11** | @team-backend | Read time: 2min
+**🌄 站立会议 - 10 月 11 日** | @team-backend | 阅读时间：2分钟
 
-**✅ Yesterday**
-• Shipped v2 API authentication (JIRA-234) → Production deployment successful, monitoring dashboards green
-• Fixed race condition in job queue (JIRA-456) → Reduced error rate from 2% to 0.1%
-• Code review marathon: Reviewed 4 PRs from @alice, @bob, @charlie → All merged
-• Pair programming: Helped @diana debug webhook integration → Issue resolved, she's unblocked
+**✅ 昨天**
+• 发布了 v2 API 身份验证（JIRA-234）→ 生产部署成功，监控仪表板绿色
+• 修复了作业队列中的竞争条件（JIRA-456）→ 错误率从 2% 降低到 0.1%
+• 代码审查马拉松：审查了来自 @alice、@bob、@charlie 的 4 个 PR → 全部合并
+• 结对编程：帮助 @diana 调试 webhook 集成 → 问题已解决，她已解除阻碍
 
-**🎯 Today**
-• **Priority 1:** Complete database migration script (JIRA-567) → Target: Code complete + tested by 3pm
-• **Priority 2:** Security audit prep → Generate access logs report for compliance team
-• **Priority 3:** Start API rate limiting implementation (JIRA-589) → Spike and design doc
-• **Meetings:** Architecture review at 11am PT, sprint planning at 2pm PT
+**🎯 今天**
+• **优先级 1：** 完成数据库迁移脚本（JIRA-567）→ 目标：在下午 3 点前完成代码 + 测试
+• **优先级 2：** 安全审计准备 → 为合规团队生成访问日志报告
+• **优先级 3：** 开始 API 速率限制实施（JIRA-589）→ Spike 和设计文档
+• **会议：** 上午 11 点 PT 架构审查，下午 2 点 PT 冲刺规划
 
-**🚧 Blockers**
-• None! (Yesterday's staging env blocker was resolved by @sre-team 🙌)
+**🚧 阻碍**
+• 无！（昨天的 staging 环境阻碍已由 @sre-team 解决 🙌）
 
-**💡 Notes**
-• Database migration is sprint goal - will update thread when complete
-• Available for pairing this afternoon if anyone needs database help
-• Heads up: Deploying migration to staging at noon, expect ~10min downtime
+**💡 注意事项**
+• 数据库迁移是冲刺目标 - 完成时将更新线程
+• 今天下午可以结对，如果有人需要数据库帮助
+• 注意：中午将迁移部署到 staging，预计约 10 分钟停机
 
-**🔗 Links**
-• [Active PRs](link) | [Sprint Board](link) | [Migration Runbook](link)
+**🔗 链接**
+• [活跃 PR](link) | [冲刺看板](link) | [迁移运行手册](link)
 
 ---
 
-👀 = I've read this | 🤝 = I can help with something | 💬 = Reply in thread
+👀 = 我已阅读此内容 | 🤝 = 我可以提供帮助 | 💬 = 在线程中回复
 ```
 
-**Follow-Up Actions (Throughout Day):**
+**后续行动（全天）：**
 
 ```markdown
-# 11:00 AM - Check thread responses
+# 上午 11:00 - 检查线程响应
 
-Thread from @eve:
+来自 @eve 的线程：
 
-> "Can you review my DB schema changes PR before your migration? Want to make sure no conflicts"
+> "你能在迁移之前审查我的数据库架构更改 PR 吗？想确保没有冲突"
 
-Response:
+回复：
 
-> "Absolutely! I'll review by 1pm so you have feedback before sprint planning. Link?"
+> "当然！我会在下午 1 点之前审查，以便你在冲刺规划之前获得反馈。链接？"
 
-# 3:00 PM - Progress update in thread
+# 下午 3:00 - 线程中的进度更新
 
-> "✅ Update: Migration script complete and tested in staging. Dry-run successful, ready for prod deployment tomorrow. PR #892 up for review."
+> "✅ 更新：迁移脚本已完成并在 staging 中测试。试运行成功，准备好明天进行生产部署。PR #892 已提交审查。"
 
-# EOD - Tomorrow's setup
+# 下班前 - 明天的设置
 
-Add to tomorrow's "Today" section:
-• Deploy database migration to production (scheduled 9am maintenance window)
-• Monitor migration + rollback plan ready
-• Post production status update in #engineering-announcements
+添加到明天的"今天"部分：
+• 将数据库迁移部署到生产环境（计划在上午 9 点维护窗口）
+• 监控迁移 + 回滚计划准备就绪
+• 在 #engineering-announcements 中发布生产状态更新
 ```
 
-**Weekly Retrospective (Friday):**
+**每周回顾（星期五）：**
 
 ```markdown
-# Review week of standup notes
+# 审查一整周的站立会议笔记
 
-Patterns observed:
-• ✅ Completed all 5 sprint stories
-• ⚠️ Database blocker cost 1.5 days - need faster SRE response process
-• 💪 Code review throughput improved (avg 2.5 reviews/day vs 1.5 last week)
-• 🎯 Pairing sessions very productive (3 this week) - schedule more next sprint
+观察到的模式：
+• ✅ 完成了所有 5 个冲刺故事
+• ⚠️ 数据库阻碍耗费了 1.5 天 - 需要更快的 SRE 响应流程
+• 💪 代码审查吞吐量提高（平均每天 2.5 次审查 vs 上周的 1.5 次）
+• 🎯 结对会话非常富有成效（本周 3 次）- 在下一个冲刺中安排更多
 
-Action items:
-• Talk to @sre-lead about expedited access request process
-• Continue pairing schedule (blocking 2hrs/week)
-• Next week: Focus on rate limiting implementation and technical debt
+行动项：
+• 与 @sre-lead 讨论加快访问请求流程
+• 继续结对计划（每周安排 2 小时）
+• 下周：专注于速率限制实施和技术债务
 ```
 
-### Reference 2: AI-Powered Standup Generation System
+### 参考 2：AI 驱动的站立会议生成系统
 
-**System Architecture:**
+**系统架构：**
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Data Collection Layer                                       │
+│ 数据收集层                                                   │
 ├─────────────────────────────────────────────────────────────┤
-│ • Git commits (last 24-48h)                                 │
-│ • Jira ticket updates (status changes, comments)            │
-│ • Obsidian vault changes (daily notes, task completions)    │
-│ • Calendar events (meetings attended, upcoming)             │
-│ • Slack activity (mentions, threads participated in)        │
+│ • Git 提交（过去 24-48 小时）                                │
+│ • Jira 工单更新（状态更改、评论）                            │
+│ • Obsidian vault 更改（每日笔记、任务完成）                  │
+│ • 日历事件（已参加、即将召开的会议）                         │
+│ • Slack 活动（提及、参与的线程）                             │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ AI Analysis & Correlation Layer                             │
+│ AI 分析和关联层                                              │
 ├─────────────────────────────────────────────────────────────┤
-│ • Link commits to Jira tickets (extract ticket IDs)         │
-│ • Group related commits (same feature/bug)                  │
-│ • Extract business value from technical changes             │
-│ • Identify blockers from patterns (repeated attempts)       │
-│ • Summarize meeting notes → extract action items            │
-│ • Calculate work distribution (feature vs bug vs review)    │
+│ • 将提交链接到 Jira 工单（提取工单 ID）                      │
+│ • 分组相关提交（相同功能/bug）                               │
+│ • 从技术更改中提取业务价值                                   │
+│ • 从模式中识别阻碍（重复尝试）                               │
+│ • 总结会议笔记 → 提取行动项                                  │
+│ • 计算工作分布（功能 vs bug vs 审查）                        │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ Generation & Formatting Layer                               │
+│ 生成和格式化层                                               │
 ├─────────────────────────────────────────────────────────────┤
-│ • Generate "Yesterday" from commits + completed tickets     │
-│ • Generate "Today" from in-progress tickets + calendar      │
-│ • Flag potential blockers from context clues                │
-│ • Format for target platform (Slack/Discord/Email/Obsidian) │
-│ • Add relevant links (PRs, tickets, docs)                   │
+│ • 从提交 + 已完成的工单生成"昨天"                            │
+│ • 从进行中的工单 + 日历生成"今天"                            │
+│ • 根据上下文线索标记潜在的阻碍                               │
+│ • 为目标平台格式化（Slack/Discord/Email/Obsidian）           │
+│ • 添加相关链接（PR、工单、文档）                             │
 └─────────────────────────────────────────────────────────────┘
                             ↓
 ┌─────────────────────────────────────────────────────────────┐
-│ Human Review & Enhancement Layer                            │
+│ 人工审查和增强层                                             │
 ├─────────────────────────────────────────────────────────────┤
-│ • Present draft for review                                  │
-│ • Human adds context AI cannot infer                        │
-│ • Adjust priorities based on team needs                     │
-│ • Add personal notes, schedule changes                      │
-│ • Approve and post to team channel                          │
+│ • 展示草稿以供审查                                           │
+│ • 人工添加 AI 无法推断的上下文                               │
+│ • 根据团队需求调整优先级                                     │
+│ • 添加个人说明、日程更改                                     │
+│ • 批准并发布到团队频道                                       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Implementation Script:**
+**实施脚本：**
 
 ```bash
 #!/bin/bash
-# generate-standup.sh - AI-powered standup note generator
+# generate-standup.sh - AI 驱动的站立会议笔记生成器
 
 DATE=$(date +%Y-%m-%d)
 USER=$(git config user.name)
 USER_EMAIL=$(git config user.email)
 
-echo "🤖 Generating standup note for $USER on $DATE..."
+echo "🤖 正在为 $USER 生成 $DATE 的站立会议笔记..."
 
-# 1. Collect Git commits
-echo "📊 Analyzing Git history..."
+# 1. 收集 Git 提交
+echo "📊 正在分析 Git 历史..."
 COMMITS=$(git log --author="$USER" --since="24 hours ago" \
   --pretty=format:"%h|%s|%cr" --no-merges)
 
-# 2. Query Jira (requires jira CLI)
-echo "🎫 Fetching Jira tickets..."
+# 2. 查询 Jira（需要 jira CLI）
+echo "🎫 正在获取 Jira 工单..."
 JIRA_DONE=$(jira issues list --assignee currentUser() \
   --jql "status CHANGED TO 'Done' DURING (-1d, now())" \
   --template json)
@@ -709,16 +709,16 @@ JIRA_PROGRESS=$(jira issues list --assignee currentUser() \
   --jql "status = 'In Progress'" \
   --template json)
 
-# 3. Get Obsidian recent changes (via MCP)
-echo "📝 Checking Obsidian vault..."
+# 3. 获取 Obsidian 最近更改（通过 MCP）
+echo "📝 正在检查 Obsidian vault..."
 OBSIDIAN_CHANGES=$(obsidian_get_recent_changes --days 2)
 
-# 4. Get calendar events
-echo "📅 Fetching calendar..."
+# 4. 获取日历事件
+echo "📅 正在获取日历..."
 MEETINGS=$(gcal --today --format=json)
 
-# 5. Send to AI for analysis and generation
-echo "🧠 Generating standup note with AI..."
+# 5. 发送到 AI 进行分析和生成
+echo "🧠 正在使用 AI 生成站立会议笔记..."
 cat << EOF > /tmp/standup-context.json
 {
   "date": "$DATE",
@@ -731,104 +731,104 @@ cat << EOF > /tmp/standup-context.json
 }
 EOF
 
-# AI prompt for standup generation
+# AI 站立会议生成的提示词
 STANDUP_NOTE=$(claude-ai << 'PROMPT'
-Analyze the provided context and generate a concise daily standup note.
+分析提供的上下文并生成简洁的每日站立会议笔记。
 
-Instructions:
-- Group related commits into single accomplishment bullets
-- Link commits to Jira tickets where possible
-- Extract business value from technical changes
-- Format as: Yesterday / Today / Blockers
-- Keep bullets concise (1-2 lines each)
-- Include relevant links to PRs and tickets
-- Flag any potential blockers based on context
+指令：
+- 将相关的提交分组到单个成果项目符号中
+- 尽可能将提交链接到 Jira 工单
+- 从技术更改中提取业务价值
+- 格式化为：昨天 / 今天 / 阻碍
+- 保持项目符号简洁（每个最多 1-2 行）
+- 包含 PR 和工单的相关链接
+- 根据上下文标记任何潜在的阻碍
 
-Context: $(cat /tmp/standup-context.json)
+上下文：$(cat /tmp/standup-context.json)
 
-Generate standup note in markdown format.
+以 markdown 格式生成站立会议笔记。
 PROMPT
 )
 
-# 6. Save draft to Obsidian
+# 6. 将草稿保存到 Obsidian
 echo "$STANDUP_NOTE" > ~/Obsidian/Standup\ Notes/$DATE.md
 
-# 7. Present for human review
-echo "✅ Draft standup note generated!"
+# 7. 展示以供人工审查
+echo "✅ 草稿站立会议笔记已生成！"
 echo ""
 echo "$STANDUP_NOTE"
 echo ""
-read -p "Review the draft above. Post to Slack? (y/n) " -n 1 -r
+read -p "审查上面的草稿。发布到 Slack？(y/n) " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    # 8. Post to Slack
+    # 8. 发布到 Slack
     slack-cli chat send --channel "#standup" --text "$STANDUP_NOTE"
-    echo "📮 Posted to Slack #standup channel"
+    echo "📮 已发布到 Slack #standup 频道"
 fi
 
-echo "💾 Saved to: ~/Obsidian/Standup Notes/$DATE.md"
+echo "💾 已保存到：~/Obsidian/Standup Notes/$DATE.md"
 ```
 
-**AI Prompt Template for Standup Generation:**
+**站立会议生成的 AI 提示词模板：**
 
 ```
-You are an expert at synthesizing engineering work into clear, concise standup updates.
+您是一位将工程工作综合成清晰、简洁的站立会议更新的专家。
 
-Given the following data sources:
-- Git commits (last 24h)
-- Jira ticket updates
-- Obsidian daily notes
-- Calendar events
+鉴于以下数据源：
+- Git 提交（过去 24 小时）
+- Jira 工单更新
+- Obsidian 每日笔记
+- 日历事件
 
-Generate a daily standup note that:
+生成一个每日站立会议笔记，其中：
 
-1. **Yesterday Section:**
-   - Group related commits into single accomplishment statements
-   - Link commits to Jira tickets (extract ticket IDs from messages)
-   - Transform technical commits into business value ("Implemented X to enable Y")
-   - Include completed tickets with their status
-   - Summarize meeting outcomes from notes
+1. **昨天部分：**
+   - 将相关的提交分组到单个成果陈述中
+   - 将提交链接到 Jira 工单（从消息中提取工单 ID）
+   - 将技术提交转换为业务价值（"为实现 Y 实施了 X"）
+   - 包含已完成工单及其状态
+   - 总结笔记中的会议结果
 
-2. **Today Section:**
-   - List in-progress Jira tickets with current status
-   - Include planned meetings from calendar
-   - Estimate completion for ongoing work based on commit history
-   - Prioritize by ticket priority and sprint goals
+2. **今天部分：**
+   - 列出进行中的 Jira 工单及其当前状态
+   - 包含日历中的计划会议
+   - 根据提交历史估算正在进行的工作的完成情况
+   - 按工单优先级和冲刺目标确定优先级
 
-3. **Blockers Section:**
-   - Identify potential blockers from patterns:
-     * Multiple commits attempting same fix (indicates struggle)
-     * No commits on high-priority ticket (may be blocked)
-     * Comments in code mentioning "TODO" or "FIXME"
-   - Extract explicit blockers from daily notes
-   - Flag dependencies mentioned in Jira comments
+3. **阻碍部分：**
+   - 从模式中识别潜在的阻碍：
+     * 多次提交尝试相同的修复（表明困难）
+     * 高优先级工单没有提交（可能被阻碍）
+     * 代码中提及"TODO"或"FIXME"的注释
+   - 从每日笔记中提取明确的阻碍
+   - 标记 Jira 评论中提到的依赖
 
-Format:
-- Use markdown with clear headers
-- Bullet points for each item
-- Include hyperlinks to PRs, tickets, docs
-- Keep each bullet 1-2 lines maximum
-- Add emoji for visual scanning (✅ ⚠️ 🚀 etc.)
+格式：
+- 使用带有清晰标题的 markdown
+- 每个项目使用项目符号
+- 包含 PR、工单、文档的超链接
+- 每个项目符号最多 1-2 行
+- 添加表情符号以便于视觉扫描（✅ ⚠️ 🚀 等）
 
-Tone: Professional but conversational, transparent about challenges
+语气：专业但对话式，对挑战透明
 
-Output only the standup note markdown, no preamble.
+仅输出站立会议笔记 markdown，无前言。
 ```
 
-**Cron Job Setup (Daily Automation):**
+**Cron 作业设置（每日自动化）：**
 
 ```bash
-# Add to crontab: Run every weekday at 8:45 AM
+# 添加到 crontab：每个工作日上午 8:45 运行
 45 8 * * 1-5 /usr/local/bin/generate-standup.sh
 
-# Sends notification when draft is ready:
-# "Your standup note is ready for review!"
-# Opens Obsidian note and prepares Slack message
+# 当草稿准备好时发送通知：
+# "您的站立会议笔记已准备好审查！"
+# 打开 Obsidian 笔记并准备 Slack 消息
 ```
 
 ---
 
-**Tool Version:** 2.0 (Upgraded 2025-10-11)
-**Target Audience:** Remote-first engineering teams, async-first organizations, distributed teams
-**Dependencies:** Git, Jira CLI, Obsidian MCP, optional calendar integration
-**Estimated Setup Time:** 15 minutes initial setup, 5 minutes daily routine once automated
+**工具版本：** 2.0（2025-10-11 升级）
+**目标受众：** 远程优先工程团队、异步优先组织、分布式团队
+**依赖项：** Git、Jira CLI、Obsidian MCP、可选的日历集成
+**预计设置时间：** 15 分钟初始设置，自动化后 5 分钟每日例行程序

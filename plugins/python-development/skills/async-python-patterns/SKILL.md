@@ -1,55 +1,55 @@
 ---
 name: async-python-patterns
-description: Master Python asyncio, concurrent programming, and async/await patterns for high-performance applications. Use when building async APIs, concurrent systems, or I/O-bound applications requiring non-blocking operations.
+description: 掌握 Python asyncio、并发编程和 async/await 模式以构建高性能应用程序。在构建异步 API、并发系统或需要非阻塞操作的 I/O 密集型应用程序时使用。
 ---
 
-# Async Python Patterns
+# Async Python 模式
 
-Comprehensive guidance for implementing asynchronous Python applications using asyncio, concurrent programming patterns, and async/await for building high-performance, non-blocking systems.
+使用 asyncio、并发编程模式和 async/await 构建高性能、非阻塞系统的异步 Python 应用程序的综合指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building async web APIs (FastAPI, aiohttp, Sanic)
-- Implementing concurrent I/O operations (database, file, network)
-- Creating web scrapers with concurrent requests
-- Developing real-time applications (WebSocket servers, chat systems)
-- Processing multiple independent tasks simultaneously
-- Building microservices with async communication
-- Optimizing I/O-bound workloads
-- Implementing async background tasks and queues
+- 构建异步 Web API（FastAPI、aiohttp、Sanic）
+- 实现并发 I/O 操作（数据库、文件、网络）
+- 创建具有并发请求的 Web 爬虫
+- 开发实时应用程序（WebSocket 服务器、聊天系统）
+- 同时处理多个独立任务
+- 构建具有异步通信的微服务
+- 优化 I/O 密集型工作负载
+- 实现异步后台任务和队列
 
-## Sync vs Async Decision Guide
+## 同步 vs 异步决策指南
 
-Before adopting async, consider whether it's the right choice for your use case.
+在采用异步之前，请考虑它是否适合你的用例。
 
-| Use Case | Recommended Approach |
+| 使用场景 | 推荐方法 |
 |----------|---------------------|
-| Many concurrent network/DB calls | `asyncio` |
-| CPU-bound computation | `multiprocessing` or thread pool |
-| Mixed I/O + CPU | Offload CPU work with `asyncio.to_thread()` |
-| Simple scripts, few connections | Sync (simpler, easier to debug) |
-| Web APIs with high concurrency | Async frameworks (FastAPI, aiohttp) |
+| 大量并发网络/数据库调用 | `asyncio` |
+| CPU 密集型计算 | `multiprocessing` 或线程池 |
+| 混合 I/O + CPU | 使用 `asyncio.to_thread()` 卸载 CPU 工作 |
+| 简单脚本、少量连接 | 同步（更简单、更容易调试） |
+| 高并发 Web API | 异步框架（FastAPI、aiohttp） |
 
-**Key Rule:** Stay fully sync or fully async within a call path. Mixing creates hidden blocking and complexity.
+**核心规则：**在调用路径内保持完全同步或完全异步。混合使用会导致隐藏的阻塞和复杂性。
 
-## Core Concepts
+## 核心概念
 
-### 1. Event Loop
+### 1. 事件循环
 
-The event loop is the heart of asyncio, managing and scheduling asynchronous tasks.
+事件循环是 asyncio 的核心，负责管理和调度异步任务。
 
-**Key characteristics:**
+**关键特性：**
 
-- Single-threaded cooperative multitasking
-- Schedules coroutines for execution
-- Handles I/O operations without blocking
-- Manages callbacks and futures
+- 单线程协作式多任务
+- 调度协程执行
+- 处理 I/O 操作而不阻塞
+- 管理回调和 Future 对象
 
-### 2. Coroutines
+### 2. 协程
 
-Functions defined with `async def` that can be paused and resumed.
+使用 `async def` 定义的函数，可以暂停和恢复。
 
-**Syntax:**
+**语法：**
 
 ```python
 async def my_coroutine():
@@ -57,23 +57,23 @@ async def my_coroutine():
     return result
 ```
 
-### 3. Tasks
+### 3. 任务
 
-Scheduled coroutines that run concurrently on the event loop.
+在事件循环上并发运行的已调度协程。
 
-### 4. Futures
+### 4. Future 对象
 
-Low-level objects representing eventual results of async operations.
+表示异步操作最终结果的底层对象。
 
-### 5. Async Context Managers
+### 5. 异步上下文管理器
 
-Resources that support `async with` for proper cleanup.
+支持 `async with` 以实现适当清理的资源。
 
-### 6. Async Iterators
+### 6. 异步迭代器
 
-Objects that support `async for` for iterating over async data sources.
+支持 `async for` 以遍历异步数据源的对象。
 
-## Quick Start
+## 快速开始
 
 ```python
 import asyncio
@@ -87,16 +87,16 @@ async def main():
 asyncio.run(main())
 ```
 
-## Fundamental Patterns
+## 基础模式
 
-### Pattern 1: Basic Async/Await
+### 模式 1：基本 Async/Await
 
 ```python
 import asyncio
 
 async def fetch_data(url: str) -> dict:
-    """Fetch data from URL asynchronously."""
-    await asyncio.sleep(1)  # Simulate I/O
+    """从 URL 异步获取数据。"""
+    await asyncio.sleep(1)  # 模拟 I/O
     return {"url": url, "data": "result"}
 
 async def main():
@@ -106,19 +106,19 @@ async def main():
 asyncio.run(main())
 ```
 
-### Pattern 2: Concurrent Execution with gather()
+### 模式 2：使用 gather() 并发执行
 
 ```python
 import asyncio
 from typing import List
 
 async def fetch_user(user_id: int) -> dict:
-    """Fetch user data."""
+    """获取用户数据。"""
     await asyncio.sleep(0.5)
     return {"id": user_id, "name": f"User {user_id}"}
 
 async def fetch_all_users(user_ids: List[int]) -> List[dict]:
-    """Fetch multiple users concurrently."""
+    """并发获取多个用户。"""
     tasks = [fetch_user(uid) for uid in user_ids]
     results = await asyncio.gather(*tasks)
     return results
@@ -131,28 +131,28 @@ async def main():
 asyncio.run(main())
 ```
 
-### Pattern 3: Task Creation and Management
+### 模式 3：任务创建和管理
 
 ```python
 import asyncio
 
 async def background_task(name: str, delay: int):
-    """Long-running background task."""
+    """长时间运行的后台任务。"""
     print(f"{name} started")
     await asyncio.sleep(delay)
     print(f"{name} completed")
     return f"Result from {name}"
 
 async def main():
-    # Create tasks
+    # 创建任务
     task1 = asyncio.create_task(background_task("Task 1", 2))
     task2 = asyncio.create_task(background_task("Task 2", 1))
 
-    # Do other work
+    # 执行其他工作
     print("Main: doing other work")
     await asyncio.sleep(0.5)
 
-    # Wait for tasks
+    # 等待任务
     result1 = await task1
     result2 = await task2
 
@@ -161,21 +161,21 @@ async def main():
 asyncio.run(main())
 ```
 
-### Pattern 4: Error Handling in Async Code
+### 模式 4：异步代码中的错误处理
 
 ```python
 import asyncio
 from typing import List, Optional
 
 async def risky_operation(item_id: int) -> dict:
-    """Operation that might fail."""
+    """可能失败的操作。"""
     await asyncio.sleep(0.1)
     if item_id % 3 == 0:
         raise ValueError(f"Item {item_id} failed")
     return {"id": item_id, "status": "success"}
 
 async def safe_operation(item_id: int) -> Optional[dict]:
-    """Wrapper with error handling."""
+    """带错误处理的包装器。"""
     try:
         return await risky_operation(item_id)
     except ValueError as e:
@@ -183,11 +183,11 @@ async def safe_operation(item_id: int) -> Optional[dict]:
         return None
 
 async def process_items(item_ids: List[int]):
-    """Process multiple items with error handling."""
+    """处理多个项目并处理错误。"""
     tasks = [safe_operation(iid) for iid in item_ids]
     results = await asyncio.gather(*tasks, return_exceptions=True)
 
-    # Filter out failures
+    # 筛选出失败项
     successful = [r for r in results if r is not None and not isinstance(r, Exception)]
     failed = [r for r in results if isinstance(r, Exception)]
 
@@ -197,18 +197,18 @@ async def process_items(item_ids: List[int]):
 asyncio.run(process_items([1, 2, 3, 4, 5, 6]))
 ```
 
-### Pattern 5: Timeout Handling
+### 模式 5：超时处理
 
 ```python
 import asyncio
 
 async def slow_operation(delay: int) -> str:
-    """Operation that takes time."""
+    """耗时操作。"""
     await asyncio.sleep(delay)
     return f"Completed after {delay}s"
 
 async def with_timeout():
-    """Execute operation with timeout."""
+    """执行带超时的操作。"""
     try:
         result = await asyncio.wait_for(slow_operation(5), timeout=2.0)
         print(result)
@@ -218,16 +218,16 @@ async def with_timeout():
 asyncio.run(with_timeout())
 ```
 
-## Advanced Patterns
+## 高级模式
 
-### Pattern 6: Async Context Managers
+### 模式 6：异步上下文管理器
 
 ```python
 import asyncio
 from typing import Optional
 
 class AsyncDatabaseConnection:
-    """Async database connection context manager."""
+    """异步数据库连接上下文管理器。"""
 
     def __init__(self, dsn: str):
         self.dsn = dsn
@@ -235,41 +235,41 @@ class AsyncDatabaseConnection:
 
     async def __aenter__(self):
         print("Opening connection")
-        await asyncio.sleep(0.1)  # Simulate connection
+        await asyncio.sleep(0.1)  # 模拟连接
         self.connection = {"dsn": self.dsn, "connected": True}
         return self.connection
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         print("Closing connection")
-        await asyncio.sleep(0.1)  # Simulate cleanup
+        await asyncio.sleep(0.1)  # 模拟清理
         self.connection = None
 
 async def query_database():
-    """Use async context manager."""
+    """使用异步上下文管理器。"""
     async with AsyncDatabaseConnection("postgresql://localhost") as conn:
         print(f"Using connection: {conn}")
-        await asyncio.sleep(0.2)  # Simulate query
+        await asyncio.sleep(0.2)  # 模拟查询
         return {"rows": 10}
 
 asyncio.run(query_database())
 ```
 
-### Pattern 7: Async Iterators and Generators
+### 模式 7：异步迭代器和生成器
 
 ```python
 import asyncio
 from typing import AsyncIterator
 
 async def async_range(start: int, end: int, delay: float = 0.1) -> AsyncIterator[int]:
-    """Async generator that yields numbers with delay."""
+    """带延迟生成数字的异步生成器。"""
     for i in range(start, end):
         await asyncio.sleep(delay)
         yield i
 
 async def fetch_pages(url: str, max_pages: int) -> AsyncIterator[dict]:
-    """Fetch paginated data asynchronously."""
+    """异步获取分页数据。"""
     for page in range(1, max_pages + 1):
-        await asyncio.sleep(0.2)  # Simulate API call
+        await asyncio.sleep(0.2)  # 模拟 API 调用
         yield {
             "page": page,
             "url": f"{url}?page={page}",
@@ -277,7 +277,7 @@ async def fetch_pages(url: str, max_pages: int) -> AsyncIterator[dict]:
         }
 
 async def consume_async_iterator():
-    """Consume async iterator."""
+    """消费异步迭代器。"""
     async for number in async_range(1, 5):
         print(f"Number: {number}")
 
@@ -288,7 +288,7 @@ async def consume_async_iterator():
 asyncio.run(consume_async_iterator())
 ```
 
-### Pattern 8: Producer-Consumer Pattern
+### 模式 8：生产者-消费者模式
 
 ```python
 import asyncio
@@ -296,16 +296,16 @@ from asyncio import Queue
 from typing import Optional
 
 async def producer(queue: Queue, producer_id: int, num_items: int):
-    """Produce items and put them in queue."""
+    """生产项目并放入队列。"""
     for i in range(num_items):
         item = f"Item-{producer_id}-{i}"
         await queue.put(item)
         print(f"Producer {producer_id} produced: {item}")
         await asyncio.sleep(0.1)
-    await queue.put(None)  # Signal completion
+    await queue.put(None)  # 信号完成
 
 async def consumer(queue: Queue, consumer_id: int):
-    """Consume items from queue."""
+    """从队列消费项目。"""
     while True:
         item = await queue.get()
         if item is None:
@@ -313,14 +313,14 @@ async def consumer(queue: Queue, consumer_id: int):
             break
 
         print(f"Consumer {consumer_id} processing: {item}")
-        await asyncio.sleep(0.2)  # Simulate work
+        await asyncio.sleep(0.2)  # 模拟工作
         queue.task_done()
 
 async def producer_consumer_example():
-    """Run producer-consumer pattern."""
+    """运行生产者-消费者模式。"""
     queue = Queue(maxsize=10)
 
-    # Create tasks
+    # 创建任务
     producers = [
         asyncio.create_task(producer(queue, i, 5))
         for i in range(2)
@@ -331,34 +331,34 @@ async def producer_consumer_example():
         for i in range(3)
     ]
 
-    # Wait for producers
+    # 等待生产者
     await asyncio.gather(*producers)
 
-    # Wait for queue to be empty
+    # 等待队列清空
     await queue.join()
 
-    # Cancel consumers
+    # 取消消费者
     for c in consumers:
         c.cancel()
 
 asyncio.run(producer_consumer_example())
 ```
 
-### Pattern 9: Semaphore for Rate Limiting
+### 模式 9：使用信号量进行速率限制
 
 ```python
 import asyncio
 from typing import List
 
 async def api_call(url: str, semaphore: asyncio.Semaphore) -> dict:
-    """Make API call with rate limiting."""
+    """使用速率限制进行 API 调用。"""
     async with semaphore:
         print(f"Calling {url}")
-        await asyncio.sleep(0.5)  # Simulate API call
+        await asyncio.sleep(0.5)  # 模拟 API 调用
         return {"url": url, "status": 200}
 
 async def rate_limited_requests(urls: List[str], max_concurrent: int = 5):
-    """Make multiple requests with rate limiting."""
+    """使用速率限制进行多个请求。"""
     semaphore = asyncio.Semaphore(max_concurrent)
     tasks = [api_call(url, semaphore) for url in urls]
     results = await asyncio.gather(*tasks)
@@ -372,38 +372,38 @@ async def main():
 asyncio.run(main())
 ```
 
-### Pattern 10: Async Locks and Synchronization
+### 模式 10：异步锁和同步
 
 ```python
 import asyncio
 
 class AsyncCounter:
-    """Thread-safe async counter."""
+    """线程安全的异步计数器。"""
 
     def __init__(self):
         self.value = 0
         self.lock = asyncio.Lock()
 
     async def increment(self):
-        """Safely increment counter."""
+        """安全地增加计数器。"""
         async with self.lock:
             current = self.value
-            await asyncio.sleep(0.01)  # Simulate work
+            await asyncio.sleep(0.01)  # 模拟工作
             self.value = current + 1
 
     async def get_value(self) -> int:
-        """Get current value."""
+        """获取当前值。"""
         async with self.lock:
             return self.value
 
 async def worker(counter: AsyncCounter, worker_id: int):
-    """Worker that increments counter."""
+    """增加计数器的工作线程。"""
     for _ in range(10):
         await counter.increment()
         print(f"Worker {worker_id} incremented")
 
 async def test_counter():
-    """Test concurrent counter."""
+    """测试并发计数器。"""
     counter = AsyncCounter()
 
     workers = [asyncio.create_task(worker(counter, i)) for i in range(5)]
@@ -415,9 +415,9 @@ async def test_counter():
 asyncio.run(test_counter())
 ```
 
-## Real-World Applications
+## 实际应用
 
-### Web Scraping with aiohttp
+### 使用 aiohttp 进行 Web 爬虫
 
 ```python
 import asyncio
@@ -425,7 +425,7 @@ import aiohttp
 from typing import List, Dict
 
 async def fetch_url(session: aiohttp.ClientSession, url: str) -> Dict:
-    """Fetch single URL."""
+    """获取单个 URL。"""
     try:
         async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as response:
             text = await response.text()
@@ -438,7 +438,7 @@ async def fetch_url(session: aiohttp.ClientSession, url: str) -> Dict:
         return {"url": url, "error": str(e)}
 
 async def scrape_urls(urls: List[str]) -> List[Dict]:
-    """Scrape multiple URLs concurrently."""
+    """并发爬取多个 URL。"""
     async with aiohttp.ClientSession() as session:
         tasks = [fetch_url(session, url) for url in urls]
         results = await asyncio.gather(*tasks)
@@ -458,28 +458,28 @@ async def main():
 asyncio.run(main())
 ```
 
-### Async Database Operations
+### 异步数据库操作
 
 ```python
 import asyncio
 from typing import List, Optional
 
-# Simulated async database client
+# 模拟的异步数据库客户端
 class AsyncDB:
-    """Simulated async database."""
+    """模拟的异步数据库。"""
 
     async def execute(self, query: str) -> List[dict]:
-        """Execute query."""
+        """执行查询。"""
         await asyncio.sleep(0.1)
         return [{"id": 1, "name": "Example"}]
 
     async def fetch_one(self, query: str) -> Optional[dict]:
-        """Fetch single row."""
+        """获取单行。"""
         await asyncio.sleep(0.1)
         return {"id": 1, "name": "Example"}
 
 async def get_user_data(db: AsyncDB, user_id: int) -> dict:
-    """Fetch user and related data concurrently."""
+    """并发获取用户和相关数据。"""
     user_task = db.fetch_one(f"SELECT * FROM users WHERE id = {user_id}")
     orders_task = db.execute(f"SELECT * FROM orders WHERE user_id = {user_id}")
     profile_task = db.fetch_one(f"SELECT * FROM profiles WHERE user_id = {user_id}")
@@ -500,53 +500,53 @@ async def main():
 asyncio.run(main())
 ```
 
-### WebSocket Server
+### WebSocket 服务器
 
 ```python
 import asyncio
 from typing import Set
 
-# Simulated WebSocket connection
+# 模拟的 WebSocket 连接
 class WebSocket:
-    """Simulated WebSocket."""
+    """模拟的 WebSocket。"""
 
     def __init__(self, client_id: str):
         self.client_id = client_id
 
     async def send(self, message: str):
-        """Send message."""
+        """发送消息。"""
         print(f"Sending to {self.client_id}: {message}")
         await asyncio.sleep(0.01)
 
     async def recv(self) -> str:
-        """Receive message."""
+        """接收消息。"""
         await asyncio.sleep(1)
         return f"Message from {self.client_id}"
 
 class WebSocketServer:
-    """Simple WebSocket server."""
+    """简单的 WebSocket 服务器。"""
 
     def __init__(self):
         self.clients: Set[WebSocket] = set()
 
     async def register(self, websocket: WebSocket):
-        """Register new client."""
+        """注册新客户端。"""
         self.clients.add(websocket)
         print(f"Client {websocket.client_id} connected")
 
     async def unregister(self, websocket: WebSocket):
-        """Unregister client."""
+        """注销客户端。"""
         self.clients.remove(websocket)
         print(f"Client {websocket.client_id} disconnected")
 
     async def broadcast(self, message: str):
-        """Broadcast message to all clients."""
+        """向所有客户端广播消息。"""
         if self.clients:
             tasks = [client.send(message) for client in self.clients]
             await asyncio.gather(*tasks)
 
     async def handle_client(self, websocket: WebSocket):
-        """Handle individual client connection."""
+        """处理单个客户端连接。"""
         await self.register(websocket)
         try:
             async for message in self.message_iterator(websocket):
@@ -555,21 +555,21 @@ class WebSocketServer:
             await self.unregister(websocket)
 
     async def message_iterator(self, websocket: WebSocket):
-        """Iterate over messages from client."""
-        for _ in range(3):  # Simulate 3 messages
+        """迭代来自客户端的消息。"""
+        for _ in range(3):  # 模拟 3 条消息
             yield await websocket.recv()
 ```
 
-## Performance Best Practices
+## 性能最佳实践
 
-### 1. Use Connection Pools
+### 1. 使用连接池
 
 ```python
 import asyncio
 import aiohttp
 
 async def with_connection_pool():
-    """Use connection pool for efficiency."""
+    """使用连接池提高效率。"""
     connector = aiohttp.TCPConnector(limit=100, limit_per_host=10)
 
     async with aiohttp.ClientSession(connector=connector) as session:
@@ -578,11 +578,11 @@ async def with_connection_pool():
         return responses
 ```
 
-### 2. Batch Operations
+### 2. 批量操作
 
 ```python
 async def batch_process(items: List[str], batch_size: int = 10):
-    """Process items in batches."""
+    """分批处理项目。"""
     for i in range(0, len(items), batch_size):
         batch = items[i:i + batch_size]
         tasks = [process_item(item) for item in batch]
@@ -590,24 +590,24 @@ async def batch_process(items: List[str], batch_size: int = 10):
         print(f"Processed batch {i // batch_size + 1}")
 
 async def process_item(item: str):
-    """Process single item."""
+    """处理单个项目。"""
     await asyncio.sleep(0.1)
     return f"Processed: {item}"
 ```
 
-### 3. Avoid Blocking Operations
+### 3. 避免阻塞操作
 
-Never block the event loop with synchronous operations. A single blocking call stalls all concurrent tasks.
+永远不要用同步操作阻塞事件循环。单个阻塞调用会使所有并发任务停滞。
 
 ```python
-# BAD - blocks the entire event loop
+# 错误 - 阻塞整个事件循环
 async def fetch_data_bad():
     import time
     import requests
-    time.sleep(1)  # Blocks!
-    response = requests.get(url)  # Also blocks!
+    time.sleep(1)  # 阻塞！
+    response = requests.get(url)  # 也阻塞！
 
-# GOOD - use async-native libraries (e.g., httpx for async HTTP)
+# 正确 - 使用原生异步库（例如 httpx 用于异步 HTTP）
 import httpx
 
 async def fetch_data_good(url: str):
@@ -616,26 +616,26 @@ async def fetch_data_good(url: str):
         response = await client.get(url)
 ```
 
-**Wrapping Blocking Code with `asyncio.to_thread()` (Python 3.9+):**
+**使用 `asyncio.to_thread()` 包装阻塞代码（Python 3.9+）：**
 
-When you must use synchronous libraries, offload to a thread pool:
+当必须使用同步库时，将其卸载到线程池：
 
 ```python
 import asyncio
 from pathlib import Path
 
 async def read_file_async(path: str) -> str:
-    """Read file without blocking event loop."""
-    # asyncio.to_thread() runs sync code in a thread pool
+    """读取文件而不阻塞事件循环。"""
+    # asyncio.to_thread() 在线程池中运行同步代码
     return await asyncio.to_thread(Path(path).read_text)
 
 async def call_sync_library(data: dict) -> dict:
-    """Wrap a synchronous library call."""
-    # Useful for sync database drivers, file I/O, CPU work
+    """包装同步库调用。"""
+    # 适用于同步数据库驱动、文件 I/O、CPU 工作
     return await asyncio.to_thread(sync_library.process, data)
 ```
 
-**Lower-level approach with `run_in_executor()`:**
+**使用 `run_in_executor()` 的底层方法：**
 
 ```python
 import asyncio
@@ -643,13 +643,13 @@ import concurrent.futures
 from typing import Any
 
 def blocking_operation(data: Any) -> Any:
-    """CPU-intensive blocking operation."""
+    """CPU 密集型阻塞操作。"""
     import time
     time.sleep(1)
     return data * 2
 
 async def run_in_executor(data: Any) -> Any:
-    """Run blocking operation in thread pool."""
+    """在线程池中运行阻塞操作。"""
     loop = asyncio.get_running_loop()
     with concurrent.futures.ThreadPoolExecutor() as pool:
         result = await loop.run_in_executor(pool, blocking_operation, data)
@@ -662,96 +662,96 @@ async def main():
 asyncio.run(main())
 ```
 
-## Common Pitfalls
+## 常见陷阱
 
-### 1. Forgetting await
+### 1. 忘记 await
 
 ```python
-# Wrong - returns coroutine object, doesn't execute
+# 错误 - 返回协程对象，不执行
 result = async_function()
 
-# Correct
+# 正确
 result = await async_function()
 ```
 
-### 2. Blocking the Event Loop
+### 2. 阻塞事件循环
 
 ```python
-# Wrong - blocks event loop
+# 错误 - 阻塞事件循环
 import time
 async def bad():
-    time.sleep(1)  # Blocks!
+    time.sleep(1)  # 阻塞！
 
-# Correct
+# 正确
 async def good():
-    await asyncio.sleep(1)  # Non-blocking
+    await asyncio.sleep(1)  # 非阻塞
 ```
 
-### 3. Not Handling Cancellation
+### 3. 不处理取消
 
 ```python
 async def cancelable_task():
-    """Task that handles cancellation."""
+    """处理取消的任务。"""
     try:
         while True:
             await asyncio.sleep(1)
             print("Working...")
     except asyncio.CancelledError:
         print("Task cancelled, cleaning up...")
-        # Perform cleanup
-        raise  # Re-raise to propagate cancellation
+        # 执行清理
+        raise  # 重新抛出以传播取消
 ```
 
-### 4. Mixing Sync and Async Code
+### 4. 混合同步和异步代码
 
 ```python
-# Wrong - can't call async from sync directly
+# 错误 - 不能直接从同步调用异步
 def sync_function():
     result = await async_function()  # SyntaxError!
 
-# Correct
+# 正确
 def sync_function():
     result = asyncio.run(async_function())
 ```
 
-## Testing Async Code
+## 测试异步代码
 
 ```python
 import asyncio
 import pytest
 
-# Using pytest-asyncio
+# 使用 pytest-asyncio
 @pytest.mark.asyncio
 async def test_async_function():
-    """Test async function."""
+    """测试异步函数。"""
     result = await fetch_data("https://api.example.com")
     assert result is not None
 
 @pytest.mark.asyncio
 async def test_with_timeout():
-    """Test with timeout."""
+    """测试超时。"""
     with pytest.raises(asyncio.TimeoutError):
         await asyncio.wait_for(slow_operation(5), timeout=1.0)
 ```
 
-## Resources
+## 资源
 
-- **Python asyncio documentation**: https://docs.python.org/3/library/asyncio.html
-- **aiohttp**: Async HTTP client/server
-- **FastAPI**: Modern async web framework
-- **asyncpg**: Async PostgreSQL driver
-- **motor**: Async MongoDB driver
+- **Python asyncio 文档**: https://docs.python.org/3/library/asyncio.html
+- **aiohttp**: 异步 HTTP 客户端/服务器
+- **FastAPI**: 现代异步 Web 框架
+- **asyncpg**: 异步 PostgreSQL 驱动
+- **motor**: 异步 MongoDB 驱动
 
-## Best Practices Summary
+## 最佳实践总结
 
-1. **Use asyncio.run()** for entry point (Python 3.7+)
-2. **Always await coroutines** to execute them
-3. **Limit concurrency with semaphores** - unbounded `gather()` can exhaust resources
-4. **Implement proper error handling** with try/except
-5. **Use timeouts** to prevent hanging operations
-6. **Pool connections** for better performance
-7. **Never block the event loop** - use `asyncio.to_thread()` for sync code
-8. **Use semaphores** for rate limiting external API calls
-9. **Handle task cancellation** properly - always re-raise `CancelledError`
-10. **Test async code** with pytest-asyncio
-11. **Stay consistent** - fully sync or fully async, avoid mixing
+1. **使用 asyncio.run()** 作为入口点（Python 3.7+）
+2. **始终 await 协程** 以执行它们
+3. **使用信号量限制并发** - 无界的 `gather()` 可能会耗尽资源
+4. **实现适当的错误处理** 使用 try/except
+5. **使用超时** 防止操作挂起
+6. **连接池化** 以获得更好的性能
+7. **永远不要阻塞事件循环** - 使用 `asyncio.to_thread()` 处理同步代码
+8. **使用信号量** 进行外部 API 调用的速率限制
+9. **正确处理任务取消** - 始终重新抛出 `CancelledError`
+10. **测试异步代码** 使用 pytest-asyncio
+11. **保持一致** - 完全同步或完全异步，避免混合

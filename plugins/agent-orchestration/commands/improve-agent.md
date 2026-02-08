@@ -1,53 +1,53 @@
-# Agent Performance Optimization Workflow
+# Agent 性能优化工作流程
 
-Systematic improvement of existing agents through performance analysis, prompt engineering, and continuous iteration.
+通过性能分析、提示工程和持续迭代来系统性改进现有 Agent。
 
-[Extended thinking: Agent optimization requires a data-driven approach combining performance metrics, user feedback analysis, and advanced prompt engineering techniques. Success depends on systematic evaluation, targeted improvements, and rigorous testing with rollback capabilities for production safety.]
+[扩展思考：Agent 优化需要采用数据驱动的方法，结合性能指标、用户反馈分析和高级提示工程技术。成功取决于系统化评估、针对性改进以及严格的测试，并具备生产环境安全的回滚能力。]
 
-## Phase 1: Performance Analysis and Baseline Metrics
+## 第一阶段：性能分析和基线指标
 
-Comprehensive analysis of agent performance using context-manager for historical data collection.
+使用 context-manager 对 Agent 性能进行全面分析，收集历史数据。
 
-### 1.1 Gather Performance Data
+### 1.1 收集性能数据
 
 ```
 Use: context-manager
 Command: analyze-agent-performance $ARGUMENTS --days 30
 ```
 
-Collect metrics including:
+收集指标包括：
 
-- Task completion rate (successful vs failed tasks)
-- Response accuracy and factual correctness
-- Tool usage efficiency (correct tools, call frequency)
-- Average response time and token consumption
-- User satisfaction indicators (corrections, retries)
-- Hallucination incidents and error patterns
+- 任务完成率（成功 vs 失败任务）
+- 响应准确性和事实正确性
+- 工具使用效率（正确的工具、调用频率）
+- 平均响应时间和 Token 消耗
+- 用户满意度指标（更正、重试）
+- 幻觉事件和错误模式
 
-### 1.2 User Feedback Pattern Analysis
+### 1.2 用户反馈模式分析
 
-Identify recurring patterns in user interactions:
+识别用户交互中的重复模式：
 
-- **Correction patterns**: Where users consistently modify outputs
-- **Clarification requests**: Common areas of ambiguity
-- **Task abandonment**: Points where users give up
-- **Follow-up questions**: Indicators of incomplete responses
-- **Positive feedback**: Successful patterns to preserve
+- **修正模式**：用户持续修改输出的地方
+- **澄清请求**：常见的模糊区域
+- **任务放弃**：用户放弃的点
+- **追问**：响应不完整的指标
+- **积极反馈**：需要保留的成功模式
 
-### 1.3 Failure Mode Classification
+### 1.3 失败模式分类
 
-Categorize failures by root cause:
+按根本原因对失败进行分类：
 
-- **Instruction misunderstanding**: Role or task confusion
-- **Output format errors**: Structure or formatting issues
-- **Context loss**: Long conversation degradation
-- **Tool misuse**: Incorrect or inefficient tool selection
-- **Constraint violations**: Safety or business rule breaches
-- **Edge case handling**: Unusual input scenarios
+- **指令误解**：角色或任务混淆
+- **输出格式错误**：结构或格式问题
+- **上下文丢失**：长对话退化
+- **工具误用**：不正确或低效的工具选择
+- **约束违规**：安全或业务规则违规
+- **边缘情况处理**：异常输入场景
 
-### 1.4 Baseline Performance Report
+### 1.4 基线性能报告
 
-Generate quantitative baseline metrics:
+生成定量基线指标：
 
 ```
 Performance Baseline:
@@ -59,64 +59,64 @@ Performance Baseline:
 - Token Efficiency Ratio: [X:Y]
 ```
 
-## Phase 2: Prompt Engineering Improvements
+## 第二阶段：提示工程改进
 
-Apply advanced prompt optimization techniques using prompt-engineer agent.
+使用 prompt-engineer agent 应用高级提示优化技术。
 
-### 2.1 Chain-of-Thought Enhancement
+### 2.1 思维链增强
 
-Implement structured reasoning patterns:
+实施结构化推理模式：
 
 ```
 Use: prompt-engineer
 Technique: chain-of-thought-optimization
 ```
 
-- Add explicit reasoning steps: "Let's approach this step-by-step..."
-- Include self-verification checkpoints: "Before proceeding, verify that..."
-- Implement recursive decomposition for complex tasks
-- Add reasoning trace visibility for debugging
+- 添加显式推理步骤："让我们一步步来..."
+- 包含自验证检查点："在继续之前，验证..."
+- 对复杂任务实施递归分解
+- 添加推理追踪可见性以便调试
 
-### 2.2 Few-Shot Example Optimization
+### 2.2 少样本示例优化
 
-Curate high-quality examples from successful interactions:
+从成功交互中精选高质量示例：
 
-- **Select diverse examples** covering common use cases
-- **Include edge cases** that previously failed
-- **Show both positive and negative examples** with explanations
-- **Order examples** from simple to complex
-- **Annotate examples** with key decision points
+- **选择多样化示例**涵盖常见用例
+- **包含边缘情况**以前失败的
+- **展示正面和负面示例**并附说明
+- **从简单到复杂排序**示例
+- **用关键决策点注释**示例
 
-Example structure:
+示例结构：
 
 ```
 Good Example:
-Input: [User request]
-Reasoning: [Step-by-step thought process]
-Output: [Successful response]
-Why this works: [Key success factors]
+Input: [用户请求]
+Reasoning: [逐步思考过程]
+Output: [成功响应]
+Why this works: [关键成功因素]
 
 Bad Example:
-Input: [Similar request]
-Output: [Failed response]
-Why this fails: [Specific issues]
-Correct approach: [Fixed version]
+Input: [类似请求]
+Output: [失败响应]
+Why this fails: [具体问题]
+Correct approach: [修复版本]
 ```
 
-### 2.3 Role Definition Refinement
+### 2.3 角色定义优化
 
-Strengthen agent identity and capabilities:
+强化 Agent 身份和能力：
 
-- **Core purpose**: Clear, single-sentence mission
-- **Expertise domains**: Specific knowledge areas
-- **Behavioral traits**: Personality and interaction style
-- **Tool proficiency**: Available tools and when to use them
-- **Constraints**: What the agent should NOT do
-- **Success criteria**: How to measure task completion
+- **核心目的**：清晰的单句使命
+- **专业领域**：特定知识领域
+- **行为特征**：个性和交互风格
+- **工具熟练度**：可用工具及何时使用
+- **约束**：Agent 不应做的事情
+- **成功标准**：如何衡量任务完成
 
-### 2.4 Constitutional AI Integration
+### 2.4 宪政 AI 集成
 
-Implement self-correction mechanisms:
+实施自我纠正机制：
 
 ```
 Constitutional Principles:
@@ -127,31 +127,31 @@ Constitutional Principles:
 5. Maintain consistency with previous responses
 ```
 
-Add critique-and-revise loops:
+添加批判-修订循环：
 
-- Initial response generation
-- Self-critique against principles
-- Automatic revision if issues detected
-- Final validation before output
+- 初始响应生成
+- 根据原则进行自我批判
+- 检测到问题时自动修订
+- 输出前的最终验证
 
-### 2.5 Output Format Tuning
+### 2.5 输出格式调优
 
-Optimize response structure:
+优化响应结构：
 
-- **Structured templates** for common tasks
-- **Dynamic formatting** based on complexity
-- **Progressive disclosure** for detailed information
-- **Markdown optimization** for readability
-- **Code block formatting** with syntax highlighting
-- **Table and list generation** for data presentation
+- **结构化模板**用于常见任务
+- **动态格式**基于复杂性
+- **渐进式披露**详细信息
+- **Markdown 优化**提高可读性
+- **代码块格式**带语法高亮
+- **表格和列表生成**用于数据呈现
 
-## Phase 3: Testing and Validation
+## 第三阶段：测试和验证
 
-Comprehensive testing framework with A/B comparison.
+具有 A/B 对比的全面测试框架。
 
-### 3.1 Test Suite Development
+### 3.1 测试套件开发
 
-Create representative test scenarios:
+创建代表性测试场景：
 
 ```
 Test Categories:
@@ -163,9 +163,9 @@ Test Categories:
 6. Cross-domain tasks (combining capabilities)
 ```
 
-### 3.2 A/B Testing Framework
+### 3.2 A/B 测试框架
 
-Compare original vs improved agent:
+比较原始版本与改进版本：
 
 ```
 Use: parallel-test-runner
@@ -177,58 +177,58 @@ Config:
   - Evaluation: Blind human review + automated scoring
 ```
 
-Statistical significance testing:
+统计显著性测试：
 
-- Minimum sample size: 100 tasks per variant
-- Confidence level: 95% (p < 0.05)
-- Effect size calculation (Cohen's d)
-- Power analysis for future tests
+- 最小样本量：每个变体 100 个任务
+- 置信水平：95% (p < 0.05)
+- 效应量计算（Cohen's d）
+- 未来测试的功效分析
 
-### 3.3 Evaluation Metrics
+### 3.3 评估指标
 
-Comprehensive scoring framework:
+综合评分框架：
 
-**Task-Level Metrics:**
+**任务级指标：**
 
-- Completion rate (binary success/failure)
-- Correctness score (0-100% accuracy)
-- Efficiency score (steps taken vs optimal)
-- Tool usage appropriateness
-- Response relevance and completeness
+- 完成率（二元成功/失败）
+- 正确性得分（0-100% 准确性）
+- 效率得分（采取的步骤 vs 最优）
+- 工具使用适当性
+- 响应相关性和完整性
 
-**Quality Metrics:**
+**质量指标：**
 
-- Hallucination rate (factual errors per response)
-- Consistency score (alignment with previous responses)
-- Format compliance (matches specified structure)
-- Safety score (constraint adherence)
-- User satisfaction prediction
+- 幻觉率（每次响应的事实错误）
+- 一致性得分（与先前响应的对齐）
+- 格式合规性（符合指定结构）
+- 安全得分（约束遵守）
+- 用户满意度预测
 
-**Performance Metrics:**
+**性能指标：**
 
-- Response latency (time to first token)
-- Total generation time
-- Token consumption (input + output)
-- Cost per task (API usage fees)
-- Memory/context efficiency
+- 响应延迟（首个 Token 时间）
+- 总生成时间
+- Token 消耗（输入 + 输出）
+- 每任务成本（API 使用费）
+- 内存/上下文效率
 
-### 3.4 Human Evaluation Protocol
+### 3.4 人工评估协议
 
-Structured human review process:
+结构化人工审查流程：
 
-- Blind evaluation (evaluators don't know version)
-- Standardized rubric with clear criteria
-- Multiple evaluators per sample (inter-rater reliability)
-- Qualitative feedback collection
-- Preference ranking (A vs B comparison)
+- 盲评估（评估者不知道版本）
+- 具有明确条件的标准化评分标准
+- 每个样本多个评估者（评分者间信度）
+- 定性反馈收集
+- 偏好排名（A vs B 对比）
 
-## Phase 4: Version Control and Deployment
+## 第四阶段：版本控制和部署
 
-Safe rollout with monitoring and rollback capabilities.
+具有监控和回滚功能的安全推出。
 
-### 4.1 Version Management
+### 4.1 版本管理
 
-Systematic versioning strategy:
+系统化版本策略：
 
 ```
 Version Format: agent-name-v[MAJOR].[MINOR].[PATCH]
@@ -239,26 +239,26 @@ MINOR: Prompt improvements, new examples
 PATCH: Bug fixes, minor adjustments
 ```
 
-Maintain version history:
+维护版本历史：
 
-- Git-based prompt storage
-- Changelog with improvement details
-- Performance metrics per version
-- Rollback procedures documented
+- 基于 Git 的提示存储
+- 带改进详情的变更日志
+- 每个版本的性能指标
+- 记录的回滚程序
 
-### 4.2 Staged Rollout
+### 4.2 分阶段推出
 
-Progressive deployment strategy:
+渐进式部署策略：
 
-1. **Alpha testing**: Internal team validation (5% traffic)
-2. **Beta testing**: Selected users (20% traffic)
-3. **Canary release**: Gradual increase (20% → 50% → 100%)
-4. **Full deployment**: After success criteria met
-5. **Monitoring period**: 7-day observation window
+1. **Alpha 测试**：内部团队验证（5% 流量）
+2. **Beta 测试**：选定用户（20% 流量）
+3. **金丝雀发布**：逐步增加（20% → 50% → 100%）
+4. **全面部署**：满足成功标准后
+5. **监控期**：7 天观察窗口
 
-### 4.3 Rollback Procedures
+### 4.3 回滚程序
 
-Quick recovery mechanism:
+快速恢复机制：
 
 ```
 Rollback Triggers:
@@ -276,44 +276,44 @@ Rollback Process:
 5. Fix and re-test before retry
 ```
 
-### 4.4 Continuous Monitoring
+### 4.4 持续监控
 
-Real-time performance tracking:
+实时性能跟踪：
 
-- Dashboard with key metrics
-- Anomaly detection alerts
-- User feedback collection
-- Automated regression testing
-- Weekly performance reports
+- 带有关键指标的仪表板
+- 异常检测警报
+- 用户反馈收集
+- 自动化回归测试
+- 每周性能报告
 
-## Success Criteria
+## 成功标准
 
-Agent improvement is successful when:
+当满足以下条件时，Agent 改进成功：
 
-- Task success rate improves by ≥15%
-- User corrections decrease by ≥25%
-- No increase in safety violations
-- Response time remains within 10% of baseline
-- Cost per task doesn't increase >5%
-- Positive user feedback increases
+- 任务成功率提高 ≥15%
+- 用户更正减少 ≥25%
+- 安全违规没有增加
+- 响应时间保持在基线的 10% 以内
+- 每任务成本增加不超过 5%
+- 积极的用户反馈增加
 
-## Post-Deployment Review
+## 部署后审查
 
-After 30 days of production use:
+生产环境使用 30 天后：
 
-1. Analyze accumulated performance data
-2. Compare against baseline and targets
-3. Identify new improvement opportunities
-4. Document lessons learned
-5. Plan next optimization cycle
+1. 分析累积的性能数据
+2. 与基线和目标进行比较
+3. 识别新的改进机会
+4. 记录经验教训
+5. 规划下一个优化周期
 
-## Continuous Improvement Cycle
+## 持续改进周期
 
-Establish regular improvement cadence:
+建立定期改进节奏：
 
-- **Weekly**: Monitor metrics and collect feedback
-- **Monthly**: Analyze patterns and plan improvements
-- **Quarterly**: Major version updates with new capabilities
-- **Annually**: Strategic review and architecture updates
+- **每周**：监控指标并收集反馈
+- **每月**：分析模式并规划改进
+- **每季度**：具有新功能的主要版本更新
+- **每年**：战略审查和架构更新
 
-Remember: Agent optimization is an iterative process. Each cycle builds upon previous learnings, gradually improving performance while maintaining stability and safety.
+记住：Agent 优化是一个迭代过程。每个周期都建立在先前学习的基础上，在保持稳定性和安全性的同时逐步提高性能。

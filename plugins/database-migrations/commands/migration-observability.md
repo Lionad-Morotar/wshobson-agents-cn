@@ -1,25 +1,25 @@
 ---
-description: Migration monitoring, CDC, and observability infrastructure
+description: 迁移监控、CDC 和可观测性基础设施
 version: "1.0.0"
 tags: [database, cdc, debezium, kafka, prometheus, grafana, monitoring]
 tool_access: [Read, Write, Edit, Bash, WebFetch]
 ---
 
-# Migration Observability and Real-time Monitoring
+# 迁移可观测性和实时监控
 
-You are a database observability expert specializing in Change Data Capture, real-time migration monitoring, and enterprise-grade observability infrastructure. Create comprehensive monitoring solutions for database migrations with CDC pipelines, anomaly detection, and automated alerting.
+您是一名数据库可观测性专家，专注于变更数据捕获、实时迁移监控和企业级可观测性基础设施。为数据库迁移创建全面的监控解决方案，包括 CDC 管道、异常检测和自动告警。
 
-## Context
+## 上下文
 
-The user needs observability infrastructure for database migrations, including real-time data synchronization via CDC, comprehensive metrics collection, alerting systems, and visual dashboards.
+用户需要数据库迁移的可观测性基础设施，包括通过 CDC 进行实时数据同步、全面的指标收集、告警系统和可视化仪表板。
 
-## Requirements
+## 需求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. Observable MongoDB Migrations
+### 1. 可观测的 MongoDB 迁移
 
 ```javascript
 const { MongoClient } = require("mongodb");
@@ -44,20 +44,20 @@ class ObservableAtlasMigration {
     return {
       migrationDuration: new prometheus.Histogram({
         name: "mongodb_migration_duration_seconds",
-        help: "Duration of MongoDB migrations",
+        help: "MongoDB 迁移的持续时间",
         labelNames: ["version", "status"],
         buckets: [1, 5, 15, 30, 60, 300],
         registers: [register],
       }),
       documentsProcessed: new prometheus.Counter({
         name: "mongodb_migration_documents_total",
-        help: "Total documents processed",
+        help: "已处理的文档总数",
         labelNames: ["version", "collection"],
         registers: [register],
       }),
       migrationErrors: new prometheus.Counter({
         name: "mongodb_migration_errors_total",
-        help: "Total migration errors",
+        help: "迁移错误总数",
         labelNames: ["version", "error_type"],
         registers: [register],
       }),
@@ -109,7 +109,7 @@ class ObservableAtlasMigration {
 }
 ```
 
-### 2. Change Data Capture with Debezium
+### 2. 使用 Debezium 进行变更数据捕获
 
 ```python
 import asyncio
@@ -127,17 +127,17 @@ class CDCObservabilityManager:
         return {
             'events_processed': Counter(
                 'cdc_events_processed_total',
-                'Total CDC events processed',
+                '已处理的 CDC 事件总数',
                 ['source', 'table', 'operation']
             ),
             'consumer_lag': Gauge(
                 'cdc_consumer_lag_messages',
-                'Consumer lag in messages',
+                '消费者延迟（以消息计）',
                 ['topic', 'partition']
             ),
             'replication_lag': Gauge(
                 'cdc_replication_lag_seconds',
-                'Replication lag',
+                '复制延迟',
                 ['source_table', 'target_table']
             )
         }
@@ -191,7 +191,7 @@ class CDCObservabilityManager:
         )
 ```
 
-### 3. Enterprise Monitoring and Alerting
+### 3. 企业级监控和告警
 
 ```python
 from prometheus_client import Counter, Gauge, Histogram, Summary
@@ -208,20 +208,20 @@ class EnterpriseMigrationMonitor:
         return {
             'migration_duration': Histogram(
                 'migration_duration_seconds',
-                'Migration duration',
+                '迁移持续时间',
                 ['migration_id'],
                 buckets=[60, 300, 600, 1800, 3600],
                 registry=self.registry
             ),
             'rows_migrated': Counter(
                 'migration_rows_total',
-                'Total rows migrated',
+                '已迁移的行总数',
                 ['migration_id', 'table_name'],
                 registry=self.registry
             ),
             'data_lag': Gauge(
                 'migration_data_lag_seconds',
-                'Data lag',
+                '数据延迟',
                 ['migration_id'],
                 registry=self.registry
             )
@@ -249,14 +249,14 @@ class EnterpriseMigrationMonitor:
             anomalies.append({
                 'type': 'low_throughput',
                 'severity': 'warning',
-                'message': f'Throughput below expected'
+                'message': f'吞吐量低于预期'
             })
 
         if stats.error_rate > 0.01:
             anomalies.append({
                 'type': 'high_error_rate',
                 'severity': 'critical',
-                'message': f'Error rate exceeds threshold'
+                'message': f'错误率超过阈值'
             })
 
         return anomalies
@@ -264,16 +264,16 @@ class EnterpriseMigrationMonitor:
     async def setup_migration_dashboard(self):
         dashboard_config = {
             "dashboard": {
-                "title": "Database Migration Monitoring",
+                "title": "数据库迁移监控",
                 "panels": [
                     {
-                        "title": "Migration Progress",
+                        "title": "迁移进度",
                         "targets": [{
                             "expr": "rate(migration_rows_total[5m])"
                         }]
                     },
                     {
-                        "title": "Data Lag",
+                        "title": "数据延迟",
                         "targets": [{
                             "expr": "migration_data_lag_seconds"
                         }]
@@ -317,13 +317,13 @@ class AlertingSystem:
         requests.post(self.config['slack']['webhook_url'], json=payload)
 ```
 
-### 4. Grafana Dashboard Configuration
+### 4. Grafana 仪表板配置
 
 ```python
 dashboard_panels = [
     {
         "id": 1,
-        "title": "Migration Progress",
+        "title": "迁移进度",
         "type": "graph",
         "targets": [{
             "expr": "rate(migration_rows_total[5m])",
@@ -332,7 +332,7 @@ dashboard_panels = [
     },
     {
         "id": 2,
-        "title": "Data Lag",
+        "title": "数据延迟",
         "type": "stat",
         "targets": [{
             "expr": "migration_data_lag_seconds"
@@ -349,7 +349,7 @@ dashboard_panels = [
     },
     {
         "id": 3,
-        "title": "Error Rate",
+        "title": "错误率",
         "type": "graph",
         "targets": [{
             "expr": "rate(migration_errors_total[5m])"
@@ -358,10 +358,10 @@ dashboard_panels = [
 ]
 ```
 
-### 5. CI/CD Integration
+### 5. CI/CD 集成
 
 ```yaml
-name: Migration Monitoring
+name: 迁移监控
 
 on:
   push:
@@ -374,40 +374,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Start Monitoring
+      - name: 启动监控
         run: |
           python migration_monitor.py start \
             --migration-id ${{ github.sha }} \
             --prometheus-url ${{ secrets.PROMETHEUS_URL }}
 
-      - name: Run Migration
+      - name: 运行迁移
         run: |
           python migrate.py --environment production
 
-      - name: Check Migration Health
+      - name: 检查迁移健康状态
         run: |
           python migration_monitor.py check \
             --migration-id ${{ github.sha }} \
             --max-lag 300
 ```
 
-## Output Format
+## 输出格式
 
-1. **Observable MongoDB Migrations**: Atlas framework with metrics and validation
-2. **CDC Pipeline with Monitoring**: Debezium integration with Kafka
-3. **Enterprise Metrics Collection**: Prometheus instrumentation
-4. **Anomaly Detection**: Statistical analysis
-5. **Multi-channel Alerting**: Email, Slack, PagerDuty integrations
-6. **Grafana Dashboard Automation**: Programmatic dashboard creation
-7. **Replication Lag Tracking**: Source-to-target lag monitoring
-8. **Health Check Systems**: Continuous pipeline monitoring
+1. **可观测的 MongoDB 迁移**：带有指标和验证的 Atlas 框架
+2. **带监控的 CDC 管道**：与 Kafka 集成的 Debezium
+3. **企业级指标收集**：Prometheus 仪表化
+4. **异常检测**：统计分析
+5. **多渠道告警**：Email、Slack、PagerDuty 集成
+6. **Grafana 仪表板自动化**：程序化仪表板创建
+7. **复制延迟跟踪**：源到目标的延迟监控
+8. **健康检查系统**：持续的管道监控
 
-Focus on real-time visibility, proactive alerting, and comprehensive observability for zero-downtime migrations.
+专注于实时可见性、主动告警和零停机迁移的全面可观测性。
 
-## Cross-Plugin Integration
+## 跨插件集成
 
-This plugin integrates with:
+此插件与以下内容集成：
 
-- **sql-migrations**: Provides observability for SQL migrations
-- **nosql-migrations**: Monitors NoSQL transformations
-- **migration-integration**: Coordinates monitoring across workflows
+- **sql-migrations**：为 SQL 迁移提供可观测性
+- **nosql-migrations**：监控 NoSQL 转换
+- **migration-integration**：跨工作流协调监控

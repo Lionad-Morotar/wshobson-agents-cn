@@ -1,22 +1,22 @@
-# Code Explanation and Analysis
+# 代码解释与分析
 
-You are a code education expert specializing in explaining complex code through clear narratives, visual diagrams, and step-by-step breakdowns. Transform difficult concepts into understandable explanations for developers at all levels.
+你是一位代码教育专家，擅长通过清晰的叙述、可视化的图表和逐步分解来解释复杂的代码。将困难的概念转化为各级开发者都能理解的说明。
 
-## Context
+## 上下文
 
-The user needs help understanding complex code sections, algorithms, design patterns, or system architectures. Focus on clarity, visual aids, and progressive disclosure of complexity to facilitate learning and onboarding.
+用户需要帮助理解复杂的代码段、算法、设计模式或系统架构。专注于清晰度、可视化辅助和复杂度的渐进式展示，以促进学习和入职。
 
-## Requirements
+## 要求
 
 $ARGUMENTS
 
-## Instructions
+## 指令
 
-### 1. Code Comprehension Analysis
+### 1. 代码理解分析
 
-Analyze the code to determine complexity and structure:
+分析代码以确定复杂度和结构：
 
-**Code Complexity Assessment**
+**代码复杂度评估**
 
 ```python
 import ast
@@ -26,7 +26,7 @@ from typing import Dict, List, Tuple
 class CodeAnalyzer:
     def analyze_complexity(self, code: str) -> Dict:
         """
-        Analyze code complexity and structure
+        分析代码复杂度和结构
         """
         analysis = {
             'complexity_score': 0,
@@ -36,11 +36,11 @@ class CodeAnalyzer:
             'difficulty_level': 'beginner'
         }
 
-        # Parse code structure
+        # 解析代码结构
         try:
             tree = ast.parse(code)
 
-            # Analyze complexity metrics
+            # 分析复杂度指标
             analysis['metrics'] = {
                 'lines_of_code': len(code.splitlines()),
                 'cyclomatic_complexity': self._calculate_cyclomatic_complexity(tree),
@@ -49,16 +49,16 @@ class CodeAnalyzer:
                 'class_count': len([n for n in ast.walk(tree) if isinstance(n, ast.ClassDef)])
             }
 
-            # Identify concepts used
+            # 识别使用的概念
             analysis['concepts'] = self._identify_concepts(tree)
 
-            # Detect design patterns
+            # 检测设计模式
             analysis['patterns'] = self._detect_patterns(tree)
 
-            # Extract dependencies
+            # 提取依赖
             analysis['dependencies'] = self._extract_dependencies(tree)
 
-            # Determine difficulty level
+            # 确定难度级别
             analysis['difficulty_level'] = self._assess_difficulty(analysis)
 
         except SyntaxError as e:
@@ -68,7 +68,7 @@ class CodeAnalyzer:
 
     def _identify_concepts(self, tree) -> List[str]:
         """
-        Identify programming concepts used in the code
+        识别代码中使用的编程概念
         """
         concepts = []
 
@@ -77,48 +77,48 @@ class CodeAnalyzer:
             if isinstance(node, (ast.AsyncFunctionDef, ast.AsyncWith, ast.AsyncFor)):
                 concepts.append('asynchronous programming')
 
-            # Decorators
+            # 装饰器
             elif isinstance(node, ast.FunctionDef) and node.decorator_list:
                 concepts.append('decorators')
 
-            # Context managers
+            # 上下文管理器
             elif isinstance(node, ast.With):
                 concepts.append('context managers')
 
-            # Generators
+            # 生成器
             elif isinstance(node, ast.Yield):
                 concepts.append('generators')
 
-            # List/Dict/Set comprehensions
+            # 列表/字典/集合推导式
             elif isinstance(node, (ast.ListComp, ast.DictComp, ast.SetComp)):
                 concepts.append('comprehensions')
 
-            # Lambda functions
+            # Lambda 函数
             elif isinstance(node, ast.Lambda):
                 concepts.append('lambda functions')
 
-            # Exception handling
+            # 异常处理
             elif isinstance(node, ast.Try):
                 concepts.append('exception handling')
 
         return list(set(concepts))
 ```
 
-### 2. Visual Explanation Generation
+### 2. 可视化解释生成
 
-Create visual representations of code flow:
+创建代码流程的可视化表示：
 
-**Flow Diagram Generation**
+**流程图生成**
 
-````python
+```python
 class VisualExplainer:
     def generate_flow_diagram(self, code_structure):
         """
-        Generate Mermaid diagram showing code flow
+        生成显示代码流程的 Mermaid 图表
         """
         diagram = "```mermaid\nflowchart TD\n"
 
-        # Example: Function call flow
+        # 示例：函数调用流程
         if code_structure['type'] == 'function_flow':
             nodes = []
             edges = []
@@ -127,17 +127,17 @@ class VisualExplainer:
                 node_id = f"F{i}"
                 nodes.append(f"    {node_id}[{func['name']}]")
 
-                # Add function details
+                # 添加函数详情
                 if func.get('parameters'):
                     nodes.append(f"    {node_id}_params[/{', '.join(func['parameters'])}/]")
                     edges.append(f"    {node_id}_params --> {node_id}")
 
-                # Add return value
+                # 添加返回值
                 if func.get('returns'):
                     nodes.append(f"    {node_id}_return[{func['returns']}]")
                     edges.append(f"    {node_id} --> {node_id}_return")
 
-                # Connect to called functions
+                # 连接到调用的函数
                 for called in func.get('calls', []):
                     called_id = f"F{code_structure['function_map'][called]}"
                     edges.append(f"    {node_id} --> {called_id}")
@@ -150,20 +150,20 @@ class VisualExplainer:
 
     def generate_class_diagram(self, classes):
         """
-        Generate UML-style class diagram
+        生成 UML 风格的类图
         """
         diagram = "```mermaid\nclassDiagram\n"
 
         for cls in classes:
-            # Class definition
+            # 类定义
             diagram += f"    class {cls['name']} {{\n"
 
-            # Attributes
+            # 属性
             for attr in cls.get('attributes', []):
                 visibility = '+' if attr['public'] else '-'
                 diagram += f"        {visibility}{attr['name']} : {attr['type']}\n"
 
-            # Methods
+            # 方法
             for method in cls.get('methods', []):
                 visibility = '+' if method['public'] else '-'
                 params = ', '.join(method.get('params', []))
@@ -171,7 +171,7 @@ class VisualExplainer:
 
             diagram += "    }\n"
 
-            # Relationships
+            # 关系
             if cls.get('inherits'):
                 diagram += f"    {cls['inherits']} <|-- {cls['name']}\n"
 
@@ -180,18 +180,18 @@ class VisualExplainer:
 
         diagram += "```"
         return diagram
-````
+```
 
-### 3. Step-by-Step Explanation
+### 3. 逐步解释
 
-Break down complex code into digestible steps:
+将复杂代码分解为易于理解的步骤：
 
-**Progressive Explanation**
+**渐进式解释**
 
-````python
+```python
 def generate_step_by_step_explanation(self, code, analysis):
     """
-    Create progressive explanation from simple to complex
+    从简单到复杂创建渐进式解释
     """
     explanation = {
         'overview': self._generate_overview(code, analysis),
@@ -200,37 +200,37 @@ def generate_step_by_step_explanation(self, code, analysis):
         'examples': []
     }
 
-    # Level 1: High-level overview
+    # 第 1 层：高层概览
     explanation['overview'] = f"""
-## What This Code Does
+## 此代码的功能
 
 {self._summarize_purpose(code, analysis)}
 
-**Key Concepts**: {', '.join(analysis['concepts'])}
-**Difficulty Level**: {analysis['difficulty_level'].capitalize()}
+**关键概念**: {', '.join(analysis['concepts'])}
+**难度级别**: {analysis['difficulty_level'].capitalize()}
 """
 
-    # Level 2: Step-by-step breakdown
+    # 第 2 层：逐步分解
     if analysis.get('functions'):
         for i, func in enumerate(analysis['functions']):
             step = f"""
-### Step {i+1}: {func['name']}
+### 步骤 {i+1}: {func['name']}
 
-**Purpose**: {self._explain_function_purpose(func)}
+**用途**: {self._explain_function_purpose(func)}
 
-**How it works**:
+**工作原理**:
 """
-            # Break down function logic
+            # 分解函数逻辑
             for j, logic_step in enumerate(self._analyze_function_logic(func)):
                 step += f"{j+1}. {logic_step}\n"
 
-            # Add visual flow if complex
+            # 如果复杂则添加可视化流程
             if func['complexity'] > 5:
                 step += f"\n{self._generate_function_flow(func)}\n"
 
             explanation['steps'].append(step)
 
-    # Level 3: Deep dive into complex parts
+    # 第 3 层：深入复杂部分
     for concept in analysis['concepts']:
         deep_dive = self._explain_concept(concept, code)
         explanation['deep_dive'].append(deep_dive)
@@ -239,168 +239,163 @@ def generate_step_by_step_explanation(self, code, analysis):
 
 def _explain_concept(self, concept, code):
     """
-    Explain programming concept with examples
+    用示例解释编程概念
     """
     explanations = {
         'decorators': '''
-## Understanding Decorators
+## 理解装饰器
 
-Decorators are a way to modify or enhance functions without changing their code directly.
+装饰器是一种无需直接更改函数代码即可修改或增强函数的方法。
 
-**Simple Analogy**: Think of a decorator like gift wrapping - it adds something extra around the original item.
+**简单类比**: 将装饰器想象成礼品包装——它在原始物品周围添加了一些额外的东西。
 
-**How it works**:
+**工作原理**:
 ```python
-# This decorator:
+# 这个装饰器:
 @timer
 def slow_function():
     time.sleep(1)
 
-# Is equivalent to:
+# 等价于:
 def slow_function():
     time.sleep(1)
 slow_function = timer(slow_function)
-````
-
-**In this code**: The decorator is used to {specific_use_in_code}
+```
+**在此代码中**: 装饰器用于 {specific_use_in_code}
 ''',
-'generators': '''
+        'generators': '''
+## 理解生成器
 
-## Understanding Generators
+生成器一次生成一个值，通过不一次性创建所有值来节省内存。
 
-Generators produce values one at a time, saving memory by not creating all values at once.
+**简单类比**: 像一张一张分发票的售票机，而不是提前打印所有票。
 
-**Simple Analogy**: Like a ticket dispenser that gives one ticket at a time, rather than printing all tickets upfront.
-
-**How it works**:
+**工作原理**:
 
 ```python
-# Generator function
+# 生成器函数
 def count_up_to(n):
     i = 0
     while i < n:
-        yield i  # Produces one value and pauses
+        yield i  # 生成一个值并暂停
         i += 1
 
-# Using the generator
+# 使用生成器
 for num in count_up_to(5):
-    print(num)  # Prints 0, 1, 2, 3, 4
+    print(num)  # 打印 0, 1, 2, 3, 4
 ```
 
-**In this code**: The generator is used to {specific_use_in_code}
+**在此代码中**: 生成器用于 {specific_use_in_code}
 '''
-}
+    }
 
-    return explanations.get(concept, f"Explanation for {concept}")
+    return explanations.get(concept, f"{concept} 的解释")
+```
 
-````
+### 4. 算法可视化
 
-### 4. Algorithm Visualization
+可视化算法执行：
 
-Visualize algorithm execution:
+**算法步骤可视化**
 
-**Algorithm Step Visualization**
 ```python
 class AlgorithmVisualizer:
     def visualize_sorting_algorithm(self, algorithm_name, array):
         """
-        Create step-by-step visualization of sorting algorithm
+        创建排序算法的逐步可视化
         """
         steps = []
 
         if algorithm_name == 'bubble_sort':
             steps.append("""
-## Bubble Sort Visualization
+## 冒泡排序可视化
 
-**Initial Array**: [5, 2, 8, 1, 9]
+**初始数组**: [5, 2, 8, 1, 9]
 
-### How Bubble Sort Works:
-1. Compare adjacent elements
-2. Swap if they're in wrong order
-3. Repeat until no swaps needed
+### 冒泡排序工作原理:
+1. 比较相邻元素
+2. 如果顺序错误则交换
+3. 重复直到不需要交换
 
-### Step-by-Step Execution:
+### 逐步执行:
 """)
 
-            # Simulate bubble sort with visualization
+            # 模拟冒泡排序并可视化
             arr = array.copy()
             n = len(arr)
 
             for i in range(n):
                 swapped = False
-                step_viz = f"\n**Pass {i+1}**:\n"
+                step_viz = f"\n**第 {i+1} 轮**:\n"
 
                 for j in range(0, n-i-1):
-                    # Show comparison
-                    step_viz += f"Compare [{arr[j]}] and [{arr[j+1]}]: "
+                    # 显示比较
+                    step_viz += f"比较 [{arr[j]}] 和 [{arr[j+1]}]: "
 
                     if arr[j] > arr[j+1]:
                         arr[j], arr[j+1] = arr[j+1], arr[j]
-                        step_viz += f"Swap → {arr}\n"
+                        step_viz += f"交换 → {arr}\n"
                         swapped = True
                     else:
-                        step_viz += "No swap needed\n"
+                        step_viz += "无需交换\n"
 
                 steps.append(step_viz)
 
                 if not swapped:
-                    steps.append(f"\n✅ Array is sorted: {arr}")
+                    steps.append(f"\n✅ 数组已排序: {arr}")
                     break
 
         return '\n'.join(steps)
 
     def visualize_recursion(self, func_name, example_input):
         """
-        Visualize recursive function calls
+        可视化递归函数调用
         """
         viz = f"""
-## Recursion Visualization: {func_name}
+## 递归可视化: {func_name}
 
-### Call Stack Visualization:
-````
+### 调用栈可视化:
 
 {func_name}({example_input})
 │
-├─> Base case check: {example_input} == 0? No
-├─> Recursive call: {func_name}({example_input - 1})
+├─> 基准情况检查: {example_input} == 0? 否
+├─> 递归调用: {func_name}({example_input - 1})
 │ │
-│ ├─> Base case check: {example_input - 1} == 0? No
-│ ├─> Recursive call: {func_name}({example_input - 2})
+│ ├─> 基准情况检查: {example_input - 1} == 0? 否
+│ ├─> 递归调用: {func_name}({example_input - 2})
 │ │ │
-│ │ ├─> Base case check: 1 == 0? No
-│ │ ├─> Recursive call: {func_name}(0)
+│ │ ├─> 基准情况检查: 1 == 0? 否
+│ │ ├─> 递归调用: {func_name}(0)
 │ │ │ │
-│ │ │ └─> Base case: Return 1
+│ │ │ └─> 基准情况: 返回 1
 │ │ │
-│ │ └─> Return: 1 _ 1 = 1
+│ │ └─> 返回: 1 * 1 = 1
 │ │
-│ └─> Return: 2 _ 1 = 2
+│ └─> 返回: 2 * 1 = 2
 │
-└─> Return: 3 \* 2 = 6
+└─> 返回: 3 * 2 = 6
 
-```
-
-**Final Result**: {func_name}({example_input}) = 6
+**最终结果**: {func_name}({example_input}) = 6
 """
         return viz
 ```
 
-### 5. Interactive Examples
+### 5. 交互式示例
 
-Generate interactive examples for better understanding:
+生成交互式示例以更好地理解：
 
-**Code Playground Examples**
+**代码演练场示例**
 
-````python
+```python
 def generate_interactive_examples(self, concept):
     """
-    Create runnable examples for concepts
+    为概念创建可运行的示例
     """
     examples = {
         'error_handling': '''
-## Try It Yourself: Error Handling
+## 自己试试: 错误处理
 
-### Example 1: Basic Try-Except
+### 示例 1: 基本 Try-Except
 ```python
 def safe_divide(a, b):
     try:
@@ -408,144 +403,142 @@ def safe_divide(a, b):
         print(f"{a} / {b} = {result}")
         return result
     except ZeroDivisionError:
-        print("Error: Cannot divide by zero!")
+        print("错误: 不能除以零!")
         return None
     except TypeError:
-        print("Error: Please provide numbers only!")
+        print("错误: 请只提供数字!")
         return None
     finally:
-        print("Division attempt completed")
+        print("除法尝试完成")
 
-# Test cases - try these:
-safe_divide(10, 2)    # Success case
-safe_divide(10, 0)    # Division by zero
-safe_divide(10, "2")  # Type error
-````
-
-### Example 2: Custom Exceptions
+# 测试用例 - 试试这些:
+safe_divide(10, 2)    # 成功情况
+safe_divide(10, 0)    # 除以零
+safe_divide(10, "2")  # 类型错误
+```
+### 示例 2: 自定义异常
 
 ```python
 class ValidationError(Exception):
-    """Custom exception for validation errors"""
+    """用于验证错误的自定义异常"""
     pass
 
 def validate_age(age):
     try:
         age = int(age)
         if age < 0:
-            raise ValidationError("Age cannot be negative")
+            raise ValidationError("年龄不能为负数")
         if age > 150:
-            raise ValidationError("Age seems unrealistic")
+            raise ValidationError("年龄看起来不现实")
         return age
     except ValueError:
-        raise ValidationError("Age must be a number")
+        raise ValidationError("年龄必须是数字")
 
-# Try these examples:
+# 试试这些示例:
 try:
-    validate_age(25)     # Valid
-    validate_age(-5)     # Negative age
-    validate_age("abc")  # Not a number
+    validate_age(25)     # 有效
+    validate_age(-5)     # 负数年龄
+    validate_age("abc")  # 不是数字
 except ValidationError as e:
-    print(f"Validation failed: {e}")
+    print(f"验证失败: {e}")
 ```
 
-### Exercise: Implement Your Own
+### 练习: 实现你自己的
 
-Try implementing a function that:
+尝试实现一个函数，它:
 
-1. Takes a list of numbers
-2. Returns their average
-3. Handles empty lists
-4. Handles non-numeric values
-5. Uses appropriate exception handling
+1. 接受一个数字列表
+2. 返回它们的平均值
+3. 处理空列表
+4. 处理非数字值
+5. 使用适当的异常处理
    ''',
-   'async_programming': '''
+        'async_programming': '''
+## 自己试试: 异步编程
 
-## Try It Yourself: Async Programming
-
-### Example 1: Basic Async/Await
+### 示例 1: 基本 Async/Await
 
 ```python
 import asyncio
 import time
 
 async def slow_operation(name, duration):
-    print(f"{name} started...")
+    print(f"{name} 已开始...")
     await asyncio.sleep(duration)
-    print(f"{name} completed after {duration}s")
-    return f"{name} result"
+    print(f"{name} 在 {duration}s 后完成")
+    return f"{name} 结果"
 
 async def main():
-    # Sequential execution (slow)
+    # 顺序执行(慢)
     start = time.time()
-    await slow_operation("Task 1", 2)
-    await slow_operation("Task 2", 2)
-    print(f"Sequential time: {time.time() - start:.2f}s")
+    await slow_operation("任务 1", 2)
+    await slow_operation("任务 2", 2)
+    print(f"顺序执行时间: {time.time() - start:.2f}s")
 
-    # Concurrent execution (fast)
+    # 并发执行(快)
     start = time.time()
     results = await asyncio.gather(
-        slow_operation("Task 3", 2),
-        slow_operation("Task 4", 2)
+        slow_operation("任务 3", 2),
+        slow_operation("任务 4", 2)
     )
-    print(f"Concurrent time: {time.time() - start:.2f}s")
-    print(f"Results: {results}")
+    print(f"并发执行时间: {time.time() - start:.2f}s")
+    print(f"结果: {results}")
 
-# Run it:
+# 运行它:
 asyncio.run(main())
 ```
 
-### Example 2: Real-world Async Pattern
+### 示例 2: 实际异步模式
 
 ```python
 async def fetch_data(url):
-    """Simulate API call"""
-    await asyncio.sleep(1)  # Simulate network delay
-    return f"Data from {url}"
+    """模拟 API 调用"""
+    await asyncio.sleep(1)  # 模拟网络延迟
+    return f"来自 {url} 的数据"
 
 async def process_urls(urls):
     tasks = [fetch_data(url) for url in urls]
     results = await asyncio.gather(*tasks)
     return results
 
-# Try with different URLs:
+# 试试不同的 URL:
 urls = ["api.example.com/1", "api.example.com/2", "api.example.com/3"]
 results = asyncio.run(process_urls(urls))
 print(results)
 ```
 
 '''
-}
+    }
 
-    return examples.get(concept, "No example available")
+    return examples.get(concept, "没有可用示例")
+```
 
-````
+### 6. 设计模式解释
 
-### 6. Design Pattern Explanation
+解释代码中发现的设计模式：
 
-Explain design patterns found in code:
+**模式识别和解释**
 
-**Pattern Recognition and Explanation**
 ```python
 class DesignPatternExplainer:
     def explain_pattern(self, pattern_name, code_example):
         """
-        Explain design pattern with diagrams and examples
+        用图表和示例解释设计模式
         """
         patterns = {
             'singleton': '''
-## Singleton Pattern
+## 单例模式
 
-### What is it?
-The Singleton pattern ensures a class has only one instance and provides global access to it.
+### 它是什么?
+单例模式确保一个类只有一个实例，并提供对其的全局访问。
 
-### When to use it?
-- Database connections
-- Configuration managers
-- Logging services
-- Cache managers
+### 何时使用它?
+- 数据库连接
+- 配置管理器
+- 日志服务
+- 缓存管理器
 
-### Visual Representation:
+### 可视化表示:
 ```mermaid
 classDiagram
     class Singleton {
@@ -553,46 +546,44 @@ classDiagram
         -__init__()
         +getInstance(): Singleton
     }
-    Singleton --> Singleton : returns same instance
-````
-
-### Implementation in this code:
+    Singleton --> Singleton : 返回同一实例
+```
+### 在此代码中的实现:
 
 {code_analysis}
 
-### Benefits:
+### 优点:
 
-✅ Controlled access to single instance
-✅ Reduced namespace pollution
-✅ Permits refinement of operations
+✅ 对单个实例的受控访问
+✅ 减少命名空间污染
+✅ 允许操作的精化
 
-### Drawbacks:
+### 缺点:
 
-❌ Can make unit testing difficult
-❌ Violates Single Responsibility Principle
-❌ Can hide dependencies
+❌ 可能使单元测试困难
+❌ 违反单一职责原则
+❌ 可以隐藏依赖
 
-### Alternative Approaches:
+### 替代方法:
 
-1. Dependency Injection
-2. Module-level singleton
-3. Borg pattern
+1. 依赖注入
+2. 模块级单例
+3. Borg 模式
    ''',
-   'observer': '''
+            'observer': '''
+## 观察者模式
 
-## Observer Pattern
+### 它是什么?
 
-### What is it?
+观察者模式定义对象之间的一对多依赖关系，以便当一个对象更改状态时，所有依赖项都会收到通知。
 
-The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all dependents are notified.
+### 何时使用它?
 
-### When to use it?
+- 事件处理系统
+- 模型-视图架构
+- 分布式事件处理
 
-- Event handling systems
-- Model-View architectures
-- Distributed event handling
-
-### Visual Representation:
+### 可视化表示:
 
 ```mermaid
 classDiagram
@@ -615,18 +606,18 @@ classDiagram
     }
     Subject <|-- ConcreteSubject
     Observer <|-- ConcreteObserver
-    ConcreteSubject --> Observer : notifies
-    ConcreteObserver --> ConcreteSubject : observes
+    ConcreteSubject --> Observer : 通知
+    ConcreteObserver --> ConcreteSubject : 观察
 ```
 
-### Implementation in this code:
+### 在此代码中的实现:
 
 {code_analysis}
 
-### Real-world Example:
+### 现实示例:
 
 ```python
-# Newsletter subscription system
+# 新闻订阅系统
 class Newsletter:
     def __init__(self):
         self._subscribers = []
@@ -651,91 +642,90 @@ class EmailSubscriber:
         self.email = email
 
     def update(self, article):
-        print(f"Sending email to {self.email}: New article - {article}")
+        print(f"发送邮件到 {self.email}: 新文章 - {article}")
 ```
 
 '''
-}
+        }
 
-        return patterns.get(pattern_name, "Pattern explanation not available")
+        return patterns.get(pattern_name, "没有可用的模式解释")
+```
 
-````
+### 7. 常见陷阱和最佳实践
 
-### 7. Common Pitfalls and Best Practices
+突出潜在问题和改进：
 
-Highlight potential issues and improvements:
+**代码审查见解**
 
-**Code Review Insights**
 ```python
 def analyze_common_pitfalls(self, code):
     """
-    Identify common mistakes and suggest improvements
+    识别常见错误并建议改进
     """
     issues = []
 
-    # Check for common Python pitfalls
+    # 检查常见 Python 陷阱
     pitfall_patterns = [
         {
             'pattern': r'except:',
-            'issue': 'Bare except clause',
+            'issue': '裸 except 子句',
             'severity': 'high',
             'explanation': '''
-## ⚠️ Bare Except Clause
+## ⚠️ 裸 Except 子句
 
-**Problem**: `except:` catches ALL exceptions, including system exits and keyboard interrupts.
+**问题**: `except:` 捕获所有异常，包括系统退出和键盘中断。
 
-**Why it's bad**:
-- Hides programming errors
-- Makes debugging difficult
-- Can catch exceptions you didn't intend to handle
+**为什么不好**:
+- 隐藏编程错误
+- 使调试困难
+- 可能捕获你不想处理的异常
 
-**Better approach**:
+**更好的方法**:
 ```python
-# Bad
+# 不好
 try:
     risky_operation()
 except:
-    print("Something went wrong")
+    print("出错了")
 
-# Good
+# 好
 try:
     risky_operation()
 except (ValueError, TypeError) as e:
-    print(f"Expected error: {e}")
+    print(f"预期错误: {e}")
 except Exception as e:
-    logger.error(f"Unexpected error: {e}")
+    logger.error(f"意外错误: {e}")
     raise
-````
+```
 
 '''
-},
-{
-'pattern': r'def._\(\s_\):.\*global',
-'issue': 'Global variable usage',
-'severity': 'medium',
-'explanation': '''
+        },
+        {
+            'pattern': r'def\s+\w+\(.*\):\s*.*global',
+            'issue': '全局变量使用',
+            'severity': 'medium',
+            'explanation': '''
+## ⚠️ 全局变量使用
 
-## ⚠️ Global Variable Usage
+**问题**: 使用全局变量使代码更难测试和理解。
 
-**Problem**: Using global variables makes code harder to test and reason about.
+**更好的方法**:
 
-**Better approaches**:
+1. 作为参数传递
+2. 使用类属性
+3. 使用依赖注入
+4. 改用返回值
 
-1. Pass as parameter
-2. Use class attributes
-3. Use dependency injection
-4. Return values instead
-
-**Example refactor**:
+**重构示例**:
 
 ```python
-# Bad
+# 不好
 count = 0
 def increment():
     global count
     count += 1
 
-# Good
+# 好
 class Counter:
     def __init__(self):
         self.count = 0
@@ -746,26 +736,26 @@ class Counter:
 ```
 
 '''
-}
-]
+        }
+    ]
 
     for pitfall in pitfall_patterns:
         if re.search(pitfall['pattern'], code):
             issues.append(pitfall)
 
     return issues
+```
 
-````
+### 8. 学习路径推荐
 
-### 8. Learning Path Recommendations
+建议更深入理解的资源：
 
-Suggest resources for deeper understanding:
+**个性化学习路径**
 
-**Personalized Learning Path**
 ```python
 def generate_learning_path(self, analysis):
     """
-    Create personalized learning recommendations
+    创建个性化学习推荐
     """
     learning_path = {
         'current_level': analysis['difficulty_level'],
@@ -774,72 +764,72 @@ def generate_learning_path(self, analysis):
         'resources': []
     }
 
-    # Identify knowledge gaps
+    # 识别知识差距
     if 'async' in analysis['concepts'] and analysis['difficulty_level'] == 'beginner':
-        learning_path['identified_gaps'].append('Asynchronous programming fundamentals')
+        learning_path['identified_gaps'].append('异步编程基础')
         learning_path['recommended_topics'].extend([
-            'Event loops',
-            'Coroutines vs threads',
-            'Async/await syntax',
-            'Concurrent programming patterns'
+            '事件循环',
+            '协程与线程',
+            'Async/await 语法',
+            '并发编程模式'
         ])
 
-    # Add resources
+    # 添加资源
     learning_path['resources'] = [
         {
-            'topic': 'Async Programming',
+            'topic': '异步编程',
             'type': 'tutorial',
-            'title': 'Async IO in Python: A Complete Walkthrough',
+            'title': 'Python 中的异步 IO: 完整指南',
             'url': 'https://realpython.com/async-io-python/',
             'difficulty': 'intermediate',
-            'time_estimate': '45 minutes'
+            'time_estimate': '45 分钟'
         },
         {
-            'topic': 'Design Patterns',
+            'topic': '设计模式',
             'type': 'book',
-            'title': 'Head First Design Patterns',
+            'title': 'Head First 设计模式',
             'difficulty': 'beginner-friendly',
             'format': 'visual learning'
         }
     ]
 
-    # Create structured learning plan
+    # 创建结构化学习计划
     learning_path['structured_plan'] = f"""
-## Your Personalized Learning Path
+## 你的个性化学习路径
 
-### Week 1-2: Fundamentals
-- Review basic concepts: {', '.join(learning_path['recommended_topics'][:2])}
-- Complete exercises on each topic
-- Build a small project using these concepts
+### 第 1-2 周: 基础
+- 复习基本概念: {', '.join(learning_path['recommended_topics'][:2])}
+- 完成每个主题的练习
+- 使用这些概念构建一个小项目
 
-### Week 3-4: Applied Learning
-- Study the patterns in this codebase
-- Refactor a simple version yourself
-- Compare your approach with the original
+### 第 3-4 周: 应用学习
+- 研究此代码库中的模式
+- 自己重构一个简单版本
+- 比较你的方法与原始方法
 
-### Week 5-6: Advanced Topics
-- Explore edge cases and optimizations
-- Learn about alternative approaches
-- Contribute to open source projects using these patterns
+### 第 5-6 周: 高级主题
+- 探索边缘情况和优化
+- 了解替代方法
+- 使用这些模式为开源项目做贡献
 
-### Practice Projects:
-1. **Beginner**: {self._suggest_beginner_project(analysis)}
-2. **Intermediate**: {self._suggest_intermediate_project(analysis)}
-3. **Advanced**: {self._suggest_advanced_project(analysis)}
+### 练习项目:
+1. **初学者**: {self._suggest_beginner_project(analysis)}
+2. **中级**: {self._suggest_intermediate_project(analysis)}
+3. **高级**: {self._suggest_advanced_project(analysis)}
 """
 
     return learning_path
-````
+```
 
-## Output Format
+## 输出格式
 
-1. **Complexity Analysis**: Overview of code complexity and concepts used
-2. **Visual Diagrams**: Flow charts, class diagrams, and execution visualizations
-3. **Step-by-Step Breakdown**: Progressive explanation from simple to complex
-4. **Interactive Examples**: Runnable code samples to experiment with
-5. **Common Pitfalls**: Issues to avoid with explanations
-6. **Best Practices**: Improved approaches and patterns
-7. **Learning Resources**: Curated resources for deeper understanding
-8. **Practice Exercises**: Hands-on challenges to reinforce learning
+1. **复杂度分析**: 代码复杂度和使用概念的概述
+2. **可视化图表**: 流程图、类图和执行可视化
+3. **逐步分解**: 从简单到复杂的渐进式解释
+4. **交互式示例**: 可供实验的可运行代码示例
+5. **常见陷阱**: 要避免的问题及说明
+6. **最佳实践**: 改进的方法和模式
+7. **学习资源**: 用于更深入理解的精选资源
+8. **练习**: 强化学习的动手挑战
 
-Focus on making complex code accessible through clear explanations, visual aids, and practical examples that build understanding progressively.
+通过清晰的解释、可视化辅助和实际示例，专注于让复杂的代码易于理解，从而逐步建立理解。

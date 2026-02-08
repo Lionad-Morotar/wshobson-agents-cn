@@ -1,12 +1,12 @@
-# Kubernetes Deployment Specification Reference
+# Kubernetes Deployment 规范参考
 
-Comprehensive reference for Kubernetes Deployment resources, covering all key fields, best practices, and common patterns.
+Kubernetes Deployment 资源的全面参考，涵盖所有关键字段、最佳实践和常见模式。
 
-## Overview
+## 概述
 
-A Deployment provides declarative updates for Pods and ReplicaSets. It manages the desired state of your application, handling rollouts, rollbacks, and scaling operations.
+Deployment 为 Pod 和 ReplicaSet 提供声明式更新。它管理应用程序的期望状态，处理部署、回滚和扩缩容操作。
 
-## Complete Deployment Specification
+## 完整 Deployment 规范
 
 ```yaml
 apiVersion: apps/v1
@@ -20,33 +20,33 @@ metadata:
     app.kubernetes.io/component: backend
     app.kubernetes.io/part-of: my-system
   annotations:
-    description: "Main application deployment"
+    description: "主应用部署"
     contact: "backend-team@example.com"
 spec:
-  # Replica management
+  # 副本管理
   replicas: 3
   revisionHistoryLimit: 10
 
-  # Pod selection
+  # Pod 选择
   selector:
     matchLabels:
       app: my-app
       version: v1
 
-  # Update strategy
+  # 更新策略
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
 
-  # Minimum time for pod to be ready
+  # Pod 就绪的最小时间
   minReadySeconds: 10
 
-  # Deployment will fail if it doesn't progress in this time
+  # 部署在此时间内未进展将失败
   progressDeadlineSeconds: 600
 
-  # Pod template
+  # Pod 模板
   template:
     metadata:
       labels:
@@ -56,10 +56,10 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9090"
     spec:
-      # Service account for RBAC
+      # RBAC 的服务账户
       serviceAccountName: my-app
 
-      # Security context for the pod
+      # Pod 的安全上下文
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -67,7 +67,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 
-      # Init containers run before main containers
+      # Init 容器在主容器之前运行
       initContainers:
         - name: init-db
           image: busybox:1.36
@@ -77,13 +77,13 @@ spec:
             runAsNonRoot: true
             runAsUser: 1000
 
-      # Main containers
+      # 主容器
       containers:
         - name: app
           image: myapp:1.0.0
           imagePullPolicy: IfNotPresent
 
-          # Container ports
+          # 容器端口
           ports:
             - name: http
               containerPort: 8080
@@ -92,7 +92,7 @@ spec:
               containerPort: 9090
               protocol: TCP
 
-          # Environment variables
+          # 环境变量
           env:
             - name: POD_NAME
               valueFrom:
@@ -108,14 +108,14 @@ spec:
                   name: db-credentials
                   key: url
 
-          # ConfigMap and Secret references
+          # ConfigMap 和 Secret 引用
           envFrom:
             - configMapRef:
                 name: app-config
             - secretRef:
                 name: app-secrets
 
-          # Resource requests and limits
+          # 资源请求和限制
           resources:
             requests:
               memory: "256Mi"
@@ -124,7 +124,7 @@ spec:
               memory: "512Mi"
               cpu: "500m"
 
-          # Liveness probe
+          # 存活探针
           livenessProbe:
             httpGet:
               path: /health/live
@@ -138,7 +138,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
 
-          # Readiness probe
+          # 就绪探针
           readinessProbe:
             httpGet:
               path: /health/ready
@@ -149,7 +149,7 @@ spec:
             successThreshold: 1
             failureThreshold: 3
 
-          # Startup probe (for slow-starting containers)
+          # 启动探针（用于启动缓慢的容器）
           startupProbe:
             httpGet:
               path: /health/startup
@@ -160,7 +160,7 @@ spec:
             successThreshold: 1
             failureThreshold: 30
 
-          # Volume mounts
+          # 卷挂载
           volumeMounts:
             - name: data
               mountPath: /var/lib/app
@@ -170,7 +170,7 @@ spec:
             - name: tmp
               mountPath: /tmp
 
-          # Security context for container
+          # 容器的安全上下文
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
@@ -180,7 +180,7 @@ spec:
               drop:
                 - ALL
 
-          # Lifecycle hooks
+          # 生命周期钩子
           lifecycle:
             postStart:
               exec:
@@ -190,7 +190,7 @@ spec:
               exec:
                 command: ["/bin/sh", "-c", "sleep 15"]
 
-      # Volumes
+      # 卷
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -201,14 +201,14 @@ spec:
         - name: tmp
           emptyDir: {}
 
-      # DNS configuration
+      # DNS 配置
       dnsPolicy: ClusterFirst
       dnsConfig:
         options:
           - name: ndots
             value: "2"
 
-      # Scheduling
+      # 调度
       nodeSelector:
         disktype: ssd
 
@@ -231,167 +231,167 @@ spec:
           value: "my-app"
           effect: "NoSchedule"
 
-      # Termination
+      # 终止
       terminationGracePeriodSeconds: 30
 
-      # Image pull secrets
+      # 镜像拉取密钥
       imagePullSecrets:
         - name: regcred
 ```
 
-## Field Reference
+## 字段参考
 
-### Metadata Fields
+### 元数据字段
 
-#### Required Fields
+#### 必需字段
 
-- `apiVersion`: `apps/v1` (current stable version)
+- `apiVersion`: `apps/v1`（当前稳定版本）
 - `kind`: `Deployment`
-- `metadata.name`: Unique name within namespace
+- `metadata.name`: 命名空间内的唯一名称
 
-#### Recommended Metadata
+#### 推荐元数据
 
-- `metadata.namespace`: Target namespace (defaults to `default`)
-- `metadata.labels`: Key-value pairs for organization
-- `metadata.annotations`: Non-identifying metadata
+- `metadata.namespace`: 目标命名空间（默认为 `default`）
+- `metadata.labels`: 用于组织的键值对
+- `metadata.annotations`: 非标识元数据
 
-### Spec Fields
+### Spec 字段
 
-#### Replica Management
+#### 副本管理
 
-**`replicas`** (integer, default: 1)
+**`replicas`**（整数，默认：1）
 
-- Number of desired pod instances
-- Best practice: Use 3+ for production high availability
-- Can be scaled manually or via HorizontalPodAutoscaler
+- 期望的 Pod 实例数量
+- 最佳实践：生产环境高可用使用 3+
+- 可以手动扩缩容或通过 HorizontalPodAutoscaler
 
-**`revisionHistoryLimit`** (integer, default: 10)
+**`revisionHistoryLimit`**（整数，默认：10）
 
-- Number of old ReplicaSets to retain for rollback
-- Set to 0 to disable rollback capability
-- Reduces storage overhead for long-running deployments
+- 为回滚保留的旧 ReplicaSet 数量
+- 设置为 0 以禁用回滚功能
+- 减少长时间运行的部署的存储开销
 
-#### Update Strategy
+#### 更新策略
 
-**`strategy.type`** (string)
+**`strategy.type`**（字符串）
 
-- `RollingUpdate` (default): Gradual pod replacement
-- `Recreate`: Delete all pods before creating new ones
+- `RollingUpdate`（默认）：渐进式 Pod 替换
+- `Recreate`：在创建新 Pod 之前删除所有 Pod
 
-**`strategy.rollingUpdate.maxSurge`** (int or percent, default: 25%)
+**`strategy.rollingUpdate.maxSurge`**（整数或百分比，默认：25%）
 
-- Maximum pods above desired replicas during update
-- Example: With 3 replicas and maxSurge=1, up to 4 pods during update
+- 更新期间期望副本数之上的最大 Pod 数
+- 示例：3 个副本且 maxSurge=1，更新期间最多 4 个 Pod
 
-**`strategy.rollingUpdate.maxUnavailable`** (int or percent, default: 25%)
+**`strategy.rollingUpdate.maxUnavailable`**（整数或百分比，默认：25%）
 
-- Maximum pods below desired replicas during update
-- Set to 0 for zero-downtime deployments
-- Cannot be 0 if maxSurge is 0
+- 更新期间期望副本数之下的最大 Pod 数
+- 设置为 0 以实现零停机部署
+- 如果 maxSurge 为 0，则不能为 0
 
-**Best practices:**
+**最佳实践：**
 
 ```yaml
-# Zero-downtime deployment
+# 零停机部署
 strategy:
   type: RollingUpdate
   rollingUpdate:
     maxSurge: 1
     maxUnavailable: 0
 
-# Fast deployment (can have brief downtime)
+# 快速部署（可能有短暂停机）
 strategy:
   type: RollingUpdate
   rollingUpdate:
     maxSurge: 2
     maxUnavailable: 1
 
-# Complete replacement
+# 完全替换
 strategy:
   type: Recreate
 ```
 
-#### Pod Template
+#### Pod 模板
 
 **`template.metadata.labels`**
 
-- Must include labels matching `spec.selector.matchLabels`
-- Add version labels for blue/green deployments
-- Include standard Kubernetes labels
+- 必须包含与 `spec.selector.matchLabels` 匹配的标签
+- 添加版本标签用于蓝绿部署
+- 包含标准 Kubernetes 标签
 
-**`template.spec.containers`** (required)
+**`template.spec.containers`**（必需）
 
-- Array of container specifications
-- At least one container required
-- Each container needs unique name
+- 容器规范数组
+- 至少需要一个容器
+- 每个容器需要唯一名称
 
-#### Container Configuration
+#### 容器配置
 
-**Image Management:**
+**镜像管理：**
 
 ```yaml
 containers:
   - name: app
     image: registry.example.com/myapp:1.0.0
-    imagePullPolicy: IfNotPresent # or Always, Never
+    imagePullPolicy: IfNotPresent # 或 Always、Never
 ```
 
-Image pull policies:
+镜像拉取策略：
 
-- `IfNotPresent`: Pull if not cached (default for tagged images)
-- `Always`: Always pull (default for :latest)
-- `Never`: Never pull, fail if not cached
+- `IfNotPresent`：如果未缓存则拉取（带标签镜像的默认值）
+- `Always`：始终拉取（:latest 的默认值）
+- `Never`：永不拉取，如果未缓存则失败
 
-**Port Declarations:**
+**端口声明：**
 
 ```yaml
 ports:
-  - name: http # Named for referencing in Service
+  - name: http # 命名以便在 Service 中引用
     containerPort: 8080
-    protocol: TCP # TCP (default), UDP, or SCTP
-    hostPort: 8080 # Optional: Bind to host port (rarely used)
+    protocol: TCP # TCP（默认）、UDP 或 SCTP
+    hostPort: 8080 # 可选：绑定到主机端口（很少使用）
 ```
 
-#### Resource Management
+#### 资源管理
 
-**Requests vs Limits:**
+**请求 vs 限制：**
 
 ```yaml
 resources:
   requests:
-    memory: "256Mi" # Guaranteed resources
-    cpu: "250m" # 0.25 CPU cores
+    memory: "256Mi" # 保证资源
+    cpu: "250m" # 0.25 CPU 核心
   limits:
-    memory: "512Mi" # Maximum allowed
-    cpu: "500m" # 0.5 CPU cores
+    memory: "512Mi" # 最大允许值
+    cpu: "500m" # 0.5 CPU 核心
 ```
 
-**QoS Classes (determined automatically):**
+**QoS 类（自动确定）：**
 
-1. **Guaranteed**: requests = limits for all containers
-   - Highest priority
-   - Last to be evicted
+1. **Guaranteed**：所有容器的请求 = 限制
+   - 最高优先级
+   - 最后被驱逐
 
-2. **Burstable**: requests < limits or only requests set
-   - Medium priority
-   - Evicted before Guaranteed
+2. **Burstable**：请求 < 限制或仅设置了请求
+   - 中等优先级
+   - 在 Guaranteed 之前被驱逐
 
-3. **BestEffort**: No requests or limits set
-   - Lowest priority
-   - First to be evicted
+3. **BestEffort**：未设置请求或限制
+   - 最低优先级
+   - 首先被驱逐
 
-**Best practices:**
+**最佳实践：**
 
-- Always set requests in production
-- Set limits to prevent resource monopolization
-- Memory limits should be 1.5-2x requests
-- CPU limits can be higher for bursty workloads
+- 生产环境始终设置请求
+- 设置限制以防止资源垄断
+- 内存限制应为请求的 1.5-2 倍
+- CPU 限制可以更高用于突发工作负载
 
-#### Health Checks
+#### 健康检查
 
-**Probe Types:**
+**探针类型：**
 
-1. **startupProbe** - For slow-starting applications
+1. **startupProbe** - 用于启动缓慢的应用程序
 
    ```yaml
    startupProbe:
@@ -400,10 +400,10 @@ resources:
        port: 8080
      initialDelaySeconds: 0
      periodSeconds: 10
-     failureThreshold: 30 # 5 minutes to start (10s * 30)
+     failureThreshold: 30 # 5 分钟启动时间（10s * 30）
    ```
 
-2. **livenessProbe** - Restarts unhealthy containers
+2. **livenessProbe** - 重启不健康的容器
 
    ```yaml
    livenessProbe:
@@ -413,10 +413,11 @@ resources:
      initialDelaySeconds: 30
      periodSeconds: 10
      timeoutSeconds: 5
-     failureThreshold: 3 # Restart after 3 failures
+     failureThreshold: 3 # 3 次失败后重启
    ```
 
-3. **readinessProbe** - Controls traffic routing
+3. **readinessProbe** - 控制流量路由
+
    ```yaml
    readinessProbe:
      httpGet:
@@ -424,10 +425,10 @@ resources:
        port: 8080
      initialDelaySeconds: 5
      periodSeconds: 5
-     failureThreshold: 3 # Remove from service after 3 failures
+     failureThreshold: 3 # 3 次失败后从服务中移除
    ```
 
-**Probe Mechanisms:**
+**探针机制：**
 
 ```yaml
 # HTTP GET
@@ -442,29 +443,29 @@ httpGet:
 tcpSocket:
   port: 3306
 
-# Command execution
+# 命令执行
 exec:
   command:
     - cat
     - /tmp/healthy
 
-# gRPC (Kubernetes 1.24+)
+# gRPC（Kubernetes 1.24+）
 grpc:
   port: 9090
   service: my.service.health.v1.Health
 ```
 
-**Probe Timing Parameters:**
+**探针时间参数：**
 
-- `initialDelaySeconds`: Wait before first probe
-- `periodSeconds`: How often to probe
-- `timeoutSeconds`: Probe timeout
-- `successThreshold`: Successes needed to mark healthy (1 for liveness/startup)
-- `failureThreshold`: Failures before taking action
+- `initialDelaySeconds`：首次探针前的等待时间
+- `periodSeconds`：探针频率
+- `timeoutSeconds`：探针超时
+- `successThreshold`：标记健康所需的成功次数（存活/启动为 1）
+- `failureThreshold`：采取操作前的失败次数
 
-#### Security Context
+#### 安全上下文
 
-**Pod-level security context:**
+**Pod 级安全上下文：**
 
 ```yaml
 spec:
@@ -478,7 +479,7 @@ spec:
       type: RuntimeDefault
 ```
 
-**Container-level security context:**
+**容器级安全上下文：**
 
 ```yaml
 containers:
@@ -492,20 +493,20 @@ containers:
         drop:
           - ALL
         add:
-          - NET_BIND_SERVICE # Only if needed
+          - NET_BIND_SERVICE # 仅在需要时
 ```
 
-**Security best practices:**
+**安全最佳实践：**
 
-- Always run as non-root (`runAsNonRoot: true`)
-- Drop all capabilities and add only needed ones
-- Use read-only root filesystem when possible
-- Enable seccomp profile
-- Disable privilege escalation
+- 始终以非 root 用户运行（`runAsNonRoot: true`）
+- 删除所有能力并仅添加需要的
+- 尽可能使用只读根文件系统
+- 启用 seccomp 配置文件
+- 禁用权限提升
 
-#### Volumes
+#### 卷
 
-**Volume Types:**
+**卷类型：**
 
 ```yaml
 volumes:
@@ -528,29 +529,29 @@ volumes:
       secretName: app-secrets
       defaultMode: 0400
 
-  # EmptyDir (ephemeral)
+  # EmptyDir（临时）
   - name: cache
     emptyDir:
       sizeLimit: 1Gi
 
-  # HostPath (avoid in production)
+  # HostPath（生产环境避免使用）
   - name: host-data
     hostPath:
       path: /data
       type: DirectoryOrCreate
 ```
 
-#### Scheduling
+#### 调度
 
-**Node Selection:**
+**节点选择：**
 
 ```yaml
-# Simple node selector
+# 简单节点选择器
 nodeSelector:
   disktype: ssd
   zone: us-west-1a
 
-# Node affinity (more expressive)
+# 节点亲和性（更具表达力）
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -563,10 +564,10 @@ affinity:
                 - arm64
 ```
 
-**Pod Affinity/Anti-Affinity:**
+**Pod 亲和性/反亲和性：**
 
 ```yaml
-# Spread pods across nodes
+# 跨节点分散 Pod
 affinity:
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -575,7 +576,7 @@ affinity:
           app: my-app
       topologyKey: kubernetes.io/hostname
 
-# Co-locate with database
+# 与数据库共置
 affinity:
   podAffinity:
     preferredDuringSchedulingIgnoredDuringExecution:
@@ -587,7 +588,7 @@ affinity:
         topologyKey: kubernetes.io/hostname
 ```
 
-**Tolerations:**
+**容忍度：**
 
 ```yaml
 tolerations:
@@ -601,9 +602,9 @@ tolerations:
     effect: "NoSchedule"
 ```
 
-## Common Patterns
+## 常见模式
 
-### High Availability Deployment
+### 高可用部署
 
 ```yaml
 spec:
@@ -631,7 +632,7 @@ spec:
               app: my-app
 ```
 
-### Sidecar Container Pattern
+### Sidecar 容器模式
 
 ```yaml
 spec:
@@ -654,7 +655,7 @@ spec:
           emptyDir: {}
 ```
 
-### Init Container for Dependencies
+### 依赖项的 Init 容器
 
 ```yaml
 spec:
@@ -685,26 +686,26 @@ spec:
           image: myapp:1.0.0
 ```
 
-## Best Practices
+## 最佳实践
 
-### Production Checklist
+### 生产检查清单
 
-- [ ] Set resource requests and limits
-- [ ] Implement all three probe types (startup, liveness, readiness)
-- [ ] Use specific image tags (not :latest)
-- [ ] Configure security context (non-root, read-only filesystem)
-- [ ] Set replica count >= 3 for HA
-- [ ] Configure pod anti-affinity for spread
-- [ ] Set appropriate update strategy (maxUnavailable: 0 for zero-downtime)
-- [ ] Use ConfigMaps and Secrets for configuration
-- [ ] Add standard labels and annotations
-- [ ] Configure graceful shutdown (preStop hook, terminationGracePeriodSeconds)
-- [ ] Set revisionHistoryLimit for rollback capability
-- [ ] Use ServiceAccount with minimal RBAC permissions
+- [ ] 设置资源请求和限制
+- [ ] 实现所有三种探针类型（启动、存活、就绪）
+- [ ] 使用特定的镜像标签（不是 :latest）
+- [ ] 配置安全上下文（非 root、只读文件系统）
+- [ ] 设置副本数 >= 3 以实现高可用
+- [ ] 配置 Pod 反亲和性以分散
+- [ ] 设置适当的更新策略（maxUnavailable: 0 实现零停机）
+- [ ] 使用 ConfigMaps 和 Secrets 进行配置
+- [ ] 添加标准标签和注解
+- [ ] 配置优雅关闭（preStop 钩子、terminationGracePeriodSeconds）
+- [ ] 设置 revisionHistoryLimit 以支持回滚
+- [ ] 使用具有最小 RBAC 权限的 ServiceAccount
 
-### Performance Tuning
+### 性能调优
 
-**Fast startup:**
+**快速启动：**
 
 ```yaml
 spec:
@@ -715,7 +716,7 @@ spec:
       maxUnavailable: 1
 ```
 
-**Zero-downtime updates:**
+**零停机更新：**
 
 ```yaml
 spec:
@@ -726,7 +727,7 @@ spec:
       maxUnavailable: 0
 ```
 
-**Graceful shutdown:**
+**优雅关闭：**
 
 ```yaml
 spec:
@@ -741,11 +742,11 @@ spec:
                 command: ["/bin/sh", "-c", "sleep 15 && kill -SIGTERM 1"]
 ```
 
-## Troubleshooting
+## 故障排查
 
-### Common Issues
+### 常见问题
 
-**Pods not starting:**
+**Pod 无法启动：**
 
 ```bash
 kubectl describe deployment <name>
@@ -754,27 +755,27 @@ kubectl describe pod <pod-name>
 kubectl logs <pod-name>
 ```
 
-**ImagePullBackOff:**
+**ImagePullBackOff：**
 
-- Check image name and tag
-- Verify imagePullSecrets
-- Check registry credentials
+- 检查镜像名称和标签
+- 验证 imagePullSecrets
+- 检查注册表凭据
 
-**CrashLoopBackOff:**
+**CrashLoopBackOff：**
 
-- Check container logs
-- Verify liveness probe is not too aggressive
-- Check resource limits
-- Verify application dependencies
+- 检查容器日志
+- 验证存活探针是否过于激进
+- 检查资源限制
+- 验证应用程序依赖项
 
-**Deployment stuck in progress:**
+**部署卡在进展中：**
 
-- Check progressDeadlineSeconds
-- Verify readiness probes
-- Check resource availability
+- 检查 progressDeadlineSeconds
+- 验证就绪探针
+- 检查资源可用性
 
-## Related Resources
+## 相关资源
 
-- [Kubernetes Deployment API Reference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#deployment-v1-apps)
-- [Pod Security Standards](https://kubernetes.io/docs/concepts/security/pod-security-standards/)
-- [Resource Management](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
+- [Kubernetes Deployment API 参考](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.28/#deployment-v1-apps)
+- [Pod 安全标准](https://kubernetes.io/docs/concepts/security/pod-security-standards/)
+- [资源管理](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)

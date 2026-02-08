@@ -1,78 +1,78 @@
 ---
 name: dotnet-backend-patterns
-description: Master C#/.NET backend development patterns for building robust APIs, MCP servers, and enterprise applications. Covers async/await, dependency injection, Entity Framework Core, Dapper, configuration, caching, and testing with xUnit. Use when developing .NET backends, reviewing C# code, or designing API architectures.
+description: 掌握用于构建健壮 API、MCP 服务器和企业应用程序的 C#/.NET 后端开发模式。涵盖 async/await、依赖注入、Entity Framework Core、Dapper、配置、缓存和使用 xUnit 进行测试。在开发 .NET 后端、审查 C# 代码或设计 API 架构时使用。
 ---
 
-# .NET Backend Development Patterns
+# .NET 后端开发模式
 
-Master C#/.NET patterns for building production-grade APIs, MCP servers, and enterprise backends with modern best practices (2024/2025).
+掌握使用现代最佳实践（2024/2025）构建生产级 API、MCP 服务器和企业后端的 C#/.NET 模式。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Developing new .NET Web APIs or MCP servers
-- Reviewing C# code for quality and performance
-- Designing service architectures with dependency injection
-- Implementing caching strategies with Redis
-- Writing unit and integration tests
-- Optimizing database access with EF Core or Dapper
-- Configuring applications with IOptions pattern
-- Handling errors and implementing resilience patterns
+- 开发新的 .NET Web API 或 MCP 服务器
+- 审查 C# 代码的质量和性能
+- 使用依赖注入设计服务架构
+- 使用 Redis 实现缓存策略
+- 编写单元和集成测试
+- 使用 EF Core 或 Dapper 优化数据库访问
+- 使用 IOptions 模式配置应用程序
+- 处理错误和实施弹性模式
 
-## Core Concepts
+## 核心概念
 
-### 1. Project Structure (Clean Architecture)
+### 1. 项目结构（Clean Architecture）
 
 ```
 src/
-├── Domain/                     # Core business logic (no dependencies)
+├── Domain/                     # 核心业务逻辑（无依赖）
 │   ├── Entities/
 │   ├── Interfaces/
 │   ├── Exceptions/
 │   └── ValueObjects/
-├── Application/                # Use cases, DTOs, validation
+├── Application/                # 用例、DTO、验证
 │   ├── Services/
 │   ├── DTOs/
 │   ├── Validators/
 │   └── Interfaces/
-├── Infrastructure/             # External implementations
-│   ├── Data/                   # EF Core, Dapper repositories
-│   ├── Caching/                # Redis, Memory cache
-│   ├── External/               # HTTP clients, third-party APIs
-│   └── DependencyInjection/    # Service registration
-└── Api/                        # Entry point
-    ├── Controllers/            # Or MinimalAPI endpoints
+├── Infrastructure/             # 外部实现
+│   ├── Data/                   # EF Core、Dapper 仓储
+│   ├── Caching/                # Redis、内存缓存
+│   ├── External/               # HTTP 客户端、第三方 API
+│   └── DependencyInjection/    # 服务注册
+└── Api/                        # 入口点
+    ├── Controllers/            # 或 MinimalAPI 端点
     ├── Middleware/
     ├── Filters/
     └── Program.cs
 ```
 
-### 2. Dependency Injection Patterns
+### 2. 依赖注入模式
 
 ```csharp
-// Service registration by lifetime
+// 按生命周期注册服务
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Scoped: One instance per HTTP request
+        // Scoped：每个 HTTP 请求一个实例
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<IOrderService, OrderService>();
 
-        // Singleton: One instance for app lifetime
+        // Singleton：应用程序生命周期一个实例
         services.AddSingleton<ICacheService, RedisCacheService>();
         services.AddSingleton<IConnectionMultiplexer>(_ =>
             ConnectionMultiplexer.Connect(configuration["Redis:Connection"]!));
 
-        // Transient: New instance every time
+        // Transient：每次都创建新实例
         services.AddTransient<IValidator<CreateOrderRequest>, CreateOrderValidator>();
 
-        // Options pattern for configuration
+        // 配置的 Options 模式
         services.Configure<CatalogOptions>(configuration.GetSection("Catalog"));
         services.Configure<RedisOptions>(configuration.GetSection("Redis"));
 
-        // Factory pattern for conditional creation
+        // 用于条件创建的工厂模式
         services.AddScoped<IPriceCalculator>(sp =>
         {
             var options = sp.GetRequiredService<IOptions<PricingOptions>>().Value;
@@ -81,7 +81,7 @@ public static class ServiceCollectionExtensions
                 : sp.GetRequiredService<LegacyPriceCalculator>();
         });
 
-        // Keyed services (.NET 8+)
+        // 键控服务（.NET 8+）
         services.AddKeyedScoped<IPaymentProcessor, StripeProcessor>("stripe");
         services.AddKeyedScoped<IPaymentProcessor, PayPalProcessor>("paypal");
 
@@ -89,7 +89,7 @@ public static class ServiceCollectionExtensions
     }
 }
 
-// Usage with keyed services
+// 使用键控服务
 public class CheckoutService
 {
     public CheckoutService(
@@ -100,16 +100,16 @@ public class CheckoutService
 }
 ```
 
-### 3. Async/Await Patterns
+### 3. Async/Await 模式
 
 ```csharp
-// ✅ CORRECT: Async all the way down
+// ✅ 正确：Async all the way down
 public async Task<Product> GetProductAsync(string id, CancellationToken ct = default)
 {
     return await _repository.GetByIdAsync(id, ct);
 }
 
-// ✅ CORRECT: Parallel execution with WhenAll
+// ✅ 正确：使用 WhenAll 并行执行
 public async Task<(Stock, Price)> GetStockAndPriceAsync(
     string productId,
     CancellationToken ct = default)
@@ -122,14 +122,14 @@ public async Task<(Stock, Price)> GetStockAndPriceAsync(
     return (await stockTask, await priceTask);
 }
 
-// ✅ CORRECT: ConfigureAwait in libraries
+// ✅ 正确：库中的 ConfigureAwait
 public async Task<T> LibraryMethodAsync<T>(CancellationToken ct = default)
 {
     var result = await _httpClient.GetAsync(url, ct).ConfigureAwait(false);
     return await result.Content.ReadFromJsonAsync<T>(ct).ConfigureAwait(false);
 }
 
-// ✅ CORRECT: ValueTask for hot paths with caching
+// ✅ 正确：用于热路径缓存的 ValueTask
 public ValueTask<Product?> GetCachedProductAsync(string id)
 {
     if (_cache.TryGetValue(id, out Product? product))
@@ -138,21 +138,21 @@ public ValueTask<Product?> GetCachedProductAsync(string id)
     return new ValueTask<Product?>(GetFromDatabaseAsync(id));
 }
 
-// ❌ WRONG: Blocking on async (deadlock risk)
-var result = GetProductAsync(id).Result;  // NEVER do this
-var result2 = GetProductAsync(id).GetAwaiter().GetResult(); // Also bad
+// ❌ 错误：阻塞异步（死锁风险）
+var result = GetProductAsync(id).Result;  // 永远不要这样做
+var result2 = GetProductAsync(id).GetAwaiter().GetResult(); // 也不好
 
-// ❌ WRONG: async void (except event handlers)
-public async void ProcessOrder() { }  // Exceptions are lost
+// ❌ 错误：async void（除了事件处理程序）
+public async void ProcessOrder() { }  // 异常丢失
 
-// ❌ WRONG: Unnecessary Task.Run for already async code
-await Task.Run(async () => await GetDataAsync());  // Wastes thread
+// ❌ 错误：对已经是异步的代码不必要地使用 Task.Run
+await Task.Run(async () => await GetDataAsync());  // 浪费线程
 ```
 
-### 4. Configuration with IOptions
+### 4. 使用 IOptions 配置
 
 ```csharp
-// Configuration classes
+// 配置类
 public class CatalogOptions
 {
     public const string SectionName = "Catalog";
@@ -187,11 +187,11 @@ public class RedisOptions
     }
 }
 
-// Registration
+// 注册
 services.Configure<CatalogOptions>(configuration.GetSection(CatalogOptions.SectionName));
 services.Configure<RedisOptions>(configuration.GetSection(RedisOptions.SectionName));
 
-// Usage with IOptions (singleton, read once at startup)
+// 使用 IOptions（singleton，启动时读取一次）
 public class CatalogService
 {
     private readonly CatalogOptions _options;
@@ -202,18 +202,18 @@ public class CatalogService
     }
 }
 
-// Usage with IOptionsSnapshot (scoped, re-reads on each request)
+// 使用 IOptionsSnapshot（scoped，每次请求重新读取）
 public class DynamicService
 {
     private readonly CatalogOptions _options;
 
     public DynamicService(IOptionsSnapshot<CatalogOptions> options)
     {
-        _options = options.Value;  // Fresh value per request
+        _options = options.Value;  // 每个请求的新值
     }
 }
 
-// Usage with IOptionsMonitor (singleton, notified on changes)
+// 使用 IOptionsMonitor（singleton，更改时通知）
 public class MonitoredService
 {
     private CatalogOptions _options;
@@ -226,10 +226,10 @@ public class MonitoredService
 }
 ```
 
-### 5. Result Pattern (Avoiding Exceptions for Flow Control)
+### 5. Result 模式（避免异常用于流控制）
 
 ```csharp
-// Generic Result type
+// 通用 Result 类型
 public class Result<T>
 {
     public bool IsSuccess { get; }
@@ -255,30 +255,30 @@ public class Result<T>
         IsSuccess ? Result<TNew>.Success(await mapper(Value!)) : Result<TNew>.Failure(Error!, ErrorCode);
 }
 
-// Usage in service
+// 服务中的用法
 public async Task<Result<Order>> CreateOrderAsync(CreateOrderRequest request, CancellationToken ct)
 {
-    // Validation
+    // 验证
     var validation = await _validator.ValidateAsync(request, ct);
     if (!validation.IsValid)
         return Result<Order>.Failure(
             validation.Errors.First().ErrorMessage,
             "VALIDATION_ERROR");
 
-    // Business rule check
+    // 业务规则检查
     var stock = await _stockService.CheckAsync(request.ProductId, request.Quantity, ct);
     if (!stock.IsAvailable)
         return Result<Order>.Failure(
-            $"Insufficient stock: {stock.Available} available, {request.Quantity} requested",
+            $"库存不足：可用 {stock.Available}，请求 {request.Quantity}",
             "INSUFFICIENT_STOCK");
 
-    // Create order
+    // 创建订单
     var order = await _repository.CreateAsync(request.ToEntity(), ct);
 
     return Result<Order>.Success(order);
 }
 
-// Usage in controller/endpoint
+// 控制器/端点中的用法
 app.MapPost("/orders", async (
     CreateOrderRequest request,
     IOrderService orderService,
@@ -292,12 +292,12 @@ app.MapPost("/orders", async (
 });
 ```
 
-## Data Access Patterns
+## 数据访问模式
 
 ### Entity Framework Core
 
 ```csharp
-// DbContext configuration
+// DbContext 配置
 public class AppDbContext : DbContext
 {
     public DbSet<Product> Products => Set<Product>();
@@ -305,15 +305,15 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Apply all configurations from assembly
+        // 从程序集应用所有配置
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
-        // Global query filters
+        // 全局查询过滤器
         modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsDeleted);
     }
 }
 
-// Entity configuration
+// 实体配置
 public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
@@ -334,7 +334,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
     }
 }
 
-// Repository with EF Core
+// 使用 EF Core 的仓储
 public class ProductRepository : IProductRepository
 {
     private readonly AppDbContext _context;
@@ -373,7 +373,7 @@ public class ProductRepository : IProductRepository
 }
 ```
 
-### Dapper for Performance
+### Dapper 用于性能
 
 ```csharp
 public class DapperProductRepository : IProductRepository
@@ -438,7 +438,7 @@ public class DapperProductRepository : IProductRepository
         return results.ToList();
     }
 
-    // Multi-mapping for related data
+    // 用于相关数据的多映射
     public async Task<Order?> GetOrderWithItemsAsync(int orderId, CancellationToken ct = default)
     {
         const string sql = """
@@ -477,9 +477,9 @@ public class DapperProductRepository : IProductRepository
 }
 ```
 
-## Caching Patterns
+## 缓存模式
 
-### Multi-Level Cache with Redis
+### 使用 Redis 的多级缓存
 
 ```csharp
 public class CachedProductService : IProductService
@@ -496,26 +496,26 @@ public class CachedProductService : IProductService
     {
         var cacheKey = $"product:{id}";
 
-        // L1: Memory cache (in-process, fastest)
+        // L1：内存缓存（进程内，最快）
         if (_memoryCache.TryGetValue(cacheKey, out Product? cached))
         {
             _logger.LogDebug("L1 cache hit for {CacheKey}", cacheKey);
             return cached;
         }
 
-        // L2: Distributed cache (Redis)
+        // L2：分布式缓存
         var distributed = await _distributedCache.GetStringAsync(cacheKey, ct);
         if (distributed != null)
         {
             _logger.LogDebug("L2 cache hit for {CacheKey}", cacheKey);
             var product = JsonSerializer.Deserialize<Product>(distributed);
 
-            // Populate L1
+            // 填充 L1
             _memoryCache.Set(cacheKey, product, MemoryCacheDuration);
             return product;
         }
 
-        // L3: Database
+        // L3：数据库
         _logger.LogDebug("Cache miss for {CacheKey}, fetching from database", cacheKey);
         var fromDb = await _repository.GetByIdAsync(id, ct);
 
@@ -523,7 +523,7 @@ public class CachedProductService : IProductService
         {
             var serialized = JsonSerializer.Serialize(fromDb);
 
-            // Populate both caches
+            // 填充两个缓存
             await _distributedCache.SetStringAsync(
                 cacheKey,
                 serialized,
@@ -550,7 +550,7 @@ public class CachedProductService : IProductService
     }
 }
 
-// Stale-while-revalidate pattern
+// Stale-while-revalidate 模式
 public class StaleWhileRevalidateCache<T>
 {
     private readonly IDistributedCache _cache;
@@ -570,7 +570,7 @@ public class StaleWhileRevalidateCache<T>
 
             if (entry.IsStale && !entry.IsExpired)
             {
-                // Return stale data immediately, refresh in background
+                // 立即返回陈旧数据，后台刷新
                 _ = Task.Run(async () =>
                 {
                     var fresh = await factory(CancellationToken.None);
@@ -582,7 +582,7 @@ public class StaleWhileRevalidateCache<T>
                 return entry.Value;
         }
 
-        // Cache miss or expired
+        // 缓存未命中或过期
         var value = await factory(ct);
         await SetAsync(key, value, ct);
         return value;
@@ -596,9 +596,9 @@ public class StaleWhileRevalidateCache<T>
 }
 ```
 
-## Testing Patterns
+## 测试模式
 
-### Unit Tests with xUnit and Moq
+### 使用 xUnit 和 Moq 的单元测试
 
 ```csharp
 public class OrderServiceTests
@@ -614,7 +614,7 @@ public class OrderServiceTests
         _mockStockService = new Mock<IStockService>();
         _mockValidator = new Mock<IValidator<CreateOrderRequest>>();
 
-        // Default: validation passes
+        // 默认：验证通过
         _mockValidator
             .Setup(v => v.ValidateAsync(It.IsAny<CreateOrderRequest>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
@@ -707,7 +707,7 @@ public class OrderServiceTests
 }
 ```
 
-### Integration Tests with WebApplicationFactory
+### 使用 WebApplicationFactory 的集成测试
 
 ```csharp
 public class ProductsApiTests : IClassFixture<WebApplicationFactory<Program>>
@@ -721,12 +721,12 @@ public class ProductsApiTests : IClassFixture<WebApplicationFactory<Program>>
         {
             builder.ConfigureServices(services =>
             {
-                // Replace real database with in-memory
+                // 用内存数据库替换真实数据库
                 services.RemoveAll<DbContextOptions<AppDbContext>>();
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseInMemoryDatabase("TestDb"));
 
-                // Replace Redis with memory cache
+                // 用内存缓存替换 Redis
                 services.RemoveAll<IDistributedCache>();
                 services.AddDistributedMemoryCache();
             });
@@ -771,47 +771,47 @@ public class ProductsApiTests : IClassFixture<WebApplicationFactory<Program>>
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-### DO
+### 应该做的
 
-1. **Use async/await** all the way through the call stack
-2. **Inject dependencies** through constructor injection
-3. **Use IOptions<T>** for typed configuration
-4. **Return Result types** instead of throwing exceptions for business logic
-5. **Use CancellationToken** in all async methods
-6. **Prefer Dapper** for read-heavy, performance-critical queries
-7. **Use EF Core** for complex domain models with change tracking
-8. **Cache aggressively** with proper invalidation strategies
-9. **Write unit tests** for business logic, integration tests for APIs
-10. **Use record types** for DTOs and immutable data
+1. **在整个调用堆栈中使用 async/await**
+2. **通过构造函数注入注入依赖项**
+3. **使用 IOptions<T>** 进行类型化配置
+4. **返回 Result 类型**，而不是为业务逻辑抛出异常
+5. **在所有异步方法中使用 CancellationToken**
+6. **优先使用 Dapper** 用于读取密集型、性能关键查询
+7. **使用 EF Core** 用于具有更改跟踪的复杂域模型
+8. **积极缓存**，使用适当的失效策略
+9. **编写单元测试** 用于业务逻辑，集成测试用于 API
+10. **使用 record 类型** 用于 DTO 和不可变数据
 
-### DON'T
+### 不应该做的
 
-1. **Don't block on async** with `.Result` or `.Wait()`
-2. **Don't use async void** except for event handlers
-3. **Don't catch generic Exception** without re-throwing or logging
-4. **Don't hardcode** configuration values
-5. **Don't expose EF entities** directly in APIs (use DTOs)
-6. **Don't forget** `AsNoTracking()` for read-only queries
-7. **Don't ignore** CancellationToken parameters
-8. **Don't create** `new HttpClient()` manually (use IHttpClientFactory)
-9. **Don't mix** sync and async code unnecessarily
-10. **Don't skip** validation at API boundaries
+1. **不要阻塞异步**，使用 `.Result` 或 `.Wait()`
+2. **不要使用 async void**，除了事件处理程序
+3. **不要捕获通用异常**，不重新抛出或记录
+4. **不要硬编码** 配置值
+5. **不要在 API 中直接暴露 EF 实体**（使用 DTO）
+6. **不要忘记** `AsNoTracking()` 用于只读查询
+7. **不要忽略** CancellationToken 参数
+8. **不要手动创建** `new HttpClient()`（使用 IHttpClientFactory）
+9. **不要不必要地混合** 同步和异步代码
+10. **不要跳过** API 边界处的验证
 
-## Common Pitfalls
+## 常见陷阱
 
-- **N+1 Queries**: Use `.Include()` or explicit joins
-- **Memory Leaks**: Dispose IDisposable resources, use `using`
-- **Deadlocks**: Don't mix sync and async, use ConfigureAwait(false) in libraries
-- **Over-fetching**: Select only needed columns, use projections
-- **Missing Indexes**: Check query plans, add indexes for common filters
-- **Timeout Issues**: Configure appropriate timeouts for HTTP clients
-- **Cache Stampede**: Use distributed locks for cache population
+- **N+1 查询**：使用 `.Include()` 或显式连接
+- **内存泄漏**：释放 IDisposable 资源，使用 `using`
+- **死锁**：不要混合同步和异步，在库中使用 ConfigureAwait(false)
+- **过度获取**：仅选择所需列，使用投影
+- **缺少索引**：检查查询计划，为常见过滤器添加索引
+- **超时问题**：为 HTTP 客户端配置适当的超时
+- **缓存惊群**：使用分布式锁进行缓存填充
 
-## Resources
+## 资源
 
-- **assets/service-template.cs**: Complete service implementation template
-- **assets/repository-template.cs**: Repository pattern implementation
-- **references/ef-core-best-practices.md**: EF Core optimization guide
-- **references/dapper-patterns.md**: Advanced Dapper usage patterns
+- **assets/service-template.cs**：完整的服务实现模板
+- **assets/repository-template.cs**：仓储模式实现
+- **references/ef-core-best-practices.md**：EF Core 优化指南
+- **references/dapper-patterns.md**：高级 Dapper 使用模式

@@ -1,187 +1,186 @@
 ---
-description: "Initialize a design system with tokens"
+description: "初始化设计系统（包含设计令牌）"
 argument-hint: "[--preset minimal|standard|comprehensive]"
 ---
 
-# Design System Setup
+# 设计系统初始化
 
-Initialize a design system with design tokens, component patterns, and documentation. Creates a foundation for consistent UI development.
+使用设计令牌、组件模式和文档初始化设计系统。为一致的 UI 开发创建基础。
 
-## Pre-flight Checks
+## 前置检查
 
-1. Check if `.ui-design/` directory exists:
-   - If exists with `design-system.json`: Ask to update or reinitialize
-   - If not: Create `.ui-design/` directory
+1. 检查 `.ui-design/` 目录是否存在：
+   - 如果存在且包含 `design-system.json`：询问是更新还是重新初始化
+   - 如果不存在：创建 `.ui-design/` 目录
 
-2. Detect existing design system indicators:
-   - Check for `tailwind.config.js` with custom theme
-   - Check for CSS custom properties in global styles
-   - Check for existing token files (tokens.json, theme.ts, etc.)
-   - Check for design system packages (chakra, radix, shadcn, etc.)
+2. 检测现有设计系统指标：
+   - 检查 `tailwind.config.js` 是否有自定义主题
+   - 检查全局样式中是否有 CSS 自定义属性
+   - 检查是否存在令牌文件（tokens.json、theme.ts 等）
+   - 检查设计系统包（chakra、radix、shadcn 等）
 
-3. Load project context:
-   - Read `conductor/tech-stack.md` if exists
-   - Detect styling approach (CSS, Tailwind, styled-components, etc.)
-   - Detect TypeScript usage
+3. 加载项目上下文：
+   - 如果存在则读取 `conductor/tech-stack.md`
+   - 检测样式方案（CSS、Tailwind、styled-components 等）
+   - 检测 TypeScript 使用情况
 
-4. If existing design system detected:
+4. 如果检测到现有设计系统：
 
    ```
-   I detected an existing design system configuration:
+   检测到现有的设计系统配置：
 
    - {detected_system}
 
-   Would you like to:
-   1. Integrate with existing system (add missing tokens)
-   2. Replace with new design system
-   3. View current configuration
-   4. Cancel
+   您希望：
+   1. 与现有系统集成（添加缺失的令牌）
+   2. 使用新的设计系统替换
+   3. 查看当前配置
+   4. 取消
 
-   Enter number:
+   请输入数字：
    ```
 
-## Interactive Configuration
+## 交互式配置
 
-**CRITICAL RULES:**
+**关键规则：**
 
-- Ask ONE question per turn
-- Wait for user response before proceeding
-- Build complete specification before generating files
+- 每次只问一个问题
+- 等待用户响应后再继续
+- 在生成文件之前构建完整的规范
 
-### Q1: Design System Preset (if not provided)
-
-```
-What level of design system do you need?
-
-1. Minimal   - Colors, typography, spacing only
-               Best for: Small projects, rapid prototyping
-
-2. Standard  - Colors, typography, spacing, shadows, borders, breakpoints
-               Best for: Most projects, good balance of flexibility
-
-3. Comprehensive - Full token system with semantic naming, component tokens,
-                   animation, and documentation
-               Best for: Large projects, design teams, long-term maintenance
-
-Enter number:
-```
-
-### Q2: Brand Colors
+### 问题 1：设计系统预设（如果未提供）
 
 ```
-Let's define your brand colors.
+您需要什么级别的设计系统？
 
-Enter your primary brand color (hex code, e.g., #3B82F6):
+1. 精简版   - 仅包含颜色、排版、间距
+               最适合：小型项目、快速原型开发
+
+2. 标准版  - 颜色、排版、间距、阴影、边框、断点
+               最适合：大多数项目、灵活性的良好平衡
+
+3. 完整版 - 包含语义化命名、组件令牌、动画和文档的完整令牌系统
+               最适合：大型项目、设计团队、长期维护
+
+请输入数字：
 ```
 
-After receiving primary:
+### 问题 2：品牌颜色
 
 ```
-Primary color: {color}
+让我们定义您的品牌颜色。
 
-Now enter your secondary/accent color (or press enter to auto-generate):
+请输入您的主品牌颜色（十六进制代码，例如 #3B82F6）：
 ```
 
-### Q3: Color Mode Support
+收到主颜色后：
 
 ```
-What color modes should the design system support?
+主颜色：{color}
 
-1. Light mode only
-2. Dark mode only
-3. Light and dark modes
-4. Light, dark, and system preference
-
-Enter number:
+现在请输入您的次要/强调颜色（或按回车键自动生成）：
 ```
 
-### Q4: Typography
+### 问题 3：色彩模式支持
 
 ```
-What font family should be used?
+设计系统应该支持哪些色彩模式？
 
-1. System fonts (fastest loading, native feel)
+1. 仅浅色模式
+2. 仅深色模式
+3. 浅色和深色模式
+4. 浅色、深色和系统偏好
+
+请输入数字：
+```
+
+### 问题 4：排版
+
+```
+应该使用什么字体族？
+
+1. 系统字体（加载最快，原生感觉）
    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', ...
 
-2. Inter (modern, highly readable)
-3. Open Sans (friendly, versatile)
-4. Roboto (clean, Google standard)
-5. Custom (provide name)
+2. Inter（现代，高可读性）
+3. Open Sans（友好，通用）
+4. Roboto（简洁，Google 标准）
+5. 自定义（提供名称）
 
-Enter number or font name:
+请输入数字或字体名称：
 ```
 
-### Q5: Spacing Scale
+### 问题 5：间距比例
 
 ```
-What spacing scale philosophy?
+采用什么间距比例理念？
 
-1. Linear (4px base)
+1. 线性（4px 基础）
    4, 8, 12, 16, 20, 24, 32, 40, 48, 64
 
-2. Geometric (4px base, 1.5x multiplier)
+2. 几何（4px 基础，1.5 倍乘数）
    4, 6, 9, 14, 21, 32, 48, 72
 
-3. Tailwind-compatible
+3. Tailwind 兼容
    0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64
 
-4. Custom (provide values)
+4. 自定义（提供值）
 
-Enter number:
+请输入数字：
 ```
 
-### Q6: Border Radius
+### 问题 6：边框圆角
 
 ```
-What corner radius style?
+采用什么圆角样式？
 
-1. Sharp    - 0px (no rounding)
-2. Subtle   - 4px (slight rounding)
-3. Moderate - 8px (noticeable rounding)
-4. Rounded  - 12px (significant rounding)
-5. Pill     - 9999px for buttons, 16px for cards
+1. 锐角    - 0px（无圆角）
+2. 微圆   - 4px（轻微圆角）
+3. 适中 - 8px（明显圆角）
+4. 较圆  - 12px（显著圆角）
+5. 胶囊     - 按钮 9999px，卡片 16px
 
-Enter number:
+请输入数字：
 ```
 
-### Q7: Output Format
+### 问题 7：输出格式
 
 ```
-How should the design tokens be output?
+设计令牌应该如何输出？
 
-1. CSS Custom Properties (works everywhere)
-2. Tailwind config (tailwind.config.js extension)
-3. JavaScript/TypeScript module
-4. JSON tokens (Design Token Community Group format)
-5. Multiple formats (all of the above)
+1. CSS 自定义属性（随处可用）
+2. Tailwind 配置（tailwind.config.js 扩展）
+3. JavaScript/TypeScript 模块
+4. JSON 令牌（Design Token Community Group 格式）
+5. 多种格式（以上所有）
 
-Enter number:
+请输入数字：
 ```
 
-### Q8: Component Guidelines (Comprehensive only)
+### 问题 8：组件指南（仅完整版）
 
-If comprehensive preset selected:
+如果选择了完整版预设：
 
 ```
-Should I generate component design guidelines?
+是否生成组件设计指南？
 
-These include:
-- Button variants and states
-- Form input patterns
-- Card/container patterns
-- Typography hierarchy
-- Icon usage guidelines
+指南包括：
+- 按钮变体和状态
+- 表单输入模式
+- 卡片/容器模式
+- 排版层次结构
+- 图标使用指南
 
-1. Yes, generate all guidelines
-2. Yes, but let me select which ones
-3. No, tokens only
+1. 是，生成所有指南
+2. 是，但让我选择需要哪些
+3. 否，仅生成令牌
 
-Enter number:
+请输入数字：
 ```
 
-## State Management
+## 状态管理
 
-Create `.ui-design/setup_state.json`:
+创建 `.ui-design/setup_state.json`：
 
 ```json
 {
@@ -204,11 +203,11 @@ Create `.ui-design/setup_state.json`:
 }
 ```
 
-## Token Generation
+## 令牌生成
 
-### 1. Generate Color Palette
+### 1. 生成调色板
 
-From primary and secondary colors, generate:
+从主颜色和次要颜色，生成：
 
 ```json
 {
@@ -250,7 +249,7 @@ From primary and secondary colors, generate:
 }
 ```
 
-### 2. Generate Typography Scale
+### 2. 生成排版比例
 
 ```json
 {
@@ -285,7 +284,7 @@ From primary and secondary colors, generate:
 }
 ```
 
-### 3. Generate Spacing Scale
+### 3. 生成间距比例
 
 ```json
 {
@@ -307,7 +306,7 @@ From primary and secondary colors, generate:
 }
 ```
 
-### 4. Generate Additional Tokens
+### 4. 生成附加令牌
 
 ```json
 {
@@ -350,11 +349,11 @@ From primary and secondary colors, generate:
 }
 ```
 
-## File Generation
+## 文件生成
 
-### Core Design System File
+### 核心设计系统文件
 
-Create `.ui-design/design-system.json`:
+创建 `.ui-design/design-system.json`：
 
 ```json
 {
@@ -376,9 +375,9 @@ Create `.ui-design/design-system.json`:
 }
 ```
 
-### CSS Custom Properties
+### CSS 自定义属性
 
-Create `.ui-design/tokens/tokens.css`:
+创建 `.ui-design/tokens/tokens.css`：
 
 ```css
 /* Design System Tokens - Generated */
@@ -457,9 +456,9 @@ Create `.ui-design/tokens/tokens.css`:
 }
 ```
 
-### Tailwind Config Extension
+### Tailwind 配置扩展
 
-Create `.ui-design/tokens/tailwind.config.js`:
+创建 `.ui-design/tokens/tailwind.config.js`：
 
 ```javascript
 // Design System Tailwind Extension
@@ -495,9 +494,9 @@ module.exports = {
 };
 ```
 
-### TypeScript Module
+### TypeScript 模块
 
-Create `.ui-design/tokens/tokens.ts`:
+创建 `.ui-design/tokens/tokens.ts`：
 
 ```typescript
 // Design System Tokens - Generated
@@ -532,9 +531,9 @@ export type ColorToken = keyof typeof colors;
 export type SpacingToken = keyof typeof spacing;
 ```
 
-## Documentation Generation (Comprehensive preset)
+## 文档生成（完整版预设）
 
-Create `.ui-design/docs/design-system.md`:
+创建 `.ui-design/docs/design-system.md`：
 
 ````markdown
 # Design System Documentation
@@ -604,42 +603,42 @@ Use spacing tokens for consistent margins and padding:
 
 ```
 
-## Completion
+## 完成总结
 
-Update state and display summary:
-
-```
-
-Design System Setup Complete!
-
-Created files:
-
-- .ui-design/design-system.json (master configuration)
-- .ui-design/tokens/tokens.css (CSS custom properties)
-- .ui-design/tokens/tailwind.config.js (Tailwind extension)
-- .ui-design/tokens/tokens.ts (TypeScript module)
-- .ui-design/docs/design-system.md (documentation)
-
-Quick start:
-
-1. CSS: @import '.ui-design/tokens/tokens.css';
-2. Tailwind: Spread in your tailwind.config.js
-3. TypeScript: import { colors } from '.ui-design/tokens/tokens';
-
-Next steps:
-
-1. Review and customize tokens as needed
-2. Run /ui-design:create-component to build with your design system
-3. Run /ui-design:design-review to validate existing UI against tokens
-
-Need to modify tokens? Run /ui-design:design-system-setup --preset {preset}
+更新状态并显示摘要：
 
 ```
 
-## Error Handling
+设计系统初始化完成！
 
-- If conflicting config detected: Offer merge strategies
-- If file write fails: Report error, suggest manual creation
-- If color generation fails: Provide manual palette input option
-- If tailwind not detected: Skip tailwind output, inform user
+已创建的文件：
+
+- .ui-design/design-system.json（主配置文件）
+- .ui-design/tokens/tokens.css（CSS 自定义属性）
+- .ui-design/tokens/tailwind.config.js（Tailwind 扩展）
+- .ui-design/tokens/tokens.ts（TypeScript 模块）
+- .ui-design/docs/design-system.md（文档）
+
+快速开始：
+
+1. CSS：@import '.ui-design/tokens/tokens.css';
+2. Tailwind：在您的 tailwind.config.js 中引入
+3. TypeScript：import { colors } from '.ui-design/tokens/tokens';
+
+后续步骤：
+
+1. 根据需要查看和自定义令牌
+2. 运行 /ui-design:create-component 使用您的设计系统构建组件
+3. 运行 /ui-design:design-review 根据令牌验证现有 UI
+
+需要修改令牌？运行 /ui-design:design-system-setup --preset {preset}
+
+```
+
+## 错误处理
+
+- 如果检测到冲突的配置：提供合并策略
+- 如果文件写入失败：报告错误，建议手动创建
+- 如果颜色生成失败：提供手动调色板输入选项
+- 如果未检测到 Tailwind：跳过 Tailwind 输出，通知用户
 ```

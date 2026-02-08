@@ -1,70 +1,70 @@
-# AWS Terraform Module Patterns
+# AWS Terraform 模块模式
 
-## VPC Module
+## VPC 模块
 
-- VPC with public/private subnets
-- Internet Gateway and NAT Gateways
-- Route tables and associations
-- Network ACLs
-- VPC Flow Logs
+- 带有公有/私有子网的 VPC
+- 互联网网关和 NAT 网关
+- 路由表和关联
+- 网络访问控制列表
+- VPC 流日志
 
-## EKS Module
+## EKS 模块
 
-- EKS cluster with managed node groups
-- IRSA (IAM Roles for Service Accounts)
-- Cluster autoscaler
-- VPC CNI configuration
-- Cluster logging
+- 带有托管节点组的 EKS 集群
+- IRSA (服务账户的 IAM 角色)
+- 集群自动扩缩器
+- VPC CNI 配置
+- 集群日志记录
 
-## RDS Module
+## RDS 模块
 
-- RDS instance or cluster
-- Automated backups
-- Read replicas
-- Parameter groups
-- Subnet groups
-- Security groups
+- RDS 实例或集群
+- 自动备份
+- 只读副本
+- 参数组
+- 子网组
+- 安全组
 
-## S3 Module
+## S3 模块
 
-- S3 bucket with versioning
-- Encryption at rest
-- Bucket policies
-- Lifecycle rules
-- Replication configuration
+- 启用版本控制的 S3 存储桶
+- 静态加密
+- 存储桶策略
+- 生命周期规则
+- 复制配置
 
-## ALB Module
+## ALB 模块
 
-- Application Load Balancer
-- Target groups
-- Listener rules
-- SSL/TLS certificates
-- Access logs
+- 应用负载均衡器
+- 目标组
+- 监听器规则
+- SSL/TLS 证书
+- 访问日志
 
-## Lambda Module
+## Lambda 模块
 
-- Lambda function
-- IAM execution role
-- CloudWatch Logs
-- Environment variables
-- VPC configuration (optional)
+- Lambda 函数
+- IAM 执行角色
+- CloudWatch 日志
+- 环境变量
+- VPC 配置(可选)
 
-## Security Group Module
+## 安全组模块
 
-- Reusable security group rules
-- Ingress/egress rules
-- Dynamic rule creation
-- Rule descriptions
+- 可复用的安全组规则
+- 入站/出站规则
+- 动态规则创建
+- 规则描述
 
-## Best Practices
+## 最佳实践
 
-1. Use AWS provider version ~> 5.0
-2. Enable encryption by default
-3. Use least-privilege IAM
-4. Tag all resources consistently
-5. Enable logging and monitoring
-6. Use KMS for encryption
-7. Implement backup strategies
-8. Use PrivateLink when possible
-9. Enable GuardDuty/SecurityHub
-10. Follow AWS Well-Architected Framework
+1. 使用 AWS Provider 版本 ~> 5.0
+2. 默认启用加密
+3. 使用最小权限 IAM
+4. 为所有资源统一添加标签
+5. 启用日志记录和监控
+6. 使用 KMS 进行加密
+7. 实施备份策略
+8. 尽可能使用 PrivateLink
+9. 启用 GuardDuty/SecurityHub
+10. 遵循 AWS 良好架构框架

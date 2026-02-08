@@ -1,59 +1,59 @@
 ---
 name: attack-tree-construction
-description: Build comprehensive attack trees to visualize threat paths. Use when mapping attack scenarios, identifying defense gaps, or communicating security risks to stakeholders.
+description: 构建全面的攻击树以可视化威胁路径。用于映射攻击场景、识别防御缺口或向利益相关方传达安全风险时。
 ---
 
-# Attack Tree Construction
+# 攻击树构建
 
-Systematic attack path visualization and analysis.
+系统化的攻击路径可视化与分析。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Visualizing complex attack scenarios
-- Identifying defense gaps and priorities
-- Communicating risks to stakeholders
-- Planning defensive investments
-- Penetration test planning
-- Security architecture review
+- 可视化复杂的攻击场景
+- 识别防御缺口和优先级
+- 向利益相关方传达风险
+- 规划防御性投资
+- 渗透测试规划
+- 安全架构评审
 
-## Core Concepts
+## 核心概念
 
-### 1. Attack Tree Structure
+### 1. 攻击树结构
 
 ```
-                    [Root Goal]
+                    [根目标]
                          |
             ┌────────────┴────────────┐
             │                         │
-       [Sub-goal 1]              [Sub-goal 2]
-       (OR node)                 (AND node)
+       [子目标 1]              [子目标 2]
+       (OR 节点)                (AND 节点)
             │                         │
       ┌─────┴─────┐             ┌─────┴─────┐
       │           │             │           │
-   [Attack]   [Attack]      [Attack]   [Attack]
-    (leaf)     (leaf)        (leaf)     (leaf)
+   [攻击]      [攻击]        [攻击]      [攻击]
+    (叶节点)    (叶节点)       (叶节点)     (叶节点)
 ```
 
-### 2. Node Types
+### 2. 节点类型
 
-| Type     | Symbol    | Description             |
+| 类型     | 符号    | 描述             |
 | -------- | --------- | ----------------------- |
-| **OR**   | Oval      | Any child achieves goal |
-| **AND**  | Rectangle | All children required   |
-| **Leaf** | Box       | Atomic attack step      |
+| **OR**   | 椭圆      | 任一子节点即可达成目标 |
+| **AND**  | 矩形 | 所有子节点都必须满足   |
+| **叶节点** | 方框       | 原子攻击步骤      |
 
-### 3. Attack Attributes
+### 3. 攻击属性
 
-| Attribute     | Description             | Values             |
+| 属性     | 描述             | 值             |
 | ------------- | ----------------------- | ------------------ |
-| **Cost**      | Resources needed        | $, $$, $$$         |
-| **Time**      | Duration to execute     | Hours, Days, Weeks |
-| **Skill**     | Expertise required      | Low, Medium, High  |
-| **Detection** | Likelihood of detection | Low, Medium, High  |
+| **成本**      | 所需资源        | $, $$, $$$         |
+| **时间**      | 执行时长     | 小时、天、周 |
+| **技能**     | 所需专业知识      | 低、中、高  |
+| **检测** | 被检测的可能性 | 低、中、高  |
 
-## Templates
+## 模板
 
-### Template 1: Attack Tree Data Model
+### 模板 1：攻击树数据模型
 
 ```python
 from dataclasses import dataclass, field
@@ -116,7 +116,7 @@ class AttackNode:
         self.children.append(child)
 
     def calculate_path_difficulty(self) -> float:
-        """Calculate aggregate difficulty for this path."""
+        """计算此路径的总体难度。"""
         if self.node_type == NodeType.LEAF:
             return self.attributes.difficulty.value
 
@@ -131,7 +131,7 @@ class AttackNode:
             return max(child_difficulties)
 
     def calculate_path_cost(self) -> float:
-        """Calculate aggregate cost for this path."""
+        """计算此路径的总成本。"""
         if self.node_type == NodeType.LEAF:
             return self.attributes.cost.value
 
@@ -146,7 +146,7 @@ class AttackNode:
             return sum(child_costs)
 
     def to_dict(self) -> Dict:
-        """Convert to dictionary for serialization."""
+        """转换为字典以便序列化。"""
         return {
             "id": self.id,
             "name": self.name,
@@ -171,15 +171,15 @@ class AttackTree:
     version: str = "1.0"
 
     def find_easiest_path(self) -> List[AttackNode]:
-        """Find the path with lowest difficulty."""
+        """查找难度最低的路径。"""
         return self._find_path(self.root, minimize="difficulty")
 
     def find_cheapest_path(self) -> List[AttackNode]:
-        """Find the path with lowest cost."""
+        """查找成本最低的路径。"""
         return self._find_path(self.root, minimize="cost")
 
     def find_stealthiest_path(self) -> List[AttackNode]:
-        """Find the path with lowest detection risk."""
+        """查找检测风险最低的路径。"""
         return self._find_path(self.root, minimize="detection")
 
     def _find_path(
@@ -187,7 +187,7 @@ class AttackTree:
         node: AttackNode,
         minimize: str
     ) -> List[AttackNode]:
-        """Recursive path finding."""
+        """递归路径查找。"""
         if node.node_type == NodeType.LEAF:
             return [node]
 
@@ -195,7 +195,7 @@ class AttackTree:
             return [node]
 
         if node.node_type == NodeType.OR:
-            # Pick the best child path
+            # 选择最佳子路径
             best_path = None
             best_score = float('inf')
 
@@ -208,14 +208,14 @@ class AttackTree:
 
             return [node] + (best_path or [])
         else:  # AND
-            # Must traverse all children
+            # 必须遍历所有子节点
             path = [node]
             for child in node.children:
                 path.extend(self._find_path(child, minimize))
             return path
 
     def _path_score(self, path: List[AttackNode], metric: str) -> float:
-        """Calculate score for a path."""
+        """计算路径的得分。"""
         if metric == "difficulty":
             return sum(n.attributes.difficulty.value for n in path if n.node_type == NodeType.LEAF)
         elif metric == "cost":
@@ -225,7 +225,7 @@ class AttackTree:
         return 0
 
     def get_all_leaf_attacks(self) -> List[AttackNode]:
-        """Get all leaf attack nodes."""
+        """获取所有叶攻击节点。"""
         leaves = []
         self._collect_leaves(self.root, leaves)
         return leaves
@@ -237,11 +237,11 @@ class AttackTree:
             self._collect_leaves(child, leaves)
 
     def get_unmitigated_attacks(self) -> List[AttackNode]:
-        """Find attacks without mitigations."""
+        """查找没有缓解措施的攻击。"""
         return [n for n in self.get_all_leaf_attacks() if not n.mitigations]
 
     def export_json(self) -> str:
-        """Export tree to JSON."""
+        """将树导出为 JSON。"""
         return json.dumps({
             "name": self.name,
             "description": self.description,
@@ -250,11 +250,11 @@ class AttackTree:
         }, indent=2)
 ```
 
-### Template 2: Attack Tree Builder
+### 模板 2：攻击树构建器
 
 ```python
 class AttackTreeBuilder:
-    """Fluent builder for attack trees."""
+    """攻击树的流式构建器。"""
 
     def __init__(self, name: str, description: str):
         self.name = name
@@ -263,7 +263,7 @@ class AttackTreeBuilder:
         self._root: Optional[AttackNode] = None
 
     def goal(self, id: str, name: str, description: str = "") -> 'AttackTreeBuilder':
-        """Set the root goal (OR node by default)."""
+        """设置根目标（默认为 OR 节点）。"""
         self._root = AttackNode(
             id=id,
             name=name,
@@ -274,7 +274,7 @@ class AttackTreeBuilder:
         return self
 
     def or_node(self, id: str, name: str, description: str = "") -> 'AttackTreeBuilder':
-        """Add an OR sub-goal."""
+        """添加一个 OR 子目标。"""
         node = AttackNode(
             id=id,
             name=name,
@@ -286,7 +286,7 @@ class AttackTreeBuilder:
         return self
 
     def and_node(self, id: str, name: str, description: str = "") -> 'AttackTreeBuilder':
-        """Add an AND sub-goal (all children required)."""
+        """添加一个 AND 子目标（需要所有子节点）。"""
         node = AttackNode(
             id=id,
             name=name,
@@ -308,7 +308,7 @@ class AttackTreeBuilder:
         time_hours: float = 8.0,
         mitigations: List[str] = None
     ) -> 'AttackTreeBuilder':
-        """Add a leaf attack node."""
+        """添加一个叶攻击节点。"""
         node = AttackNode(
             id=id,
             name=name,
@@ -326,15 +326,15 @@ class AttackTreeBuilder:
         return self
 
     def end(self) -> 'AttackTreeBuilder':
-        """Close current node, return to parent."""
+        """关闭当前节点，返回到父节点。"""
         if len(self._node_stack) > 1:
             self._node_stack.pop()
         return self
 
     def build(self) -> AttackTree:
-        """Build the attack tree."""
+        """构建攻击树。"""
         if not self._root:
-            raise ValueError("No root goal defined")
+            raise ValueError("未定义根目标")
         return AttackTree(
             name=self.name,
             description=self.description,
@@ -343,13 +343,13 @@ class AttackTreeBuilder:
 
     def _current(self) -> AttackNode:
         if not self._node_stack:
-            raise ValueError("No current node")
+            raise ValueError("没有当前节点")
         return self._node_stack[-1]
 
 
-# Example usage
+# 使用示例
 def build_account_takeover_tree() -> AttackTree:
-    """Build attack tree for account takeover scenario."""
+    """构建账户接管场景的攻击树。"""
     return (
         AttackTreeBuilder("Account Takeover", "Gain unauthorized access to user account")
         .goal("G1", "Take Over User Account")
@@ -417,11 +417,11 @@ def build_account_takeover_tree() -> AttackTree:
     )
 ```
 
-### Template 3: Mermaid Diagram Generator
+### 模板 3：Mermaid 图表生成器
 
 ```python
 class MermaidExporter:
-    """Export attack trees to Mermaid diagram format."""
+    """将攻击树导出为 Mermaid 图表格式。"""
 
     def __init__(self, tree: AttackTree):
         self.tree = tree
@@ -429,23 +429,23 @@ class MermaidExporter:
         self._node_count = 0
 
     def export(self) -> str:
-        """Export tree to Mermaid flowchart."""
+        """将树导出为 Mermaid 流程图。"""
         self._lines = ["flowchart TD"]
         self._export_node(self.tree.root, None)
         return "\n".join(self._lines)
 
     def _export_node(self, node: AttackNode, parent_id: Optional[str]) -> str:
-        """Recursively export nodes."""
+        """递归导出节点。"""
         node_id = f"N{self._node_count}"
         self._node_count += 1
 
-        # Node shape based on type
+        # 基于类型的节点形状
         if node.node_type == NodeType.OR:
             shape = f"{node_id}(({node.name}))"
         elif node.node_type == NodeType.AND:
             shape = f"{node_id}[{node.name}]"
         else:  # LEAF
-            # Color based on difficulty
+            # 基于难度的颜色
             style = self._get_leaf_style(node)
             shape = f"{node_id}[/{node.name}/]"
             self._lines.append(f"    style {node_id} {style}")
@@ -462,26 +462,26 @@ class MermaidExporter:
         return node_id
 
     def _get_leaf_style(self, node: AttackNode) -> str:
-        """Get style based on attack attributes."""
+        """基于攻击属性获取样式。"""
         colors = {
-            Difficulty.TRIVIAL: "fill:#ff6b6b",  # Red - easy attack
+            Difficulty.TRIVIAL: "fill:#ff6b6b",  # 红色 - 容易攻击
             Difficulty.LOW: "fill:#ffa06b",
             Difficulty.MEDIUM: "fill:#ffd93d",
             Difficulty.HIGH: "fill:#6bcb77",
-            Difficulty.EXPERT: "fill:#4d96ff",  # Blue - hard attack
+            Difficulty.EXPERT: "fill:#4d96ff",  # 蓝色 - 困难攻击
         }
         color = colors.get(node.attributes.difficulty, "fill:#gray")
         return color
 
 
 class PlantUMLExporter:
-    """Export attack trees to PlantUML format."""
+    """将攻击树导出为 PlantUML 格式。"""
 
     def __init__(self, tree: AttackTree):
         self.tree = tree
 
     def export(self) -> str:
-        """Export tree to PlantUML."""
+        """将树导出为 PlantUML。"""
         lines = [
             "@startmindmap",
             f"* {self.tree.name}",
@@ -491,7 +491,7 @@ class PlantUMLExporter:
         return "\n".join(lines)
 
     def _export_node(self, node: AttackNode, lines: List[str], depth: int) -> None:
-        """Recursively export nodes."""
+        """递归导出节点。"""
         prefix = "*" * (depth + 1)
 
         if node.node_type == NodeType.OR:
@@ -508,19 +508,19 @@ class PlantUMLExporter:
             self._export_node(child, lines, depth + 1)
 ```
 
-### Template 4: Attack Path Analysis
+### 模板 4：攻击路径分析
 
 ```python
 from typing import Set, Tuple
 
 class AttackPathAnalyzer:
-    """Analyze attack paths and coverage."""
+    """分析攻击路径和覆盖范围。"""
 
     def __init__(self, tree: AttackTree):
         self.tree = tree
 
     def get_all_paths(self) -> List[List[AttackNode]]:
-        """Get all possible attack paths."""
+        """获取所有可能的攻击路径。"""
         paths = []
         self._collect_paths(self.tree.root, [], paths)
         return paths
@@ -531,7 +531,7 @@ class AttackPathAnalyzer:
         current_path: List[AttackNode],
         all_paths: List[List[AttackNode]]
     ) -> None:
-        """Recursively collect all paths."""
+        """递归收集所有路径。"""
         current_path = current_path + [node]
 
         if node.node_type == NodeType.LEAF:
@@ -543,18 +543,18 @@ class AttackPathAnalyzer:
             return
 
         if node.node_type == NodeType.OR:
-            # Each child is a separate path
+            # 每个子节点是一个单独的路径
             for child in node.children:
                 self._collect_paths(child, current_path, all_paths)
         else:  # AND
-            # Must combine all children
+            # 必须组合所有子节点
             child_paths = []
             for child in node.children:
                 child_sub_paths = []
                 self._collect_paths(child, [], child_sub_paths)
                 child_paths.append(child_sub_paths)
 
-            # Combine paths from all AND children
+            # 组合来自所有 AND 子节点的路径
             combined = self._combine_and_paths(child_paths)
             for combo in combined:
                 all_paths.append(current_path + combo)
@@ -563,14 +563,14 @@ class AttackPathAnalyzer:
         self,
         child_paths: List[List[List[AttackNode]]]
     ) -> List[List[AttackNode]]:
-        """Combine paths from AND node children."""
+        """组合来自 AND 节点子节点的路径。"""
         if not child_paths:
             return [[]]
 
         if len(child_paths) == 1:
             return [path for paths in child_paths for path in paths]
 
-        # Cartesian product of all child path combinations
+        # 所有子路径组合的笛卡尔积
         result = [[]]
         for paths in child_paths:
             new_result = []
@@ -581,7 +581,7 @@ class AttackPathAnalyzer:
         return result
 
     def calculate_path_metrics(self, path: List[AttackNode]) -> Dict:
-        """Calculate metrics for a specific path."""
+        """计算特定路径的指标。"""
         leaves = [n for n in path if n.node_type == NodeType.LEAF]
 
         total_difficulty = sum(n.attributes.difficulty.value for n in leaves)
@@ -601,7 +601,7 @@ class AttackPathAnalyzer:
         }
 
     def identify_critical_nodes(self) -> List[Tuple[AttackNode, int]]:
-        """Find nodes that appear in the most paths."""
+        """查找出现在最多路径中的节点。"""
         paths = self.get_all_paths()
         node_counts: Dict[str, Tuple[AttackNode, int]] = {}
 
@@ -618,7 +618,7 @@ class AttackPathAnalyzer:
         )
 
     def coverage_analysis(self, mitigated_attacks: Set[str]) -> Dict:
-        """Analyze how mitigations affect attack coverage."""
+        """分析缓解措施如何影响攻击覆盖范围。"""
         all_paths = self.get_all_paths()
         blocked_paths = []
         open_paths = []
@@ -637,12 +637,12 @@ class AttackPathAnalyzer:
             "coverage_percentage": len(blocked_paths) / len(all_paths) * 100 if all_paths else 0,
             "open_path_details": [
                 {"path": [n.name for n in p], "metrics": self.calculate_path_metrics(p)}
-                for p in open_paths[:5]  # Top 5 open paths
+                for p in open_paths[:5]  # 前 5 个开放路径
             ]
         }
 
     def prioritize_mitigations(self) -> List[Dict]:
-        """Prioritize mitigations by impact."""
+        """按影响优先排序缓解措施。"""
         critical_nodes = self.identify_critical_nodes()
         paths = self.get_all_paths()
         total_paths = len(paths)
@@ -662,25 +662,25 @@ class AttackPathAnalyzer:
         return sorted(recommendations, key=lambda x: x["coverage_impact"], reverse=True)
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Start with clear goals** - Define what attacker wants
-- **Be exhaustive** - Consider all attack vectors
-- **Attribute attacks** - Cost, skill, and detection
-- **Update regularly** - New threats emerge
-- **Validate with experts** - Red team review
+- **从清晰的目标开始** - 定义攻击者想要什么
+- **穷尽考虑** - 考虑所有攻击向量
+- **标注攻击属性** - 成本、技能和检测风险
+- **定期更新** - 新威胁不断出现
+- **与专家验证** - 红队评审
 
-### Don'ts
+### 不应该做
 
-- **Don't oversimplify** - Real attacks are complex
-- **Don't ignore dependencies** - AND nodes matter
-- **Don't forget insider threats** - Not all attackers are external
-- **Don't skip mitigations** - Trees are for defense planning
-- **Don't make it static** - Threat landscape evolves
+- **不要过度简化** - 真实攻击是复杂的
+- **不要忽略依赖关系** - AND 节点很重要
+- **不要忘记内部威胁** - 并非所有攻击者都是外部的
+- **不要跳过缓解措施** - 树是用于防御规划的
+- **不要使其静态化** - 威胁形势在不断演变
 
-## Resources
+## 资源
 
 - [Attack Trees by Bruce Schneier](https://www.schneier.com/academic/archives/1999/12/attack_trees.html)
 - [MITRE ATT&CK Framework](https://attack.mitre.org/)

@@ -3,22 +3,22 @@ name: mtls-configuration
 description: Configure mutual TLS (mTLS) for zero-trust service-to-service communication. Use when implementing zero-trust networking, certificate management, or securing internal service communication.
 ---
 
-# mTLS Configuration
+# mTLS 配置
 
-Comprehensive guide to implementing mutual TLS for zero-trust service mesh communication.
+实现零信任服务网格通信的双向 TLS(mTLS)综合指南。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Implementing zero-trust networking
-- Securing service-to-service communication
-- Certificate rotation and management
-- Debugging TLS handshake issues
-- Compliance requirements (PCI-DSS, HIPAA)
-- Multi-cluster secure communication
+- 实施零信任网络
+- 保护服务间通信
+- 证书轮换和管理
+- 调试 TLS 握手问题
+- 合规要求(PCI-DSS、HIPAA)
+- 多集群安全通信
 
-## Core Concepts
+## 核心概念
 
-### 1. mTLS Flow
+### 1. mTLS 流程
 
 ```
 ┌─────────┐                              ┌─────────┐
@@ -36,7 +36,7 @@ Comprehensive guide to implementing mutual TLS for zero-trust service mesh commu
 └─────────┘                              └─────────┘
 ```
 
-### 2. Certificate Hierarchy
+### 2. 证书层次结构
 
 ```
 Root CA (Self-signed, long-lived)
@@ -51,12 +51,12 @@ Root CA (Self-signed, long-lived)
             └── Cross-cluster certs
 ```
 
-## Templates
+## 模板
 
-### Template 1: Istio mTLS (Strict Mode)
+### 模板 1: Istio mTLS(严格模式)
 
 ```yaml
-# Enable strict mTLS mesh-wide
+# 为整个网格启用严格 mTLS
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
@@ -66,7 +66,7 @@ spec:
   mtls:
     mode: STRICT
 ---
-# Namespace-level override (permissive for migration)
+# 命名空间级别的覆盖(用于迁移的宽松模式)
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
@@ -76,7 +76,7 @@ spec:
   mtls:
     mode: PERMISSIVE
 ---
-# Workload-specific policy
+# 工作负载特定策略
 apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
@@ -92,10 +92,10 @@ spec:
     8080:
       mode: STRICT
     9090:
-      mode: DISABLE # Metrics port, no mTLS
+      mode: DISABLE # 指标端口,不使用 mTLS
 ```
 
-### Template 2: Istio Destination Rule for mTLS
+### 模板 2: Istio mTLS 目标规则
 
 ```yaml
 apiVersion: networking.istio.io/v1beta1
@@ -109,7 +109,7 @@ spec:
     tls:
       mode: ISTIO_MUTUAL
 ---
-# TLS to external service
+# 到外部服务的 TLS
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
@@ -121,7 +121,7 @@ spec:
       mode: SIMPLE
       caCertificates: /etc/certs/external-ca.pem
 ---
-# Mutual TLS to external service
+# 到外部服务的双向 TLS
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
@@ -136,10 +136,10 @@ spec:
       caCertificates: /etc/certs/partner-ca.pem
 ```
 
-### Template 3: Cert-Manager with Istio
+### 模板 3: Cert-Manager 与 Istio 集成
 
 ```yaml
-# Install cert-manager issuer for Istio
+# 为 Istio 安装 cert-manager 颁发者
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -148,7 +148,7 @@ spec:
   ca:
     secretName: istio-ca-secret
 ---
-# Create Istio CA secret
+# 创建 Istio CA 密钥
 apiVersion: v1
 kind: Secret
 metadata:
@@ -159,7 +159,7 @@ data:
   tls.crt: <base64-encoded-ca-cert>
   tls.key: <base64-encoded-ca-key>
 ---
-# Certificate for workload
+# 工作负载证书
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -183,10 +183,10 @@ spec:
     - client auth
 ```
 
-### Template 4: SPIFFE/SPIRE Integration
+### 模板 4: SPIFFE/SPIRE 集成
 
 ```yaml
-# SPIRE Server configuration
+# SPIRE 服务器配置
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -234,7 +234,7 @@ data:
       }
     }
 ---
-# SPIRE Agent DaemonSet (abbreviated)
+# SPIRE 代理 DaemonSet(精简版)
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -259,14 +259,14 @@ spec:
             type: DirectoryOrCreate
 ```
 
-### Template 5: Linkerd mTLS (Automatic)
+### 模板 5: Linkerd mTLS(自动启用)
 
 ```yaml
-# Linkerd enables mTLS automatically
-# Verify with:
+# Linkerd 自动启用 mTLS
+# 验证方式:
 # linkerd viz edges deployment -n my-namespace
 
-# For external services without mTLS
+# 对于没有 mTLS 的外部服务
 apiVersion: policy.linkerd.io/v1beta1
 kind: Server
 metadata:
@@ -277,9 +277,9 @@ spec:
     matchLabels:
       app: my-app
   port: external-api
-  proxyProtocol: HTTP/1 # or TLS for passthrough
+  proxyProtocol: HTTP/1 # 或使用 TLS 进行透传
 ---
-# Skip TLS for specific port
+# 为特定端口跳过 TLS
 apiVersion: v1
 kind: Service
 metadata:
@@ -288,62 +288,62 @@ metadata:
     config.linkerd.io/skip-outbound-ports: "3306" # MySQL
 ```
 
-## Certificate Rotation
+## 证书轮换
 
 ```bash
-# Istio - Check certificate expiry
+# Istio - 检查证书过期
 istioctl proxy-config secret deploy/my-app -o json | \
   jq '.dynamicActiveSecrets[0].secret.tlsCertificate.certificateChain.inlineBytes' | \
   tr -d '"' | base64 -d | openssl x509 -text -noout
 
-# Force certificate rotation
+# 强制证书轮换
 kubectl rollout restart deployment/my-app
 
-# Check Linkerd identity
+# 检查 Linkerd 身份
 linkerd identity -n my-namespace
 ```
 
-## Debugging mTLS Issues
+## 调试 mTLS 问题
 
 ```bash
-# Istio - Check if mTLS is enabled
+# Istio - 检查是否启用 mTLS
 istioctl authn tls-check my-service.my-namespace.svc.cluster.local
 
-# Verify peer authentication
+# 验证对等身份认证
 kubectl get peerauthentication --all-namespaces
 
-# Check destination rules
+# 检查目标规则
 kubectl get destinationrule --all-namespaces
 
-# Debug TLS handshake
+# 调试 TLS 握手
 istioctl proxy-config log deploy/my-app --level debug
 kubectl logs deploy/my-app -c istio-proxy | grep -i tls
 
-# Linkerd - Check mTLS status
+# Linkerd - 检查 mTLS 状态
 linkerd viz edges deployment -n my-namespace
 linkerd viz tap deploy/my-app --to deploy/my-backend
 ```
 
-## Best Practices
+## 最佳实践
 
-### Do's
+### 应该做
 
-- **Start with PERMISSIVE** - Migrate gradually to STRICT
-- **Monitor certificate expiry** - Set up alerts
-- **Use short-lived certs** - 24h or less for workloads
-- **Rotate CA periodically** - Plan for CA rotation
-- **Log TLS errors** - For debugging and audit
+- **从 PERMISSIVE 开始** - 逐步迁移到 STRICT
+- **监控证书过期** - 设置告警
+- **使用短期证书** - 工作负载使用 24 小时或更短
+- **定期轮换 CA** - 规划 CA 轮换
+- **记录 TLS 错误** - 用于调试和审计
 
-### Don'ts
+### 不应该做
 
-- **Don't disable mTLS** - For convenience in production
-- **Don't ignore cert expiry** - Automate rotation
-- **Don't use self-signed certs** - Use proper CA hierarchy
-- **Don't skip verification** - Verify the full chain
+- **不要禁用 mTLS** - 不要为了方便在生产环境禁用
+- **不要忽略证书过期** - 自动化轮换
+- **不要使用自签名证书** - 使用正确的 CA 层次结构
+- **不要跳过验证** - 验证完整的证书链
 
-## Resources
+## 参考资料
 
-- [Istio Security](https://istio.io/latest/docs/concepts/security/)
+- [Istio 安全](https://istio.io/latest/docs/concepts/security/)
 - [SPIFFE/SPIRE](https://spiffe.io/)
 - [cert-manager](https://cert-manager.io/)
-- [Zero Trust Architecture (NIST)](https://www.nist.gov/publications/zero-trust-architecture)
+- [零信任架构 (NIST)](https://www.nist.gov/publications/zero-trust-architecture)

@@ -1,54 +1,54 @@
 ---
 name: interaction-design
-description: Design and implement microinteractions, motion design, transitions, and user feedback patterns. Use when adding polish to UI interactions, implementing loading states, or creating delightful user experiences.
+description: 设计和实现微交互、动效设计、过渡和用户反馈模式。在为 UI 交互添加润色、实现加载状态或创建令人愉悦的用户体验时使用。
 ---
 
-# Interaction Design
+# 交互设计
 
-Create engaging, intuitive interactions through motion, feedback, and thoughtful state transitions that enhance usability and delight users.
+通过动效、反馈和精心设计的状态过渡,创造引人入胜、直观的交互,增强可用性并让用户愉悦。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Adding microinteractions to enhance user feedback
-- Implementing smooth page and component transitions
-- Designing loading states and skeleton screens
-- Creating gesture-based interactions
-- Building notification and toast systems
-- Implementing drag-and-drop interfaces
-- Adding scroll-triggered animations
-- Designing hover and focus states
+- 添加微交互以增强用户反馈
+- 实现流畅的页面和组件过渡
+- 设计加载状态和骨架屏
+- 创建基于手势的交互
+- 构建通知和消息系统
+- 实现拖放界面
+- 添加滚动触发的动画
+- 设计悬停和焦点状态
 
-## Core Principles
+## 核心原则
 
-### 1. Purposeful Motion
+### 1. 有目的的动效
 
-Motion should communicate, not decorate:
+动效应该传达信息,而非装饰:
 
-- **Feedback**: Confirm user actions occurred
-- **Orientation**: Show where elements come from/go to
-- **Focus**: Direct attention to important changes
-- **Continuity**: Maintain context during transitions
+- **反馈**: 确认用户操作已发生
+- **方向**: 显示元素的来源/去向
+- **焦点**: 引导注意力到重要变化
+- **连续性**: 在过渡期间保持上下文
 
-### 2. Timing Guidelines
+### 2. 时长指南
 
-| Duration  | Use Case                                  |
-| --------- | ----------------------------------------- |
-| 100-150ms | Micro-feedback (hovers, clicks)           |
-| 200-300ms | Small transitions (toggles, dropdowns)    |
-| 300-500ms | Medium transitions (modals, page changes) |
-| 500ms+    | Complex choreographed animations          |
+| 时长    | 用例                              |
+| ------- | --------------------------------- |
+| 100-150ms | 微反馈(悬停、点击)              |
+| 200-300ms | 小型过渡(切换、下拉)            |
+| 300-500ms | 中型过渡(模态框、页面切换)      |
+| 500ms+  | 复杂编排的动画                   |
 
-### 3. Easing Functions
+### 3. 缓动函数
 
 ```css
-/* Common easings */
---ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* Decelerate - entering */
---ease-in: cubic-bezier(0.55, 0, 1, 0.45); /* Accelerate - exiting */
---ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* Both - moving between */
---spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* Overshoot - playful */
+/* 常见缓动 */
+--ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* 减速 - 进入 */
+--ease-in: cubic-bezier(0.55, 0, 1, 0.45); /* 加速 - 退出 */
+--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* 两者 - 在之间移动 */
+--spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* 过冲 - 俏皮 */
 ```
 
-## Quick Start: Button Microinteraction
+## 快速开始:按钮微交互
 
 ```tsx
 import { motion } from "framer-motion";
@@ -68,11 +68,11 @@ export function InteractiveButton({ children, onClick }) {
 }
 ```
 
-## Interaction Patterns
+## 交互模式
 
-### 1. Loading States
+### 1. 加载状态
 
-**Skeleton Screens**: Preserve layout while loading
+**骨架屏**: 加载时保持布局
 
 ```tsx
 function CardSkeleton() {
@@ -86,7 +86,7 @@ function CardSkeleton() {
 }
 ```
 
-**Progress Indicators**: Show determinate progress
+**进度指示器**: 显示确定进度
 
 ```tsx
 function ProgressBar({ progress }: { progress: number }) {
@@ -103,9 +103,9 @@ function ProgressBar({ progress }: { progress: number }) {
 }
 ```
 
-### 2. State Transitions
+### 2. 状态过渡
 
-**Toggle with smooth transition**:
+**平滑过渡的切换**:
 
 ```tsx
 function Toggle({ checked, onChange }) {
@@ -129,9 +129,9 @@ function Toggle({ checked, onChange }) {
 }
 ```
 
-### 3. Page Transitions
+### 3. 页面过渡
 
-**Framer Motion layout animations**:
+**Framer Motion 布局动画**:
 
 ```tsx
 import { AnimatePresence, motion } from "framer-motion";
@@ -153,9 +153,9 @@ function PageTransition({ children, key }) {
 }
 ```
 
-### 4. Feedback Patterns
+### 4. 反馈模式
 
-**Ripple effect on click**:
+**点击时的波纹效果**:
 
 ```tsx
 function RippleButton({ children, onClick }) {
@@ -190,9 +190,9 @@ function RippleButton({ children, onClick }) {
 }
 ```
 
-### 5. Gesture Interactions
+### 5. 手势交互
 
-**Swipe to dismiss**:
+**滑动关闭**:
 
 ```tsx
 function SwipeCard({ children, onDismiss }) {
@@ -213,9 +213,9 @@ function SwipeCard({ children, onDismiss }) {
 }
 ```
 
-## CSS Animation Patterns
+## CSS 动画模式
 
-### Keyframe Animations
+### 关键帧动画
 
 ```css
 @keyframes fadeIn {
@@ -256,7 +256,7 @@ function SwipeCard({ children, onDismiss }) {
 }
 ```
 
-### CSS Transitions
+### CSS 过渡
 
 ```css
 .card {
@@ -271,10 +271,10 @@ function SwipeCard({ children, onDismiss }) {
 }
 ```
 
-## Accessibility Considerations
+## 无障碍考虑
 
 ```css
-/* Respect user motion preferences */
+/* 尊重用户的动效偏好 */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -301,27 +301,27 @@ function AnimatedComponent() {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Performance First**: Use `transform` and `opacity` for smooth 60fps
-2. **Reduce Motion Support**: Always respect `prefers-reduced-motion`
-3. **Consistent Timing**: Use a timing scale across the app
-4. **Natural Physics**: Prefer spring animations over linear
-5. **Interruptible**: Allow users to cancel long animations
-6. **Progressive Enhancement**: Work without JS animations
-7. **Test on Devices**: Performance varies significantly
+1. **性能优先**: 使用 `transform` 和 `opacity` 实现流畅的 60fps
+2. **支持减少动效**: 始终尊重 `prefers-reduced-motion`
+3. **一致的时长**: 在整个应用中使用时长比例
+4. **自然物理**: 优先使用弹簧动画而非线性
+5. **可中断**: 允许用户取消长动画
+6. **渐进增强**: 没有 JS 动画也能工作
+7. **在设备上测试**: 性能差异很大
 
-## Common Issues
+## 常见问题
 
-- **Janky Animations**: Avoid animating `width`, `height`, `top`, `left`
-- **Over-animation**: Too much motion causes fatigue
-- **Blocking Interactions**: Never prevent user input during animations
-- **Memory Leaks**: Clean up animation listeners on unmount
-- **Flash of Content**: Use `will-change` sparingly for optimization
+- **卡顿的动画**: 避免为 `width`、`height`、`top`、`left` 设置动画
+- **过度动画**: 太多动效会导致疲劳
+- **阻塞交互**: 绝不要在动画期间阻止用户输入
+- **内存泄漏**: 在卸载时清理动画监听器
+- **内容闪烁**: 谨慎使用 `will-change` 进行优化
 
-## Resources
+## 资源
 
-- [Framer Motion Documentation](https://www.framer.com/motion/)
-- [CSS Animation Guide](https://web.dev/animations-guide/)
-- [Material Design Motion](https://m3.material.io/styles/motion/overview)
-- [GSAP Animation Library](https://greensock.com/gsap/)
+- [Framer Motion 文档](https://www.framer.com/motion/)
+- [CSS 动画指南](https://web.dev/animations-guide/)
+- [Material Design 动效](https://m3.material.io/styles/motion/overview)
+- [GSAP 动画库](https://greensock.com/gsap/)

@@ -1,91 +1,91 @@
 ---
 name: architecture-patterns
-description: Implement proven backend architecture patterns including Clean Architecture, Hexagonal Architecture, and Domain-Driven Design. Use when architecting complex backend systems or refactoring existing applications for better maintainability.
+description: 实施经过验证的后端架构模式，包括整洁架构、六边形架构和领域驱动设计。在架构复杂后端系统或重构现有应用以提高可维护性时使用。
 ---
 
-# Architecture Patterns
+# 架构模式
 
-Master proven backend architecture patterns including Clean Architecture, Hexagonal Architecture, and Domain-Driven Design to build maintainable, testable, and scalable systems.
+掌握经过验证的后端架构模式，包括整洁架构、六边形架构和领域驱动设计，以构建可维护、可测试和可扩展的系统。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Designing new backend systems from scratch
-- Refactoring monolithic applications for better maintainability
-- Establishing architecture standards for your team
-- Migrating from tightly coupled to loosely coupled architectures
-- Implementing domain-driven design principles
-- Creating testable and mockable codebases
-- Planning microservices decomposition
+- 从头开始设计新的后端系统
+- 重构单体应用以提高可维护性
+- 为团队建立架构标准
+- 从紧密耦合迁移到松散耦合架构
+- 实施领域驱动设计原则
+- 创建可测试和可模拟的代码库
+- 规划微服务分解
 
-## Core Concepts
+## 核心概念
 
-### 1. Clean Architecture (Uncle Bob)
+### 1. 整洁架构（Uncle Bob）
 
-**Layers (dependency flows inward):**
+**层级（依赖向内流动）：**
 
-- **Entities**: Core business models
-- **Use Cases**: Application business rules
-- **Interface Adapters**: Controllers, presenters, gateways
-- **Frameworks & Drivers**: UI, database, external services
+- **实体**：核心业务模型
+- **用例**：应用业务规则
+- **接口适配器**：控制器、展示器、网关
+- **框架和驱动**：UI、数据库、外部服务
 
-**Key Principles:**
+**关键原则：**
 
-- Dependencies point inward
-- Inner layers know nothing about outer layers
-- Business logic independent of frameworks
-- Testable without UI, database, or external services
+- 依赖指向内部
+- 内层不了解外层
+- 业务逻辑独立于框架
+- 可在没有 UI、数据库或外部服务的情况下测试
 
-### 2. Hexagonal Architecture (Ports and Adapters)
+### 2. 六边形架构（端口和适配器）
 
-**Components:**
+**组件：**
 
-- **Domain Core**: Business logic
-- **Ports**: Interfaces defining interactions
-- **Adapters**: Implementations of ports (database, REST, message queue)
+- **领域核心**：业务逻辑
+- **端口**：定义交互的接口
+- **适配器**：端口的实现（数据库、REST、消息队列）
 
-**Benefits:**
+**优势：**
 
-- Swap implementations easily (mock for testing)
-- Technology-agnostic core
-- Clear separation of concerns
+- 轻松交换实现（测试用模拟）
+- 技术不可知的核心
+- 清晰的关注点分离
 
-### 3. Domain-Driven Design (DDD)
+### 3. 领域驱动设计（DDD）
 
-**Strategic Patterns:**
+**战略模式：**
 
-- **Bounded Contexts**: Separate models for different domains
-- **Context Mapping**: How contexts relate
-- **Ubiquitous Language**: Shared terminology
+- **限界上下文**：不同域的独立模型
+- **上下文映射**：上下文如何关联
+- **通用语言**：共享术语
 
-**Tactical Patterns:**
+**战术模式：**
 
-- **Entities**: Objects with identity
-- **Value Objects**: Immutable objects defined by attributes
-- **Aggregates**: Consistency boundaries
-- **Repositories**: Data access abstraction
-- **Domain Events**: Things that happened
+- **实体**：具有身份的对象
+- **值对象**：由属性定义的不可变对象
+- **聚合**：一致性边界
+- **仓储**：数据访问抽象
+- **领域事件**：发生的事情
 
-## Clean Architecture Pattern
+## 整洁架构模式
 
-### Directory Structure
+### 目录结构
 
 ```
 app/
-├── domain/           # Entities & business rules
+├── domain/           # 实体和业务规则
 │   ├── entities/
 │   │   ├── user.py
 │   │   └── order.py
 │   ├── value_objects/
 │   │   ├── email.py
 │   │   └── money.py
-│   └── interfaces/   # Abstract interfaces
+│   └── interfaces/   # 抽象接口
 │       ├── user_repository.py
 │       └── payment_gateway.py
-├── use_cases/        # Application business rules
+├── use_cases/        # 应用业务规则
 │   ├── create_user.py
 │   ├── process_order.py
 │   └── send_notification.py
-├── adapters/         # Interface implementations
+├── adapters/         # 接口实现
 │   ├── repositories/
 │   │   ├── postgres_user_repository.py
 │   │   └── redis_cache_repository.py
@@ -94,13 +94,13 @@ app/
 │   └── gateways/
 │       ├── stripe_payment_gateway.py
 │       └── sendgrid_email_gateway.py
-└── infrastructure/   # Framework & external concerns
+└── infrastructure/   # 框架和外部关注点
     ├── database.py
     ├── config.py
     └── logging.py
 ```
 
-### Implementation Example
+### 实施示例
 
 ```python
 # domain/entities/user.py
@@ -110,7 +110,7 @@ from typing import Optional
 
 @dataclass
 class User:
-    """Core user entity - no framework dependencies."""
+    """核心用户实体 - 无框架依赖。"""
     id: str
     email: str
     name: str
@@ -118,11 +118,11 @@ class User:
     is_active: bool = True
 
     def deactivate(self):
-        """Business rule: deactivating user."""
+        """业务规则：停用用户。"""
         self.is_active = False
 
     def can_place_order(self) -> bool:
-        """Business rule: active users can order."""
+        """业务规则：活跃用户可以下单。"""
         return self.is_active
 
 # domain/interfaces/user_repository.py
@@ -131,7 +131,7 @@ from typing import Optional, List
 from domain.entities.user import User
 
 class IUserRepository(ABC):
-    """Port: defines contract, no implementation."""
+    """端口：定义契约，无实现。"""
 
     @abstractmethod
     async def find_by_id(self, user_id: str) -> Optional[User]:
@@ -168,22 +168,22 @@ class CreateUserResponse:
     error: Optional[str] = None
 
 class CreateUserUseCase:
-    """Use case: orchestrates business logic."""
+    """用例：编排业务逻辑。"""
 
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
 
     async def execute(self, request: CreateUserRequest) -> CreateUserResponse:
-        # Business validation
+        # 业务验证
         existing = await self.user_repository.find_by_email(request.email)
         if existing:
             return CreateUserResponse(
                 user=None,
                 success=False,
-                error="Email already exists"
+                error="邮箱已存在"
             )
 
-        # Create entity
+        # 创建实体
         user = User(
             id=str(uuid.uuid4()),
             email=request.email,
@@ -192,7 +192,7 @@ class CreateUserUseCase:
             is_active=True
         )
 
-        # Persist
+        # 持久化
         saved_user = await self.user_repository.save(user)
 
         return CreateUserResponse(
@@ -207,7 +207,7 @@ from typing import Optional
 import asyncpg
 
 class PostgresUserRepository(IUserRepository):
-    """Adapter: PostgreSQL implementation."""
+    """适配器：PostgreSQL 实现。"""
 
     def __init__(self, pool: asyncpg.Pool):
         self.pool = pool
@@ -247,7 +247,7 @@ class PostgresUserRepository(IUserRepository):
             return result == "DELETE 1"
 
     def _to_entity(self, row) -> User:
-        """Map database row to entity."""
+        """将数据库行映射到实体。"""
         return User(
             id=row["id"],
             email=row["email"],
@@ -272,7 +272,7 @@ async def create_user(
     dto: CreateUserDTO,
     use_case: CreateUserUseCase = Depends(get_create_user_use_case)
 ):
-    """Controller: handles HTTP concerns only."""
+    """控制器：仅处理 HTTP 关注点。"""
     request = CreateUserRequest(email=dto.email, name=dto.name)
     response = await use_case.execute(request)
 
@@ -282,12 +282,12 @@ async def create_user(
     return {"user": response.user}
 ```
 
-## Hexagonal Architecture Pattern
+## 六边形架构模式
 
 ```python
-# Core domain (hexagon center)
+# 核心领域（六边形中心）
 class OrderService:
-    """Domain service - no infrastructure dependencies."""
+    """领域服务 - 无基础设施依赖。"""
 
     def __init__(
         self,
@@ -300,31 +300,31 @@ class OrderService:
         self.notifications = notification_service
 
     async def place_order(self, order: Order) -> OrderResult:
-        # Business logic
+        # 业务逻辑
         if not order.is_valid():
-            return OrderResult(success=False, error="Invalid order")
+            return OrderResult(success=False, error="无效订单")
 
-        # Use ports (interfaces)
+        # 使用端口（接口）
         payment = await self.payments.charge(
             amount=order.total,
             customer=order.customer_id
         )
 
         if not payment.success:
-            return OrderResult(success=False, error="Payment failed")
+            return OrderResult(success=False, error="支付失败")
 
         order.mark_as_paid()
         saved_order = await self.orders.save(order)
 
         await self.notifications.send(
             to=order.customer_email,
-            subject="Order confirmed",
-            body=f"Order {order.id} confirmed"
+            subject="订单已确认",
+            body=f"订单 {order.id} 已确认"
         )
 
         return OrderResult(success=True, order=saved_order)
 
-# Ports (interfaces)
+# 端口（接口）
 class OrderRepositoryPort(ABC):
     @abstractmethod
     async def save(self, order: Order) -> Order:
@@ -340,9 +340,9 @@ class NotificationPort(ABC):
     async def send(self, to: str, subject: str, body: str):
         pass
 
-# Adapters (implementations)
+# 适配器（实现）
 class StripePaymentAdapter(PaymentGatewayPort):
-    """Primary adapter: connects to Stripe API."""
+    """主适配器：连接到 Stripe API。"""
 
     def __init__(self, api_key: str):
         self.stripe = stripe
@@ -360,42 +360,42 @@ class StripePaymentAdapter(PaymentGatewayPort):
             return PaymentResult(success=False, error=str(e))
 
 class MockPaymentAdapter(PaymentGatewayPort):
-    """Test adapter: no external dependencies."""
+    """测试适配器：无外部依赖。"""
 
     async def charge(self, amount: Money, customer: str) -> PaymentResult:
         return PaymentResult(success=True, transaction_id="mock-123")
 ```
 
-## Domain-Driven Design Pattern
+## 领域驱动设计模式
 
 ```python
-# Value Objects (immutable)
+# 值对象（不可变）
 from dataclasses import dataclass
 from typing import Optional
 
 @dataclass(frozen=True)
 class Email:
-    """Value object: validated email."""
+    """值对象：已验证的邮箱。"""
     value: str
 
     def __post_init__(self):
         if "@" not in self.value:
-            raise ValueError("Invalid email")
+            raise ValueError("无效邮箱")
 
 @dataclass(frozen=True)
 class Money:
-    """Value object: amount with currency."""
-    amount: int  # cents
+    """值对象：带货币的金额。"""
+    amount: int  # 分
     currency: str
 
     def add(self, other: "Money") -> "Money":
         if self.currency != other.currency:
-            raise ValueError("Currency mismatch")
+            raise ValueError("货币不匹配")
         return Money(self.amount + other.amount, self.currency)
 
-# Entities (with identity)
+# 实体（具有身份）
 class Order:
-    """Entity: has identity, mutable state."""
+    """实体：具有身份、可变状态。"""
 
     def __init__(self, id: str, customer: Customer):
         self.id = id
@@ -405,90 +405,90 @@ class Order:
         self._events: List[DomainEvent] = []
 
     def add_item(self, product: Product, quantity: int):
-        """Business logic in entity."""
+        """实体内的业务逻辑。"""
         item = OrderItem(product, quantity)
         self.items.append(item)
         self._events.append(ItemAddedEvent(self.id, item))
 
     def total(self) -> Money:
-        """Calculated property."""
+        """计算属性。"""
         return sum(item.subtotal() for item in self.items)
 
     def submit(self):
-        """State transition with business rules."""
+        """带业务规则的状态转换。"""
         if not self.items:
-            raise ValueError("Cannot submit empty order")
+            raise ValueError("无法提交空订单")
         if self.status != OrderStatus.PENDING:
-            raise ValueError("Order already submitted")
+            raise ValueError("订单已提交")
 
         self.status = OrderStatus.SUBMITTED
         self._events.append(OrderSubmittedEvent(self.id))
 
-# Aggregates (consistency boundary)
+# 聚合（一致性边界）
 class Customer:
-    """Aggregate root: controls access to entities."""
+    """聚合根：控制对实体的访问。"""
 
     def __init__(self, id: str, email: Email):
         self.id = id
         self.email = email
         self._addresses: List[Address] = []
-        self._orders: List[str] = []  # Order IDs, not full objects
+        self._orders: List[str] = []  # 订单 ID，不是完整对象
 
     def add_address(self, address: Address):
-        """Aggregate enforces invariants."""
+        """聚合强制执行不变量。"""
         if len(self._addresses) >= 5:
-            raise ValueError("Maximum 5 addresses allowed")
+            raise ValueError("最多允许 5 个地址")
         self._addresses.append(address)
 
     @property
     def primary_address(self) -> Optional[Address]:
         return next((a for a in self._addresses if a.is_primary), None)
 
-# Domain Events
+# 领域事件
 @dataclass
 class OrderSubmittedEvent:
     order_id: str
     occurred_at: datetime = field(default_factory=datetime.now)
 
-# Repository (aggregate persistence)
+# 仓储（聚合持久化）
 class OrderRepository:
-    """Repository: persist/retrieve aggregates."""
+    """仓储：持久化/检索聚合。"""
 
     async def find_by_id(self, order_id: str) -> Optional[Order]:
-        """Reconstitute aggregate from storage."""
+        """从存储重新构建聚合。"""
         pass
 
     async def save(self, order: Order):
-        """Persist aggregate and publish events."""
+        """持久化聚合并发布事件。"""
         await self._persist(order)
         await self._publish_events(order._events)
         order._events.clear()
 ```
 
-## Resources
+## 资源
 
-- **references/clean-architecture-guide.md**: Detailed layer breakdown
-- **references/hexagonal-architecture-guide.md**: Ports and adapters patterns
-- **references/ddd-tactical-patterns.md**: Entities, value objects, aggregates
-- **assets/clean-architecture-template/**: Complete project structure
-- **assets/ddd-examples/**: Domain modeling examples
+- **references/clean-architecture-guide.md**：详细的层级分解
+- **references/hexagonal-architecture-guide.md**：端口和适配器模式
+- **references/ddd-tactical-patterns.md**：实体、值对象、聚合
+- **assets/clean-architecture-template/**：完整项目结构
+- **assets/ddd-examples/**：领域建模示例
 
-## Best Practices
+## 最佳实践
 
-1. **Dependency Rule**: Dependencies always point inward
-2. **Interface Segregation**: Small, focused interfaces
-3. **Business Logic in Domain**: Keep frameworks out of core
-4. **Test Independence**: Core testable without infrastructure
-5. **Bounded Contexts**: Clear domain boundaries
-6. **Ubiquitous Language**: Consistent terminology
-7. **Thin Controllers**: Delegate to use cases
-8. **Rich Domain Models**: Behavior with data
+1. **依赖规则**：依赖始终指向内部
+2. **接口隔离**：小而专注的接口
+3. **领域内的业务逻辑**：将框架排除在核心之外
+4. **测试独立性**：核心可无基础设施测试
+5. **限界上下文**：清晰的领域边界
+6. **通用语言**：一致的术语
+7. **瘦控制器**：委托给用例
+8. **丰富领域模型**：数据伴随行为
 
-## Common Pitfalls
+## 常见陷阱
 
-- **Anemic Domain**: Entities with only data, no behavior
-- **Framework Coupling**: Business logic depends on frameworks
-- **Fat Controllers**: Business logic in controllers
-- **Repository Leakage**: Exposing ORM objects
-- **Missing Abstractions**: Concrete dependencies in core
-- **Over-Engineering**: Clean architecture for simple CRUD
+- **贫血领域**：只有数据没有行为的实体
+- **框架耦合**：业务逻辑依赖于框架
+- **胖控制器**：控制器中的业务逻辑
+- **仓储泄漏**：暴露 ORM 对象
+- **缺少抽象**：核心中的具体依赖
+- **过度设计**：为简单 CRUD 使用整洁架构

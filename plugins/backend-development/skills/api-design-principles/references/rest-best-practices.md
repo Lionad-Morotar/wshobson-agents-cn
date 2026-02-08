@@ -1,45 +1,45 @@
-# REST API Best Practices
+# REST API 最佳实践
 
-## URL Structure
+## URL 结构
 
-### Resource Naming
+### 资源命名
 
 ```
-# Good - Plural nouns
+# 良好 - 复数名词
 GET /api/users
 GET /api/orders
 GET /api/products
 
-# Bad - Verbs or mixed conventions
+# 不佳 - 动词或混合约定
 GET /api/getUser
-GET /api/user  (inconsistent singular)
+GET /api/user  (不一致的单数)
 POST /api/createOrder
 ```
 
-### Nested Resources
+### 嵌套资源
 
 ```
-# Shallow nesting (preferred)
+# 浅层嵌套（推荐）
 GET /api/users/{id}/orders
 GET /api/orders/{id}
 
-# Deep nesting (avoid)
+# 深层嵌套（避免）
 GET /api/users/{id}/orders/{orderId}/items/{itemId}/reviews
-# Better:
+# 更好：
 GET /api/order-items/{id}/reviews
 ```
 
-## HTTP Methods and Status Codes
+## HTTP 方法和状态码
 
-### GET - Retrieve Resources
+### GET - 检索资源
 
 ```
-GET /api/users              → 200 OK (with list)
-GET /api/users/{id}         → 200 OK or 404 Not Found
-GET /api/users?page=2       → 200 OK (paginated)
+GET /api/users              → 200 OK (返回列表)
+GET /api/users/{id}         → 200 OK 或 404 Not Found
+GET /api/users?page=2       → 200 OK (已分页)
 ```
 
-### POST - Create Resources
+### POST - 创建资源
 
 ```
 POST /api/users
@@ -48,70 +48,70 @@ POST /api/users
   Location: /api/users/123
   Body: {"id": "123", "name": "John", ...}
 
-POST /api/users (validation error)
+POST /api/users (验证错误)
   → 422 Unprocessable Entity
   Body: {"errors": [...]}
 ```
 
-### PUT - Replace Resources
+### PUT - 替换资源
 
 ```
 PUT /api/users/{id}
-  Body: {complete user object}
-  → 200 OK (updated)
-  → 404 Not Found (doesn't exist)
+  Body: {完整的用户对象}
+  → 200 OK (已更新)
+  → 404 Not Found (不存在)
 
-# Must include ALL fields
+# 必须包含所有字段
 ```
 
-### PATCH - Partial Update
+### PATCH - 部分更新
 
 ```
 PATCH /api/users/{id}
-  Body: {"name": "Jane"}  (only changed fields)
+  Body: {"name": "Jane"}  (仅包含更改的字段)
   → 200 OK
   → 404 Not Found
 ```
 
-### DELETE - Remove Resources
+### DELETE - 删除资源
 
 ```
 DELETE /api/users/{id}
-  → 204 No Content (deleted)
+  → 204 No Content (已删除)
   → 404 Not Found
-  → 409 Conflict (can't delete due to references)
+  → 409 Conflict (由于引用无法删除)
 ```
 
-## Filtering, Sorting, and Searching
+## 过滤、排序和搜索
 
-### Query Parameters
+### 查询参数
 
 ```
-# Filtering
+# 过滤
 GET /api/users?status=active
 GET /api/users?role=admin&status=active
 
-# Sorting
+# 排序
 GET /api/users?sort=created_at
-GET /api/users?sort=-created_at  (descending)
+GET /api/users?sort=-created_at  (降序)
 GET /api/users?sort=name,created_at
 
-# Searching
+# 搜索
 GET /api/users?search=john
 GET /api/users?q=john
 
-# Field selection (sparse fieldsets)
+# 字段选择（稀疏字段集）
 GET /api/users?fields=id,name,email
 ```
 
-## Pagination Patterns
+## 分页模式
 
-### Offset-Based Pagination
+### 基于偏移的分页
 
 ```python
 GET /api/users?page=2&page_size=20
 
-Response:
+响应：
 {
   "items": [...],
   "page": 2,
@@ -121,12 +121,12 @@ Response:
 }
 ```
 
-### Cursor-Based Pagination (for large datasets)
+### 基于游标的分页（适用于大数据集）
 
 ```python
 GET /api/users?limit=20&cursor=eyJpZCI6MTIzfQ
 
-Response:
+响应：
 {
   "items": [...],
   "next_cursor": "eyJpZCI6MTQzfQ",
@@ -134,64 +134,64 @@ Response:
 }
 ```
 
-### Link Header Pagination (RESTful)
+### Link 标头分页（RESTful）
 
 ```
 GET /api/users?page=2
 
-Response Headers:
+响应标头：
 Link: <https://api.example.com/users?page=3>; rel="next",
       <https://api.example.com/users?page=1>; rel="prev",
       <https://api.example.com/users?page=1>; rel="first",
       <https://api.example.com/users?page=8>; rel="last"
 ```
 
-## Versioning Strategies
+## 版本控制策略
 
-### URL Versioning (Recommended)
+### URL 版本控制（推荐）
 
 ```
 /api/v1/users
 /api/v2/users
 
-Pros: Clear, easy to route
-Cons: Multiple URLs for same resource
+优点：清晰、易于路由
+缺点：同一资源有多个 URL
 ```
 
-### Header Versioning
+### 标头版本控制
 
 ```
 GET /api/users
 Accept: application/vnd.api+json; version=2
 
-Pros: Clean URLs
-Cons: Less visible, harder to test
+优点：URL 简洁
+缺点：不太可见、较难测试
 ```
 
-### Query Parameter
+### 查询参数
 
 ```
 GET /api/users?version=2
 
-Pros: Easy to test
-Cons: Optional parameter can be forgotten
+优点：易于测试
+缺点：可选参数可能被遗忘
 ```
 
-## Rate Limiting
+## 速率限制
 
-### Headers
+### 标头
 
 ```
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 742
 X-RateLimit-Reset: 1640000000
 
-Response when limited:
+受限时的响应：
 429 Too Many Requests
 Retry-After: 3600
 ```
 
-### Implementation Pattern
+### 实现模式
 
 ```python
 from fastapi import HTTPException, Request
@@ -208,7 +208,7 @@ class RateLimiter:
         if key not in self.cache:
             self.cache[key] = []
 
-        # Remove old requests
+        # 移除旧请求
         self.cache[key] = [
             ts for ts in self.cache[key]
             if now - ts < timedelta(seconds=self.period)
@@ -232,36 +232,36 @@ async def get_users(request: Request):
     return {"users": [...]}
 ```
 
-## Authentication and Authorization
+## 身份验证和授权
 
-### Bearer Token
+### Bearer 令牌
 
 ```
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 
-401 Unauthorized - Missing/invalid token
-403 Forbidden - Valid token, insufficient permissions
+401 Unauthorized - 缺少/无效令牌
+403 Forbidden - 有效令牌，权限不足
 ```
 
-### API Keys
+### API 密钥
 
 ```
 X-API-Key: your-api-key-here
 ```
 
-## Error Response Format
+## 错误响应格式
 
-### Consistent Structure
+### 一致的结构
 
 ```json
 {
   "error": {
     "code": "VALIDATION_ERROR",
-    "message": "Request validation failed",
+    "message": "请求验证失败",
     "details": [
       {
         "field": "email",
-        "message": "Invalid email format",
+        "message": "无效的邮箱格式",
         "value": "not-an-email"
       }
     ],
@@ -271,41 +271,41 @@ X-API-Key: your-api-key-here
 }
 ```
 
-### Status Code Guidelines
+### 状态码指南
 
-- `200 OK`: Successful GET, PATCH, PUT
-- `201 Created`: Successful POST
-- `204 No Content`: Successful DELETE
-- `400 Bad Request`: Malformed request
-- `401 Unauthorized`: Authentication required
-- `403 Forbidden`: Authenticated but not authorized
-- `404 Not Found`: Resource doesn't exist
-- `409 Conflict`: State conflict (duplicate email, etc.)
-- `422 Unprocessable Entity`: Validation errors
-- `429 Too Many Requests`: Rate limited
-- `500 Internal Server Error`: Server error
-- `503 Service Unavailable`: Temporary downtime
+- `200 OK`: 成功的 GET、PATCH、PUT
+- `201 Created`: 成功的 POST
+- `204 No Content`: 成功的 DELETE
+- `400 Bad Request`: 格式错误的请求
+- `401 Unauthorized`: 需要身份验证
+- `403 Forbidden`: 已认证但未授权
+- `404 Not Found`: 资源不存在
+- `409 Conflict`: 状态冲突（重复邮箱等）
+- `422 Unprocessable Entity`: 验证错误
+- `429 Too Many Requests`: 速率限制
+- `500 Internal Server Error`: 服务器错误
+- `503 Service Unavailable`: 临时停机
 
-## Caching
+## 缓存
 
-### Cache Headers
+### 缓存标头
 
 ```
-# Client caching
+# 客户端缓存
 Cache-Control: public, max-age=3600
 
-# No caching
+# 无缓存
 Cache-Control: no-cache, no-store, must-revalidate
 
-# Conditional requests
+# 条件请求
 ETag: "33a64df551425fcc55e4d42a148795d9f25f89d4"
 If-None-Match: "33a64df551425fcc55e4d42a148795d9f25f89d4"
 → 304 Not Modified
 ```
 
-## Bulk Operations
+## 批量操作
 
-### Batch Endpoints
+### 批量端点
 
 ```python
 POST /api/users/batch
@@ -316,28 +316,28 @@ POST /api/users/batch
   ]
 }
 
-Response:
+响应：
 {
   "results": [
     {"id": "1", "status": "created"},
-    {"id": null, "status": "failed", "error": "Email already exists"}
+    {"id": null, "status": "failed", "error": "邮箱已存在"}
   ]
 }
 ```
 
-## Idempotency
+## 幂等性
 
-### Idempotency Keys
+### 幂等性密钥
 
 ```
 POST /api/orders
 Idempotency-Key: unique-key-123
 
-If duplicate request:
-→ 200 OK (return cached response)
+如果是重复请求：
+→ 200 OK (返回缓存的响应)
 ```
 
-## CORS Configuration
+## CORS 配置
 
 ```python
 from fastapi.middleware.cors import CORSMiddleware
@@ -351,14 +351,14 @@ app.add_middleware(
 )
 ```
 
-## Documentation with OpenAPI
+## 使用 OpenAPI 文档化
 
 ```python
 from fastapi import FastAPI
 
 app = FastAPI(
-    title="My API",
-    description="API for managing users",
+    title="我的 API",
+    description="管理用户的 API",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -366,25 +366,25 @@ app = FastAPI(
 
 @app.get(
     "/api/users/{user_id}",
-    summary="Get user by ID",
-    response_description="User details",
-    tags=["Users"]
+    summary="按 ID 获取用户",
+    response_description="用户详细信息",
+    tags=["用户"]
 )
 async def get_user(
-    user_id: str = Path(..., description="The user ID")
+    user_id: str = Path(..., description="用户 ID")
 ):
     """
-    Retrieve user by ID.
+    按 ID 检索用户。
 
-    Returns full user profile including:
-    - Basic information
-    - Contact details
-    - Account status
+    返回完整的用户配置文件，包括：
+    - 基本信息
+    - 联系详情
+    - 账户状态
     """
     pass
 ```
 
-## Health and Monitoring Endpoints
+## 健康和监控端点
 
 ```python
 @app.get("/health")

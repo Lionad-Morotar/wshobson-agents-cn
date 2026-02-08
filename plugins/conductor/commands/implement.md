@@ -1,323 +1,323 @@
 ---
-description: "Execute tasks from a track's implementation plan following TDD workflow"
+description: "按照 TDD 工作流执行轨道实施计划中的任务"
 argument-hint: "[track-id] [--task X.Y] [--phase N]"
 ---
 
-# Implement Track
+# 实施轨道
 
-Execute tasks from a track's implementation plan, following the workflow rules defined in `conductor/workflow.md`.
+执行轨道实施计划中的任务，遵循 `conductor/workflow.md` 中定义的工作流规则。
 
-## Pre-flight Checks
+## 预检查
 
-1. Verify Conductor is initialized:
-   - Check `conductor/product.md` exists
-   - Check `conductor/workflow.md` exists
-   - Check `conductor/tracks.md` exists
-   - If missing: Display error and suggest running `/conductor:setup` first
+1. 验证 Conductor 已初始化：
+   - 检查 `conductor/product.md` 存在
+   - 检查 `conductor/workflow.md` 存在
+   - 检查 `conductor/tracks.md` 存在
+   - 如果缺失：显示错误并建议先运行 `/conductor:setup`
 
-2. Load workflow configuration:
-   - Read `conductor/workflow.md`
-   - Parse TDD strictness level
-   - Parse commit strategy
-   - Parse verification checkpoint rules
+2. 加载工作流配置：
+   - 读取 `conductor/workflow.md`
+   - 解析 TDD 严格级别
+   - 解析提交策略
+   - 解析验证检查点规则
 
-## Track Selection
+## 轨道选择
 
-### If argument provided:
+### 如果提供了参数：
 
-- Validate track exists: `conductor/tracks/{argument}/plan.md`
-- If not found: Search for partial matches, suggest corrections
+- 验证轨道存在：`conductor/tracks/{argument}/plan.md`
+- 如果未找到：搜索部分匹配，建议更正
 
-### If no argument:
+### 如果没有参数：
 
-1. Read `conductor/tracks.md`
-2. Parse for incomplete tracks (status `[ ]` or `[~]`)
-3. Display selection menu:
+1. 读取 `conductor/tracks.md`
+2. 解析未完成的轨道（状态 `[ ]` 或 `[~]`）
+3. 显示选择菜单：
 
    ```
-   Select a track to implement:
+   选择要实施的轨道：
 
-   In Progress:
-   1. [~] auth_20250115 - User Authentication (Phase 2, Task 3)
+   进行中：
+   1. [~] auth_20250115 - 用户身份验证（阶段 2，任务 3）
 
-   Pending:
-   2. [ ] nav-fix_20250114 - Navigation Bug Fix
-   3. [ ] dashboard_20250113 - Dashboard Feature
+   待处理：
+   2. [ ] nav-fix_20250114 - 导航 Bug 修复
+   3. [ ] dashboard_20250113 - 仪表板功能
 
-   Enter number or track ID:
+   输入数字或轨道 ID：
    ```
 
-## Context Loading
+## 上下文加载
 
-Load all relevant context for implementation:
+加载实施的所有相关上下文：
 
-1. Track documents:
-   - `conductor/tracks/{trackId}/spec.md` - Requirements
-   - `conductor/tracks/{trackId}/plan.md` - Task list
-   - `conductor/tracks/{trackId}/metadata.json` - Progress state
+1. 轨道文档：
+   - `conductor/tracks/{trackId}/spec.md` - 需求
+   - `conductor/tracks/{trackId}/plan.md` - 任务列表
+   - `conductor/tracks/{trackId}/metadata.json` - 进度状态
 
-2. Project context:
-   - `conductor/product.md` - Product understanding
-   - `conductor/tech-stack.md` - Technical constraints
-   - `conductor/workflow.md` - Process rules
+2. 项目上下文：
+   - `conductor/product.md` - 产品理解
+   - `conductor/tech-stack.md` - 技术约束
+   - `conductor/workflow.md` - 流程规则
 
-3. Code style (if exists):
+3. 代码风格（如果存在）：
    - `conductor/code_styleguides/{language}.md`
 
-## Track Status Update
+## 轨道状态更新
 
-Update track to in-progress:
+更新轨道为进行中：
 
-1. In `conductor/tracks.md`:
-   - Change `[ ]` to `[~]` for this track
+1. 在 `conductor/tracks.md` 中：
+   - 将此轨道的 `[ ]` 更改为 `[~]`
 
-2. In `conductor/tracks/{trackId}/metadata.json`:
-   - Set `status: "in_progress"`
-   - Update `updated` timestamp
+2. 在 `conductor/tracks/{trackId}/metadata.json` 中：
+   - 设置 `status: "in_progress"`
+   - 更新 `updated` 时间戳
 
-## Task Execution Loop
+## 任务执行循环
 
-For each incomplete task in plan.md (marked with `[ ]`):
+对于 plan.md 中每个未完成的任务（标记为 `[ ]`）：
 
-### 1. Task Identification
+### 1. 任务识别
 
-Parse plan.md to find next incomplete task:
+解析 plan.md 以查找下一个未完成的任务：
 
-- Look for lines matching `- [ ] Task X.Y: {description}`
-- Track current phase from structure
+- 查找匹配 `- [ ] Task X.Y: {description}` 的行
+- 从结构中跟踪当前阶段
 
-### 2. Task Start
+### 2. 任务开始
 
-Mark task as in-progress:
+标记任务为进行中：
 
-- Update plan.md: Change `[ ]` to `[~]` for current task
-- Announce: "Starting Task X.Y: {description}"
+- 更新 plan.md：将当前任务的 `[ ]` 更改为 `[~]`
+- 宣布："正在开始任务 X.Y: {description}"
 
-### 3. TDD Workflow (if TDD enabled in workflow.md)
+### 3. TDD 工作流（如果在 workflow.md 中启用 TDD）
 
-**Red Phase - Write Failing Test:**
-
-```
-Following TDD workflow for Task X.Y...
-
-Step 1: Writing failing test
-```
-
-- Create test file if needed
-- Write test(s) for the task functionality
-- Run tests to confirm they fail
-- If tests pass unexpectedly: HALT, investigate
-
-**Green Phase - Implement:**
+**红色阶段 - 编写失败的测试：**
 
 ```
-Step 2: Implementing minimal code to pass test
+正在为任务 X.Y 遵循 TDD 工作流...
+
+步骤 1：编写失败的测试
 ```
 
-- Write minimum code to make test pass
-- Run tests to confirm they pass
-- If tests fail: Debug and fix
+- 如需要，创建测试文件
+- 为任务功能编写测试
+- 运行测试以确认它们失败
+- 如果测试意外通过：停止，调查
 
-**Refactor Phase:**
+**绿色阶段 - 实施：**
 
 ```
-Step 3: Refactoring while keeping tests green
+步骤 2：实现通过测试的最小代码
 ```
 
-- Clean up code
-- Run tests to ensure still passing
+- 编写使测试通过的最小代码
+- 运行测试以确认它们通过
+- 如果测试失败：调试并修复
 
-### 4. Non-TDD Workflow (if TDD not strict)
+**重构阶段：**
 
-- Implement the task directly
-- Run any existing tests
-- Manual verification as needed
+```
+步骤 3：在保持测试通过的 同时进行重构
+```
 
-### 5. Task Completion
+- 清理代码
+- 运行测试以确保仍然通过
 
-**Commit changes** (following commit strategy from workflow.md):
+### 4. 非 TDD 工作流（如果 TDD 不严格）
+
+- 直接实施任务
+- 运行任何现有测试
+- 根据需要进行手动验证
+
+### 5. 任务完成
+
+**提交更改**（遵循 workflow.md 中的提交策略）：
 
 ```bash
 git add -A
 git commit -m "{commit_prefix}: {task description} ({trackId})"
 ```
 
-**Update plan.md:**
+**更新 plan.md：**
 
-- Change `[~]` to `[x]` for completed task
-- Commit plan update:
+- 将已完成任务的 `[~]` 更改为 `[x]`
+- 提交计划更新：
 
 ```bash
 git add conductor/tracks/{trackId}/plan.md
-git commit -m "chore: mark task X.Y complete ({trackId})"
+git commit -m "chore: 标记任务 X.Y 完成 ({trackId})"
 ```
 
-**Update metadata.json:**
+**更新 metadata.json：**
 
-- Increment `tasks.completed`
-- Update `updated` timestamp
+- 增加 `tasks.completed`
+- 更新 `updated` 时间戳
 
-### 6. Phase Completion Check
+### 6. 阶段完成检查
 
-After each task, check if phase is complete:
+每个任务后，检查阶段是否完成：
 
-- Parse plan.md for phase structure
-- If all tasks in current phase are `[x]`:
+- 解析 plan.md 的阶段结构
+- 如果当前阶段中的所有任务都是 `[x]`：
 
-**Run phase verification:**
-
-```
-Phase {N} complete. Running verification...
-```
-
-- Execute verification tasks listed for the phase
-- Run full test suite: `npm test` / `pytest` / etc.
-
-**Report and wait for approval:**
+**运行阶段验证：**
 
 ```
-Phase {N} Verification Results:
-- All phase tasks: Complete
-- Tests: {passing/failing}
-- Verification: {pass/fail}
-
-Approve to continue to Phase {N+1}?
-1. Yes, continue
-2. No, there are issues to fix
-3. Pause implementation
+阶段 {N} 完成。正在运行验证...
 ```
 
-**CRITICAL: Wait for explicit user approval before proceeding to next phase.**
+- 执行为阶段列出的验证任务
+- 运行完整测试套件：`npm test` / `pytest` / 等
 
-## Error Handling During Implementation
-
-### On Tool Failure
-
-```
-ERROR: {tool} failed with: {error message}
-
-Options:
-1. Retry the operation
-2. Skip this task and continue
-3. Pause implementation
-4. Revert current task changes
-```
-
-- HALT and present options
-- Do NOT automatically continue
-
-### On Test Failure
+**报告并等待批准：**
 
 ```
-TESTS FAILING after Task X.Y
+阶段 {N} 验证结果：
+- 所有阶段任务：完成
+- 测试：{通过/失败}
+- 验证：{通过/失败}
 
-Failed tests:
+批准继续到阶段 {N+1}？
+1. 是，继续
+2. 不，有问题需要修复
+3. 暂停实施
+```
+
+**关键：在继续到下一阶段之前等待明确的用户批准。**
+
+## 实施期间的错误处理
+
+### 工具失败
+
+```
+错误：{tool} 失败，原因：{error message}
+
+选项：
+1. 重试操作
+2. 跳过此任务并继续
+3. 暂停实施
+4. 恢复当前任务更改
+```
+
+- 停止并显示选项
+- 不要自动继续
+
+### 测试失败
+
+```
+任务 X.Y 后测试失败
+
+失败的测试：
 - {test name}: {failure reason}
 
-Options:
-1. Attempt to fix
-2. Rollback task changes
-3. Pause for manual intervention
+选项：
+1. 尝试修复
+2. 回滚任务更改
+3. 暂停以进行手动干预
 ```
 
-### On Git Failure
+### Git 失败
 
 ```
-GIT ERROR: {error message}
+GIT 错误：{error message}
 
-This may indicate:
-- Uncommitted changes from outside Conductor
-- Merge conflicts
-- Permission issues
+这可能表示：
+- 来自 Conductor 外部的未提交更改
+- 合并冲突
+- 权限问题
 
-Options:
-1. Show git status
-2. Attempt to resolve
-3. Pause for manual intervention
+选项：
+1. 显示 git 状态
+2. 尝试解决
+3. 暂停以进行手动干预
 ```
 
-## Track Completion
+## 轨道完成
 
-When all phases and tasks are complete:
+当所有阶段和任务都完成时：
 
-### 1. Final Verification
-
-```
-All tasks complete. Running final verification...
-```
-
-- Run full test suite
-- Check all acceptance criteria from spec.md
-- Generate verification report
-
-### 2. Update Track Status
-
-In `conductor/tracks.md`:
-
-- Change `[~]` to `[x]` for this track
-- Update the "Updated" column
-
-In `conductor/tracks/{trackId}/metadata.json`:
-
-- Set `status: "complete"`
-- Set `phases.completed` to total
-- Set `tasks.completed` to total
-- Update `updated` timestamp
-
-In `conductor/tracks/{trackId}/plan.md`:
-
-- Update header status to `[x] Complete`
-
-### 3. Documentation Sync Offer
+### 1. 最终验证
 
 ```
-Track complete! Would you like to sync documentation?
-
-This will update:
-- conductor/product.md (if new features added)
-- conductor/tech-stack.md (if new dependencies added)
-- README.md (if applicable)
-
-1. Yes, sync documentation
-2. No, skip
+所有任务完成。正在运行最终验证...
 ```
 
-### 4. Cleanup Offer
+- 运行完整测试套件
+- 检查 spec.md 中的所有验收标准
+- 生成验证报告
+
+### 2. 更新轨道状态
+
+在 `conductor/tracks.md` 中：
+
+- 将此轨道的 `[~]` 更改为 `[x]`
+- 更新"更新时间"列
+
+在 `conductor/tracks/{trackId}/metadata.json` 中：
+
+- 设置 `status: "complete"`
+- 设置 `phases.completed` 为总数
+- 设置 `tasks.completed` 为总数
+- 更新 `updated` 时间戳
+
+在 `conductor/tracks/{trackId}/plan.md` 中：
+
+- 更新标题状态为 `[x] 完成`
+
+### 3. 文档同步提议
 
 ```
-Track {trackId} is complete.
+轨道完成！您想同步文档吗？
 
-Cleanup options:
-1. Archive - Move to conductor/tracks/_archive/
-2. Delete - Remove track directory
-3. Keep - Leave as-is
+这将更新：
+- conductor/product.md（如果添加了新功能）
+- conductor/tech-stack.md（如果添加了新依赖）
+- README.md（如果适用）
+
+1. 是，同步文档
+2. 不，跳过
 ```
 
-### 5. Completion Summary
+### 4. 清理提议
 
 ```
-Track Complete: {track title}
+轨道 {trackId} 已完成。
 
-Summary:
-- Track ID: {trackId}
-- Phases completed: {N}/{N}
-- Tasks completed: {M}/{M}
-- Commits created: {count}
-- Tests: All passing
-
-Next steps:
-- Run /conductor:status to see project progress
-- Run /conductor:new-track for next feature
+清理选项：
+1. 归档 - 移动到 conductor/tracks/_archive/
+2. 删除 - 移除轨道目录
+3. 保留 - 保持原样
 ```
 
-## Progress Tracking
+### 5. 完成摘要
 
-Maintain progress in `metadata.json` throughout:
+```
+轨道完成：{track title}
+
+摘要：
+- 轨道 ID：{trackId}
+- 已完成阶段：{N}/{N}
+- 已完成任务：{M}/{M}
+- 创建的提交：{count}
+- 测试：全部通过
+
+后续步骤：
+- 运行 /conductor:status 查看项目进度
+- 运行 /conductor:new-track 创建下一个功能
+```
+
+## 进度跟踪
+
+在整个过程中在 `metadata.json` 中维护进度：
 
 ```json
 {
   "id": "auth_20250115",
-  "title": "User Authentication",
+  "title": "用户身份验证",
   "type": "feature",
   "status": "in_progress",
   "created": "2025-01-15T10:00:00Z",
@@ -333,37 +333,37 @@ Maintain progress in `metadata.json` throughout:
     "completed": 7
   },
   "commits": [
-    "abc1234: feat: add login form (auth_20250115)",
-    "def5678: feat: add password validation (auth_20250115)"
+    "abc1234: feat: 添加登录表单 (auth_20250115)",
+    "def5678: feat: 添加密码验证 (auth_20250115)"
   ]
 }
 ```
 
-## Resumption
+## 恢复
 
-If implementation is paused and resumed:
+如果实施暂停并恢复：
 
-1. Load `metadata.json` for current state
-2. Find current task from `current_task` field
-3. Check if task is `[~]` in plan.md
-4. Ask user:
+1. 加载 `metadata.json` 以获取当前状态
+2. 从 `current_task` 字段查找当前任务
+3. 检查 plan.md 中的任务是否为 `[~]`
+4. 询问用户：
 
    ```
-   Resuming track: {title}
+   正在恢复轨道：{title}
 
-   Last task in progress: Task {X.Y}: {description}
+   最后进行中的任务：任务 {X.Y}: {description}
 
-   Options:
-   1. Continue from where we left off
-   2. Restart current task
-   3. Show progress summary first
+   选项：
+   1. 从我们停止的地方继续
+   2. 重新开始当前任务
+   3. 首先显示进度摘要
    ```
 
-## Critical Rules
+## 关键规则
 
-1. **NEVER skip verification checkpoints** - Always wait for user approval between phases
-2. **STOP on any failure** - Do not attempt to continue past errors
-3. **Follow workflow.md strictly** - TDD, commit strategy, and verification rules are mandatory
-4. **Keep plan.md updated** - Task status must reflect actual progress
-5. **Commit frequently** - Each task completion should be committed
-6. **Track all commits** - Record commit hashes in metadata.json for potential revert
+1. **永不跳过验证检查点** - 始终在阶段之间等待用户批准
+2. **任何失败时停止** - 不要尝试在错误后继续
+3. **严格遵循 workflow.md** - TDD、提交策略和验证规则是强制性的
+4. **保持 plan.md 更新** - 任务状态必须反映实际进度
+5. **频繁提交** - 每个任务完成都应提交
+6. **跟踪所有提交** - 在 metadata.json 中记录提交哈希以潜在恢复

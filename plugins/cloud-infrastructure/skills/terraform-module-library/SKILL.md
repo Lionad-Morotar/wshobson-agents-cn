@@ -3,23 +3,23 @@ name: terraform-module-library
 description: Build reusable Terraform modules for AWS, Azure, and GCP infrastructure following infrastructure-as-code best practices. Use when creating infrastructure modules, standardizing cloud provisioning, or implementing reusable IaC components.
 ---
 
-# Terraform Module Library
+# Terraform 模块库
 
-Production-ready Terraform module patterns for AWS, Azure, and GCP infrastructure.
+适用于 AWS、Azure 和 GCP 基础设施的生产就绪 Terraform 模块模式。
 
-## Purpose
+## 目的
 
-Create reusable, well-tested Terraform modules for common cloud infrastructure patterns across multiple cloud providers.
+为跨多个云提供商的常见云基础设施模式创建可复用、经过良好测试的 Terraform 模块。
 
-## When to Use
+## 使用场景
 
-- Build reusable infrastructure components
-- Standardize cloud resource provisioning
-- Implement infrastructure as code best practices
-- Create multi-cloud compatible modules
-- Establish organizational Terraform standards
+- 构建可复用的基础设施组件
+- 标准化云资源配置
+- 实施基础设施即代码最佳实践
+- 创建多云兼容的模块
+- 建立组织级 Terraform 标准
 
-## Module Structure
+## 模块结构
 
 ```
 terraform-modules/
@@ -38,24 +38,24 @@ terraform-modules/
     └── cloud-sql/
 ```
 
-## Standard Module Pattern
+## 标准模块模式
 
 ```
 module-name/
-├── main.tf          # Main resources
-├── variables.tf     # Input variables
-├── outputs.tf       # Output values
-├── versions.tf      # Provider versions
-├── README.md        # Documentation
-├── examples/        # Usage examples
+├── main.tf          # 主资源
+├── variables.tf     # 输入变量
+├── outputs.tf       # 输出值
+├── versions.tf      # 提供商版本
+├── README.md        # 文档
+├── examples/        # 使用示例
 │   └── complete/
 │       ├── main.tf
 │       └── variables.tf
-└── tests/           # Terratest files
+└── tests/           # Terratest 文件
     └── module_test.go
 ```
 
-## AWS VPC Module Example
+## AWS VPC 模块示例
 
 **main.tf:**
 
@@ -161,20 +161,20 @@ output "vpc_cidr_block" {
 }
 ```
 
-## Best Practices
+## 最佳实践
 
-1. **Use semantic versioning** for modules
-2. **Document all variables** with descriptions
-3. **Provide examples** in examples/ directory
-4. **Use validation blocks** for input validation
-5. **Output important attributes** for module composition
-6. **Pin provider versions** in versions.tf
-7. **Use locals** for computed values
-8. **Implement conditional resources** with count/for_each
-9. **Test modules** with Terratest
-10. **Tag all resources** consistently
+1. **对模块使用语义化版本控制**
+2. **为所有变量提供描述文档**
+3. **在 examples/ 目录中提供示例**
+4. **使用验证块进行输入验证**
+5. **输出重要属性以便模块组合**
+6. **在 versions.tf 中锁定提供商版本**
+7. **使用 locals 处理计算值**
+8. **使用 count/for_each 实现条件资源**
+9. **使用 Terratest 测试模块**
+10. **为所有资源统一添加标签**
 
-## Module Composition
+## 模块组合
 
 ```hcl
 module "vpc" {
@@ -213,15 +213,15 @@ module "rds" {
 }
 ```
 
-## Reference Files
+## 参考文件
 
-- `assets/vpc-module/` - Complete VPC module example
-- `assets/rds-module/` - RDS module example
-- `references/aws-modules.md` - AWS module patterns
-- `references/azure-modules.md` - Azure module patterns
-- `references/gcp-modules.md` - GCP module patterns
+- `assets/vpc-module/` - 完整的 VPC 模块示例
+- `assets/rds-module/` - RDS 模块示例
+- `references/aws-modules.md` - AWS 模块模式
+- `references/azure-modules.md` - Azure 模块模式
+- `references/gcp-modules.md` - GCP 模块模式
 
-## Testing
+## 测试
 
 ```go
 // tests/vpc_test.go
@@ -246,7 +246,7 @@ func TestVPCModule(t *testing.T) {
 }
 ```
 
-## Related Skills
+## 相关技能
 
-- `multi-cloud-architecture` - For architectural decisions
-- `cost-optimization` - For cost-effective designs
+- `multi-cloud-architecture` - 用于架构决策
+- `cost-optimization` - 用于成本效益设计

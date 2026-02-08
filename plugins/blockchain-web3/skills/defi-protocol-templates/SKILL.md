@@ -1,22 +1,22 @@
 ---
 name: defi-protocol-templates
-description: Implement DeFi protocols with production-ready templates for staking, AMMs, governance, and lending systems. Use when building decentralized finance applications or smart contract protocols.
+description: 使用生产就绪的模板实施 DeFi 协议，包括质押、AMM、治理和借贷系统。在构建去中心化金融应用或智能合约协议时使用。
 ---
 
-# DeFi Protocol Templates
+# DeFi 协议模板
 
-Production-ready templates for common DeFi protocols including staking, AMMs, governance, lending, and flash loans.
+常见 DeFi 协议的生产就绪模板，包括质押、AMM、治理、借贷和闪电贷。
 
-## When to Use This Skill
+## 何时使用此技能
 
-- Building staking platforms with reward distribution
-- Implementing AMM (Automated Market Maker) protocols
-- Creating governance token systems
-- Developing lending/borrowing protocols
-- Integrating flash loan functionality
-- Launching yield farming platforms
+- 构建具有奖励分配的质押平台
+- 实施 AMM（自动做市商）协议
+- 创建治理代币系统
+- 开发借贷/借入协议
+- 集成闪电贷功能
+- 推出收益耕作平台
 
-## Staking Contract
+## 质押合约
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -30,7 +30,7 @@ contract StakingRewards is ReentrancyGuard, Ownable {
     IERC20 public stakingToken;
     IERC20 public rewardsToken;
 
-    uint256 public rewardRate = 100; // Rewards per second
+    uint256 public rewardRate = 100; // 每秒奖励
     uint256 public lastUpdateTime;
     uint256 public rewardPerTokenStored;
 
@@ -75,7 +75,7 @@ contract StakingRewards is ReentrancyGuard, Ownable {
     }
 
     function stake(uint256 amount) external nonReentrant updateReward(msg.sender) {
-        require(amount > 0, "Cannot stake 0");
+        require(amount > 0, "不能质押 0");
         _totalSupply += amount;
         balances[msg.sender] += amount;
         stakingToken.transferFrom(msg.sender, address(this), amount);
@@ -83,7 +83,7 @@ contract StakingRewards is ReentrancyGuard, Ownable {
     }
 
     function withdraw(uint256 amount) public nonReentrant updateReward(msg.sender) {
-        require(amount > 0, "Cannot withdraw 0");
+        require(amount > 0, "不能提取 0");
         _totalSupply -= amount;
         balances[msg.sender] -= amount;
         stakingToken.transfer(msg.sender, amount);
@@ -106,7 +106,7 @@ contract StakingRewards is ReentrancyGuard, Ownable {
 }
 ```
 
-## AMM (Automated Market Maker)
+## AMM（自动做市商）
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -146,7 +146,7 @@ contract SimpleAMM {
             );
         }
 
-        require(shares > 0, "Shares = 0");
+        require(shares > 0, "份额 = 0");
         _mint(msg.sender, shares);
         _update(
             token0.balanceOf(address(this)),
@@ -163,7 +163,7 @@ contract SimpleAMM {
         amount0 = (shares * bal0) / totalSupply;
         amount1 = (shares * bal1) / totalSupply;
 
-        require(amount0 > 0 && amount1 > 0, "Amount0 or amount1 = 0");
+        require(amount0 > 0 && amount1 > 0, "amount0 或 amount1 = 0");
 
         _burn(msg.sender, shares);
         _update(bal0 - amount0, bal1 - amount1);
@@ -175,7 +175,7 @@ contract SimpleAMM {
     }
 
     function swap(address tokenIn, uint256 amountIn) external returns (uint256 amountOut) {
-        require(tokenIn == address(token0) || tokenIn == address(token1), "Invalid token");
+        require(tokenIn == address(token0) || tokenIn == address(token1), "无效代币");
 
         bool isToken0 = tokenIn == address(token0);
         (IERC20 tokenIn_, IERC20 tokenOut, uint256 resIn, uint256 resOut) = isToken0
@@ -184,7 +184,7 @@ contract SimpleAMM {
 
         tokenIn_.transferFrom(msg.sender, address(this), amountIn);
 
-        // 0.3% fee
+        // 0.3% 手续费
         uint256 amountInWithFee = (amountIn * 997) / 1000;
         amountOut = (resOut * amountInWithFee) / (resIn + amountInWithFee);
 
@@ -232,7 +232,7 @@ contract SimpleAMM {
 }
 ```
 
-## Governance Token
+## 治理代币
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -242,7 +242,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract GovernanceToken is ERC20Votes, Ownable {
-    constructor() ERC20("Governance Token", "GOV") ERC20Permit("Governance Token") {
+    constructor() ERC20("治理代币", "GOV") ERC20Permit("治理代币") {
         _mint(msg.sender, 1000000 * 10**decimals());
     }
 
@@ -281,7 +281,7 @@ contract Governor is Ownable {
     uint256 public proposalCount;
     mapping(uint256 => Proposal) public proposals;
 
-    uint256 public votingPeriod = 17280; // ~3 days in blocks
+    uint256 public votingPeriod = 17280; // 约 3 天的区块数
     uint256 public proposalThreshold = 100000 * 10**18;
 
     event ProposalCreated(uint256 indexed proposalId, address proposer, string description);
@@ -295,7 +295,7 @@ contract Governor is Ownable {
     function propose(string memory description) external returns (uint256) {
         require(
             governanceToken.getPastVotes(msg.sender, block.number - 1) >= proposalThreshold,
-            "Proposer votes below threshold"
+            "提案者票数低于阈值"
         );
 
         proposalCount++;
@@ -312,12 +312,12 @@ contract Governor is Ownable {
 
     function vote(uint256 proposalId, bool support) external {
         Proposal storage proposal = proposals[proposalId];
-        require(block.number >= proposal.startBlock, "Voting not started");
-        require(block.number <= proposal.endBlock, "Voting ended");
-        require(!proposal.hasVoted[msg.sender], "Already voted");
+        require(block.number >= proposal.startBlock, "投票尚未开始");
+        require(block.number <= proposal.endBlock, "投票已结束");
+        require(!proposal.hasVoted[msg.sender], "已经投票");
 
         uint256 weight = governanceToken.getPastVotes(msg.sender, proposal.startBlock);
-        require(weight > 0, "No voting power");
+        require(weight > 0, "无投票权");
 
         proposal.hasVoted[msg.sender] = true;
 
@@ -332,20 +332,20 @@ contract Governor is Ownable {
 
     function execute(uint256 proposalId) external {
         Proposal storage proposal = proposals[proposalId];
-        require(block.number > proposal.endBlock, "Voting not ended");
-        require(!proposal.executed, "Already executed");
-        require(proposal.forVotes > proposal.againstVotes, "Proposal failed");
+        require(block.number > proposal.endBlock, "投票未结束");
+        require(!proposal.executed, "已经执行");
+        require(proposal.forVotes > proposal.againstVotes, "提案失败");
 
         proposal.executed = true;
 
-        // Execute proposal logic here
+        // 在此处执行提案逻辑
 
         emit ProposalExecuted(proposalId);
     }
 }
 ```
 
-## Flash Loan
+## 闪电贷
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -364,7 +364,7 @@ interface IFlashLoanReceiver {
 
 contract FlashLoanProvider {
     IERC20 public token;
-    uint256 public feePercentage = 9; // 0.09% fee
+    uint256 public feePercentage = 9; // 0.09% 手续费
 
     event FlashLoan(address indexed borrower, uint256 amount, uint256 fee);
 
@@ -378,14 +378,14 @@ contract FlashLoanProvider {
         bytes calldata params
     ) external {
         uint256 balanceBefore = token.balanceOf(address(this));
-        require(balanceBefore >= amount, "Insufficient liquidity");
+        require(balanceBefore >= amount, "流动性不足");
 
         uint256 fee = (amount * feePercentage) / 10000;
 
-        // Send tokens to receiver
+        // 将代币发送给接收者
         token.transfer(receiver, amount);
 
-        // Execute callback
+        // 执行回调
         require(
             IFlashLoanReceiver(receiver).executeOperation(
                 address(token),
@@ -393,18 +393,18 @@ contract FlashLoanProvider {
                 fee,
                 params
             ),
-            "Flash loan failed"
+            "闪电贷失败"
         );
 
-        // Verify repayment
+        // 验证还款
         uint256 balanceAfter = token.balanceOf(address(this));
-        require(balanceAfter >= balanceBefore + fee, "Flash loan not repaid");
+        require(balanceAfter >= balanceBefore + fee, "闪电贷未偿还");
 
         emit FlashLoan(receiver, amount, fee);
     }
 }
 
-// Example flash loan receiver
+// 闪电贷接收者示例
 contract FlashLoanReceiver is IFlashLoanReceiver {
     function executeOperation(
         address asset,
@@ -412,10 +412,10 @@ contract FlashLoanReceiver is IFlashLoanReceiver {
         uint256 fee,
         bytes calldata params
     ) external override returns (bool) {
-        // Decode params and execute arbitrage, liquidation, etc.
+        // 解码参数并执行套利、清算等
         // ...
 
-        // Approve repayment
+        // 批准还款
         IERC20(asset).approve(msg.sender, amount + fee);
 
         return true;
@@ -423,32 +423,32 @@ contract FlashLoanReceiver is IFlashLoanReceiver {
 }
 ```
 
-## Resources
+## 资源
 
-- **references/staking.md**: Staking mechanics and reward distribution
-- **references/liquidity-pools.md**: AMM mathematics and pricing
-- **references/governance-tokens.md**: Governance and voting systems
-- **references/lending-protocols.md**: Lending/borrowing implementation
-- **references/flash-loans.md**: Flash loan security and use cases
-- **assets/staking-contract.sol**: Production staking template
-- **assets/amm-contract.sol**: Full AMM implementation
-- **assets/governance-token.sol**: Governance system
-- **assets/lending-protocol.sol**: Lending platform template
+- **references/staking.md**：质押机制和奖励分配
+- **references/liquidity-pools.md**：AMM 数学原理和定价
+- **references/governance-tokens.md**：治理和投票系统
+- **references/lending-protocols.md**：借贷/借入实施
+- **references/flash-loans.md**：闪电贷安全性和用例
+- **assets/staking-contract.sol**：生产质押模板
+- **assets/amm-contract.sol**：完整 AMM 实施
+- **assets/governance-token.sol**：治理系统
+- **assets/lending-protocol.sol**：借贷平台模板
 
-## Best Practices
+## 最佳实践
 
-1. **Use Established Libraries**: OpenZeppelin, Solmate
-2. **Test Thoroughly**: Unit tests, integration tests, fuzzing
-3. **Audit Before Launch**: Professional security audits
-4. **Start Simple**: MVP first, add features incrementally
-5. **Monitor**: Track contract health and user activity
-6. **Upgradability**: Consider proxy patterns for upgrades
-7. **Emergency Controls**: Pause mechanisms for critical issues
+1. **使用成熟的库**：OpenZeppelin、Solmate
+2. **彻底测试**：单元测试、集成测试、模糊测试
+3. **上线前审计**：专业安全审计
+4. **从简单开始**：先 MVP，逐步添加功能
+5. **监控**：跟踪合约健康度和用户活动
+6. **可升级性**：考虑代理模式进行升级
+7. **紧急控制**：关键问题的暂停机制
 
-## Common DeFi Patterns
+## 常见 DeFi 模式
 
-- **Time-Weighted Average Price (TWAP)**: Price oracle resistance
-- **Liquidity Mining**: Incentivize liquidity provision
-- **Vesting**: Lock tokens with gradual release
-- **Multisig**: Require multiple signatures for critical operations
-- **Timelocks**: Delay execution of governance decisions
+- **时间加权平均价格（TWAP）**：预言机抗性
+- **流动性挖矿**：激励流动性提供
+- **归属**：锁定代币并逐步释放
+- **多签**：关键操作需要多个签名
+- **时间锁**：延迟治理决策的执行

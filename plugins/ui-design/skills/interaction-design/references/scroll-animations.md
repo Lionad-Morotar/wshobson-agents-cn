@@ -1,6 +1,6 @@
-# Scroll Animations Reference
+# 滚动动画参考
 
-## Intersection Observer Hook
+## Intersection Observer 钩子
 
 ```tsx
 import { useEffect, useRef, useState, type RefObject } from "react";
@@ -41,7 +41,7 @@ function useInView<T extends HTMLElement>({
   return [ref, isInView];
 }
 
-// Usage
+// 使用示例
 function FadeInSection({ children }) {
   const [ref, isInView] = useInView({ threshold: 0.2, triggerOnce: true });
 
@@ -58,7 +58,7 @@ function FadeInSection({ children }) {
 }
 ```
 
-## Scroll Progress Indicator
+## 滚动进度指示器
 
 ```tsx
 import { motion, useScroll, useSpring } from "framer-motion";
@@ -80,9 +80,9 @@ function ScrollProgress() {
 }
 ```
 
-## Parallax Scrolling
+## 视差滚动
 
-### Simple CSS Parallax
+### 简单 CSS 视差
 
 ```css
 .parallax-container {
@@ -101,7 +101,7 @@ function ScrollProgress() {
 }
 ```
 
-### Framer Motion Parallax
+### Framer Motion 视差
 
 ```tsx
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -119,26 +119,26 @@ function ParallaxHero() {
 
   return (
     <section ref={ref} className="relative h-screen overflow-hidden">
-      {/* Background image with parallax */}
+      {/* 带视差的背景图像 */}
       <motion.div style={{ y, scale }} className="absolute inset-0">
         <img src="/hero-bg.jpg" alt="" className="w-full h-full object-cover" />
       </motion.div>
 
-      {/* Content fades out on scroll */}
+      {/* 内容在滚动时淡出 */}
       <motion.div
         style={{ opacity }}
         className="relative z-10 flex items-center justify-center h-full"
       >
-        <h1 className="text-6xl font-bold text-white">Welcome</h1>
+        <h1 className="text-6xl font-bold text-white">欢迎</h1>
       </motion.div>
     </section>
   );
 }
 ```
 
-## Scroll-Linked Animations
+## 滚动链接动画
 
-### Progress-Based Animation
+### 基于进度的动画
 
 ```tsx
 function ScrollAnimation() {
@@ -148,7 +148,7 @@ function ScrollAnimation() {
     offset: ["start end", "end start"],
   });
 
-  // Different transformations based on scroll progress
+  // 基于滚动进度的不同转换
   const x = useTransform(scrollYProgress, [0, 1], [-200, 200]);
   const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
   const backgroundColor = useTransform(
@@ -170,7 +170,7 @@ function ScrollAnimation() {
 }
 ```
 
-### Horizontal Scroll Section
+### 水平滚动部分
 
 ```tsx
 function HorizontalScroll({ items }) {
@@ -205,9 +205,9 @@ function HorizontalScroll({ items }) {
 }
 ```
 
-## Reveal Animations
+## 揭示动画
 
-### Staggered List Reveal
+### 交错列表揭示
 
 ```tsx
 function StaggeredList({ items }) {
@@ -231,7 +231,7 @@ function StaggeredList({ items }) {
 }
 ```
 
-### Text Reveal
+### 文本揭示
 
 ```tsx
 function TextReveal({ text }) {
@@ -256,7 +256,7 @@ function TextReveal({ text }) {
 }
 ```
 
-### Clip Path Reveal
+### 裁剪路径揭示
 
 ```tsx
 function ClipReveal({ children }) {
@@ -275,7 +275,7 @@ function ClipReveal({ children }) {
 }
 ```
 
-## Sticky Scroll Sections
+## 粘性滚动部分
 
 ```tsx
 function StickySection({ title, content, image }) {
@@ -309,15 +309,15 @@ function StickySection({ title, content, image }) {
 }
 ```
 
-## Smooth Scroll
+## 平滑滚动
 
 ```tsx
-// Using CSS
+// 使用 CSS
 html {
   scroll-behavior: smooth;
 }
 
-// Using Lenis for butter-smooth scrolling
+// 使用 Lenis 实现超平滑滚动
 import Lenis from '@studio-freight/lenis';
 
 function SmoothScrollProvider({ children }) {
@@ -342,10 +342,10 @@ function SmoothScrollProvider({ children }) {
 }
 ```
 
-## Scroll Snap
+## 滚动捕捉
 
 ```css
-/* Scroll snap container */
+/* 滚动捕捉容器 */
 .snap-container {
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
@@ -357,7 +357,7 @@ function SmoothScrollProvider({ children }) {
   height: 100vh;
 }
 
-/* Smooth scrolling with snap */
+/* 带捕捉的平滑滚动 */
 @supports (scroll-snap-type: y mandatory) {
   .snap-container {
     scroll-behavior: smooth;
@@ -382,15 +382,15 @@ function FullPageScroll({ sections }) {
 }
 ```
 
-## Performance Optimization
+## 性能优化
 
 ```tsx
-// Use will-change sparingly
+// 谨慎使用 will-change
 const AnimatedElement = styled(motion.div)`
   will-change: transform;
 `;
 
-// Debounce scroll handlers
+// 节流滚动处理程序
 function useThrottledScroll(callback, delay = 16) {
   const lastRun = useRef(0);
 
@@ -408,9 +408,9 @@ function useThrottledScroll(callback, delay = 16) {
   }, [callback, delay]);
 }
 
-// Use transform instead of top/left
-// Good
+// 使用 transform 而非 top/left
+// 好的做法
 const goodAnimation = { transform: "translateY(100px)" };
-// Bad (causes reflow)
+// 坏的做法(导致回流)
 const badAnimation = { top: "100px" };
 ```

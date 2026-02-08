@@ -1,16 +1,16 @@
-# iOS Human Interface Guidelines Patterns
+# iOS 人机交互指南模式
 
-## Layout and Spacing
+## 布局和间距
 
-### Standard Margins and Padding
+### 标准边距和内边距
 
 ```swift
-// System standard margins
+// 系统标准边距
 private let standardMargin: CGFloat = 16
 private let compactMargin: CGFloat = 8
 private let largeMargin: CGFloat = 24
 
-// Content insets following HIG
+// 遵循 HIG 的内容内边距
 extension EdgeInsets {
     static let standard = EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16)
     static let listRow = EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
@@ -18,7 +18,7 @@ extension EdgeInsets {
 }
 ```
 
-### Safe Area Handling
+### 安全区域处理
 
 ```swift
 struct SafeAreaAwareView: View {
@@ -32,12 +32,12 @@ struct SafeAreaAwareView: View {
             .padding(.horizontal)
         }
         .safeAreaInset(edge: .bottom) {
-            // Floating action area
+            // 浮动操作区域
             HStack {
-                Button("Cancel") { }
+                Button("取消") { }
                     .buttonStyle(.bordered)
                 Spacer()
-                Button("Confirm") { }
+                Button("确认") { }
                     .buttonStyle(.borderedProminent)
             }
             .padding()
@@ -47,7 +47,7 @@ struct SafeAreaAwareView: View {
 }
 ```
 
-### Adaptive Layouts
+### 自适应布局
 
 ```swift
 struct AdaptiveGridView: View {
@@ -81,33 +81,33 @@ struct AdaptiveGridView: View {
 }
 ```
 
-## Typography Hierarchy
+## 字体层级
 
-### System Font Styles
+### 系统字体样式
 
 ```swift
-// HIG-compliant typography scale
+// 符合 HIG 的字体比例
 struct Typography {
-    // Titles
-    static let largeTitle = Font.largeTitle.weight(.bold)      // 34pt bold
-    static let title = Font.title.weight(.semibold)            // 28pt semibold
-    static let title2 = Font.title2.weight(.semibold)          // 22pt semibold
-    static let title3 = Font.title3.weight(.semibold)          // 20pt semibold
+    // 标题
+    static let largeTitle = Font.largeTitle.weight(.bold)      // 34pt 粗体
+    static let title = Font.title.weight(.semibold)            // 28pt 半粗体
+    static let title2 = Font.title2.weight(.semibold)          // 22pt 半粗体
+    static let title3 = Font.title3.weight(.semibold)          // 20pt 半粗体
 
-    // Headlines and body
-    static let headline = Font.headline                         // 17pt semibold
-    static let body = Font.body                                 // 17pt regular
-    static let callout = Font.callout                          // 16pt regular
+    // 标题和正文
+    static let headline = Font.headline                         // 17pt 半粗体
+    static let body = Font.body                                 // 17pt 常规
+    static let callout = Font.callout                          // 16pt 常规
 
-    // Supporting text
-    static let subheadline = Font.subheadline                  // 15pt regular
-    static let footnote = Font.footnote                        // 13pt regular
-    static let caption = Font.caption                          // 12pt regular
-    static let caption2 = Font.caption2                        // 11pt regular
+    // 辅助文本
+    static let subheadline = Font.subheadline                  // 15pt 常规
+    static let footnote = Font.footnote                        // 13pt 常规
+    static let caption = Font.caption                          // 12pt 常规
+    static let caption2 = Font.caption2                        // 11pt 常规
 }
 ```
 
-### Custom Font with Dynamic Type
+### 支持动态类型的自定义字体
 
 ```swift
 extension Font {
@@ -121,42 +121,42 @@ extension Font {
     }
 }
 
-// Usage
-Text("Custom styled text")
+// 使用示例
+Text("自定义样式文本")
     .font(.customBody("Avenir Next"))
 ```
 
-## Color System
+## 颜色系统
 
-### Semantic Colors
+### 语义化颜色
 
 ```swift
-// Use semantic colors for automatic light/dark mode support
+// 使用语义化颜色以自动支持浅色/深色模式
 extension Color {
-    // Labels
+    // 标签
     static let primaryLabel = Color.primary
     static let secondaryLabel = Color.secondary
     static let tertiaryLabel = Color(uiColor: .tertiaryLabel)
 
-    // Backgrounds
+    // 背景
     static let systemBackground = Color(uiColor: .systemBackground)
     static let secondaryBackground = Color(uiColor: .secondarySystemBackground)
     static let groupedBackground = Color(uiColor: .systemGroupedBackground)
 
-    // Fills
+    // 填充
     static let primaryFill = Color(uiColor: .systemFill)
     static let secondaryFill = Color(uiColor: .secondarySystemFill)
 
-    // Separators
+    // 分隔线
     static let separator = Color(uiColor: .separator)
     static let opaqueSeparator = Color(uiColor: .opaqueSeparator)
 }
 ```
 
-### Tint Colors
+### 色调颜色
 
 ```swift
-// App-wide tint color
+// 全应用色调
 struct AppColors {
     static let primary = Color.blue
     static let secondary = Color.purple
@@ -164,19 +164,19 @@ struct AppColors {
     static let warning = Color.orange
     static let error = Color.red
 
-    // Semantic tints
+    // 语义化色调
     static let interactive = Color.accentColor
     static let destructive = Color.red
 }
 
-// Apply tint to views
+// 将色调应用于视图
 ContentView()
     .tint(AppColors.primary)
 ```
 
-## Navigation Patterns
+## 导航模式
 
-### Hierarchical Navigation
+### 层级导航
 
 ```swift
 struct MasterDetailView: View {
@@ -185,25 +185,25 @@ struct MasterDetailView: View {
 
     var body: some View {
         NavigationSplitView {
-            // Sidebar
+            // 侧边栏
             List(items, selection: $selectedItem) { item in
                 NavigationLink(value: item) {
                     ItemRow(item: item)
                 }
             }
-            .navigationTitle("Items")
+            .navigationTitle("项目")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Add", systemImage: "plus") { }
+                    Button("添加", systemImage: "plus") { }
                 }
             }
         } detail: {
-            // Detail view
+            // 详情视图
             if let item = selectedItem {
                 ItemDetailView(item: item)
             } else {
                 ContentUnavailableView(
-                    "Select an Item",
+                    "选择一个项目",
                     systemImage: "sidebar.leading"
                 )
             }
@@ -213,7 +213,7 @@ struct MasterDetailView: View {
 }
 ```
 
-### Tab-Based Navigation
+### 标签页导航
 
 ```swift
 struct MainTabView: View {
@@ -266,9 +266,9 @@ struct MainTabView: View {
 }
 ```
 
-## Toolbar Patterns
+## 工具栏模式
 
-### Standard Toolbar Items
+### 标准工具栏项
 
 ```swift
 struct ContentView: View {
@@ -276,29 +276,29 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            List { /* content */ }
-            .navigationTitle("Items")
+            List { /* 内容 */ }
+            .navigationTitle("项目")
             .toolbar {
-                // Leading items
+                // 前导项
                 ToolbarItem(placement: .topBarLeading) {
                     EditButton()
                 }
 
-                // Trailing items
+                // 尾随项
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button("Filter", systemImage: "line.3.horizontal.decrease.circle") { }
-                    Button("Add", systemImage: "plus") { }
+                    Button("筛选", systemImage: "line.3.horizontal.decrease.circle") { }
+                    Button("添加", systemImage: "plus") { }
                 }
 
-                // Bottom bar
+                // 底部栏
                 ToolbarItemGroup(placement: .bottomBar) {
-                    Button("Archive", systemImage: "archivebox") { }
+                    Button("归档", systemImage: "archivebox") { }
                     Spacer()
-                    Text("\(itemCount) items")
+                    Text("\(itemCount) 个项目")
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                     Spacer()
-                    Button("Share", systemImage: "square.and.arrow.up") { }
+                    Button("分享", systemImage: "square.and.arrow.up") { }
                 }
             }
             .toolbarBackground(.visible, for: .bottomBar)
@@ -307,7 +307,7 @@ struct ContentView: View {
 }
 ```
 
-### Search Integration
+### 搜索集成
 
 ```swift
 struct SearchableView: View {
@@ -324,7 +324,7 @@ struct SearchableView: View {
             List(filteredItems) { item in
                 ItemRow(item: item)
             }
-            .navigationTitle("Library")
+            .navigationTitle("资料库")
             .searchable(
                 text: $searchText,
                 isPresented: $isSearching,
@@ -340,9 +340,9 @@ struct SearchableView: View {
 }
 ```
 
-## Feedback Patterns
+## 反馈模式
 
-### Haptic Feedback
+### 触觉反馈
 
 ```swift
 struct HapticFeedback {
@@ -362,14 +362,14 @@ struct HapticFeedback {
     }
 }
 
-// Usage
-Button("Submit") {
+// 使用示例
+Button("提交") {
     HapticFeedback.notification(.success)
     submit()
 }
 ```
 
-### Visual Feedback
+### 视觉反馈
 
 ```swift
 struct FeedbackButton: View {
@@ -401,9 +401,9 @@ struct FeedbackButton: View {
 }
 ```
 
-## Accessibility
+## 辅助功能
 
-### VoiceOver Support
+### VoiceOver 支持
 
 ```swift
 struct AccessibleCard: View {
@@ -425,14 +425,14 @@ struct AccessibleCard: View {
         .padding()
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(item.title), \(item.subtitle)")
-        .accessibilityValue("Rating: \(item.rating) stars")
-        .accessibilityHint("Double tap to view details")
+        .accessibilityValue("评分: \(item.rating) 星")
+        .accessibilityHint("双击查看详情")
         .accessibilityAddTraits(.isButton)
     }
 }
 ```
 
-### Dynamic Type Support
+### 动态类型支持
 
 ```swift
 struct DynamicTypeView: View {
@@ -441,13 +441,13 @@ struct DynamicTypeView: View {
     var body: some View {
         Group {
             if dynamicTypeSize.isAccessibilitySize {
-                // Stack vertically for accessibility sizes
+                // 辅助功能尺寸时垂直堆叠
                 VStack(alignment: .leading, spacing: 12) {
                     leadingContent
                     trailingContent
                 }
             } else {
-                // Side-by-side for standard sizes
+                // 标准尺寸时并排显示
                 HStack {
                     leadingContent
                     Spacer()
@@ -458,7 +458,7 @@ struct DynamicTypeView: View {
     }
 
     var leadingContent: some View {
-        Label("Items", systemImage: "folder")
+        Label("项目", systemImage: "folder")
     }
 
     var trailingContent: some View {
@@ -468,9 +468,9 @@ struct DynamicTypeView: View {
 }
 ```
 
-## Error Handling UI
+## 错误处理界面
 
-### Error States
+### 错误状态
 
 ```swift
 struct ErrorView: View {
@@ -479,11 +479,11 @@ struct ErrorView: View {
 
     var body: some View {
         ContentUnavailableView {
-            Label("Unable to Load", systemImage: "exclamationmark.triangle")
+            Label("无法加载", systemImage: "exclamationmark.triangle")
         } description: {
             Text(error.localizedDescription)
         } actions: {
-            Button("Try Again") {
+            Button("重试") {
                 Task {
                     await retryAction()
                 }
@@ -494,7 +494,7 @@ struct ErrorView: View {
 }
 ```
 
-### Empty States
+### 空状态
 
 ```swift
 struct EmptyStateView: View {
@@ -518,12 +518,12 @@ struct EmptyStateView: View {
     }
 }
 
-// Usage
+// 使用示例
 EmptyStateView(
-    title: "No Photos",
-    description: "Take your first photo to get started.",
+    title: "无照片",
+    description: "拍摄你的第一张照片以开始使用。",
     systemImage: "camera",
     action: { showCamera = true },
-    actionTitle: "Take Photo"
+    actionTitle: "拍照"
 )
 ```

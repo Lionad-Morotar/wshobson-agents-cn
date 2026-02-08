@@ -1,27 +1,27 @@
-# Implementation Plan: {{TRACK_NAME}}
+# 实施计划：{{TRACK_NAME}}
 
-## Overview
+## 概览
 
-**Track ID:** {{TRACK_ID}}
-**Spec:** [spec.md](./spec.md)
-**Estimated Effort:** {{EFFORT_ESTIMATE}}
-**Target Completion:** {{TARGET_DATE}}
+**Track ID：** {{TRACK_ID}}
+**规范：** [spec.md](./spec.md)
+**预估工作量：** {{EFFORT_ESTIMATE}}
+**目标完成日期：** {{TARGET_DATE}}
 
-## Progress Summary
+## 进度汇总
 
-| Phase                     | Status     | Progress      |
+| 阶段                     | 状态       | 进度          |
 | ------------------------- | ---------- | ------------- |
-| Phase 1: {{PHASE_1_NAME}} | {{STATUS}} | {{PROGRESS}}% |
-| Phase 2: {{PHASE_2_NAME}} | {{STATUS}} | {{PROGRESS}}% |
-| Phase 3: {{PHASE_3_NAME}} | {{STATUS}} | {{PROGRESS}}% |
-| Phase 4: {{PHASE_4_NAME}} | {{STATUS}} | {{PROGRESS}}% |
+| 阶段 1：{{PHASE_1_NAME}} | {{STATUS}} | {{PROGRESS}}% |
+| 阶段 2：{{PHASE_2_NAME}} | {{STATUS}} | {{PROGRESS}}% |
+| 阶段 3：{{PHASE_3_NAME}} | {{STATUS}} | {{PROGRESS}}% |
+| 阶段 4：{{PHASE_4_NAME}} | {{STATUS}} | {{PROGRESS}}% |
 
-## Phase 1: {{PHASE_1_NAME}}
+## 阶段 1：{{PHASE_1_NAME}}
 
-**Objective:** {{PHASE_1_OBJECTIVE}}
-**Estimated Duration:** {{PHASE_1_DURATION}}
+**目标：** {{PHASE_1_OBJECTIVE}}
+**预估时长：** {{PHASE_1_DURATION}}
 
-### Tasks
+### 任务
 
 - [ ] **1.1 {{TASK_1_1_TITLE}}**
   - [ ] {{SUBTASK_1_1_1}}
@@ -36,13 +36,13 @@
   - [ ] {{SUBTASK_1_3_1}}
   - [ ] {{SUBTASK_1_3_2}}
 
-### Verification
+### 验收标准
 
-- [ ] All Phase 1 tests passing
-- [ ] Code coverage meets threshold
-- [ ] Code review approved
+- [ ] 第 1 阶段所有测试通过
+- [ ] 代码覆盖率符合阈值
+- [ ] 代码审查已批准
 
-### Checkpoint
+### 检查点
 
 ```
 Commit: [track-id] checkpoint: phase 1 complete
@@ -50,13 +50,13 @@ Commit: [track-id] checkpoint: phase 1 complete
 
 ---
 
-## Phase 2: {{PHASE_2_NAME}}
+## 阶段 2：{{PHASE_2_NAME}}
 
-**Objective:** {{PHASE_2_OBJECTIVE}}
-**Estimated Duration:** {{PHASE_2_DURATION}}
-**Dependencies:** Phase 1 complete
+**目标：** {{PHASE_2_OBJECTIVE}}
+**预估时长：** {{PHASE_2_DURATION}}
+**依赖项：** 阶段 1 完成
 
-### Tasks
+### 任务
 
 - [ ] **2.1 {{TASK_2_1_TITLE}}**
   - [ ] {{SUBTASK_2_1_1}}
@@ -71,13 +71,13 @@ Commit: [track-id] checkpoint: phase 1 complete
   - [ ] {{SUBTASK_2_3_1}}
   - [ ] {{SUBTASK_2_3_2}}
 
-### Verification
+### 验收标准
 
-- [ ] All Phase 2 tests passing
-- [ ] Integration tests passing
-- [ ] Code review approved
+- [ ] 第 2 阶段所有测试通过
+- [ ] 集成测试通过
+- [ ] 代码审查已批准
 
-### Checkpoint
+### 检查点
 
 ```
 Commit: [track-id] checkpoint: phase 2 complete
@@ -85,13 +85,13 @@ Commit: [track-id] checkpoint: phase 2 complete
 
 ---
 
-## Phase 3: {{PHASE_3_NAME}}
+## 阶段 3：{{PHASE_3_NAME}}
 
-**Objective:** {{PHASE_3_OBJECTIVE}}
-**Estimated Duration:** {{PHASE_3_DURATION}}
-**Dependencies:** Phase 2 complete
+**目标：** {{PHASE_3_OBJECTIVE}}
+**预估时长：** {{PHASE_3_DURATION}}
+**依赖项：** 阶段 2 完成
 
-### Tasks
+### 任务
 
 - [ ] **3.1 {{TASK_3_1_TITLE}}**
   - [ ] {{SUBTASK_3_1_1}}
@@ -105,13 +105,13 @@ Commit: [track-id] checkpoint: phase 2 complete
   - [ ] {{SUBTASK_3_3_1}}
   - [ ] {{SUBTASK_3_3_2}}
 
-### Verification
+### 验收标准
 
-- [ ] All Phase 3 tests passing
-- [ ] End-to-end tests passing
-- [ ] Code review approved
+- [ ] 第 3 阶段所有测试通过
+- [ ] 端到端测试通过
+- [ ] 代码审查已批准
 
-### Checkpoint
+### 检查点
 
 ```
 Commit: [track-id] checkpoint: phase 3 complete
@@ -119,13 +119,13 @@ Commit: [track-id] checkpoint: phase 3 complete
 
 ---
 
-## Phase 4: {{PHASE_4_NAME}}
+## 阶段 4：{{PHASE_4_NAME}}
 
-**Objective:** {{PHASE_4_OBJECTIVE}}
-**Estimated Duration:** {{PHASE_4_DURATION}}
-**Dependencies:** Phase 3 complete
+**目标：** {{PHASE_4_OBJECTIVE}}
+**预估时长：** {{PHASE_4_DURATION}}
+**依赖项：** 阶段 3 完成
 
-### Tasks
+### 任务
 
 - [ ] **4.1 {{TASK_4_1_TITLE}}**
   - [ ] {{SUBTASK_4_1_1}}
@@ -139,15 +139,15 @@ Commit: [track-id] checkpoint: phase 3 complete
   - [ ] {{SUBTASK_4_3_1}}
   - [ ] {{SUBTASK_4_3_2}}
 
-### Verification
+### 验收标准
 
-- [ ] All tests passing
-- [ ] Coverage ≥ 80%
-- [ ] Performance benchmarks met
-- [ ] Documentation complete
-- [ ] Code review approved
+- [ ] 所有测试通过
+- [ ] 覆盖率 ≥ 80%
+- [ ] 性能基准达标
+- [ ] 文档完成
+- [ ] 代码审查已批准
 
-### Checkpoint
+### 检查点
 
 ```
 Commit: [track-id] checkpoint: phase 4 complete (track done)
@@ -155,44 +155,44 @@ Commit: [track-id] checkpoint: phase 4 complete (track done)
 
 ---
 
-## Final Verification
+## 最终验证
 
-### Quality Gates
+### 质量关卡
 
-- [ ] All unit tests passing
-- [ ] All integration tests passing
-- [ ] All E2E tests passing
-- [ ] Code coverage ≥ 80%
-- [ ] No critical linting errors
-- [ ] Security scan passed
-- [ ] Performance requirements met
-- [ ] Accessibility requirements met
+- [ ] 所有单元测试通过
+- [ ] 所有集成测试通过
+- [ ] 所有 E2E 测试通过
+- [ ] 代码覆盖率 ≥ 80%
+- [ ] 无严重 linting 错误
+- [ ] 安全扫描通过
+- [ ] 满足性能要求
+- [ ] 满足无障碍要求
 
-### Documentation
+### 文档
 
-- [ ] API documentation updated
-- [ ] README updated (if applicable)
-- [ ] Changelog entry added
+- [ ] API 文档已更新
+- [ ] README 已更新（如适用）
+- [ ] 变更日志条目已添加
 
-### Deployment
+### 部署
 
-- [ ] Staging deployment successful
-- [ ] Smoke tests passed
-- [ ] Production deployment approved
+- [ ] 预发布部署成功
+- [ ] 冒烟测试通过
+- [ ] 生产部署已批准
 
 ---
 
-## Deviations Log
+## 偏差日志
 
-| Date     | Task     | Deviation     | Reason     | Resolution     |
+| 日期     | 任务     | 偏差     | 原因     | 解决方案     |
 | -------- | -------- | ------------- | ---------- | -------------- |
 | {{DATE}} | {{TASK}} | {{DEVIATION}} | {{REASON}} | {{RESOLUTION}} |
 
-## Notes
+## 备注
 
 {{IMPLEMENTATION_NOTES}}
 
 ---
 
-**Plan Created:** {{CREATED_DATE}}
-**Last Updated:** {{UPDATED_DATE}}
+**计划创建日期：** {{CREATED_DATE}}
+**最后更新日期：** {{UPDATED_DATE}}

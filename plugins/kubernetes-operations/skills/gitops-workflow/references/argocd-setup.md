@@ -1,40 +1,40 @@
-# ArgoCD Setup and Configuration
+# ArgoCD 设置和配置
 
-## Installation Methods
+## 安装方法
 
-### 1. Standard Installation
+### 1. 标准安装
 
 ```bash
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-### 2. High Availability Installation
+### 2. 高可用安装
 
 ```bash
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/install.yaml
 ```
 
-### 3. Helm Installation
+### 3. Helm 安装
 
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm install argocd argo/argo-cd -n argocd --create-namespace
 ```
 
-## Initial Configuration
+## 初始配置
 
-### Access ArgoCD UI
+### 访问 ArgoCD UI
 
 ```bash
-# Port forward
+# 端口转发
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
-# Get initial admin password
+# 获取初始管理员密码
 argocd admin initial-password -n argocd
 ```
 
-### Configure Ingress
+### 配置 Ingress
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -65,21 +65,21 @@ spec:
       secretName: argocd-secret
 ```
 
-## CLI Configuration
+## CLI 配置
 
-### Login
+### 登录
 
 ```bash
 argocd login argocd.example.com --username admin
 ```
 
-### Add Repository
+### 添加仓库
 
 ```bash
 argocd repo add https://github.com/org/repo --username user --password token
 ```
 
-### Create Application
+### 创建应用
 
 ```bash
 argocd app create my-app \
@@ -89,7 +89,7 @@ argocd app create my-app \
   --dest-namespace production
 ```
 
-## SSO Configuration
+## SSO 配置
 
 ### GitHub OAuth
 
@@ -113,7 +113,7 @@ data:
           - name: my-org
 ```
 
-## RBAC Configuration
+## RBAC 配置
 
 ```yaml
 apiVersion: v1
@@ -130,15 +130,15 @@ data:
     g, my-org:ops, role:operators
 ```
 
-## Best Practices
+## 最佳实践
 
-1. Enable SSO for production
-2. Implement RBAC policies
-3. Use separate projects for teams
-4. Enable audit logging
-5. Configure notifications
-6. Use ApplicationSets for multi-cluster
-7. Implement resource hooks
-8. Configure health checks
-9. Use sync windows for maintenance
-10. Monitor with Prometheus metrics
+1. 为生产环境启用 SSO
+2. 实施 RBAC 策略
+3. 为不同团队使用独立项目
+4. 启用审计日志
+5. 配置通知
+6. 使用 ApplicationSets 管理多集群
+7. 实施资源钩子
+8. 配置健康检查
+9. 使用同步窗口进行维护
+10. 使用 Prometheus 指标进行监控

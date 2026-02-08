@@ -1,8 +1,8 @@
-# Material Design 3 Theming
+# Material Design 3 主题系统
 
-## Color System
+## 颜色系统
 
-### Dynamic Color (Material You)
+### 动态颜色（Material You）
 
 ```kotlin
 @Composable
@@ -30,10 +30,10 @@ fun AppTheme(
 }
 ```
 
-### Custom Color Scheme
+### 自定义颜色方案
 
 ```kotlin
-// Define color palette
+// 定义调色板
 val md_theme_light_primary = Color(0xFF6750A4)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFEADDFF)
@@ -86,14 +86,14 @@ val LightColorScheme = lightColorScheme(
     outlineVariant = md_theme_light_outlineVariant
 )
 
-// Dark colors follow the same pattern
+// 深色模式颜色遵循相同的模式
 val DarkColorScheme = darkColorScheme(
     primary = md_theme_dark_primary,
-    // ... other colors
+    // ... 其他颜色
 )
 ```
 
-### Color Roles Usage
+### 颜色角色使用
 
 ```kotlin
 @Composable
@@ -102,53 +102,53 @@ fun ColorRolesExample() {
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Primary - Key actions, FABs
+        // Primary - 关键操作、悬浮操作按钮
         Button(onClick = { }) {
-            Text("Primary Action")
+            Text("主要操作")
         }
 
-        // Primary Container - Less prominent containers
+        // Primary Container - 次要突出的容器
         Surface(
             color = MaterialTheme.colorScheme.primaryContainer,
             shape = RoundedCornerShape(12.dp)
         ) {
             Text(
-                "Primary Container",
+                "主色容器",
                 modifier = Modifier.padding(16.dp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
 
-        // Secondary - Less prominent actions
+        // Secondary - 较不突出的操作
         FilledTonalButton(onClick = { }) {
-            Text("Secondary Action")
+            Text("次要操作")
         }
 
-        // Tertiary - Contrast accents
+        // Tertiary - 对比强调色
         Badge(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer
         ) {
-            Text("New")
+            Text("新")
         }
 
-        // Error - Destructive actions
+        // Error - 破坏性操作
         Button(
             onClick = { },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text("Delete")
+            Text("删除")
         }
 
-        // Surface variants
+        // Surface 变体
         Surface(
             color = MaterialTheme.colorScheme.surfaceVariant,
             shape = RoundedCornerShape(8.dp)
         ) {
             Text(
-                "Surface Variant",
+                "表面变体",
                 modifier = Modifier.padding(16.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -157,10 +157,10 @@ fun ColorRolesExample() {
 }
 ```
 
-### Extended Colors
+### 扩展颜色
 
 ```kotlin
-// Custom semantic colors beyond M3 defaults
+// 超出 M3 默认值的自定义语义颜色
 data class ExtendedColors(
     val success: Color,
     val onSuccess: Color,
@@ -190,7 +190,7 @@ fun AppTheme(
     content: @Composable () -> Unit
 ) {
     val extendedColors = ExtendedColors(
-        // ... define colors based on light/dark theme
+        // ... 基于浅色/深色主题定义颜色
     )
 
     CompositionLocalProvider(
@@ -203,7 +203,7 @@ fun AppTheme(
     }
 }
 
-// Usage
+// 使用示例
 @Composable
 fun SuccessBanner() {
     val extendedColors = LocalExtendedColors.current
@@ -222,7 +222,7 @@ fun SuccessBanner() {
                 tint = extendedColors.success
             )
             Text(
-                "Operation successful!",
+                "操作成功！",
                 color = extendedColors.onSuccessContainer
             )
         }
@@ -230,13 +230,13 @@ fun SuccessBanner() {
 }
 ```
 
-## Typography
+## 排版系统
 
-### Material 3 Type Scale
+### Material 3 字体比例
 
 ```kotlin
 val AppTypography = Typography(
-    // Display styles - Hero text, large numerals
+    // Display 样式 - 英雄文本、大号数字
     displayLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -259,7 +259,7 @@ val AppTypography = Typography(
         letterSpacing = 0.sp
     ),
 
-    // Headline styles - High emphasis, short text
+    // Headline 样式 - 高强调、短文本
     headlineLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -282,7 +282,7 @@ val AppTypography = Typography(
         letterSpacing = 0.sp
     ),
 
-    // Title styles - Medium emphasis headers
+    // Title 样式 - 中等强调标题
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -305,7 +305,7 @@ val AppTypography = Typography(
         letterSpacing = 0.1.sp
     ),
 
-    // Body styles - Long-form text
+    // Body 样式 - 长文本
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
@@ -328,7 +328,7 @@ val AppTypography = Typography(
         letterSpacing = 0.4.sp
     ),
 
-    // Label styles - Buttons, chips, navigation
+    // Label 样式 - 按钮、标签、导航
     labelLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
@@ -353,10 +353,10 @@ val AppTypography = Typography(
 )
 ```
 
-### Custom Fonts
+### 自定义字体
 
 ```kotlin
-// Load custom fonts
+// 加载自定义字体
 val Inter = FontFamily(
     Font(R.font.inter_regular, FontWeight.Normal),
     Font(R.font.inter_medium, FontWeight.Medium),
@@ -371,10 +371,10 @@ val AppTypography = Typography(
         fontSize = 57.sp,
         lineHeight = 64.sp
     ),
-    // Apply to all styles...
+    // 应用到所有样式...
 )
 
-// Variable fonts (Android 12+)
+// 可变字体（Android 12+）
 val InterVariable = FontFamily(
     Font(
         R.font.inter_variable,
@@ -385,30 +385,30 @@ val InterVariable = FontFamily(
 )
 ```
 
-## Shape System
+## 形状系统
 
-### Material 3 Shapes
+### Material 3 形状
 
 ```kotlin
 val AppShapes = Shapes(
-    // Extra small - Chips, small buttons
+    // 超小 - 芯片、小按钮
     extraSmall = RoundedCornerShape(4.dp),
 
-    // Small - Text fields, small cards
+    // 小 - 文本字段、小卡片
     small = RoundedCornerShape(8.dp),
 
-    // Medium - Cards, dialogs
+    // 中 - 卡片、对话框
     medium = RoundedCornerShape(12.dp),
 
-    // Large - Large cards, bottom sheets
+    // 大 - 大卡片、底部抽屉
     large = RoundedCornerShape(16.dp),
 
-    // Extra large - Full-screen dialogs
+    // 超大 - 全屏对话框
     extraLarge = RoundedCornerShape(28.dp)
 )
 ```
 
-### Custom Shape Usage
+### 自定义形状使用
 
 ```kotlin
 @Composable
@@ -416,30 +416,30 @@ fun ShapedComponents() {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Small shape for text field
+        // 文本字段使用小形状
         OutlinedTextField(
             value = "",
             onValueChange = {},
             shape = MaterialTheme.shapes.small,
-            label = { Text("Input") }
+            label = { Text("输入") }
         )
 
-        // Medium shape for cards
+        // 卡片使用中形状
         Card(
             shape = MaterialTheme.shapes.medium
         ) {
-            Text("Card content", modifier = Modifier.padding(16.dp))
+            Text("卡片内容", modifier = Modifier.padding(16.dp))
         }
 
-        // Large shape for prominent containers
+        // 突出容器使用大形状
         Surface(
             shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.primaryContainer
         ) {
-            Text("Featured", modifier = Modifier.padding(24.dp))
+            Text("精选", modifier = Modifier.padding(24.dp))
         }
 
-        // Custom asymmetric shape
+        // 自定义非对称形状
         Surface(
             shape = RoundedCornerShape(
                 topStart = 24.dp,
@@ -449,15 +449,15 @@ fun ShapedComponents() {
             ),
             color = MaterialTheme.colorScheme.surface
         ) {
-            Text("Bottom sheet style", modifier = Modifier.padding(16.dp))
+            Text("底部抽屉样式", modifier = Modifier.padding(16.dp))
         }
     }
 }
 ```
 
-## Elevation and Shadows
+## 高程和阴影
 
-### Tonal Elevation
+### 色调高程
 
 ```kotlin
 @Composable
@@ -465,7 +465,7 @@ fun ElevationExample() {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Level 0 - No elevation
+        // Level 0 - 无高程
         Surface(
             tonalElevation = 0.dp,
             shadowElevation = 0.dp
@@ -473,7 +473,7 @@ fun ElevationExample() {
             Text("Level 0", modifier = Modifier.padding(16.dp))
         }
 
-        // Level 1 - Low emphasis surfaces
+        // Level 1 - 低强调表面
         Surface(
             tonalElevation = 1.dp,
             shadowElevation = 1.dp
@@ -481,7 +481,7 @@ fun ElevationExample() {
             Text("Level 1", modifier = Modifier.padding(16.dp))
         }
 
-        // Level 2 - Cards, switches
+        // Level 2 - 卡片、开关
         Surface(
             tonalElevation = 3.dp,
             shadowElevation = 2.dp
@@ -489,7 +489,7 @@ fun ElevationExample() {
             Text("Level 2", modifier = Modifier.padding(16.dp))
         }
 
-        // Level 3 - Navigation components
+        // Level 3 - 导航组件
         Surface(
             tonalElevation = 6.dp,
             shadowElevation = 4.dp
@@ -497,7 +497,7 @@ fun ElevationExample() {
             Text("Level 3", modifier = Modifier.padding(16.dp))
         }
 
-        // Level 4 - Navigation rail
+        // Level 4 - 导航栏
         Surface(
             tonalElevation = 8.dp,
             shadowElevation = 6.dp
@@ -505,7 +505,7 @@ fun ElevationExample() {
             Text("Level 4", modifier = Modifier.padding(16.dp))
         }
 
-        // Level 5 - FAB
+        // Level 5 - 悬浮操作按钮
         Surface(
             tonalElevation = 12.dp,
             shadowElevation = 8.dp
@@ -516,9 +516,9 @@ fun ElevationExample() {
 }
 ```
 
-## Responsive Design
+## 响应式设计
 
-### Window Size Classes
+### 窗口大小类别
 
 ```kotlin
 @Composable
@@ -527,15 +527,15 @@ fun AdaptiveLayout() {
 
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
-            // Phone portrait - Single column, bottom nav
+            // 手机竖屏 - 单列、底部导航
             CompactLayout()
         }
         WindowWidthSizeClass.Medium -> {
-            // Tablet portrait, phone landscape - Navigation rail
+            // 平板竖屏、手机横屏 - 导航栏
             MediumLayout()
         }
         WindowWidthSizeClass.Expanded -> {
-            // Tablet landscape, desktop - Navigation drawer, multi-pane
+            // 平板横屏、桌面 - 导航抽屉、多窗格
             ExpandedLayout()
         }
     }
@@ -544,7 +544,7 @@ fun AdaptiveLayout() {
 @Composable
 fun CompactLayout() {
     Scaffold(
-        bottomBar = { NavigationBar { /* items */ } }
+        bottomBar = { NavigationBar { /* 项 */ } }
     ) { padding ->
         Content(modifier = Modifier.padding(padding))
     }
@@ -553,7 +553,7 @@ fun CompactLayout() {
 @Composable
 fun MediumLayout() {
     Row {
-        NavigationRail { /* items */ }
+        NavigationRail { /* 项 */ }
         Content(modifier = Modifier.weight(1f))
     }
 }
@@ -562,7 +562,7 @@ fun MediumLayout() {
 fun ExpandedLayout() {
     PermanentNavigationDrawer(
         drawerContent = {
-            PermanentDrawerSheet { /* items */ }
+            PermanentDrawerSheet { /* 项 */ }
         }
     ) {
         Row {
@@ -573,7 +573,7 @@ fun ExpandedLayout() {
 }
 ```
 
-### Foldable Support
+### 可折叠设备支持
 
 ```kotlin
 @Composable
@@ -582,21 +582,21 @@ fun FoldableAwareLayout() {
 
     when {
         foldingFeature?.state == FoldingFeature.State.HALF_OPENED -> {
-            // Device is half-folded (tabletop mode)
+            // 设备半折叠（桌面模式）
             TwoHingeLayout(
                 top = { CameraPreview() },
                 bottom = { CameraControls() }
             )
         }
         foldingFeature?.orientation == FoldingFeature.Orientation.VERTICAL -> {
-            // Vertical fold (book mode)
+            // 垂直折叠（书本模式）
             TwoPaneLayout(
                 first = { NavigationPane() },
                 second = { ContentPane() }
             )
         }
         else -> {
-            // Regular or fully opened
+            // 常规或完全展开
             SinglePaneLayout()
         }
     }
